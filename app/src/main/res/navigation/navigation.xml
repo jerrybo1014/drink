@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@+id/navigation"
+    app:startDestination="@id/homeFragment">
+
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="app.jerry.drink.HomeFragment"
+        android:label="HomeFragment" />
+    <fragment
+        android:id="@+id/orderFragment"
+        android:name="app.jerry.drink.OrderFragment"
+        android:label="OrderFragment" />
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="ProfileFragment"
+        android:label="ProfileFragment" />
+    <fragment
+        android:id="@+id/radarFragment"
+        android:name="app.jerry.drink.RadarFragment"
+        android:label="RadarFragment" />
+    <action
+        android:id="@+id/action_global_homeFragment"
+        app:destination="@id/homeFragment"
+        app:popUpTo="@id/navigation"
+        app:popUpToInclusive="true"/>
+    <action
+        android:id="@+id/action_global_orderFragment"
+        app:destination="@id/orderFragment"
+        app:popUpTo="@id/navigation"
+        app:popUpToInclusive="true"/>
+    <action
+        android:id="@+id/action_global_profileFragment"
+        app:destination="@id/profileFragment"
+        app:popUpTo="@id/navigation"
+        app:popUpToInclusive="true"/>
+    <action
+        android:id="@+id/action_global_radarFragment"
+        app:destination="@id/radarFragment"
+        app:popUpTo="@id/navigation"
+        app:popUpToInclusive="true"/>
+</navigation>

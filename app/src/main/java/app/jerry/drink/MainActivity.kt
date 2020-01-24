@@ -8,26 +8,52 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
+import androidx.databinding.DataBindingUtil
+import androidx.navigation.findNavController
+import androidx.navigation.ui.setupWithNavController
+import app.jerry.drink.databinding.ActivityMainBinding
+import app.jerry.drink.databinding.FragmentHomeBinding
 import com.google.firebase.firestore.FirebaseFirestore
 
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 val TAG = "jerryTest"
+    lateinit var binding: ActivityMainBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
 //        setSupportActionBar(toolbar)
+
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
         fab.setOnClickListener { view ->
 //            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
 //                .setAction("Action", null).show()
 
-
         }
 
-//        val toolbar = findViewById<View>(R.id.toolbar)
-//        toolbar.showContextMenu()
+        val navController = findNavController(R.id.myNavHostFragment)
+        binding.bottomNavigationView.setupWithNavController(navController)
+
+        /*Wayne write it outside*/
+        binding.bottomNavigationView.setOnNavigationItemSelectedListener {
+            when (it.itemId) {
+                R.id.homeFragment -> {
+                    navController.navigate(R.id.action_global_homeFragment)
+                }
+                R.id.radarFragment -> {
+                    navController.navigate(R.id.action_global_radarFragment)
+                }
+                R.id.orderFragment -> {
+                    navController.navigate(R.id.action_global_orderFragment)
+                }
+                R.id.profileFragment -> {
+                    navController.navigate(R.id.action_global_profileFragment)
+                }
+            };false
+        }
+
 
     }
 
@@ -42,7 +68,7 @@ val TAG = "jerryTest"
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         return when (item.itemId) {
-            R.id.action_settings -> true
+            R.id.action_about -> true
             else -> super.onOptionsItemSelected(item)
         }
     }

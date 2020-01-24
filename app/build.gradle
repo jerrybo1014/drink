@@ -1,9 +1,9 @@
 apply plugin: 'com.android.application'
 
 apply plugin: 'kotlin-android'
-
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'com.google.gms.google-services'
+apply plugin: 'kotlin-kapt'
 
 android {
     compileSdkVersion 29
@@ -22,6 +22,13 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
+    dataBinding { enabled = true
+    }
+
+    androidExtensions {
+        experimental = true
+    }
 }
 
 dependencies {
@@ -33,6 +40,34 @@ dependencies {
     implementation 'com.google.android.material:material:1.0.0'
     implementation 'com.google.firebase:firebase-firestore:17.1.2'
     testImplementation 'junit:junit:4.12'
+
+    // Navigation
+    implementation "androidx.navigation:navigation-fragment-ktx:2.1.0"
+    implementation "androidx.navigation:navigation-ui-ktx:2.1.0"
+
+    //recycler view
+    implementation "androidx.recyclerview:recyclerview:1.0.0"
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+
+    //http
+    implementation "com.squareup.moshi:moshi:1.8.0"
+    implementation "com.squareup.moshi:moshi-kotlin:1.8.0"
+    implementation "com.squareup.retrofit2:converter-moshi:2.5.0"
+    implementation "com.squareup.okhttp3:logging-interceptor:4.0.1"
+    implementation "com.squareup.retrofit2:retrofit:2.5.0"
+    implementation "com.jakewharton.retrofit:retrofit2-kotlin-coroutines-adapter:0.9.2"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.1.0"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.1.0"
+    implementation "androidx.lifecycle:lifecycle-extensions:2.0.0"
+    implementation "com.github.bumptech.glide:glide:4.10.0"
+    implementation 'org.jetbrains.anko:anko-common:0.9'
+    implementation 'androidx.paging:paging-runtime:2.1.0'
+
+    //FaceBook SDK
+    implementation 'com.facebook.android:facebook-android-sdk:4.42.0'
+
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+    implementation 'androidx.navigation:navigation-fragment-ktx:2.1.0'
+    implementation 'androidx.navigation:navigation-ui-ktx:2.1.0'
 }

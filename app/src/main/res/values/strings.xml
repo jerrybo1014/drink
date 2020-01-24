@@ -1,4 +1,16 @@
 <resources>
     <string name="app_name">drink</string>
     <string name="action_settings">Settings</string>
+
+    <!-- menu -->
+    <string name="menu_about">關於</string>
+    <string name="menu_log_out">登出</string>
+
+    <!-- bottom label -->
+    <string name="label_home">飲品評論</string>
+    <string name="label_radar">附近店家</string>
+    <string name="label_order">揪團訂購</string>
+    <string name="label_profile">個人檔案</string>
+
+
 </resources>
