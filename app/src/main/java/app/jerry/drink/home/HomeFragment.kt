@@ -8,6 +8,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import app.jerry.drink.R
 import app.jerry.drink.databinding.FragmentHomeBinding
+import app.jerry.drink.dataclass.Comment
 
 class HomeFragment : Fragment() {
 
@@ -21,6 +22,24 @@ class HomeFragment : Fragment() {
         binding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_home, container, false
         )
+
+
+        val highScoreAdapter = HighScoreAdapter()
+        val newCommentAdapter = NewCommentAdapter()
+
+        binding.recyclerHighScore.adapter = highScoreAdapter
+        binding.recyclerNewComment.adapter = newCommentAdapter
+
+        val mockData = mutableListOf<Comment>()
+        val comment = Comment("")
+        mockData.add(comment)
+        mockData.add(comment)
+        mockData.add(comment)
+        mockData.add(comment)
+        mockData.add(comment)
+
+        highScoreAdapter.submitList(mockData)
+        newCommentAdapter.submitList(mockData)
 
         return binding.root
     }
