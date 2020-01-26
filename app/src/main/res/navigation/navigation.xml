@@ -5,11 +5,11 @@
 
     <fragment
         android:id="@+id/homeFragment"
-        android:name="app.jerry.drink.HomeFragment"
+        android:name="app.jerry.drink.home.HomeFragment"
         android:label="HomeFragment" />
     <fragment
         android:id="@+id/orderFragment"
-        android:name="app.jerry.drink.OrderFragment"
+        android:name="app.jerry.drink.order.OrderFragment"
         android:label="OrderFragment" />
     <fragment
         android:id="@+id/profileFragment"
@@ -17,7 +17,7 @@
         android:label="ProfileFragment" />
     <fragment
         android:id="@+id/radarFragment"
-        android:name="app.jerry.drink.RadarFragment"
+        android:name="app.jerry.drink.radar.RadarFragment"
         android:label="RadarFragment" />
     <action
         android:id="@+id/action_global_homeFragment"
