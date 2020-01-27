@@ -137,11 +137,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
-
                     android:text="紅茶拿鐵"
                     app:layout_constraintBottom_toBottomOf="@+id/text_store"
                     app:layout_constraintStart_toEndOf="@+id/view_drink_item"
                     app:layout_constraintTop_toTopOf="@+id/text_store" />
+
             </androidx.constraintlayout.widget.ConstraintLayout>
         </com.google.android.material.card.MaterialCardView>
     </androidx.constraintlayout.widget.ConstraintLayout>

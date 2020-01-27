@@ -39,4 +39,25 @@
         app:destination="@id/radarFragment"
         app:popUpTo="@id/navigation"
         app:popUpToInclusive="true"/>
+    <fragment
+        android:id="@+id/detailFragment"
+        android:name="app.jerry.drink.DetailFragment"
+        android:label="DetailFragment" />
+    <fragment
+        android:id="@+id/homeSearchFragment"
+        android:name="app.jerry.drink.HomeSearchFragment"
+        android:label="HomeSearchFragment" />
+    <fragment
+        android:id="@+id/postFragment"
+        android:name="app.jerry.drink.PostFragment"
+        android:label="PostFragment" />
+    <action
+        android:id="@+id/action_global_detailFragment"
+        app:destination="@id/detailFragment" />
+    <action
+        android:id="@+id/action_global_homeSearchFragment"
+        app:destination="@id/homeSearchFragment" />
+    <action
+        android:id="@+id/action_global_postFragment"
+        app:destination="@id/postFragment" />
 </navigation>

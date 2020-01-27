@@ -1,11 +1,14 @@
 package app.jerry.drink.home
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
+import app.jerry.drink.MainActivity
 import app.jerry.drink.R
 import app.jerry.drink.databinding.FragmentHomeBinding
 import app.jerry.drink.dataclass.Comment
@@ -23,6 +26,10 @@ class HomeFragment : Fragment() {
             inflater, R.layout.fragment_home, container, false
         )
 
+        (activity as MainActivity).binding.layoutHomeSearch.setOnClickListener {
+            findNavController().navigate(R.id.action_global_homeSearchFragment)
+            Log.d("jerryTest","layoutHomeSearch")
+        }
 
         val highScoreAdapter = HighScoreAdapter()
         val newCommentAdapter = NewCommentAdapter()

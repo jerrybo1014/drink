@@ -27,14 +27,13 @@ val TAG = "jerryTest"
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
+        val navController = findNavController(R.id.myNavHostFragment)
+        binding.bottomNavigationView.setupWithNavController(navController)
         fab.setOnClickListener { view ->
 //            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
 //                .setAction("Action", null).show()
-
+            navController.navigate(R.id.action_global_postFragment)
         }
-
-        val navController = findNavController(R.id.myNavHostFragment)
-        binding.bottomNavigationView.setupWithNavController(navController)
 
         /*Wayne write it outside*/
         binding.bottomNavigationView.setOnNavigationItemSelectedListener {

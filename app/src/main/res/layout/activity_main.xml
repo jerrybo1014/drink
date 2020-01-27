@@ -61,6 +61,7 @@
             android:background="@color/White" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layout_home_search"
             android:layout_width="0dp"
             android:layout_height="36dp"
             app:layout_constraintBottom_toBottomOf="@+id/toolbar"
@@ -68,7 +69,8 @@
             app:layout_constraintStart_toStartOf="parent"
             android:layout_marginStart="16dp"
             app:layout_constraintTop_toTopOf="parent"
-            android:background="#cbba83">
+            android:background="#cbba83"
+            >
 
             <ImageView
                 android:id="@+id/image_search"
