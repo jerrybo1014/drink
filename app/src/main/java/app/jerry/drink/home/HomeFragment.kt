@@ -31,6 +31,8 @@ class HomeFragment : Fragment() {
             Log.d("jerryTest","layoutHomeSearch")
         }
 
+        (activity as MainActivity).binding.fab.show()
+
         val highScoreAdapter = HighScoreAdapter()
         val newCommentAdapter = NewCommentAdapter()
 

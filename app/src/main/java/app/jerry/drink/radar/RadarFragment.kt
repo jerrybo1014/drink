@@ -38,7 +38,6 @@ class RadarFragment : Fragment() {
 //        val intent = Intent(activity,MapsActivity::class.java)
 //        startActivity(intent)
 
-
 //        GoogleMap map = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
 //        val map: GoogleMap = (activity as MapsActivity).
 //        val map: GoogleMap = FragmentManager().findFragmentById(R.id.map)
@@ -52,17 +51,12 @@ class RadarFragment : Fragment() {
 
         mMap = binding.radarMap
         mMap.onCreate(savedInstanceState)
-
         mMap.getMapAsync(MapsActivity())
-
-
 //        MapsInitializer.initialize(activity)
-
 //        val googleMap = mMap.getMapAsync(MapsActivity())
 
         return binding.root
     }
-
 
     override fun onResume() {
         super.onResume()
