@@ -21,6 +21,7 @@ class RadarFragment : Fragment() {
 
 
     lateinit var binding: FragmentRadarBinding
+    lateinit var mMap: MapView
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -49,9 +50,9 @@ class RadarFragment : Fragment() {
 
         (activity as MainActivity).binding.fab.hide()
 
-        val mMap = binding.radarMap
+        mMap = binding.radarMap
         mMap.onCreate(savedInstanceState)
-        mMap.onResume()
+
         mMap.getMapAsync(MapsActivity())
 
 
@@ -60,6 +61,27 @@ class RadarFragment : Fragment() {
 //        val googleMap = mMap.getMapAsync(MapsActivity())
 
         return binding.root
+    }
+
+
+    override fun onResume() {
+        super.onResume()
+        mMap.onResume()
+    }
+
+    override fun onLowMemory() {
+        super.onLowMemory()
+        mMap.onLowMemory()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        mMap.onPause()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        mMap.onDestroy()
     }
 
 }
