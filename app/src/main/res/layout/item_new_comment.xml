@@ -48,26 +48,17 @@
                     app:layout_constraintStart_toEndOf="@+id/imageView_person"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <TextView
-                    android:id="@+id/text_store_item"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                <ImageView
+                    android:id="@+id/image_store_item"
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
                     android:layout_marginStart="10dp"
-
                     android:layout_marginTop="6dp"
-                    android:text="店家 :"
+                    android:tint="@color/myColorPrimaryDark"
+                    android:src="@drawable/store_icon"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/imageView_person" />
 
-                <TextView
-                    android:id="@+id/text_comment_item"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="6dp"
-
-                    android:text="評價 :"
-                    app:layout_constraintStart_toStartOf="@+id/text_store_item"
-                    app:layout_constraintTop_toBottomOf="@+id/text_drink_item" />
 
                 <TextView
                     android:id="@+id/text_time"
@@ -80,28 +71,24 @@
 
                 <RatingBar
                     android:id="@+id/rating_bar_comment"
+                    style="@style/Widget.AppCompat.RatingBar.Small"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="6dp"
                     android:isIndicator="true"
-                    android:progressTint="#FFD700"
                     android:rating="3"
-                    android:scaleX=".35"
-                    android:scaleY=".35"
-                    android:stepSize="1"
-                    android:transformPivotX="0dp"
-                    android:transformPivotY="0dp"
-                    app:layout_constraintStart_toEndOf="@+id/text_comment_item"
-                    app:layout_constraintTop_toTopOf="@id/text_comment_item" />
+                    android:progressTint="#FFD700"
+                    app:layout_constraintBottom_toBottomOf="@+id/image_comment_item"
+                    app:layout_constraintStart_toStartOf="@+id/image_drink_name"
+                    app:layout_constraintTop_toTopOf="@+id/image_comment_item" />
 
                 <TextView
                     android:id="@+id/text_comment"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="6dp"
+                    android:layout_marginTop="5dp"
                     android:text="豪豪喝"
                     app:layout_constraintStart_toStartOf="@+id/rating_bar_comment"
-                    app:layout_constraintTop_toBottomOf="@+id/text_comment_item" />
+                    app:layout_constraintTop_toBottomOf="@+id/image_comment_item" />
 
                 <ImageView
                     android:id="@+id/imageView3"
@@ -110,7 +97,7 @@
                     android:layout_marginEnd="16dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/text_name"
-                    app:srcCompat="@drawable/placeholder" />
+                    app:srcCompat="@drawable/drink_sample" />
 
                 <TextView
                     android:id="@+id/text_store"
@@ -118,8 +105,9 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="6dp"
                     android:text="迷克夏"
-                    app:layout_constraintStart_toEndOf="@+id/text_store_item"
-                    app:layout_constraintTop_toTopOf="@+id/text_store_item" />
+                    app:layout_constraintBottom_toBottomOf="@+id/image_store_item"
+                    app:layout_constraintStart_toEndOf="@+id/image_store_item"
+                    app:layout_constraintTop_toTopOf="@+id/image_store_item" />
 
                 <View
                     android:id="@+id/view_drink_item"
@@ -129,26 +117,28 @@
                     android:layout_marginTop="3dp"
                     android:layout_marginBottom="3dp"
                     android:background="#cccccc"
-                    app:layout_constraintBottom_toBottomOf="@+id/text_drink_name"
-                    app:layout_constraintStart_toEndOf="@id/text_drink_name"
-                    app:layout_constraintTop_toTopOf="@id/text_drink_name" />
+                    app:layout_constraintBottom_toBottomOf="@+id/image_drink_name"
+                    app:layout_constraintStart_toEndOf="@id/image_drink_name"
+                    app:layout_constraintTop_toTopOf="@id/image_drink_name" />
 
                 <TextView
-                    android:id="@+id/text_drink_name"
+                    android:id="@+id/image_drink_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="紅茶拿鐵"
+                    app:layout_constraintBottom_toBottomOf="@+id/text_drink_item"
                     app:layout_constraintStart_toStartOf="@+id/text_store"
                     app:layout_constraintTop_toTopOf="@+id/text_drink_item" />
 
-                <TextView
+                <ImageView
                     android:id="@+id/text_drink_item"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="6dp"
-                    android:text="飲品 :"
-                    app:layout_constraintStart_toStartOf="@+id/text_store_item"
-                    app:layout_constraintTop_toBottomOf="@+id/text_store_item" />
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:layout_marginTop="10dp"
+                    android:src="@drawable/drink_icon"
+                    android:tint="@color/myColorPrimaryDark"
+                    app:layout_constraintStart_toStartOf="@+id/image_store_item"
+                    app:layout_constraintTop_toBottomOf="@+id/image_store_item" />
 
                 <TextView
                     android:id="@+id/text_ice_sugar"
@@ -157,10 +147,18 @@
                     android:text="半糖去冰"
                     android:layout_marginStart="10dp"
                     app:layout_constraintStart_toEndOf="@+id/view_drink_item"
-                    app:layout_constraintTop_toTopOf="@+id/text_drink_name" />
+                    app:layout_constraintTop_toTopOf="@+id/image_drink_name" />
 
-
-
+                <ImageView
+                    android:id="@+id/image_comment_item"
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:layout_marginTop="10dp"
+                    android:src="@drawable/comment_icon"
+                    android:tint="@color/myColorPrimaryDark"
+                    android:visibility="invisible"
+                    app:layout_constraintStart_toStartOf="@+id/text_drink_item"
+                    app:layout_constraintTop_toBottomOf="@+id/text_drink_item" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </com.google.android.material.card.MaterialCardView>
