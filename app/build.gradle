@@ -68,7 +68,12 @@ dependencies {
     //FaceBook SDK
     implementation 'com.facebook.android:facebook-android-sdk:4.42.0'
 
+    // Firebase Authentication (帳號驗證模組)
+    implementation 'com.google.firebase:firebase-auth:16.1.0'
+    // Firebase Auth UI (第三方登入畫面模組)
+    implementation 'com.firebaseui:firebase-ui-auth:4.2.1'
 
+    // google map
     implementation 'com.google.android.gms:play-services-maps:17.0.0'
     implementation 'com.google.android.gms:play-services-location:17.0.0'
 
