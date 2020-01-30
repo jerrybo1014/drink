@@ -12,6 +12,7 @@ import app.jerry.drink.MainActivity
 import app.jerry.drink.R
 import app.jerry.drink.databinding.FragmentHomeBinding
 import app.jerry.drink.dataclass.Comment
+import app.jerry.drink.dataclass.User
 
 class HomeFragment : Fragment() {
 
@@ -40,7 +41,8 @@ class HomeFragment : Fragment() {
         binding.recyclerNewComment.adapter = newCommentAdapter
 
         val mockData = mutableListOf<Comment>()
-        val comment = Comment("")
+        val comment = Comment(User("","","","")
+            ,"","","","","",1,"","")
         mockData.add(comment)
         mockData.add(comment)
         mockData.add(comment)

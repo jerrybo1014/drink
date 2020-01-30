@@ -1,5 +1,6 @@
 package app.jerry.drink
 
+import android.Manifest
 import android.os.Bundle
 import android.util.Log
 import com.google.android.material.snackbar.Snackbar
@@ -16,10 +17,22 @@ import app.jerry.drink.databinding.FragmentHomeBinding
 import com.google.firebase.firestore.FirebaseFirestore
 
 import kotlinx.android.synthetic.main.activity_main.*
+import android.Manifest.permission
+import android.Manifest.permission.WRITE_EXTERNAL_STORAGE
+import android.content.pm.PackageManager
+import androidx.core.app.ComponentActivity.ExtraData
+import androidx.core.content.ContextCompat.getSystemService
+import android.icu.lang.UCharacter.GraphemeClusterBreak.T
+import android.location.LocationManager
+import androidx.appcompat.app.AlertDialog
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
+
 
 class MainActivity : AppCompatActivity() {
 val TAG = "jerryTest"
     lateinit var binding: ActivityMainBinding
+    private val MY_PERMISSIONS_LOCATION = 100
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,6 +48,47 @@ val TAG = "jerryTest"
             navController.navigate(R.id.action_global_postFragment)
         }
 
+//        if (ContextCompat.checkSelfPermission(this,
+//                permission.ACCESS_FINE_LOCATION)
+//            != PackageManager.PERMISSION_GRANTED) {
+//
+//            // Permission is not granted
+//            if (ActivityCompat.shouldShowRequestPermissionRationale(
+//                    this,
+//                    permission.ACCESS_FINE_LOCATION
+//                )
+//            ) {
+//                // Show an explanation to the user *asynchronously* -- don't block
+//                // this thread waiting for the user's response! After the user
+//                // sees the explanation, try again to request the permission.
+//                AlertDialog.Builder(this)
+//                    .setMessage("需要開啟GPS權限，勸你是給我喔")
+//                    .setPositiveButton("前往設定") { _, _ ->
+//                        ActivityCompat.requestPermissions(
+//                            this,
+//                            arrayOf(permission.ACCESS_FINE_LOCATION),
+//                            MY_PERMISSIONS_LOCATION
+//                        )
+//                    }
+//                    .setNegativeButton("NO") { _, _ ->  }
+//                    .show()
+//
+//            } else {
+//                ActivityCompat.requestPermissions(
+//                    this,
+//                    arrayOf(permission.ACCESS_FINE_LOCATION, permission.ACCESS_COARSE_LOCATION),
+//                    MY_PERMISSIONS_LOCATION
+//                )
+//            }
+//        }else{
+//            // Permission has already been granted
+//        }
+
+
+//        ActivityCompat.requestPermissions(this,
+//            arrayOf(permission.ACCESS_FINE_LOCATION,permission.ACCESS_COARSE_LOCATION),
+//            MY_PERMISSIONS_LOCATION)
+
         /*Wayne write it outside*/
         binding.bottomNavigationView.setOnNavigationItemSelectedListener {
             when (it.itemId) {
@@ -42,7 +96,43 @@ val TAG = "jerryTest"
                     navController.navigate(R.id.action_global_homeFragment)
                 }
                 R.id.radarFragment -> {
-                    navController.navigate(R.id.action_global_radarFragment)
+
+                    if (ContextCompat.checkSelfPermission(this,
+                            permission.ACCESS_FINE_LOCATION)
+                        != PackageManager.PERMISSION_GRANTED) {
+
+                        // Permission is not granted
+                        if (ActivityCompat.shouldShowRequestPermissionRationale(
+                                this,
+                                permission.ACCESS_FINE_LOCATION
+                            )
+                        ) {
+                            // Show an explanation to the user *asynchronously* -- don't block
+                            // this thread waiting for the user's response! After the user
+                            // sees the explanation, try again to request the permission.
+                            AlertDialog.Builder(this)
+                                .setMessage("需要開啟GPS權限，勸你是給我喔")
+                                .setPositiveButton("前往設定") { _, _ ->
+                                    ActivityCompat.requestPermissions(
+                                        this,
+                                        arrayOf(permission.ACCESS_FINE_LOCATION,permission.ACCESS_COARSE_LOCATION),
+                                        MY_PERMISSIONS_LOCATION
+                                    )
+                                }
+                                .setNegativeButton("NO") { _, _ ->  }
+                                .show()
+
+                        } else {
+                            ActivityCompat.requestPermissions(
+                                this,
+                                arrayOf(permission.ACCESS_FINE_LOCATION, permission.ACCESS_COARSE_LOCATION),
+                                MY_PERMISSIONS_LOCATION
+                            )
+                        }
+                    }else{
+                        // Permission has already been granted
+                        navController.navigate(R.id.action_global_radarFragment)
+                    }
                 }
                 R.id.orderFragment -> {
                     navController.navigate(R.id.action_global_orderFragment)
@@ -53,6 +143,30 @@ val TAG = "jerryTest"
             };false
         }
 
+
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+
+        when (requestCode) {
+            MY_PERMISSIONS_LOCATION -> {
+                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    for (permissionsItem in permissions) {
+                        Log.d(TAG, "permissions allow : $permissions")
+                    }
+                } else {
+                    for (permissionsItem in permissions){
+                        Log.d(TAG,"permissions reject : $permissionsItem")
+                    }
+                }
+                return
+            }
+        }
 
     }
 

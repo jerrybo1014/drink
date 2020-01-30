@@ -2,25 +2,25 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
     android:id="@+id/homeFragment"
-    android:icon="@drawable/bottom_navigation_home"
+    android:icon="@drawable/bottom_navigation_home_1"
     android:title="@string/label_home"
     />
 
     <item
         android:id="@+id/radarFragment"
-        android:icon="@drawable/bottom_navigation_radar"
+        android:icon="@drawable/bottom_navigation_radar_1"
         android:title="@string/label_radar"
         />
 
     <item
         android:id="@+id/orderFragment"
-        android:icon="@drawable/bottom_navigation_order"
+        android:icon="@drawable/bottom_navigation_order_1"
         android:title="@string/label_order"
         />
 
     <item
         android:id="@+id/profileFragment"
-        android:icon="@drawable/bottom_navigation_profile"
+        android:icon="@drawable/bottom_navigation_profile_1"
         android:title="@string/label_profile"
         />
 

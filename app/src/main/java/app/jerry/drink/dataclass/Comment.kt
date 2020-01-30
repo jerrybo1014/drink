@@ -6,5 +6,13 @@ import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 data class Comment(
-    var comment: String
+    val user: User,
+    val drinkName: String,
+    val storeName: String,
+    val drinkId: String,
+    val ice: String,
+    val sugar: String,
+    val star: Int,
+    val comment: String,
+    val time: String
 ): Parcelable

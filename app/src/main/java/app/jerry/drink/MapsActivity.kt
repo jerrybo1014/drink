@@ -51,6 +51,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         mMap.addMarker(MarkerOptions().position(sydneys).title("Marker in Sydney"))
         mMap.uiSettings.isZoomControlsEnabled=true
         mMap.uiSettings.isMyLocationButtonEnabled=true
+        mMap.isMyLocationEnabled=true
         mMap.uiSettings.isMapToolbarEnabled=true
 
 //        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney))
