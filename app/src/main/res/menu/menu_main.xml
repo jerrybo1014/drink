@@ -2,9 +2,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="app.jerry.drink.MainActivity">
+
     <item
-        android:id="@+id/action_settings"
+        android:id="@+id/action_log_out"
         android:orderInCategory="100"
-        android:title="@string/action_settings"
+        android:title="@string/menu_log_out"
         app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_about"
+        android:orderInCategory="100"
+        android:title="@string/menu_about"
+        app:showAsAction="never" />
+
 </menu>
