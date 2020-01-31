@@ -103,6 +103,7 @@ class MainActivity : AppCompatActivity() {
             false
         }
 
+
         val authListener: FirebaseAuth.AuthStateListener =
             FirebaseAuth.AuthStateListener { auth: FirebaseAuth ->
                 val user: FirebaseUser? = auth.currentUser
