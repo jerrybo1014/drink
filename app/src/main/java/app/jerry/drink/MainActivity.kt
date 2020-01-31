@@ -19,6 +19,8 @@ import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_main.*
 import android.Manifest.permission
 import android.Manifest.permission.WRITE_EXTERNAL_STORAGE
+import android.app.Activity
+import android.content.Intent
 import android.content.pm.PackageManager
 import androidx.core.app.ComponentActivity.ExtraData
 import androidx.core.content.ContextCompat.getSystemService
@@ -27,12 +29,24 @@ import android.location.LocationManager
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.firebase.ui.auth.AuthUI
+import com.firebase.ui.auth.IdpResponse
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.common.api.ApiException
+import com.google.android.gms.tasks.Task
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.auth.GoogleAuthProvider
 
 
 class MainActivity : AppCompatActivity() {
-val TAG = "jerryTest"
+    val TAG = "jerryTest"
     lateinit var binding: ActivityMainBinding
     private val MY_PERMISSIONS_LOCATION = 100
+    private val auth = FirebaseAuth.getInstance()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,51 +57,81 @@ val TAG = "jerryTest"
         val navController = findNavController(R.id.myNavHostFragment)
         binding.bottomNavigationView.setupWithNavController(navController)
         fab.setOnClickListener { view ->
-//            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+            //            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
 //                .setAction("Action", null).show()
             navController.navigate(R.id.action_global_postFragment)
         }
 
-//        if (ContextCompat.checkSelfPermission(this,
-//                permission.ACCESS_FINE_LOCATION)
-//            != PackageManager.PERMISSION_GRANTED) {
-//
-//            // Permission is not granted
-//            if (ActivityCompat.shouldShowRequestPermissionRationale(
-//                    this,
-//                    permission.ACCESS_FINE_LOCATION
-//                )
-//            ) {
-//                // Show an explanation to the user *asynchronously* -- don't block
-//                // this thread waiting for the user's response! After the user
-//                // sees the explanation, try again to request the permission.
-//                AlertDialog.Builder(this)
-//                    .setMessage("需要開啟GPS權限，勸你是給我喔")
-//                    .setPositiveButton("前往設定") { _, _ ->
-//                        ActivityCompat.requestPermissions(
-//                            this,
-//                            arrayOf(permission.ACCESS_FINE_LOCATION),
-//                            MY_PERMISSIONS_LOCATION
-//                        )
-//                    }
-//                    .setNegativeButton("NO") { _, _ ->  }
-//                    .show()
-//
-//            } else {
-//                ActivityCompat.requestPermissions(
-//                    this,
-//                    arrayOf(permission.ACCESS_FINE_LOCATION, permission.ACCESS_COARSE_LOCATION),
-//                    MY_PERMISSIONS_LOCATION
-//                )
+
+        val authProvider: List<AuthUI.IdpConfig> = listOf(
+//            AuthUI.IdpConfig.FacebookBuilder().build(),
+            AuthUI.IdpConfig.GoogleBuilder().build()
+        )
+
+        //
+//        val authListener: FirebaseAuth.AuthStateListener =
+//            FirebaseAuth.AuthStateListener { auth: FirebaseAuth ->
+//                val user: FirebaseUser? = auth.currentUser
+//                if (user == null) {
+//                    val intent = AuthUI.getInstance()
+//                        .createSignInIntentBuilder()
+//                        .setAvailableProviders(authProvider)
+//                        .setAlwaysShowSignInMethodScreen(true)
+//                        .setIsSmartLockEnabled(false)
+//                        .build()
+//                    startActivityForResult(intent, 101)
+//                } else {
+////                    this.firebaseUser = user
+////                    displayInfo()
+//                }
 //            }
+//        FirebaseAuth.getInstance().addAuthStateListener(authListener)
+
+        fun signOut() {
+//            FirebaseAuth.getInstance().signOut()
+            AuthUI.getInstance().signOut(this)
+                .addOnSuccessListener {
+                    Toast.makeText(applicationContext, "已登出", Toast.LENGTH_SHORT).show()
+                    Log.d(TAG, "已登出")
+                }
+        }
+
+        binding.toolbar.setOnMenuItemClickListener {
+            when (it.itemId) {
+                R.id.action_log_out -> signOut()
+            }
+            false
+        }
+
+        val authListener: FirebaseAuth.AuthStateListener =
+            FirebaseAuth.AuthStateListener { auth: FirebaseAuth ->
+                val user: FirebaseUser? = auth.currentUser
+                if (user == null) {
+                    supportFragmentManager.let {
+                        SignInFragment().show(it, "")
+                    }
+                    Log.d(TAG, "signInWithCredential:no")
+                } else {
+                    Log.d(TAG, "signInWithCredential:success ${user.email}")
+                    Log.d(TAG, "signInWithCredential:success ${user.displayName}")
+                    Log.d(TAG, "signInWithCredential:success ${user.uid}")
+                }
+            }
+        FirebaseAuth.getInstance().addAuthStateListener(authListener)
+
+
+//        val currentUser = auth.currentUser
+//        if (currentUser == null) {
+//            supportFragmentManager.let {
+//                SignInFragment().show(it, "")
+//            }
+//            Log.d(TAG, "signInWithCredential:no")
 //        }else{
-//            // Permission has already been granted
+//            Log.d(TAG, "signInWithCredential:success ${currentUser.email}")
+//            Log.d(TAG, "signInWithCredential:success ${currentUser.displayName}")
+//            Log.d(TAG, "signInWithCredential:success ${currentUser.uid}")
 //        }
 
-
-//        ActivityCompat.requestPermissions(this,
-//            arrayOf(permission.ACCESS_FINE_LOCATION,permission.ACCESS_COARSE_LOCATION),
-//            MY_PERMISSIONS_LOCATION)
 
         /*Wayne write it outside*/
         binding.bottomNavigationView.setOnNavigationItemSelectedListener {
@@ -97,9 +141,12 @@ val TAG = "jerryTest"
                 }
                 R.id.radarFragment -> {
 
-                    if (ContextCompat.checkSelfPermission(this,
-                            permission.ACCESS_FINE_LOCATION)
-                        != PackageManager.PERMISSION_GRANTED) {
+                    if (ContextCompat.checkSelfPermission(
+                            this,
+                            permission.ACCESS_FINE_LOCATION
+                        )
+                        != PackageManager.PERMISSION_GRANTED
+                    ) {
 
                         // Permission is not granted
                         if (ActivityCompat.shouldShowRequestPermissionRationale(
@@ -115,21 +162,27 @@ val TAG = "jerryTest"
                                 .setPositiveButton("前往設定") { _, _ ->
                                     ActivityCompat.requestPermissions(
                                         this,
-                                        arrayOf(permission.ACCESS_FINE_LOCATION,permission.ACCESS_COARSE_LOCATION),
+                                        arrayOf(
+                                            permission.ACCESS_FINE_LOCATION,
+                                            permission.ACCESS_COARSE_LOCATION
+                                        ),
                                         MY_PERMISSIONS_LOCATION
                                     )
                                 }
-                                .setNegativeButton("NO") { _, _ ->  }
+                                .setNegativeButton("NO") { _, _ -> }
                                 .show()
 
                         } else {
                             ActivityCompat.requestPermissions(
                                 this,
-                                arrayOf(permission.ACCESS_FINE_LOCATION, permission.ACCESS_COARSE_LOCATION),
+                                arrayOf(
+                                    permission.ACCESS_FINE_LOCATION,
+                                    permission.ACCESS_COARSE_LOCATION
+                                ),
                                 MY_PERMISSIONS_LOCATION
                             )
                         }
-                    }else{
+                    } else {
                         // Permission has already been granted
                         navController.navigate(R.id.action_global_radarFragment)
                     }
@@ -146,6 +199,7 @@ val TAG = "jerryTest"
 
     }
 
+
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
@@ -160,8 +214,8 @@ val TAG = "jerryTest"
                         Log.d(TAG, "permissions allow : $permissions")
                     }
                 } else {
-                    for (permissionsItem in permissions){
-                        Log.d(TAG,"permissions reject : $permissionsItem")
+                    for (permissionsItem in permissions) {
+                        Log.d(TAG, "permissions reject : $permissionsItem")
                     }
                 }
                 return
@@ -182,9 +236,44 @@ val TAG = "jerryTest"
         // as you specify a parent activity in AndroidManifest.xml.
         return when (item.itemId) {
             R.id.action_about -> true
+            R.id.action_log_out -> true
             else -> super.onOptionsItemSelected(item)
         }
     }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == 101) {
+            if (resultCode != Activity.RESULT_OK) {
+                val response = IdpResponse.fromResultIntent(data)
+                Toast.makeText(
+                    applicationContext,
+                    response?.error?.errorCode.toString(),
+                    Toast.LENGTH_SHORT
+                ).show()
+                Log.d(TAG, "onActivityResult=no")
+            }
+            val task = GoogleSignIn.getSignedInAccountFromIntent(data)
+            Log.d(TAG, "onActivityResult=success and ${task.result!!.email}")
+        }
+
+    }
+
+
+//    private fun handleSignInResult(completedTask: Task<GoogleSignInAccount>) {
+//    try {
+//        val account = completedTask.getResult(ApiException.class)
+//
+//        // Signed in successfully, show authenticated UI.
+////        updateUI(account);
+//    } catch (ApiException) {
+//        // The ApiException status code indicates the detailed failure reason.
+//        // Please refer to the GoogleSignInStatusCodes class reference for more information.
+//        Log.w(TAG, "signInResult:failed code=" + e.getStatusCode())
+////        updateUI(null);
+//    }
+//}
 
 //    fun articlePost(
 //        title: String,
