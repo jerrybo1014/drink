@@ -46,8 +46,7 @@ class MainActivity : AppCompatActivity() {
     lateinit var binding: ActivityMainBinding
     private val MY_PERMISSIONS_LOCATION = 100
     private val auth = FirebaseAuth.getInstance()
-
-
+    val currentUser: FirebaseUser? = auth.currentUser
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 //        setSupportActionBar(toolbar)
@@ -111,6 +110,8 @@ class MainActivity : AppCompatActivity() {
                     supportFragmentManager.let {
                         SignInFragment().show(it, "")
                     }
+
+
                     Log.d(TAG, "signInWithCredential:no")
                 } else {
                     Log.d(TAG, "signInWithCredential:success ${user.email}")
@@ -142,6 +143,7 @@ class MainActivity : AppCompatActivity() {
                 }
                 R.id.radarFragment -> {
 
+
                     if (ContextCompat.checkSelfPermission(
                             this,
                             permission.ACCESS_FINE_LOCATION
@@ -159,7 +161,7 @@ class MainActivity : AppCompatActivity() {
                             // this thread waiting for the user's response! After the user
                             // sees the explanation, try again to request the permission.
                             AlertDialog.Builder(this)
-                                .setMessage("需要開啟GPS權限，勸你是給我喔")
+                                .setMessage("需要開啟GPS權限，再不給試試看")
                                 .setPositiveButton("前往設定") { _, _ ->
                                     ActivityCompat.requestPermissions(
                                         this,
@@ -214,6 +216,7 @@ class MainActivity : AppCompatActivity() {
                     for (permissionsItem in permissions) {
                         Log.d(TAG, "permissions allow : $permissions")
                     }
+                    findNavController(R.id.myNavHostFragment).navigate(R.id.action_global_radarFragment)
                 } else {
                     for (permissionsItem in permissions) {
                         Log.d(TAG, "permissions reject : $permissionsItem")
@@ -260,6 +263,10 @@ class MainActivity : AppCompatActivity() {
         }
 
     }
+
+
+
+
 
 
 //    private fun handleSignInResult(completedTask: Task<GoogleSignInAccount>) {

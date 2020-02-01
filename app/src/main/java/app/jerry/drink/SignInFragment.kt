@@ -2,6 +2,7 @@ package app.jerry.drink
 
 import android.app.Activity
 import android.app.Dialog
+import android.content.DialogInterface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -14,6 +15,7 @@ import app.jerry.drink.databinding.FragmentSignInBinding
 import androidx.core.app.ActivityCompat.startActivityForResult
 import android.content.Intent
 import android.util.Log
+import android.view.KeyEvent
 import android.widget.Toast
 import com.facebook.AccessToken
 import com.facebook.CallbackManager
@@ -29,6 +31,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.FacebookAuthProvider
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
 
 
@@ -37,12 +40,16 @@ class SignInFragment : DialogFragment() {
     lateinit var binding: FragmentSignInBinding
     val TAG = "jerryTest"
     private val auth = FirebaseAuth.getInstance()
+    private val currentUser: FirebaseUser? = auth.currentUser
     lateinit var callbackManager: CallbackManager
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setStyle(STYLE_NO_FRAME,R.style.SignInDialog)
-    }
 
+//        this.isCancelable = false
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -51,6 +58,14 @@ class SignInFragment : DialogFragment() {
         binding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_sign_in, container, false
         )
+
+        this.dialog?.setOnKeyListener(DialogInterface.OnKeyListener { _, keyCode, _ ->
+            if (keyCode == KeyEvent.KEYCODE_BACK){
+                (activity as MainActivity).finish()
+            }
+            true
+        })
+
 
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken(getString(R.string.default_web_client_id))
@@ -169,6 +184,5 @@ class SignInFragment : DialogFragment() {
                 // ...
             }
     }
-
 
 }
