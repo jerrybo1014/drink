@@ -39,6 +39,7 @@ import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
+import com.google.firebase.firestore.GeoPoint
 
 
 class MainActivity : AppCompatActivity() {
@@ -46,11 +47,9 @@ class MainActivity : AppCompatActivity() {
     lateinit var binding: ActivityMainBinding
     private val MY_PERMISSIONS_LOCATION = 100
     private val auth = FirebaseAuth.getInstance()
-    val currentUser: FirebaseUser? = auth.currentUser
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 //        setSupportActionBar(toolbar)
-
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
         val navController = findNavController(R.id.myNavHostFragment)
@@ -61,13 +60,10 @@ class MainActivity : AppCompatActivity() {
             navController.navigate(R.id.action_global_postFragment)
         }
 
-
-        val authProvider: List<AuthUI.IdpConfig> = listOf(
+//        val authProvider: List<AuthUI.IdpConfig> = listOf(
 //            AuthUI.IdpConfig.FacebookBuilder().build(),
-            AuthUI.IdpConfig.GoogleBuilder().build()
-        )
-
-        //
+//            AuthUI.IdpConfig.GoogleBuilder().build()
+//        )
 //        val authListener: FirebaseAuth.AuthStateListener =
 //            FirebaseAuth.AuthStateListener { auth: FirebaseAuth ->
 //                val user: FirebaseUser? = auth.currentUser
@@ -91,7 +87,6 @@ class MainActivity : AppCompatActivity() {
             AuthUI.getInstance().signOut(this)
                 .addOnSuccessListener {
                     Toast.makeText(applicationContext, "已登出", Toast.LENGTH_SHORT).show()
-                    Log.d(TAG, "已登出")
                 }
         }
 
@@ -102,38 +97,23 @@ class MainActivity : AppCompatActivity() {
             false
         }
 
-
         val authListener: FirebaseAuth.AuthStateListener =
             FirebaseAuth.AuthStateListener { auth: FirebaseAuth ->
                 val user: FirebaseUser? = auth.currentUser
+
                 if (user == null) {
                     supportFragmentManager.let {
                         SignInFragment().show(it, "")
                     }
-
-
                     Log.d(TAG, "signInWithCredential:no")
                 } else {
                     Log.d(TAG, "signInWithCredential:success ${user.email}")
                     Log.d(TAG, "signInWithCredential:success ${user.displayName}")
                     Log.d(TAG, "signInWithCredential:success ${user.uid}")
                 }
+
             }
         FirebaseAuth.getInstance().addAuthStateListener(authListener)
-
-
-//        val currentUser = auth.currentUser
-//        if (currentUser == null) {
-//            supportFragmentManager.let {
-//                SignInFragment().show(it, "")
-//            }
-//            Log.d(TAG, "signInWithCredential:no")
-//        }else{
-//            Log.d(TAG, "signInWithCredential:success ${currentUser.email}")
-//            Log.d(TAG, "signInWithCredential:success ${currentUser.displayName}")
-//            Log.d(TAG, "signInWithCredential:success ${currentUser.uid}")
-//        }
-
 
         /*Wayne write it outside*/
         binding.bottomNavigationView.setOnNavigationItemSelectedListener {

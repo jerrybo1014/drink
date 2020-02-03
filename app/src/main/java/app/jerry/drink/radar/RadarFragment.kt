@@ -52,6 +52,7 @@ class RadarFragment : Fragment() {
         mMap = binding.radarMap
         mMap.onCreate(savedInstanceState)
         mMap.getMapAsync(MapsActivity())
+
 //        MapsInitializer.initialize(activity)
 //        val googleMap = mMap.getMapAsync(MapsActivity())
 

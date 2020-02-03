@@ -40,15 +40,11 @@ class SignInFragment : DialogFragment() {
     lateinit var binding: FragmentSignInBinding
     val TAG = "jerryTest"
     private val auth = FirebaseAuth.getInstance()
-    private val currentUser: FirebaseUser? = auth.currentUser
     lateinit var callbackManager: CallbackManager
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setStyle(STYLE_NO_FRAME,R.style.SignInDialog)
-
-//        this.isCancelable = false
     }
 
     override fun onCreateView(
@@ -66,11 +62,11 @@ class SignInFragment : DialogFragment() {
             true
         })
 
-
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken(getString(R.string.default_web_client_id))
             .requestEmail()
             .build()
+
         val mGoogleSignInClient = GoogleSignIn.getClient(context!!, gso)
 
         fun signInGoogle() {
@@ -83,8 +79,6 @@ class SignInFragment : DialogFragment() {
                 Utility.arrayList("public_profile", "email"))
         }
 
-
-
         binding.buttonSigninGoogle.setOnClickListener {
             signInGoogle()
         }
@@ -93,9 +87,7 @@ class SignInFragment : DialogFragment() {
             signInFb()
         }
 
-
         /*FB*/
-
         callbackManager = CallbackManager.Factory.create()
         LoginManager.getInstance()
             .registerCallback(callbackManager, object : FacebookCallback<LoginResult> {
@@ -116,7 +108,6 @@ class SignInFragment : DialogFragment() {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-
         super.onActivityResult(requestCode, resultCode, data)
         // Pass the activity result back to the Facebook SDK
         callbackManager.onActivityResult(requestCode, resultCode, data)
@@ -180,7 +171,6 @@ class SignInFragment : DialogFragment() {
 //                    Snackbar.make(main_layout, "Authentication Failed.", Snackbar.LENGTH_SHORT).show()
 //                    updateUI(null)
                 }
-
                 // ...
             }
     }

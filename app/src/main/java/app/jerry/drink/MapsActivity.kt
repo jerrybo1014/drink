@@ -56,6 +56,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
 //        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney))
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney,15F))
-
     }
+
+
 }
