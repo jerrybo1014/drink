@@ -15,12 +15,42 @@
         <com.google.android.gms.maps.MapView
             android:id="@+id/radar_map"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="0dp"
             map:layout_constraintBottom_toBottomOf="parent"
             map:layout_constraintEnd_toEndOf="parent"
             map:layout_constraintStart_toStartOf="parent"
-            map:layout_constraintTop_toTopOf="parent"
-            />
+            map:layout_constraintTop_toBottomOf="@+id/button_2m" />
+
+        <Button
+            android:id="@+id/button_1m"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="1M"
+
+            map:layout_constraintEnd_toStartOf="@+id/button_2m"
+            map:layout_constraintHorizontal_bias="0.5"
+            map:layout_constraintStart_toStartOf="parent"
+            map:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/button_2m"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="2M"
+            map:layout_constraintEnd_toStartOf="@+id/button_3m"
+            map:layout_constraintHorizontal_bias="0.5"
+            map:layout_constraintStart_toEndOf="@+id/button_1m"
+            map:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/button_3m"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="3M"
+            map:layout_constraintEnd_toEndOf="parent"
+            map:layout_constraintHorizontal_bias="0.5"
+            map:layout_constraintStart_toEndOf="@+id/button_2m"
+            map:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

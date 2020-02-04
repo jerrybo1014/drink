@@ -1,45 +1,37 @@
 package app.jerry.drink
 
-import android.Manifest
 import android.os.Bundle
 import android.util.Log
-import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
 import app.jerry.drink.databinding.ActivityMainBinding
-import app.jerry.drink.databinding.FragmentHomeBinding
-import com.google.firebase.firestore.FirebaseFirestore
-
 import kotlinx.android.synthetic.main.activity_main.*
 import android.Manifest.permission
-import android.Manifest.permission.WRITE_EXTERNAL_STORAGE
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import androidx.core.app.ComponentActivity.ExtraData
-import androidx.core.content.ContextCompat.getSystemService
-import android.icu.lang.UCharacter.GraphemeClusterBreak.T
+import android.location.Location
+import android.location.LocationListener
 import android.location.LocationManager
+import android.os.Looper
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.IdpResponse
 import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import com.google.android.gms.common.api.ApiException
-import com.google.android.gms.tasks.Task
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationCallback
+import com.google.android.gms.location.LocationRequest
+import com.google.android.gms.location.LocationServices
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.auth.GoogleAuthProvider
-import com.google.firebase.firestore.GeoPoint
 
 
 class MainActivity : AppCompatActivity() {
@@ -47,6 +39,8 @@ class MainActivity : AppCompatActivity() {
     lateinit var binding: ActivityMainBinding
     private val MY_PERMISSIONS_LOCATION = 100
     private val auth = FirebaseAuth.getInstance()
+    lateinit var loctionGps: Location
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 //        setSupportActionBar(toolbar)
@@ -182,7 +176,6 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
@@ -244,6 +237,62 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+
+
+    private val locationListener =  object : LocationListener {
+        override fun onLocationChanged(location: Location?) {
+            Log.d(TAG,"onLocationChanged ${location!!.latitude}")
+        }
+
+        override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {
+        }
+
+        override fun onProviderEnabled(provider: String?) {
+        }
+
+        override fun onProviderDisabled(provider: String?) {
+        }
+
+    }
+
+    fun getMyLocation (): Location?{
+        val myLocationService = getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        return if (ContextCompat.checkSelfPermission(
+                this,
+                permission.ACCESS_FINE_LOCATION
+            )
+            == PackageManager.PERMISSION_GRANTED
+        ){
+            Log.d(TAG,"myLocationService.getLastKnownLocation(LocationManager.GPS_PROVIDER)")
+            myLocationService.requestLocationUpdates(LocationManager.GPS_PROVIDER,0L,0F,object : LocationListener {
+                override fun onLocationChanged(location: Location?) {
+                    Log.d(TAG,"onLocationChanged ${location!!.latitude}")
+//                    loctionGps = location
+                }
+
+                override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {
+                }
+
+                override fun onProviderEnabled(provider: String?) {
+                }
+
+                override fun onProviderDisabled(provider: String?) {
+                }
+
+            })
+
+//            Log.d("myLocationService","${myLocationService.getLastKnownLocation(LocationManager.GPS_PROVIDER).latitude}")
+            myLocationService.getLastKnownLocation(LocationManager.GPS_PROVIDER)
+
+//            fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
+//            fusedLocationProviderClient.requestLocationUpdates(locationRequest,locationCallback,
+//                Looper.myLooper())
+//            Log.d(TAG,"fusedLocationProviderClient.lastLocation.result ${fusedLocationProviderClient.lastLocation.result?.latitude}")
+//            fusedLocationProviderClient.lastLocation.result
+        }else {
+            null
+        }
+    }
 
 
 

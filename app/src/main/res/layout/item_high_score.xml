@@ -15,7 +15,7 @@
         <com.google.android.material.card.MaterialCardView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="6dp"
+            android:layout_margin="5dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -39,39 +39,60 @@
                     />
 
                 <TextView
-                    android:id="@+id/textView"
+                    android:id="@+id/text_drink_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="紅茶拿鐵"
-                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_marginStart="3dp"
                     app:layout_constraintStart_toStartOf="@+id/imageView"
                     app:layout_constraintTop_toBottomOf="@+id/imageView" />
-
-                <ImageView
-                    android:id="@+id/image_star"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:tint="#FFD700"
-                    android:visibility="invisible"
-                    android:layout_marginEnd="3dp"
-                    android:layout_marginBottom="3dp"
-                    app:layout_constraintBottom_toBottomOf="@+id/imageView"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:srcCompat="@drawable/star_icon" />
 
                 <TextView
                     android:id="@+id/text_star"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="4.5"
+                    android:layout_marginStart="6dp"
                     android:textColor="#000000"
                     android:textSize="10dp"
-                    app:layout_constraintBottom_toBottomOf="@+id/image_star"
+                    app:layout_constraintBottom_toBottomOf="@+id/icon_star"
+                    app:layout_constraintStart_toEndOf="@+id/icon_star"
+                    app:layout_constraintTop_toTopOf="@+id/icon_star" />
 
-                    app:layout_constraintEnd_toEndOf="@+id/image_star"
-                    app:layout_constraintStart_toStartOf="@+id/image_star"
-                    app:layout_constraintTop_toTopOf="@+id/image_star" />
+                <ImageView
+                    android:id="@+id/icon_star"
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:layout_marginTop="3dp"
+                    android:layout_marginBottom="3dp"
+                    android:src="@drawable/star_icon"
+                    android:tint="@color/myColorPrimaryDark"
 
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="@+id/text_drink_name"
+                    app:layout_constraintTop_toBottomOf="@+id/text_drink_name" />
+
+                <ImageView
+                    android:id="@+id/icon_comment"
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:src="@drawable/comment_icon"
+                    android:tint="@color/myColorPrimaryDark"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/icon_star" />
+
+                <TextView
+                    android:id="@+id/text_comment"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="87"
+                    android:textColor="#000000"
+                    android:textSize="10dp"
+                    android:layout_marginStart="6dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/icon_comment"
+                    app:layout_constraintStart_toEndOf="@+id/icon_comment"
+                    app:layout_constraintTop_toTopOf="@+id/icon_comment" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
