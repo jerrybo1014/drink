@@ -51,7 +51,7 @@
         android:label="HomeSearchFragment" />
     <fragment
         android:id="@+id/postFragment"
-        android:name="app.jerry.drink.PostFragment"
+        android:name="app.jerry.drink.post.PostFragment"
         android:label="PostFragment" />
     <action
         android:id="@+id/action_global_detailFragment"
