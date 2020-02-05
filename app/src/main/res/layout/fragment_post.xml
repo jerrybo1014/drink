@@ -4,7 +4,9 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
-
+        <variable
+            name="viewModel"
+            type="app.jerry.drink.post.PostViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -14,28 +16,39 @@
         android:paddingStart="16dp"
         android:paddingEnd="16dp">
 
+        <ImageView
+            android:id="@+id/image_update"
+            android:layout_width="wrap_content"
+            android:layout_height="200dp"
+            android:src="@drawable/placeholder"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/image_store_post_icon"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:src="@drawable/store_icon"
+            android:tint="@color/myColorPrimaryDark"
+            app:layout_constraintBottom_toBottomOf="@+id/text_store"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/text_store" />
+
+
         <TextView
             android:id="@+id/text_store"
             style="@style/post_text_title"
             android:text="@string/post_store"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintStart_toEndOf="@id/image_store_post_icon"
+            app:layout_constraintTop_toBottomOf="@id/image_update" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler_store"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            android:layout_marginTop="6dp"
-            android:visibility="invisible"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/text_store" />
 
         <Spinner
             android:id="@+id/spinner_store"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:entries="@{viewModel.displayAllStore}"
             android:paddingStart="12dp"
             android:paddingTop="16dp"
             android:paddingEnd="12dp"
@@ -52,32 +65,58 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/recycler_store"
+            app:layout_constraintTop_toBottomOf="@+id/text_store"
             tools:layout_editor_absoluteX="16dp">
+
+            <ImageView
+                android:id="@+id/image_drink_post_icon"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:src="@drawable/drink_icon"
+                android:tint="@color/myColorPrimaryDark"
+                app:layout_constraintBottom_toBottomOf="@+id/text_drink"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/text_drink" />
 
             <TextView
                 android:id="@+id/text_drink"
                 style="@style/post_text_title"
                 android:text="@string/post_drink"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/image_drink_post_icon"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recycler_item"
-                android:layout_width="match_parent"
+            <Spinner
+                android:id="@+id/spinner_drink"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="6dp"
-                android:orientation="horizontal"
-                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                android:entries="@{viewModel.displayStoreDrink}"
+                android:paddingStart="12dp"
+                android:paddingTop="16dp"
+                android:paddingEnd="12dp"
+                android:paddingBottom="16dp"
+                android:prompt="@string/spinner_store"
+                android:spinnerMode="dialog"
+                app:layout_constraintBottom_toBottomOf="@+id/text_drink"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/text_drink"
+                app:layout_constraintTop_toTopOf="@+id/text_drink" />
+
+            <ImageView
+                android:id="@+id/image_ice_post_icon"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:src="@drawable/ice_cube"
+                android:tint="@color/myColorPrimaryDark"
+                app:layout_constraintBottom_toBottomOf="@+id/text_ice"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/text_drink" />
+                app:layout_constraintTop_toTopOf="@+id/text_ice" />
 
             <TextView
                 android:id="@+id/text_ice"
                 style="@style/post_text_title"
                 android:text="@string/post_ice"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/recycler_item" />
+                app:layout_constraintStart_toEndOf="@id/image_ice_post_icon"
+                app:layout_constraintTop_toBottomOf="@+id/text_drink" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerView"
@@ -90,13 +129,23 @@
                 app:layout_constraintStart_toEndOf="@+id/text_ice"
                 app:layout_constraintTop_toTopOf="@+id/text_ice" />
 
+            <ImageView
+                android:id="@+id/image_sugar_post_icon"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:src="@drawable/sugar"
+                android:tint="@color/myColorPrimaryDark"
+                app:layout_constraintBottom_toBottomOf="@+id/text_sugar"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/text_sugar" />
+
             <TextView
                 android:id="@+id/text_sugar"
                 style="@style/post_text_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/post_sugar"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintStart_toEndOf="@id/image_ice_post_icon"
                 app:layout_constraintTop_toBottomOf="@+id/text_ice" />
 
             <androidx.recyclerview.widget.RecyclerView
@@ -109,13 +158,23 @@
                 app:layout_constraintStart_toEndOf="@+id/text_sugar"
                 app:layout_constraintTop_toTopOf="@+id/text_sugar" />
 
+            <ImageView
+                android:id="@+id/image_comment_post_icon"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:src="@drawable/comment_icon"
+                android:tint="@color/myColorPrimaryDark"
+                app:layout_constraintBottom_toBottomOf="@+id/text_comment"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/text_comment" />
+
             <TextView
                 android:id="@+id/text_comment"
                 style="@style/post_text_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/post_comment"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintStart_toEndOf="@id/image_comment_post_icon"
                 app:layout_constraintTop_toBottomOf="@+id/text_sugar" />
 
             <RatingBar

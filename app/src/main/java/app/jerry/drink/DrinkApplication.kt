@@ -1,6 +1,7 @@
 package app.jerry.drink
 
 import android.app.Application
+import android.content.Context
 import app.jerry.drink.dataclass.source.DrinkRepository
 import kotlin.properties.Delegates
 
@@ -13,7 +14,7 @@ class DrinkApplication : Application() {
 
     companion object {
         var instance: DrinkApplication by Delegates.notNull()
-//        lateinit var context : Context
+        lateinit var context : Context
     }
 
     override fun onCreate() {
