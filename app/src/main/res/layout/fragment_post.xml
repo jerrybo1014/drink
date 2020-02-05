@@ -13,8 +13,7 @@
         android:id="@+id/layout_store"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp">
+     >
 
         <ImageView
             android:id="@+id/image_update"
@@ -31,6 +30,7 @@
             android:layout_height="18dp"
             android:src="@drawable/store_icon"
             android:tint="@color/myColorPrimaryDark"
+            android:layout_marginStart="16dp"
             app:layout_constraintBottom_toBottomOf="@+id/text_store"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/text_store" />
@@ -55,6 +55,7 @@
             android:paddingBottom="16dp"
             android:prompt="@string/spinner_store"
             android:spinnerMode="dialog"
+            android:layout_marginEnd="16dp"
             app:layout_constraintBottom_toBottomOf="@+id/text_store"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/text_store"
@@ -66,7 +67,8 @@
             android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/text_store"
-            tools:layout_editor_absoluteX="16dp">
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp">
 
             <ImageView
                 android:id="@+id/image_drink_post_icon"
@@ -119,11 +121,12 @@
                 app:layout_constraintTop_toBottomOf="@+id/text_drink" />
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerView"
+                android:id="@+id/recycler_ice"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="30dp"
                 android:layout_marginStart="6dp"
                 android:orientation="horizontal"
+
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintBottom_toBottomOf="@+id/text_ice"
                 app:layout_constraintStart_toEndOf="@+id/text_ice"
@@ -149,8 +152,9 @@
                 app:layout_constraintTop_toBottomOf="@+id/text_ice" />
 
             <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_sugar"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="30dp"
                 android:orientation="horizontal"
                 android:layout_marginStart="6dp"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
@@ -198,16 +202,49 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:background="@drawable/frame_background"
-                android:hint="@string/post_enter_comment"
                 android:gravity="top"
+                android:hint="@string/post_enter_comment"
+                android:text="@={viewModel.editComment}"
                 android:lines="5"
                 android:padding="6dp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="@+id/rating_bar_comment"
+                app:layout_constraintStart_toStartOf="@+id/text_comment"
                 app:layout_constraintTop_toBottomOf="@+id/text_comment" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayout"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:background="#ffffff"
+            android:elevation="15dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <Button
+                android:id="@+id/cart_button"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                style="@style/Button_post_comment"
+                android:background="@drawable/background_post_button"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_margin="16dp"
+                android:text="送出評論"
+                android:onClick="@{() -> viewModel.postCommentResult()}"
+                android:enabled="@{viewModel.editComment.trim() == null || viewModel.commentStar==0 || viewModel.selectedIce==null || viewModel.selectedSugar==null ? false:true}"
+                android:letterSpacing="1.2"
+                android:textColor="#ffffff"
+                android:textSize="16dp" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+
 </layout>

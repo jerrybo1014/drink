@@ -42,7 +42,7 @@ class HomeFragment : Fragment() {
 
         val mockData = mutableListOf<Comment>()
         val comment = Comment(User("","","","")
-            ,"","","","","",1,"","")
+            ,"","","","","","",1,"","")
         mockData.add(comment)
         mockData.add(comment)
         mockData.add(comment)

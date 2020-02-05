@@ -8,14 +8,18 @@ import androidx.recyclerview.widget.RecyclerView
 import app.jerry.drink.databinding.ItemPostIceBinding
 import app.jerry.drink.databinding.ItemPostSugarBinding
 
-class SugarAdapter :
+class SugarAdapter(private val viewModel: PostViewModel) :
     ListAdapter<String, SugarAdapter.SugarViewHolder>(
         DiffCallback
     ) {
 
-    class SugarViewHolder(private var binding: ItemPostSugarBinding) :
+    class SugarViewHolder(private var binding: ItemPostSugarBinding,
+                          private var viewModel: PostViewModel) :
         RecyclerView.ViewHolder(binding.root) {
+
         fun bind(string: String) {
+            binding.string = string
+            binding.viewModel = viewModel
 //            binding.detailImage = string
             // This is important, because it forces the data binding to execute immediately,
             // which allows the RecyclerView to make the correct view size measurements
@@ -48,7 +52,7 @@ class SugarAdapter :
         viewType: Int
     ): SugarViewHolder {
         return SugarViewHolder(
-            ItemPostSugarBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+            ItemPostSugarBinding.inflate(LayoutInflater.from(parent.context), parent, false), viewModel
         )
     }
 

@@ -10,5 +10,9 @@
     <color name="myColorPrimaryDark">#cbba83</color>
     <color name="myColorPrimaryLight">#ffffe5</color>
     <color name="myColorPrimary">#ffecb3</color>
+    <color name="bottom_navigation_light">#AAAAAA</color>
+    <color name="bottom_navigation_dark">#5f6caf</color>
+
+    <color name="item_selected">#cbba83</color>
 
 </resources>

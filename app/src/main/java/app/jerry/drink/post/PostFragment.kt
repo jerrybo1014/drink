@@ -10,6 +10,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import app.jerry.drink.MainActivity
 import app.jerry.drink.R
 import app.jerry.drink.databinding.FragmentPostBinding
 import app.jerry.drink.getVmFactory
@@ -45,16 +46,56 @@ class PostFragment : Fragment() {
             }
         }
 
+        binding.spinnerDrink.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+            }
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
+                viewModel.selectedDrink(position)
+            }
+        }
+
+
+        val listIce = listOf<String>("正常冰","去冰","微冰","常溫")
+        val listSugar = listOf<String>("正常糖","半糖","微糖","無糖")
+        val sugarAdapter = SugarAdapter(viewModel)
+        val iceAdapter = IceAdapter(viewModel)
+
+        binding.recyclerIce.adapter = iceAdapter
+        binding.recyclerSugar.adapter = sugarAdapter
+
+        sugarAdapter.submitList(listSugar)
+        iceAdapter.submitList(listIce)
+
+
+
+        binding.ratingBarComment.setOnRatingBarChangeListener { ratingBar, fl, b ->
+            viewModel.commentStar.value = fl.toInt()
+        }
+
+
 
         viewModel.selectedStore.observe(this, Observer {
             Log.d("selectedStore", it.storeName)
             viewModel.getStoreMenuResult(it)
         })
         viewModel.allStoreMenu.observe(this, Observer {
+            viewModel.selectedDrink(0)
             Log.d("allStoreMenu", "$it")
         })
 
+        (activity as MainActivity).binding.bottomNavigationView.visibility = View.GONE
+
         return binding.root
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        (activity as MainActivity).binding.bottomNavigationView.visibility = View.VISIBLE
     }
 
 }

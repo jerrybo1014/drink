@@ -1,8 +1,12 @@
 package app.jerry.drink
 
+import android.util.Log
 import android.widget.ImageView
 import androidx.core.net.toUri
 import androidx.databinding.BindingAdapter
+import androidx.recyclerview.widget.RecyclerView
+import app.jerry.drink.post.IceAdapter
+import app.jerry.drink.post.SugarAdapter
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 
@@ -19,4 +23,16 @@ fun bindImage(imgView: ImageView, imgUrl: String?) {
             )
             .into(imgView)
     }
+}
+
+@BindingAdapter("listIce")
+fun bindIce(recyclerView: RecyclerView, data: List<String>?){
+    val adapter = recyclerView.adapter as IceAdapter
+    adapter.submitList(data)
+}
+
+@BindingAdapter("listSugar")
+fun bindSugar(recyclerView: RecyclerView, data: List<String>?){
+    val adapter = recyclerView.adapter as SugarAdapter
+    adapter.submitList(data)
 }

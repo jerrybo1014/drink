@@ -1,5 +1,6 @@
 package app.jerry.drink.dataclass.source
 
+import app.jerry.drink.dataclass.Comment
 import app.jerry.drink.dataclass.Drink
 import app.jerry.drink.dataclass.Result
 import app.jerry.drink.dataclass.Store
@@ -14,5 +15,9 @@ class DefaultDrinkRepository(private val remoteDataSource: DrinkDataSource,
 
     override suspend fun getStoreMenu(store: Store): Result<List<Drink>> {
         return remoteDataSource.getStoreMenu(store)
+    }
+
+    override suspend fun postComment(comment: Comment): Result<Boolean> {
+        return remoteDataSource.postComment(comment)
     }
 }
