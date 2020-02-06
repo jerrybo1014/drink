@@ -1,8 +1,10 @@
 package app.jerry.drink.post
 
+import android.annotation.SuppressLint
 import android.util.Log
 import android.view.View
 import android.widget.TextView
+import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
@@ -17,6 +19,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
 
 class PostViewModel(private val repository: DrinkRepository) : ViewModel() {
 
@@ -45,11 +48,11 @@ class PostViewModel(private val repository: DrinkRepository) : ViewModel() {
         get() = _selectedDrink
 
 
-
     var selectedIce = MutableLiveData<String>()
     var selectedSugar = MutableLiveData<String>()
     val editComment = MutableLiveData<String>()
     var commentStar = MutableLiveData<Int>()
+    var postFinshed = MutableLiveData<Boolean>()
 
     var selectedIcePosition = MutableLiveData<Int>()
 
@@ -77,7 +80,10 @@ class PostViewModel(private val repository: DrinkRepository) : ViewModel() {
     // the Coroutine runs using the Main (UI) dispatcher
     private val coroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
 
-
+init {
+    editComment.value = ""
+    postFinshed.value = false
+}
 
     fun getAllStoreResult() {
 
@@ -153,18 +159,20 @@ class PostViewModel(private val repository: DrinkRepository) : ViewModel() {
 
             _status.value = LoadApiStatus.LOADING
 
-
             val comment = Comment(
+                "",
                 User("","","",""),
                 "",
-                selectedDrink.value!!.drinkName,
+                selectedStore.value!!.storeName,
                 selectedStore.value!!.storeId,
+                selectedDrink.value!!.drinkName,
                 selectedDrink.value!!.drinkId,
                 selectedIce.value!!,
                 selectedSugar.value!!,
                 commentStar.value!!,
                 editComment.value!!,
-                "")
+                "",
+                convertLongToDateString(System.currentTimeMillis()))
 
             val result = repository.postComment(comment)
 
@@ -173,6 +181,8 @@ class PostViewModel(private val repository: DrinkRepository) : ViewModel() {
                     _error.value = null
                     _status.value = LoadApiStatus.DONE
                     Log.d("postComentResult","$result.data")
+                    postFinshed.value = true
+                    Toast.makeText(DrinkApplication.context, "成功送出", Toast.LENGTH_SHORT).show()
                     result.data
                 }
                 is Result.Fail -> {
@@ -197,9 +207,11 @@ class PostViewModel(private val repository: DrinkRepository) : ViewModel() {
     }
 
 
-
-
-
+    @SuppressLint("SimpleDateFormat")
+    private fun convertLongToDateString(systemTime: Long): String {
+        return SimpleDateFormat("MMM-dd-yyyy HH:mm")
+            .format(systemTime).toString()
+    }
 
     fun selectedStore(position: Int) {
         _allStore.value?.let {

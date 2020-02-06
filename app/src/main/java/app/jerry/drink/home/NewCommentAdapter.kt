@@ -16,6 +16,7 @@ class NewCommentAdapter :
     class NewCommentViewHolder(private var binding: ItemNewCommentBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(comment: Comment) {
+            binding.comment = comment
 //            binding.detailImage = string
             // This is important, because it forces the data binding to execute immediately,
             // which allows the RecyclerView to make the correct view size measurements

@@ -4,7 +4,9 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
-
+        <variable
+            name="comment"
+            type="app.jerry.drink.dataclass.Comment" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -44,7 +46,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="6dp"
                     android:layout_marginTop="3dp"
-                    android:text="Lola wu"
+                    android:text="@{comment.user.name}"
                     app:layout_constraintStart_toEndOf="@+id/imageView_person"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -64,7 +66,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="3dp"
-                    android:text="Jan-17-2020"
+                    android:text="@{comment.createdTime}"
                     app:layout_constraintBottom_toBottomOf="@+id/imageView_person"
                     app:layout_constraintStart_toStartOf="@+id/text_name" />
 
@@ -74,7 +76,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:isIndicator="true"
-                    android:rating="3"
+                    android:rating="@{comment.star}"
                     android:progressTint="#FFD700"
                     app:layout_constraintBottom_toBottomOf="@+id/image_comment_item"
                     app:layout_constraintStart_toStartOf="@+id/image_drink_name"
@@ -82,12 +84,14 @@
 
                 <TextView
                     android:id="@+id/text_comment"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
-                    android:text="豪豪喝"
                     android:layout_marginBottom="6dp"
+                    android:text="@{comment.comment}"
+                    android:layout_marginEnd="20dp"
                     app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/imageView3"
                     app:layout_constraintStart_toStartOf="@+id/rating_bar_comment"
                     app:layout_constraintTop_toBottomOf="@+id/image_comment_item" />
 
@@ -106,7 +110,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="6dp"
-                    android:text="迷克夏"
+                    android:text="@{comment.storeName}"
                     app:layout_constraintBottom_toBottomOf="@+id/image_store_item"
                     app:layout_constraintStart_toEndOf="@+id/image_store_item"
                     app:layout_constraintTop_toTopOf="@+id/image_store_item" />
@@ -127,7 +131,7 @@
                     android:id="@+id/image_drink_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="紅茶拿鐵"
+                    android:text="@{comment.drinkName}"
                     app:layout_constraintBottom_toBottomOf="@+id/text_drink_item"
                     app:layout_constraintStart_toStartOf="@+id/text_store"
                     app:layout_constraintTop_toTopOf="@+id/text_drink_item" />
@@ -146,7 +150,7 @@
                     android:id="@+id/text_ice_sugar"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="半糖去冰"
+                    android:text="@{comment.iceAndSugar}"
                     android:layout_marginStart="10dp"
                     app:layout_constraintStart_toEndOf="@+id/view_drink_item"
                     app:layout_constraintTop_toTopOf="@+id/image_drink_name" />

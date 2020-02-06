@@ -4,10 +4,7 @@ import android.icu.util.Calendar
 import android.util.Log
 import app.jerry.drink.DrinkApplication
 import app.jerry.drink.R
-import app.jerry.drink.dataclass.Comment
-import app.jerry.drink.dataclass.Drink
-import app.jerry.drink.dataclass.Result
-import app.jerry.drink.dataclass.Store
+import app.jerry.drink.dataclass.*
 import app.jerry.drink.dataclass.source.DrinkDataSource
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentReference
@@ -22,9 +19,106 @@ object DrinkRemoteDataSource : DrinkDataSource {
 
     private const val PATH_Stores = "stores"
     private const val PATH_Comments = "comments"
+    private const val PATH_Users = "users"
     private const val PATH_Menu = "menu"
     private const val TAG = "jerryTest"
     private const val KEY_CREATED_TIME = "createdTime"
+
+    override suspend fun checkUser(): Result<Boolean> = suspendCoroutine { continuation ->
+        val users = FirebaseFirestore.getInstance().collection(PATH_Users)
+        val userCurrent = FirebaseAuth.getInstance().currentUser
+        val document = users.document(userCurrent!!.uid)
+        val user = User(userCurrent.uid,userCurrent.displayName,userCurrent.email,"")
+
+        document
+            .get()
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+
+                    if (task.result!!.data == null){
+                        document
+                            .set(user).addOnSuccessListener {
+                                Log.d("checkUser", "Success setting new user => $user") }
+                            .addOnFailureListener {
+                                Log.w("checkUser", "Error setting new user.", it)
+                            }
+                    }
+
+                    continuation.resume(Result.Success(true))
+                } else {
+                    task.exception?.let {
+                        Log.d("checkUser", "Error")
+                        Log.w(
+                            "",
+                            "[${this::class.simpleName}] Error getting documents. ${it.message}"
+                        )
+                        continuation.resume(Result.Error(it))
+                    }
+                    continuation.resume(Result.Fail(DrinkApplication.instance.getString(R.string.you_know_nothing)))
+                }
+            }
+    }
+
+    override suspend fun getNewComment(): Result<List<Comment>> = suspendCoroutine {continuation ->
+
+        val comments = FirebaseFirestore.getInstance().collection(PATH_Comments)
+        val users = FirebaseFirestore.getInstance().collection(PATH_Users)
+        val commentUser = FirebaseAuth.getInstance().currentUser
+
+        comments
+            .orderBy(KEY_CREATED_TIME, Query.Direction.DESCENDING)
+            .get()
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    val list = mutableListOf<Comment>()
+                    for (document in task.result!!) {
+//                        Log.d(TAG, "${document.id} => ${document.data}")
+
+                        Log.d(TAG, "for , document=$document")
+                        var user: User? = User("","","","")
+                        users.document(document.get("userId").toString()).get().addOnSuccessListener {
+                            user = it.toObject(User::class.java)
+                            Log.d(TAG, "addOnSuccessListener, user=$user")
+                            Log.d(TAG, "${it.id} => ${it.data}")
+
+                            val newComment = document.toObject(Comment::class.java)
+//                        val newComment = document.toObject(Comment::class.java)
+                            newComment.user = user
+                            list.add(newComment)
+
+                            if (list.size == task.result!!.size()) {
+
+                                Log.w(TAG, "last complete")
+                                continuation.resume(Result.Success(list))
+                            }
+                        }.addOnFailureListener {
+
+                            Log.d(TAG, "addOnFailureListener")
+
+                            val newComment = document.toObject(Comment::class.java)
+//                        val newComment = document.toObject(Comment::class.java)
+                            newComment.user = user
+                            list.add(newComment)
+                        }
+                    }
+
+//                    while (list.size != task.result!!.size()) {
+//
+//                        Log.d(TAG, "list.size=${list.size}, task.result!!.size()=${task.result!!.size()}")
+//                    }
+
+//                    continuation.resume(Result.Success(list))
+                } else {
+                    task.exception?.let {
+
+                        Log.w("","[${this::class.simpleName}] Error getting documents. ${it.message}")
+                        continuation.resume(Result.Error(it))
+                    }
+                    continuation.resume(Result.Fail(DrinkApplication.instance.getString(R.string.you_know_nothing)))
+                }
+            }
+
+    }
 
     override suspend fun getAllStore(): Result<List<Store>> = suspendCoroutine {continuation ->
         FirebaseFirestore.getInstance()
@@ -36,11 +130,11 @@ object DrinkRemoteDataSource : DrinkDataSource {
                     for (document in task.result!!) {
 //                        Logger.d(document.id + " => " + document.data)
                         Log.d(TAG, "${document.id} => ${document.data}")
-//                        val allStore = document.toObject(Store::class.java)
-                        val storeName = document.data["storeName"].toString()
-                        val storeId = document.data["storeId"].toString()
-                        val store = Store(storeId,storeName)
-                        list.add(store)
+                        val allStore = document.toObject(Store::class.java)
+//                        val storeName = document.data["storeName"].toString()
+//                        val storeId = document.data["storeId"].toString()
+//                        val store = Store(storeId,storeName)
+                        list.add(allStore)
                     }
                     Log.d(TAG, "$list")
 //                    continuation.resume(Result.Success(list))
@@ -69,11 +163,11 @@ object DrinkRemoteDataSource : DrinkDataSource {
                     for (document in task.result!!) {
 //                        Logger.d(document.id + " => " + document.data)
                         Log.d(TAG, "${document.id} => ${document.data}")
-//                        val allStore = document.toObject(Store::class.java)
-                        val drinkName = document.data["drinkName"].toString()
-                        val drinkId = document.data["drinkId"].toString()
-                        val drink = Drink(drinkId, drinkName)
-                        list.add(drink)
+                        val allStoreDrink = document.toObject(Drink::class.java)
+//                        val drinkName = document.data["drinkName"].toString()
+//                        val drinkId = document.data["drinkId"].toString()
+//                        val drink = Drink(drinkId, drinkName)
+                        list.add(allStoreDrink)
                     }
                     Log.d(TAG, "$list")
 //                    continuation.resume(Result.Success(list))
@@ -100,11 +194,8 @@ object DrinkRemoteDataSource : DrinkDataSource {
 //        var cc: DocumentReference =FirebaseFirestore.getInstance().document("users/$aa")
 //        cc.get()
 
-
         comment.id = document.id
-        comment.user.id = userCurrent!!.uid
-        comment.user.email = userCurrent!!.email
-        comment.user.name = userCurrent!!.displayName
+        comment.userId = userCurrent!!.uid
 //        FieldValue.serverTimestamp()
 //        comment.createdTime = Calendar.getInstance().timeInMillis
         document

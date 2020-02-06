@@ -7,17 +7,22 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import app.jerry.drink.MainActivity
 import app.jerry.drink.R
 import app.jerry.drink.databinding.FragmentHomeBinding
 import app.jerry.drink.dataclass.Comment
 import app.jerry.drink.dataclass.User
+import app.jerry.drink.getVmFactory
+import app.jerry.drink.post.PostViewModel
 
 class HomeFragment : Fragment() {
 
 
     lateinit var binding: FragmentHomeBinding
+    private val viewModel by viewModels<HomeViewModel> { getVmFactory() }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,20 +42,29 @@ class HomeFragment : Fragment() {
         val highScoreAdapter = HighScoreAdapter()
         val newCommentAdapter = NewCommentAdapter()
 
+        binding.viewModel = viewModel
+        binding.lifecycleOwner = this
+
         binding.recyclerHighScore.adapter = highScoreAdapter
         binding.recyclerNewComment.adapter = newCommentAdapter
 
         val mockData = mutableListOf<Comment>()
-        val comment = Comment(User("","","","")
-            ,"","","","","","",1,"","")
+        val comment = Comment("",User("","","","")
+            ,"","","","","","","",1,"","","")
         mockData.add(comment)
         mockData.add(comment)
         mockData.add(comment)
         mockData.add(comment)
-        mockData.add(comment)
-
+//        mockData.add(comment)
+//
         highScoreAdapter.submitList(mockData)
-        newCommentAdapter.submitList(mockData)
+//        newCommentAdapter.submitList(mockData)
+
+        viewModel.getNewCommentResult()
+
+        viewModel.newComment.observe(this, Observer {
+            Log.d("newComment","$it")
+        })
 
         return binding.root
     }

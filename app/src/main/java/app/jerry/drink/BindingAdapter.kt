@@ -5,6 +5,8 @@ import android.widget.ImageView
 import androidx.core.net.toUri
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
+import app.jerry.drink.dataclass.Comment
+import app.jerry.drink.home.NewCommentAdapter
 import app.jerry.drink.post.IceAdapter
 import app.jerry.drink.post.SugarAdapter
 import com.bumptech.glide.Glide
@@ -23,6 +25,12 @@ fun bindImage(imgView: ImageView, imgUrl: String?) {
             )
             .into(imgView)
     }
+}
+
+@BindingAdapter("listNewComment")
+fun bindNewComment(recyclerView: RecyclerView, data: List<Comment>?){
+    val adapter = recyclerView.adapter as NewCommentAdapter
+    adapter.submitList(data)
 }
 
 @BindingAdapter("listIce")

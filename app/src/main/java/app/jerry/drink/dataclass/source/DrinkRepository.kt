@@ -7,6 +7,10 @@ import app.jerry.drink.dataclass.Store
 
 interface DrinkRepository {
 
+    suspend fun checkUser(): Result<Boolean>
+
+    suspend fun getNewComment(): Result<List<Comment>>
+
     suspend fun getAllStore(): Result<List<Store>>
 
     suspend fun getStoreMenu(store: Store): Result<List<Drink>>

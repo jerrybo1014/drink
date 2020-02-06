@@ -20,9 +20,12 @@ import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
 import android.os.Looper
+import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.viewModels
+import app.jerry.drink.post.PostViewModel
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.IdpResponse
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -40,6 +43,7 @@ class MainActivity : AppCompatActivity() {
     private val MY_PERMISSIONS_LOCATION = 100
     private val auth = FirebaseAuth.getInstance()
     lateinit var loctionGps: Location
+    val viewModel by viewModels<MainActivityViewModel> { getVmFactory() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -102,6 +106,8 @@ class MainActivity : AppCompatActivity() {
                     }
                     Log.d(TAG, "signInWithCredential:no")
                 } else {
+
+                    viewModel.checkUserResult()
                     Log.d(TAG, "signInWithCredential:success ${user.email}")
                     Log.d(TAG, "signInWithCredential:success ${user.displayName}")
                     Log.d(TAG, "signInWithCredential:success ${user.uid}")
@@ -295,48 +301,4 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-
-
-
-
-//    private fun handleSignInResult(completedTask: Task<GoogleSignInAccount>) {
-//    try {
-//        val account = completedTask.getResult(ApiException.class)
-//
-//        // Signed in successfully, show authenticated UI.
-////        updateUI(account);
-//    } catch (ApiException) {
-//        // The ApiException status code indicates the detailed failure reason.
-//        // Please refer to the GoogleSignInStatusCodes class reference for more information.
-//        Log.w(TAG, "signInResult:failed code=" + e.getStatusCode())
-////        updateUI(null);
-//    }
-//}
-
-//    fun articlePost(
-//        title: String,
-//        author: String,
-//        tag: String,
-//        createdTime: String,
-//        content: String
-//    ) {
-//        val user: HashMap<String, Any> = hashMapOf(
-//            "title" to title,
-//            "author" to author,
-//            "tag" to tag,
-//            "created_time" to createdTime,
-//            "content" to content
-//        )
-//// Add a new document with a generated ID
-//        val db = FirebaseFirestore.getInstance()
-//        db.collection("article")
-//            .document(createdTime)
-//            .set(user)
-//            .addOnSuccessListener { documentReference ->
-//                Log.d(TAG, "DocumentSnapshot added with content_POST:$title")
-//            }
-//            .addOnFailureListener { e ->
-//                Log.w(TAG, "Error adding document_POST", e)
-//            }
-//    }
 }

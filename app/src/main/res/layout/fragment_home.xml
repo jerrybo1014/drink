@@ -4,7 +4,9 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
-
+        <variable
+            name="viewModel"
+            type="app.jerry.drink.home.HomeViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -49,6 +51,7 @@
             android:id="@+id/recycler_new_comment"
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            app:listNewComment="@{viewModel.newComment}"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             android:layout_marginTop="6dp"
             app:layout_constraintBottom_toBottomOf="parent"

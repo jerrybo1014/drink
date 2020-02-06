@@ -5,6 +5,6 @@ import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 data class Drink(
-    val drinkId: String,
-    val drinkName: String
+    val drinkId: String = "",
+    val drinkName: String = ""
 ): Parcelable
