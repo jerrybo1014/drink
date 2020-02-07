@@ -17,4 +17,6 @@ interface DrinkRepository {
 
     suspend fun postComment(comment: Comment): Result<Boolean>
 
+    suspend fun addOrder(comment: Comment): Result<Boolean>
+
 }

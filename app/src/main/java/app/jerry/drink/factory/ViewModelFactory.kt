@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModelProvider
 import app.jerry.drink.MainActivityViewModel
 import app.jerry.drink.dataclass.source.DrinkRepository
 import app.jerry.drink.home.HomeViewModel
+import app.jerry.drink.order.AddOrderViewModel
 import app.jerry.drink.post.PostViewModel
 
 @Suppress("UNCHECKED_CAST")
@@ -24,6 +25,9 @@ class ViewModelFactory constructor(
 
                 isAssignableFrom(MainActivityViewModel::class.java) ->
                     MainActivityViewModel(drinkRepository)
+
+                isAssignableFrom(AddOrderViewModel::class.java) ->
+                    AddOrderViewModel(drinkRepository)
 
                 else ->
                     throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")

@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import app.jerry.drink.MainActivity
 import app.jerry.drink.R
 import app.jerry.drink.databinding.FragmentOrderBinding
 
@@ -20,6 +21,14 @@ class OrderFragment : Fragment() {
         binding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_order, container, false
         )
+        (activity as MainActivity).binding.fab.hide()
+
+
+        binding.textAddOrder.setOnClickListener {
+            childFragmentManager.let {
+             AddOrderFragment().show(it,"")
+            }
+        }
 
         return binding.root
     }

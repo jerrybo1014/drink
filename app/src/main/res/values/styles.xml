@@ -33,4 +33,11 @@
 
     </style>
 
+    <style name="add_order_icon_style">
+        <item name="android:layout_width">18dp</item>
+        <item name="android:layout_height">18dp</item>
+        <item name="android:layout_marginTop">20dp</item>
+        <item name="android:tint">@color/myColorPrimaryDark</item>
+    </style>
+
 </resources>

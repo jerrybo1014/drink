@@ -77,12 +77,11 @@ object DrinkRemoteDataSource : DrinkDataSource {
                         Log.d(TAG, "for , document=$document")
                         var user: User? = User("","","","")
                         users.document(document.get("userId").toString()).get().addOnSuccessListener {
+
                             user = it.toObject(User::class.java)
                             Log.d(TAG, "addOnSuccessListener, user=$user")
                             Log.d(TAG, "${it.id} => ${it.data}")
-
                             val newComment = document.toObject(Comment::class.java)
-//                        val newComment = document.toObject(Comment::class.java)
                             newComment.user = user
                             list.add(newComment)
 
@@ -91,10 +90,10 @@ object DrinkRemoteDataSource : DrinkDataSource {
                                 Log.w(TAG, "last complete")
                                 continuation.resume(Result.Success(list))
                             }
+
                         }.addOnFailureListener {
 
                             Log.d(TAG, "addOnFailureListener")
-
                             val newComment = document.toObject(Comment::class.java)
 //                        val newComment = document.toObject(Comment::class.java)
                             newComment.user = user
@@ -102,12 +101,6 @@ object DrinkRemoteDataSource : DrinkDataSource {
                         }
                     }
 
-//                    while (list.size != task.result!!.size()) {
-//
-//                        Log.d(TAG, "list.size=${list.size}, task.result!!.size()=${task.result!!.size()}")
-//                    }
-
-//                    continuation.resume(Result.Success(list))
                 } else {
                     task.exception?.let {
 

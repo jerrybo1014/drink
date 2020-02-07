@@ -20,6 +20,7 @@
     <string name="post_ice">冰塊</string>
     <string name="post_sugar">甜度</string>
     <string name="post_comment">評價</string>
+    <string name="post_time">時限</string>
     <string name="post_enter_comment">輸入評論…</string>
     <string name="title_activity_maps">Map</string>
     <string name="spinner_store">請選擇店家</string>
