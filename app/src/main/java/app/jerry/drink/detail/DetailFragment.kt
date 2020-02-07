@@ -1,4 +1,4 @@
-package app.jerry.drink
+package app.jerry.drink.detail
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,8 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import app.jerry.drink.R
 import app.jerry.drink.databinding.FragmentDetailBinding
-import app.jerry.drink.databinding.FragmentHomeSearchBinding
 
 class DetailFragment : Fragment() {
 

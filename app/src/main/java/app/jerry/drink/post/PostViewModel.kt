@@ -10,11 +10,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import app.jerry.drink.DrinkApplication
-import app.jerry.drink.LoadApiStatus
+import app.jerry.drink.network.LoadApiStatus
 import app.jerry.drink.R
 import app.jerry.drink.dataclass.*
 import app.jerry.drink.dataclass.source.DrinkRepository
-import com.google.firebase.firestore.DocumentReference
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -172,7 +171,7 @@ init {
                 commentStar.value!!,
                 editComment.value!!,
                 "",
-                convertLongToDateString(System.currentTimeMillis()))
+                System.currentTimeMillis())
 
             val result = repository.postComment(comment)
 

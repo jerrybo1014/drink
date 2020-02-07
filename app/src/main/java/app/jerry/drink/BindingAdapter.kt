@@ -2,10 +2,12 @@ package app.jerry.drink
 
 import android.util.Log
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.core.net.toUri
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import app.jerry.drink.dataclass.Comment
+import app.jerry.drink.ext.toDisplayFormat
 import app.jerry.drink.home.NewCommentAdapter
 import app.jerry.drink.post.IceAdapter
 import app.jerry.drink.post.SugarAdapter
@@ -25,6 +27,11 @@ fun bindImage(imgView: ImageView, imgUrl: String?) {
             )
             .into(imgView)
     }
+}
+
+@BindingAdapter("timeToDisplayFormat")
+fun bindDisplayFormatTime(textView: TextView, time: Long?) {
+    textView.text = time?.toDisplayFormat()
 }
 
 @BindingAdapter("listNewComment")

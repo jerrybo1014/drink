@@ -1,4 +1,4 @@
-package app.jerry.drink
+package app.jerry.drink.util
 
 import android.content.Context
 import androidx.annotation.VisibleForTesting

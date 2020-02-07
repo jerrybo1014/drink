@@ -43,7 +43,7 @@
         app:popUpToInclusive="true"/>
     <fragment
         android:id="@+id/detailFragment"
-        android:name="app.jerry.drink.DetailFragment"
+        android:name="app.jerry.drink.detail.DetailFragment"
         android:label="DetailFragment" />
     <fragment
         android:id="@+id/homeSearchFragment"

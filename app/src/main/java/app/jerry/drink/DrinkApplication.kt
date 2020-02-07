@@ -3,6 +3,7 @@ package app.jerry.drink
 import android.app.Application
 import android.content.Context
 import app.jerry.drink.dataclass.source.DrinkRepository
+import app.jerry.drink.util.ServiceLocator
 import kotlin.properties.Delegates
 
 

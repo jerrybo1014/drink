@@ -1,4 +1,4 @@
-package app.jerry.drink
+package app.jerry.drink.network
 
 enum class LoadApiStatus {
     LOADING,

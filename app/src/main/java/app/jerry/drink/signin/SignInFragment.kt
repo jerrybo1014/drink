@@ -1,7 +1,5 @@
-package app.jerry.drink
+package app.jerry.drink.signin
 
-import android.app.Activity
-import android.app.Dialog
 import android.content.DialogInterface
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,14 +7,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
-import androidx.fragment.app.Fragment
-import app.jerry.drink.databinding.FragmentDetailBinding
 import app.jerry.drink.databinding.FragmentSignInBinding
-import androidx.core.app.ActivityCompat.startActivityForResult
 import android.content.Intent
 import android.util.Log
 import android.view.KeyEvent
 import android.widget.Toast
+import app.jerry.drink.MainActivity
+import app.jerry.drink.R
 import com.facebook.AccessToken
 import com.facebook.CallbackManager
 import com.facebook.FacebookCallback
@@ -24,14 +21,12 @@ import com.facebook.FacebookException
 import com.facebook.internal.Utility
 import com.facebook.login.LoginManager
 import com.facebook.login.LoginResult
-import com.firebase.ui.auth.IdpResponse
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.FacebookAuthProvider
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
 
 
@@ -44,7 +39,7 @@ class SignInFragment : DialogFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setStyle(STYLE_NO_FRAME,R.style.SignInDialog)
+        setStyle(STYLE_NO_FRAME, R.style.SignInDialog)
     }
 
     override fun onCreateView(

@@ -4,10 +4,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import app.jerry.drink.DrinkApplication
-import app.jerry.drink.LoadApiStatus
+import app.jerry.drink.network.LoadApiStatus
 import app.jerry.drink.R
 import app.jerry.drink.dataclass.Comment
-import app.jerry.drink.dataclass.Drink
 import app.jerry.drink.dataclass.Result
 import app.jerry.drink.dataclass.source.DrinkRepository
 import kotlinx.coroutines.CoroutineScope

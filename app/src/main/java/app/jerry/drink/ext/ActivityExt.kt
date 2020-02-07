@@ -1,6 +1,7 @@
-package app.jerry.drink
+package app.jerry.drink.ext
 
 import android.app.Activity
+import app.jerry.drink.DrinkApplication
 import app.jerry.drink.factory.ViewModelFactory
 
 fun Activity.getVmFactory(): ViewModelFactory {

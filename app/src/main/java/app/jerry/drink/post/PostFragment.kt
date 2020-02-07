@@ -14,7 +14,7 @@ import androidx.navigation.fragment.findNavController
 import app.jerry.drink.MainActivity
 import app.jerry.drink.R
 import app.jerry.drink.databinding.FragmentPostBinding
-import app.jerry.drink.getVmFactory
+import app.jerry.drink.ext.getVmFactory
 
 class PostFragment : Fragment() {
 

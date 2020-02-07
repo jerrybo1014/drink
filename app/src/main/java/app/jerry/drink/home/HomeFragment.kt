@@ -15,8 +15,7 @@ import app.jerry.drink.R
 import app.jerry.drink.databinding.FragmentHomeBinding
 import app.jerry.drink.dataclass.Comment
 import app.jerry.drink.dataclass.User
-import app.jerry.drink.getVmFactory
-import app.jerry.drink.post.PostViewModel
+import app.jerry.drink.ext.getVmFactory
 
 class HomeFragment : Fragment() {
 
@@ -50,7 +49,7 @@ class HomeFragment : Fragment() {
 
         val mockData = mutableListOf<Comment>()
         val comment = Comment("",User("","","","")
-            ,"","","","","","","",1,"","","")
+            ,"","","","","","","",1,"","",0)
         mockData.add(comment)
         mockData.add(comment)
         mockData.add(comment)
