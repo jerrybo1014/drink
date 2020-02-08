@@ -1,10 +1,7 @@
 package app.jerry.drink.dataclass.source.local
 
 import android.content.Context
-import app.jerry.drink.dataclass.Comment
-import app.jerry.drink.dataclass.Drink
-import app.jerry.drink.dataclass.Result
-import app.jerry.drink.dataclass.Store
+import app.jerry.drink.dataclass.*
 import app.jerry.drink.dataclass.source.DrinkDataSource
 
 class DrinkLocalDataSource(val context: Context) : DrinkDataSource {
@@ -29,4 +26,7 @@ class DrinkLocalDataSource(val context: Context) : DrinkDataSource {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
+    override suspend fun addOrder(order: Order): Result<Boolean> {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
 }

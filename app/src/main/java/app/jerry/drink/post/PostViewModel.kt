@@ -234,6 +234,8 @@ init {
     }
 
     private var selectedIceView: View? = null
+
+
     private var selectedSugarView: View? = null
 
     fun selectIceStatus(view: View, string: String) {

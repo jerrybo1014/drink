@@ -124,9 +124,7 @@ object DrinkRemoteDataSource : DrinkDataSource {
 //                        Logger.d(document.id + " => " + document.data)
                         Log.d(TAG, "${document.id} => ${document.data}")
                         val allStore = document.toObject(Store::class.java)
-//                        val storeName = document.data["storeName"].toString()
-//                        val storeId = document.data["storeId"].toString()
-//                        val store = Store(storeId,storeName)
+
                         list.add(allStore)
                     }
                     Log.d(TAG, "$list")
@@ -157,9 +155,7 @@ object DrinkRemoteDataSource : DrinkDataSource {
 //                        Logger.d(document.id + " => " + document.data)
                         Log.d(TAG, "${document.id} => ${document.data}")
                         val allStoreDrink = document.toObject(Drink::class.java)
-//                        val drinkName = document.data["drinkName"].toString()
-//                        val drinkId = document.data["drinkId"].toString()
-//                        val drink = Drink(drinkId, drinkName)
+
                         list.add(allStoreDrink)
                     }
                     Log.d(TAG, "$list")
@@ -183,14 +179,10 @@ object DrinkRemoteDataSource : DrinkDataSource {
         val comments = FirebaseFirestore.getInstance().collection(PATH_Comments)
         val userCurrent = FirebaseAuth.getInstance().currentUser
         val document = comments.document()
-//        val aa =""
-//        var cc: DocumentReference =FirebaseFirestore.getInstance().document("users/$aa")
-//        cc.get()
 
         comment.id = document.id
         comment.userId = userCurrent!!.uid
-//        FieldValue.serverTimestamp()
-//        comment.createdTime = Calendar.getInstance().timeInMillis
+
         document
             .set(comment)
             .addOnCompleteListener { task ->
@@ -209,6 +201,10 @@ object DrinkRemoteDataSource : DrinkDataSource {
                     continuation.resume(Result.Fail(DrinkApplication.instance.getString(R.string.you_know_nothing)))
                 }
             }
+    }
+
+    override suspend fun addOrder(order: Order): Result<Boolean> {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
 }

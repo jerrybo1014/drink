@@ -1,9 +1,6 @@
 package app.jerry.drink.dataclass.source
 
-import app.jerry.drink.dataclass.Comment
-import app.jerry.drink.dataclass.Drink
-import app.jerry.drink.dataclass.Result
-import app.jerry.drink.dataclass.Store
+import app.jerry.drink.dataclass.*
 
 interface DrinkRepository {
 
@@ -17,6 +14,6 @@ interface DrinkRepository {
 
     suspend fun postComment(comment: Comment): Result<Boolean>
 
-    suspend fun addOrder(comment: Comment): Result<Boolean>
+    suspend fun addOrder(order: Order): Result<Boolean>
 
 }
