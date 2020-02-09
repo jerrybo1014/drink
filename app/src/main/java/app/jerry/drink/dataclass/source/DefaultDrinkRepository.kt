@@ -26,7 +26,11 @@ class DefaultDrinkRepository(private val remoteDataSource: DrinkDataSource,
         return remoteDataSource.postComment(comment)
     }
 
-    override suspend fun addOrder(order: Order): Result<Boolean> {
+    override suspend fun createOrder(order: Order): Result<Boolean> {
         return remoteDataSource.addOrder(order)
+    }
+
+    override suspend fun getOrder(orderId: Long): Result<OrderLists> {
+        return remoteDataSource.getOrder(orderId)
     }
 }

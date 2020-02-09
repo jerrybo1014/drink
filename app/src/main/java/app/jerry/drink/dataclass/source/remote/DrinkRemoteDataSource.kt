@@ -19,6 +19,7 @@ object DrinkRemoteDataSource : DrinkDataSource {
 
     private const val PATH_Stores = "stores"
     private const val PATH_Comments = "comments"
+    private const val PATH_Orders = "orders"
     private const val PATH_Users = "users"
     private const val PATH_Menu = "menu"
     private const val TAG = "jerryTest"
@@ -203,8 +204,62 @@ object DrinkRemoteDataSource : DrinkDataSource {
             }
     }
 
-    override suspend fun addOrder(order: Order): Result<Boolean> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override suspend fun addOrder(order: Order): Result<Boolean> = suspendCoroutine { continuation ->
+        val orders = FirebaseFirestore.getInstance().collection(PATH_Orders)
+        val userCurrent = FirebaseAuth.getInstance().currentUser
+        val document = orders.document("${Calendar.getInstance().timeInMillis}")
+
+        order.id = document.id
+        order.createdTime = Calendar.getInstance().timeInMillis
+        userCurrent?.let {
+            order.user = User(it.uid,it.displayName,it.email,"")
+        }
+
+        document
+            .set(order)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+//                    continuation.resume(Result.Success(list))
+                    continuation.resume(Result.Success(true))
+                } else {
+                    task.exception?.let {
+
+                        Log.w(
+                            "",
+                            "[${this::class.simpleName}] Error getting documents. ${it.message}"
+                        )
+                        continuation.resume(Result.Error(it))
+                    }
+                    continuation.resume(Result.Fail(DrinkApplication.instance.getString(R.string.you_know_nothing)))
+                }
+            }
+    }
+
+    override suspend fun getOrder(orderId: Long): Result<OrderLists> = suspendCoroutine { continuation ->
+        val orders = FirebaseFirestore.getInstance().collection(PATH_Orders)
+
+        orders
+            .document("$orderId")
+            .get()
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+//                    continuation.resume(Result.Success(list))
+                    val order = task.result!!.toObject(Order::class.java)
+                    val orderLists = OrderLists(order, listOf())
+                    Log.d(TAG,"getOrder = $orderLists")
+                    continuation.resume(Result.Success(orderLists))
+                } else {
+                    task.exception?.let {
+
+                        Log.w(
+                            "",
+                            "[${this::class.simpleName}] Error getting documents. ${it.message}"
+                        )
+                        continuation.resume(Result.Error(it))
+                    }
+                    continuation.resume(Result.Fail(DrinkApplication.instance.getString(R.string.you_know_nothing)))
+                }
+            }
     }
 
 }

@@ -206,12 +206,6 @@ init {
     }
 
 
-    @SuppressLint("SimpleDateFormat")
-    private fun convertLongToDateString(systemTime: Long): String {
-        return SimpleDateFormat("MMM-dd-yyyy HH:mm")
-            .format(systemTime).toString()
-    }
-
     fun selectedStore(position: Int) {
         _allStore.value?.let {
             _selectedStore.value = it[position]

@@ -2,10 +2,10 @@ package app.jerry.drink.order
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import app.jerry.drink.DrinkApplication
 import app.jerry.drink.R
+import app.jerry.drink.dataclass.OrderLists
 import app.jerry.drink.dataclass.Result
 import app.jerry.drink.dataclass.Store
 import app.jerry.drink.dataclass.source.DrinkRepository
@@ -15,17 +15,18 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
-class AddOrderViewModel(private val repository: DrinkRepository) : ViewModel() {
-
-    // _allStore
-    private val _allStore = MutableLiveData<List<Store>>()
-
-    val allStore: LiveData<List<Store>>
-        get() = _allStore
+class OrderVIewModel(private val repository: DrinkRepository) : ViewModel() {
 
 
-    val selectTime = MutableLiveData<String>()
-    val enterNote = MutableLiveData<String>()
+    private val _enterOrderId = MutableLiveData<Long>()
+
+    val enterOrderId: LiveData<Long>
+        get() = _enterOrderId
+
+    private val _orderLists = MutableLiveData<OrderLists>()
+
+    val orderLists: LiveData<OrderLists>
+        get() = _orderLists
 
     // status: The internal MutableLiveData that stores the status of the most recent request
     private val _status = MutableLiveData<LoadApiStatus>()
@@ -52,19 +53,18 @@ class AddOrderViewModel(private val repository: DrinkRepository) : ViewModel() {
     private val coroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
 
     init {
-        selectTime.value = ""
-        enterNote.value = ""
+
     }
 
-    fun getAllStoreResult() {
+    fun getOrderResult(orderId: Long) {
 
         coroutineScope.launch {
 
             _status.value = LoadApiStatus.LOADING
 
-            val result = repository.getAllStore()
+            val result = repository.getOrder(orderId)
 
-            _allStore.value = when (result) {
+            _orderLists.value = when (result) {
                 is Result.Success -> {
                     _error.value = null
                     _status.value = LoadApiStatus.DONE
@@ -92,12 +92,5 @@ class AddOrderViewModel(private val repository: DrinkRepository) : ViewModel() {
     }
 
 
-    val displayAllStore = Transformations.map(allStore) {
-        val storeList = mutableListOf<String>()
-        for (store in it){
-            storeList.add(store.storeName)
-        }
-        storeList
-    }
 
 }

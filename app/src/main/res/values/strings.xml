@@ -26,6 +26,8 @@
     <string name="spinner_store">請選擇店家</string>
     <string name="spinner_drink">請選擇飲品</string>
 
+    <!-- order page -->
+    <string name="order_host">主糾</string>
 
     <!-- Fb login -->
     <string name="facebook_app_id">473522680006069</string>

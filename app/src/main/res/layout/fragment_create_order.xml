@@ -7,7 +7,7 @@
 
         <variable
             name="viewModel"
-            type="app.jerry.drink.order.AddOrderViewModel" />
+            type="app.jerry.drink.order.CreateOrderViewModel" />
 
     </data>
 
@@ -146,6 +146,7 @@
             android:layout_marginEnd="10dp"
             android:layout_marginTop="25dp"
             android:enabled='@{viewModel.selectTime == "" ? false:true}'
+            android:onClick="@{() -> viewModel.createOrderResult()}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/edit_text_note" />
