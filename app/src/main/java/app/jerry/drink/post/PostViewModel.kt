@@ -268,22 +268,5 @@ init {
         drinkList
     }
 
-//    fun leave(needRefresh: Boolean = false) {
-//        _leave.value = needRefresh
-//    }
-
-//    fun queryAllStore() {
-//        val db = FirebaseFirestore.getInstance()
-//        db.collection("allStore")
-//            .get()
-//            .addOnSuccessListener { result ->
-//                for (document in result) {
-//                    Log.d("queryPostTag", "${document.id} => ${document.data}")
-//                }
-//            }
-//            .addOnFailureListener { exception ->
-//                Log.w("queryPostTag", "Error getting documents.", exception)
-//            }
-//    }
 
 }

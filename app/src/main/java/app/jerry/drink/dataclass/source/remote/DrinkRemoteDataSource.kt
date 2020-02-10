@@ -54,6 +54,7 @@ object DrinkRemoteDataSource : DrinkDataSource {
                             "[${this::class.simpleName}] Error getting documents. ${it.message}"
                         )
                         continuation.resume(Result.Error(it))
+                        return@addOnCompleteListener
                     }
                     continuation.resume(Result.Fail(DrinkApplication.instance.getString(R.string.you_know_nothing)))
                 }
@@ -107,6 +108,7 @@ object DrinkRemoteDataSource : DrinkDataSource {
 
                         Log.w("","[${this::class.simpleName}] Error getting documents. ${it.message}")
                         continuation.resume(Result.Error(it))
+                        return@addOnCompleteListener
                     }
                     continuation.resume(Result.Fail(DrinkApplication.instance.getString(R.string.you_know_nothing)))
                 }
@@ -136,6 +138,7 @@ object DrinkRemoteDataSource : DrinkDataSource {
 
                         Log.w("","[${this::class.simpleName}] Error getting documents. ${it.message}")
                         continuation.resume(Result.Error(it))
+                        return@addOnCompleteListener
                     }
                     continuation.resume(Result.Fail(DrinkApplication.instance.getString(R.string.you_know_nothing)))
                 }
@@ -170,6 +173,7 @@ object DrinkRemoteDataSource : DrinkDataSource {
                             "[${this::class.simpleName}] Error getting documents. ${it.message}"
                         )
                         continuation.resume(Result.Error(it))
+                        return@addOnCompleteListener
                     }
                     continuation.resume(Result.Fail(DrinkApplication.instance.getString(R.string.you_know_nothing)))
                 }
@@ -198,13 +202,14 @@ object DrinkRemoteDataSource : DrinkDataSource {
                             "[${this::class.simpleName}] Error getting documents. ${it.message}"
                         )
                         continuation.resume(Result.Error(it))
+                        return@addOnCompleteListener
                     }
                     continuation.resume(Result.Fail(DrinkApplication.instance.getString(R.string.you_know_nothing)))
                 }
             }
     }
 
-    override suspend fun addOrder(order: Order): Result<Boolean> = suspendCoroutine { continuation ->
+    override suspend fun createOrder(order: Order): Result<Boolean> = suspendCoroutine { continuation ->
         val orders = FirebaseFirestore.getInstance().collection(PATH_Orders)
         val userCurrent = FirebaseAuth.getInstance().currentUser
         val document = orders.document("${Calendar.getInstance().timeInMillis}")
@@ -229,6 +234,7 @@ object DrinkRemoteDataSource : DrinkDataSource {
                             "[${this::class.simpleName}] Error getting documents. ${it.message}"
                         )
                         continuation.resume(Result.Error(it))
+                        return@addOnCompleteListener
                     }
                     continuation.resume(Result.Fail(DrinkApplication.instance.getString(R.string.you_know_nothing)))
                 }
@@ -256,6 +262,36 @@ object DrinkRemoteDataSource : DrinkDataSource {
                             "[${this::class.simpleName}] Error getting documents. ${it.message}"
                         )
                         continuation.resume(Result.Error(it))
+                        return@addOnCompleteListener
+                    }
+                    continuation.resume(Result.Fail(DrinkApplication.instance.getString(R.string.you_know_nothing)))
+                }
+            }
+    }
+
+    override suspend fun addOrder(orderList: OrderList, orderId: Long): Result<Boolean> = suspendCoroutine { continuation ->
+        val orders = FirebaseFirestore.getInstance().collection(PATH_Orders)
+        val document = orders.document(orderId.toString()).collection("lists").document()
+        val userCurrent = FirebaseAuth.getInstance().currentUser
+
+        orderList.id = document.id
+        orderList.user = User(userCurrent!!.uid,userCurrent.displayName,userCurrent.email,"")
+
+        document
+            .set(orderList)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+//                    continuation.resume(Result.Success(list))
+                    continuation.resume(Result.Success(true))
+                } else {
+                    task.exception?.let {
+
+                        Log.w(
+                            "",
+                            "[${this::class.simpleName}] Error getting documents. ${it.message}"
+                        )
+                        continuation.resume(Result.Error(it))
+                        return@addOnCompleteListener
                     }
                     continuation.resume(Result.Fail(DrinkApplication.instance.getString(R.string.you_know_nothing)))
                 }

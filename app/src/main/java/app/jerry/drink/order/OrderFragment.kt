@@ -9,7 +9,9 @@ import androidx.appcompat.widget.SearchView.OnQueryTextListener
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import app.jerry.drink.MainActivity
+import app.jerry.drink.NavigationDirections
 import app.jerry.drink.R
 import app.jerry.drink.databinding.FragmentOrderBinding
 import app.jerry.drink.ext.getVmFactory
@@ -37,6 +39,10 @@ class OrderFragment : Fragment() {
             childFragmentManager.let {
              CreateOrderFragment().show(it,"")
             }
+        }
+
+        binding.buttonAddOrder.setOnClickListener {
+            findNavController().navigate(NavigationDirections.actionGlobalAddOrderFragement(viewModel.orderLists.value!!))
         }
 
         binding.searchView.setOnQueryTextListener( object : OnQueryTextListener{

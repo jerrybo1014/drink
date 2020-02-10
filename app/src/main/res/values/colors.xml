@@ -14,5 +14,5 @@
     <color name="bottom_navigation_dark">#5f6caf</color>
 
     <color name="item_selected">#cbba83</color>
-
+    <color name="transparent">#00000000</color>
 </resources>

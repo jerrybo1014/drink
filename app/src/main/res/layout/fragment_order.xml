@@ -42,6 +42,14 @@
                 android:layout_height="match_parent"
                 >
 
+                <TextView
+                    android:id="@+id/button_add_order"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="新增品項"
+                    app:layout_constraintBottom_toTopOf="@+id/recycler_order_list"
+                    app:layout_constraintEnd_toEndOf="parent" />
+
                 <ImageView
                     android:id="@+id/image_host_order"
                     style="@style/add_order_icon_style"
@@ -77,7 +85,7 @@
                     app:layout_constraintTop_toBottomOf="@id/image_host_order" />
 
                 <TextView
-                    android:id="@+id/text_store_add_order"
+                    android:id="@+id/text_store_create_order"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
@@ -93,7 +101,7 @@
                     android:layout_height="wrap_content"
                     android:text="@{viewModel.orderLists.order.store.storeName}"
                     android:layout_marginStart="16dp"
-                    app:layout_constraintBaseline_toBaselineOf="@+id/text_store_add_order"
+                    app:layout_constraintBaseline_toBaselineOf="@+id/text_store_create_order"
                     app:layout_constraintStart_toEndOf="@+id/text_host_order" />
 
 
@@ -126,7 +134,7 @@
 
 
                 <ImageView
-                    android:id="@+id/image_note_add_order"
+                    android:id="@+id/image_note_create_order"
                     android:src="@drawable/notes"
                     style="@style/add_order_icon_style"
                     app:layout_constraintStart_toStartOf="parent"
@@ -139,9 +147,9 @@
                     android:text="備註"
                     android:textSize="16dp"
                     android:layout_marginStart="10dp"
-                    app:layout_constraintBottom_toBottomOf="@+id/image_note_add_order"
-                    app:layout_constraintStart_toEndOf="@+id/image_note_add_order"
-                    app:layout_constraintTop_toTopOf="@+id/image_note_add_order"/>
+                    app:layout_constraintBottom_toBottomOf="@+id/image_note_create_order"
+                    app:layout_constraintStart_toEndOf="@+id/image_note_create_order"
+                    app:layout_constraintTop_toTopOf="@+id/image_note_create_order"/>
 
                 <TextView
                     android:id="@+id/order_note"
@@ -152,6 +160,15 @@
                     app:layout_constraintBaseline_toBaselineOf="@+id/text_note"
                     app:layout_constraintStart_toEndOf="@+id/text_host_order" />
 
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recycler_order_list"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/image_note_create_order" />
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>

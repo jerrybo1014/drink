@@ -126,7 +126,6 @@
                 android:layout_height="30dp"
                 android:layout_marginStart="6dp"
                 android:orientation="horizontal"
-
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintBottom_toBottomOf="@+id/text_ice"
                 app:layout_constraintStart_toEndOf="@+id/text_ice"

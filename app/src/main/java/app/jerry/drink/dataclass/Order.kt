@@ -19,9 +19,11 @@ data class OrderList(
     var id: String ="",
     var user: User? = null,
     var drink: Drink? = null,
+    var ice: String? = "",
+    var sugar: String? = "",
+    var qty: Long? = 1,
     var note: String
 ): Parcelable
-
 
 @Parcelize
 data class OrderLists(

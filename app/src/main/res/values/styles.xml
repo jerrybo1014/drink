@@ -40,4 +40,8 @@
         <item name="android:tint">@color/myColorPrimaryDark</item>
     </style>
 
+    <style name="AddOrderDialog">
+        <item name="android:windowBackground">@color/transparent</item>
+    </style>
+
 </resources>

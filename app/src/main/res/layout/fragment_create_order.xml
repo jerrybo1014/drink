@@ -26,7 +26,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/text_add_order_title"
+            android:id="@+id/text_create_order_title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="新增訂單"
@@ -38,22 +38,22 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
-            android:id="@+id/image_store_add_order"
+            android:id="@+id/image_store_create_order"
             android:src="@drawable/store_icon"
             style="@style/add_order_icon_style"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/text_add_order_title" />
+            app:layout_constraintTop_toBottomOf="@id/text_create_order_title" />
 
         <TextView
-            android:id="@+id/text_store_add_order"
+            android:id="@+id/text_store_create_order"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:text="@string/post_store"
             android:textSize="16dp"
-            app:layout_constraintBottom_toBottomOf="@+id/image_store_add_order"
-            app:layout_constraintStart_toEndOf="@+id/image_store_add_order"
-            app:layout_constraintTop_toTopOf="@+id/image_store_add_order" />
+            app:layout_constraintBottom_toBottomOf="@+id/image_store_create_order"
+            app:layout_constraintStart_toEndOf="@+id/image_store_create_order"
+            app:layout_constraintTop_toTopOf="@+id/image_store_create_order" />
 
         <Spinner
             android:id="@+id/spinner_store"
@@ -66,28 +66,28 @@
             android:paddingBottom="16dp"
             android:prompt="@string/spinner_store"
             android:spinnerMode="dialog"
-            app:layout_constraintBottom_toBottomOf="@+id/text_store_add_order"
+            app:layout_constraintBottom_toBottomOf="@+id/text_store_create_order"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/text_store_add_order"
-            app:layout_constraintTop_toTopOf="@+id/text_store_add_order" />
+            app:layout_constraintStart_toEndOf="@+id/text_store_create_order"
+            app:layout_constraintTop_toTopOf="@+id/text_store_create_order" />
 
         <ImageView
-            android:id="@+id/image_time_add_order"
+            android:id="@+id/image_time_create_order"
             android:src="@drawable/clock_1"
             style="@style/add_order_icon_style"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/image_store_add_order" />
+            app:layout_constraintTop_toBottomOf="@id/image_store_create_order" />
 
         <TextView
-            android:id="@+id/text_time_add_order"
+            android:id="@+id/text_time_create_order"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:text="@string/post_time"
             android:textSize="16dp"
-            app:layout_constraintBottom_toBottomOf="@+id/image_time_add_order"
-            app:layout_constraintStart_toEndOf="@+id/image_time_add_order"
-            app:layout_constraintTop_toTopOf="@+id/image_time_add_order" />
+            app:layout_constraintBottom_toBottomOf="@+id/image_time_create_order"
+            app:layout_constraintStart_toEndOf="@+id/image_time_create_order"
+            app:layout_constraintTop_toTopOf="@+id/image_time_create_order" />
 
         <TextView
             android:id="@+id/text_select_time"
@@ -97,16 +97,16 @@
             android:text="@={viewModel.selectTime}"
             android:textSize="16dp"
             android:layout_marginStart="16dp"
-            app:layout_constraintBottom_toBottomOf="@+id/text_time_add_order"
-            app:layout_constraintStart_toEndOf="@+id/text_time_add_order"
-            app:layout_constraintTop_toTopOf="@+id/text_time_add_order" />
+            app:layout_constraintBottom_toBottomOf="@+id/text_time_create_order"
+            app:layout_constraintStart_toEndOf="@+id/text_time_create_order"
+            app:layout_constraintTop_toTopOf="@+id/text_time_create_order" />
 
         <ImageView
-            android:id="@+id/image_note_add_order"
+            android:id="@+id/image_note_create_order"
             android:src="@drawable/notes"
             style="@style/add_order_icon_style"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/image_time_add_order" />
+            app:layout_constraintTop_toBottomOf="@id/image_time_create_order" />
 
         <TextView
             android:id="@+id/text_note"
@@ -115,9 +115,9 @@
             android:text="備註"
             android:textSize="16dp"
             android:layout_marginStart="10dp"
-            app:layout_constraintBottom_toBottomOf="@+id/image_note_add_order"
-            app:layout_constraintStart_toEndOf="@+id/image_note_add_order"
-            app:layout_constraintTop_toTopOf="@+id/image_note_add_order"
+            app:layout_constraintBottom_toBottomOf="@+id/image_note_create_order"
+            app:layout_constraintStart_toEndOf="@+id/image_note_create_order"
+            app:layout_constraintTop_toTopOf="@+id/image_note_create_order"
             />
 
         <EditText
@@ -134,7 +134,7 @@
             app:layout_constraintStart_toEndOf="@+id/text_note" />
 
         <TextView
-            android:id="@+id/button_add_order"
+            android:id="@+id/button_create_order"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="送出訂單"

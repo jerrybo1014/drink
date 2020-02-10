@@ -14,7 +14,9 @@ interface DrinkDataSource {
 
     suspend fun postComment(comment: Comment): Result<Boolean>
 
-    suspend fun addOrder(order: Order): Result<Boolean>
+    suspend fun createOrder(order: Order): Result<Boolean>
 
     suspend fun getOrder(orderId: Long): Result<OrderLists>
+
+    suspend fun addOrder(orderList: OrderList, orderId: Long): Result<Boolean>
 }

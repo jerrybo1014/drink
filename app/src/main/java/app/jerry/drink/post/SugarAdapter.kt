@@ -61,7 +61,7 @@ class SugarAdapter(private val viewModel: PostViewModel) :
      */
 
     override fun onBindViewHolder(holder: SugarViewHolder, position: Int) {
-        val comment = getItem(position)
-        holder.bind(comment)
+        val string = getItem(position)
+        holder.bind(string)
     }
 }

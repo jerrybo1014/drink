@@ -62,4 +62,16 @@
     <action
         android:id="@+id/action_global_postFragment"
         app:destination="@id/postFragment" />
+    <dialog
+        android:id="@+id/addOrderFragement"
+        android:name="app.jerry.drink.order.addorder.AddOrderFragment"
+        android:label="AddOrderFragement" >
+        <argument
+            android:name="orderLists"
+            app:argType="app.jerry.drink.dataclass.OrderLists" />
+    </dialog>
+
+    <action
+        android:id="@+id/action_global_addOrderFragement"
+        app:destination="@id/addOrderFragement" />
 </navigation>
