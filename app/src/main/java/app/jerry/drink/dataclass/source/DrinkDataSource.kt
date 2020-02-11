@@ -1,5 +1,7 @@
 package app.jerry.drink.dataclass.source
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import app.jerry.drink.dataclass.*
 
 interface DrinkDataSource {
@@ -18,5 +20,9 @@ interface DrinkDataSource {
 
     suspend fun getOrder(orderId: Long): Result<OrderLists>
 
+    fun getOrderLive(orderId: Long): LiveData<List<OrderList>>
+
     suspend fun addOrder(orderList: OrderList, orderId: Long): Result<Boolean>
+
+    suspend fun editOrderStatus(orderId: Long, editStatus: Boolean): Result<Boolean>
 }

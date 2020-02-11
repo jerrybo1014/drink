@@ -11,7 +11,8 @@ data class Order(
     var createdTime: Long = 0,
     var orderId: Long = 0,
     var timeLimit: String? ="",
-    var note: String = ""
+    var note: String = "",
+    var status: Boolean = true
 ): Parcelable
 
 @Parcelize
@@ -22,11 +23,20 @@ data class OrderList(
     var ice: String? = "",
     var sugar: String? = "",
     var qty: Long? = 1,
-    var note: String
-): Parcelable
+    var note: String = ""
+): Parcelable{
+    fun displayQty(): String{
+        return "X$qty"
+    }
+
+    fun displayIceSugar(): String{
+        return "$sugar$ice"
+    }
+
+}
 
 @Parcelize
 data class OrderLists(
     var order: Order? = null,
-    var orderLists: List<OrderList> = listOf()
+    var orderLists: List<OrderList>? = listOf()
 ): Parcelable

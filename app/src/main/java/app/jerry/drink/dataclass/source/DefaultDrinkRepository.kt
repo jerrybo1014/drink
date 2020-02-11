@@ -1,5 +1,7 @@
 package app.jerry.drink.dataclass.source
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import app.jerry.drink.dataclass.*
 
 class DefaultDrinkRepository(private val remoteDataSource: DrinkDataSource,
@@ -34,7 +36,15 @@ class DefaultDrinkRepository(private val remoteDataSource: DrinkDataSource,
         return remoteDataSource.getOrder(orderId)
     }
 
+    override fun getOrderLive(orderId: Long): LiveData<List<OrderList>> {
+        return remoteDataSource.getOrderLive(orderId)
+    }
+
     override suspend fun addOrder(orderList: OrderList, orderId: Long): Result<Boolean> {
         return remoteDataSource.addOrder(orderList, orderId)
+    }
+
+    override suspend fun editOrderStatus(orderId: Long, editStatus: Boolean): Result<Boolean> {
+        return remoteDataSource.editOrderStatus(orderId, editStatus)
     }
 }

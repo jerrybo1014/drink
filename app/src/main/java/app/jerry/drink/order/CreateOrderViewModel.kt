@@ -112,7 +112,8 @@ class CreateOrderViewModel(private val repository: DrinkRepository) : ViewModel(
                 0,
                 Calendar.getInstance().timeInMillis,
                 selectTime.value,
-                enterNote.value!!.trim()
+                enterNote.value!!.trim(),
+                true
             )
 
             _status.value = LoadApiStatus.LOADING

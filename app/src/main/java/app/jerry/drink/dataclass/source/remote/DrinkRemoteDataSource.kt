@@ -2,6 +2,8 @@ package app.jerry.drink.dataclass.source.remote
 
 import android.icu.util.Calendar
 import android.util.Log
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import app.jerry.drink.DrinkApplication
 import app.jerry.drink.R
 import app.jerry.drink.dataclass.*
@@ -29,17 +31,18 @@ object DrinkRemoteDataSource : DrinkDataSource {
         val users = FirebaseFirestore.getInstance().collection(PATH_Users)
         val userCurrent = FirebaseAuth.getInstance().currentUser
         val document = users.document(userCurrent!!.uid)
-        val user = User(userCurrent.uid,userCurrent.displayName,userCurrent.email,"")
+        val user = User(userCurrent.uid, userCurrent.displayName, userCurrent.email, "")
 
         document
             .get()
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
 
-                    if (task.result!!.data == null){
+                    if (task.result!!.data == null) {
                         document
                             .set(user).addOnSuccessListener {
-                                Log.d("checkUser", "Success setting new user => $user") }
+                                Log.d("checkUser", "Success setting new user => $user")
+                            }
                             .addOnFailureListener {
                                 Log.w("checkUser", "Error setting new user.", it)
                             }
@@ -61,7 +64,7 @@ object DrinkRemoteDataSource : DrinkDataSource {
             }
     }
 
-    override suspend fun getNewComment(): Result<List<Comment>> = suspendCoroutine {continuation ->
+    override suspend fun getNewComment(): Result<List<Comment>> = suspendCoroutine { continuation ->
 
         val comments = FirebaseFirestore.getInstance().collection(PATH_Comments)
         val users = FirebaseFirestore.getInstance().collection(PATH_Users)
@@ -75,25 +78,24 @@ object DrinkRemoteDataSource : DrinkDataSource {
                     val list = mutableListOf<Comment>()
                     for (document in task.result!!) {
 //                        Log.d(TAG, "${document.id} => ${document.data}")
-
+                        val newComment = document.toObject(Comment::class.java)
                         Log.d(TAG, "for , document=$document")
-                        var user: User? = User("","","","")
-                        users.document(document.get("userId").toString()).get().addOnSuccessListener {
+                        var user: User? = User("", "", "", "")
+                        users.document(document.get("userId").toString()).get()
+                            .addOnSuccessListener {
 
-                            user = it.toObject(User::class.java)
-                            Log.d(TAG, "addOnSuccessListener, user=$user")
-                            Log.d(TAG, "${it.id} => ${it.data}")
-                            val newComment = document.toObject(Comment::class.java)
-                            newComment.user = user
-                            list.add(newComment)
+                                user = it.toObject(User::class.java)
+                                Log.d(TAG, "addOnSuccessListener, user=$user")
+                                Log.d(TAG, "${it.id} => ${it.data}")
+                                newComment.user = user
+                                list.add(newComment)
 
-                            if (list.size == task.result!!.size()) {
+                                if (list.size == task.result!!.size()) {
+                                    Log.w(TAG, "last complete")
+                                    continuation.resume(Result.Success(list))
+                                }
 
-                                Log.w(TAG, "last complete")
-                                continuation.resume(Result.Success(list))
-                            }
-
-                        }.addOnFailureListener {
+                            }.addOnFailureListener {
 
                             Log.d(TAG, "addOnFailureListener")
                             val newComment = document.toObject(Comment::class.java)
@@ -106,7 +108,10 @@ object DrinkRemoteDataSource : DrinkDataSource {
                 } else {
                     task.exception?.let {
 
-                        Log.w("","[${this::class.simpleName}] Error getting documents. ${it.message}")
+                        Log.w(
+                            "",
+                            "[${this::class.simpleName}] Error getting documents. ${it.message}"
+                        )
                         continuation.resume(Result.Error(it))
                         return@addOnCompleteListener
                     }
@@ -116,7 +121,7 @@ object DrinkRemoteDataSource : DrinkDataSource {
 
     }
 
-    override suspend fun getAllStore(): Result<List<Store>> = suspendCoroutine {continuation ->
+    override suspend fun getAllStore(): Result<List<Store>> = suspendCoroutine { continuation ->
         FirebaseFirestore.getInstance()
             .collection(PATH_Stores)
             .get()
@@ -136,7 +141,10 @@ object DrinkRemoteDataSource : DrinkDataSource {
                 } else {
                     task.exception?.let {
 
-                        Log.w("","[${this::class.simpleName}] Error getting documents. ${it.message}")
+                        Log.w(
+                            "",
+                            "[${this::class.simpleName}] Error getting documents. ${it.message}"
+                        )
                         continuation.resume(Result.Error(it))
                         return@addOnCompleteListener
                     }
@@ -146,100 +154,103 @@ object DrinkRemoteDataSource : DrinkDataSource {
 
     }
 
-    override suspend fun getStoreMenu(store: Store): Result<List<Drink>> = suspendCoroutine { continuation ->
-        FirebaseFirestore.getInstance()
-            .collection(PATH_Stores)
-            .document(store.storeId)
-            .collection(PATH_Menu)
-            .get()
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    val list = mutableListOf<Drink>()
-                    for (document in task.result!!) {
+    override suspend fun getStoreMenu(store: Store): Result<List<Drink>> =
+        suspendCoroutine { continuation ->
+            FirebaseFirestore.getInstance()
+                .collection(PATH_Stores)
+                .document(store.storeId)
+                .collection(PATH_Menu)
+                .get()
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        val list = mutableListOf<Drink>()
+                        for (document in task.result!!) {
 //                        Logger.d(document.id + " => " + document.data)
-                        Log.d(TAG, "${document.id} => ${document.data}")
-                        val allStoreDrink = document.toObject(Drink::class.java)
+                            Log.d(TAG, "${document.id} => ${document.data}")
+                            val allStoreDrink = document.toObject(Drink::class.java)
 
-                        list.add(allStoreDrink)
-                    }
-                    Log.d(TAG, "$list")
+                            list.add(allStoreDrink)
+                        }
+                        Log.d(TAG, "$list")
 //                    continuation.resume(Result.Success(list))
-                    continuation.resume(Result.Success(list))
-                } else {
-                    task.exception?.let {
+                        continuation.resume(Result.Success(list))
+                    } else {
+                        task.exception?.let {
 
-                        Log.w(
-                            "",
-                            "[${this::class.simpleName}] Error getting documents. ${it.message}"
-                        )
-                        continuation.resume(Result.Error(it))
-                        return@addOnCompleteListener
+                            Log.w(
+                                "",
+                                "[${this::class.simpleName}] Error getting documents. ${it.message}"
+                            )
+                            continuation.resume(Result.Error(it))
+                            return@addOnCompleteListener
+                        }
+                        continuation.resume(Result.Fail(DrinkApplication.instance.getString(R.string.you_know_nothing)))
                     }
-                    continuation.resume(Result.Fail(DrinkApplication.instance.getString(R.string.you_know_nothing)))
                 }
-            }
-    }
-
-    override suspend fun postComment(comment: Comment): Result<Boolean> = suspendCoroutine { continuation ->
-        val comments = FirebaseFirestore.getInstance().collection(PATH_Comments)
-        val userCurrent = FirebaseAuth.getInstance().currentUser
-        val document = comments.document()
-
-        comment.id = document.id
-        comment.userId = userCurrent!!.uid
-
-        document
-            .set(comment)
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-//                    continuation.resume(Result.Success(list))
-                    continuation.resume(Result.Success(true))
-                } else {
-                    task.exception?.let {
-
-                        Log.w(
-                            "",
-                            "[${this::class.simpleName}] Error getting documents. ${it.message}"
-                        )
-                        continuation.resume(Result.Error(it))
-                        return@addOnCompleteListener
-                    }
-                    continuation.resume(Result.Fail(DrinkApplication.instance.getString(R.string.you_know_nothing)))
-                }
-            }
-    }
-
-    override suspend fun createOrder(order: Order): Result<Boolean> = suspendCoroutine { continuation ->
-        val orders = FirebaseFirestore.getInstance().collection(PATH_Orders)
-        val userCurrent = FirebaseAuth.getInstance().currentUser
-        val document = orders.document("${Calendar.getInstance().timeInMillis}")
-
-        order.id = document.id
-        order.createdTime = Calendar.getInstance().timeInMillis
-        userCurrent?.let {
-            order.user = User(it.uid,it.displayName,it.email,"")
         }
 
-        document
-            .set(order)
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-//                    continuation.resume(Result.Success(list))
-                    continuation.resume(Result.Success(true))
-                } else {
-                    task.exception?.let {
+    override suspend fun postComment(comment: Comment): Result<Boolean> =
+        suspendCoroutine { continuation ->
+            val comments = FirebaseFirestore.getInstance().collection(PATH_Comments)
+            val userCurrent = FirebaseAuth.getInstance().currentUser
+            val document = comments.document()
 
-                        Log.w(
-                            "",
-                            "[${this::class.simpleName}] Error getting documents. ${it.message}"
-                        )
-                        continuation.resume(Result.Error(it))
-                        return@addOnCompleteListener
+            comment.id = document.id
+            comment.userId = userCurrent!!.uid
+
+            document
+                .set(comment)
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+//                    continuation.resume(Result.Success(list))
+                        continuation.resume(Result.Success(true))
+                    } else {
+                        task.exception?.let {
+
+                            Log.w(
+                                "",
+                                "[${this::class.simpleName}] Error getting documents. ${it.message}"
+                            )
+                            continuation.resume(Result.Error(it))
+                            return@addOnCompleteListener
+                        }
+                        continuation.resume(Result.Fail(DrinkApplication.instance.getString(R.string.you_know_nothing)))
                     }
-                    continuation.resume(Result.Fail(DrinkApplication.instance.getString(R.string.you_know_nothing)))
                 }
+        }
+
+    override suspend fun createOrder(order: Order): Result<Boolean> =
+        suspendCoroutine { continuation ->
+            val orders = FirebaseFirestore.getInstance().collection(PATH_Orders)
+            val userCurrent = FirebaseAuth.getInstance().currentUser
+            val document = orders.document("${Calendar.getInstance().timeInMillis}")
+
+            order.id = document.id
+            order.createdTime = Calendar.getInstance().timeInMillis
+            userCurrent?.let {
+                order.user = User(it.uid, it.displayName, it.email, "")
             }
-    }
+
+            document
+                .set(order)
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+//                    continuation.resume(Result.Success(list))
+                        continuation.resume(Result.Success(true))
+                    } else {
+                        task.exception?.let {
+
+                            Log.w(
+                                "",
+                                "[${this::class.simpleName}] Error getting documents. ${it.message}"
+                            )
+                            continuation.resume(Result.Error(it))
+                            return@addOnCompleteListener
+                        }
+                        continuation.resume(Result.Fail(DrinkApplication.instance.getString(R.string.you_know_nothing)))
+                    }
+                }
+        }
 
     override suspend fun getOrder(orderId: Long): Result<OrderLists> = suspendCoroutine { continuation ->
         val orders = FirebaseFirestore.getInstance().collection(PATH_Orders)
@@ -251,6 +262,28 @@ object DrinkRemoteDataSource : DrinkDataSource {
                 if (task.isSuccessful) {
 //                    continuation.resume(Result.Success(list))
                     val order = task.result!!.toObject(Order::class.java)
+                    val allOrderList = mutableListOf<OrderList>()
+                    Log.d(TAG,"addOnCompleteListener")
+
+//                    orders
+//                        .document("$orderId").collection("lists").get().addOnSuccessListener {orderListTask->
+//                            for (document in orderListTask) {
+////                        Logger.d(document.id + " => " + document.data)
+//                                Log.d(TAG, "${document.id} => ${document.data}")
+//                                val orderList = document.toObject(OrderList::class.java)
+//                                allOrderList.add(orderList)
+//
+//                                if (allOrderList.size == orderListTask.size()){
+//                                    val orderLists = OrderLists(order, allOrderList)
+//                                    Log.d(TAG,"getOrder = $orderLists")
+//                                    continuation.resume(Result.Success(orderLists))
+//                                }
+//
+//                            }
+//
+//                        }
+
+
                     val orderLists = OrderLists(order, listOf())
                     Log.d(TAG,"getOrder = $orderLists")
                     continuation.resume(Result.Success(orderLists))
@@ -269,33 +302,123 @@ object DrinkRemoteDataSource : DrinkDataSource {
             }
     }
 
-    override suspend fun addOrder(orderList: OrderList, orderId: Long): Result<Boolean> = suspendCoroutine { continuation ->
-        val orders = FirebaseFirestore.getInstance().collection(PATH_Orders)
-        val document = orders.document(orderId.toString()).collection("lists").document()
-        val userCurrent = FirebaseAuth.getInstance().currentUser
+    /*LiveDataTest*/
+//    override suspend fun getOrder(orderId: Long): Result<OrderLists> =
+//        suspendCoroutine { continuation ->
+//            val orders = FirebaseFirestore.getInstance().collection(PATH_Orders)
+//            val liveData = MutableLiveData<List<OrderList>>().apply {
+//                value = mutableListOf()
+//            }
+//
+//            orders
+//                .document("$orderId")
+//                .get()
+//                .addOnCompleteListener { task ->
+//                    if (task.isSuccessful) {
+////                    continuation.resume(Result.Success(list))
+//                        val order = task.result!!.toObject(Order::class.java)
+//
+//                    val orderLists = OrderLists(order, listOf())
+//                    Log.d(TAG,"getOrder = $orderLists")
+//                    continuation.resume(Result.Success(orderLists))
+//
+//                    } else {
+//                        task.exception?.let {
+//
+//                            Log.w(
+//                                "",
+//                                "[${this::class.simpleName}] Error getting documents. ${it.message}"
+//                            )
+//                            continuation.resume(Result.Error(it))
+//                            return@addOnCompleteListener
+//                        }
+//                        continuation.resume(Result.Fail(DrinkApplication.instance.getString(R.string.you_know_nothing)))
+//                    }
+//                }
+//        }
 
-        orderList.id = document.id
-        orderList.user = User(userCurrent!!.uid,userCurrent.displayName,userCurrent.email,"")
+    override fun getOrderLive(orderId: Long): LiveData<List<OrderList>> {
+        val liveData = MutableLiveData<List<OrderList>>().apply {
+            value = mutableListOf()
+        }
 
-        document
-            .set(orderList)
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-//                    continuation.resume(Result.Success(list))
-                    continuation.resume(Result.Success(true))
-                } else {
-                    task.exception?.let {
-
-                        Log.w(
-                            "",
-                            "[${this::class.simpleName}] Error getting documents. ${it.message}"
-                        )
-                        continuation.resume(Result.Error(it))
-                        return@addOnCompleteListener
-                    }
-                    continuation.resume(Result.Fail(DrinkApplication.instance.getString(R.string.you_know_nothing)))
+        FirebaseFirestore.getInstance()
+            .collection(PATH_Orders)
+            .document("$orderId")
+            .collection("lists")
+            .addSnapshotListener { snapshot, exception ->
+                exception?.let {
+                    Log.w(TAG, "Listen failed.", it)
                 }
+                val list = mutableListOf<OrderList>()
+
+                for (document in snapshot!!) {
+                    val orderList = document.toObject(OrderList::class.java)
+                    list.add(orderList)
+                    Log.d(TAG,"getOrderLive = $orderList")
+                }
+                liveData.value = list
+                Log.d(TAG,"liveData = ${liveData.value}")
+
             }
+
+        return liveData
     }
+
+    override suspend fun addOrder(orderList: OrderList, orderId: Long): Result<Boolean> =
+        suspendCoroutine { continuation ->
+            val orders = FirebaseFirestore.getInstance().collection(PATH_Orders)
+            val document = orders.document(orderId.toString()).collection("lists").document()
+            val userCurrent = FirebaseAuth.getInstance().currentUser
+
+            orderList.id = document.id
+            orderList.user = User(userCurrent!!.uid, userCurrent.displayName, userCurrent.email, "")
+
+            document
+                .set(orderList)
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+//                    continuation.resume(Result.Success(list))
+                        continuation.resume(Result.Success(true))
+                    } else {
+                        task.exception?.let {
+
+                            Log.w(
+                                "",
+                                "[${this::class.simpleName}] Error getting documents. ${it.message}"
+                            )
+                            continuation.resume(Result.Error(it))
+                            return@addOnCompleteListener
+                        }
+                        continuation.resume(Result.Fail(DrinkApplication.instance.getString(R.string.you_know_nothing)))
+                    }
+                }
+        }
+
+    override suspend fun editOrderStatus(orderId: Long, editStatus: Boolean): Result<Boolean> =
+        suspendCoroutine { continuation ->
+            val orders = FirebaseFirestore.getInstance().collection(PATH_Orders)
+            val document = orders.document(orderId.toString())
+
+            document
+                .update("status",editStatus)
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+//                    continuation.resume(Result.Success(list))
+                        continuation.resume(Result.Success(true))
+                    } else {
+                        task.exception?.let {
+
+                            Log.w(
+                                "",
+                                "[${this::class.simpleName}] Error getting documents. ${it.message}"
+                            )
+                            continuation.resume(Result.Error(it))
+                            return@addOnCompleteListener
+                        }
+                        continuation.resume(Result.Fail(DrinkApplication.instance.getString(R.string.you_know_nothing)))
+                    }
+                }
+        }
 
 }

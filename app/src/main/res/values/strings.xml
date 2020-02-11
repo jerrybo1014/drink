@@ -27,7 +27,11 @@
     <string name="spinner_drink">請選擇飲品</string>
 
     <!-- order page -->
-    <string name="order_host">主糾</string>
+    <string name="order_host">主揪</string>
+    <string name="order_status_active">狀態 : 開啟中</string>
+    <string name="order_status_inactive">狀態 : 已關閉</string>
+    <string name="order_status_to_active">開啟訂單</string>
+    <string name="order_status_to_inactive">結束訂單</string>
 
     <!-- Fb login -->
     <string name="facebook_app_id">473522680006069</string>

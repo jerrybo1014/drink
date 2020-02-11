@@ -7,8 +7,10 @@ import androidx.core.net.toUri
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import app.jerry.drink.dataclass.Comment
+import app.jerry.drink.dataclass.OrderList
 import app.jerry.drink.ext.toDisplayFormat
 import app.jerry.drink.home.NewCommentAdapter
+import app.jerry.drink.order.OrderListsAdapter
 import app.jerry.drink.post.IceAdapter
 import app.jerry.drink.post.SugarAdapter
 import com.bumptech.glide.Glide
@@ -37,6 +39,12 @@ fun bindDisplayFormatTime(textView: TextView, time: Long?) {
 @BindingAdapter("listNewComment")
 fun bindNewComment(recyclerView: RecyclerView, data: List<Comment>?){
     val adapter = recyclerView.adapter as NewCommentAdapter
+    adapter.submitList(data)
+}
+
+@BindingAdapter("listOrder")
+fun bindOrderLists(recyclerView: RecyclerView, data: List<OrderList>?){
+    val adapter = recyclerView.adapter as OrderListsAdapter
     adapter.submitList(data)
 }
 

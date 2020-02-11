@@ -4,19 +4,22 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
+        <variable
+            name="orderList"
+            type="app.jerry.drink.dataclass.OrderList" />
 
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:padding="16dp">
 
         <TextView
             android:id="@+id/text_order_list_drink"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="紅茶拿鐵"
+            android:text="@{orderList.drink.drinkName}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -24,7 +27,7 @@
             android:id="@+id/text_add_order_ice_sugar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="半糖去冰"
+            android:text="@{orderList.displayIceSugar()}"
             app:layout_constraintHorizontal_bias="0.6"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -34,8 +37,8 @@
             android:id="@+id/text_order_list_qty"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="X3"
-            app:layout_constraintHorizontal_bias="0.3"
+            android:text="@{orderList.displayQty()}"
+            app:layout_constraintHorizontal_bias="0.35"
             app:layout_constraintBaseline_toBaselineOf="@+id/text_order_list_drink"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
@@ -44,7 +47,7 @@
             android:id="@+id/text_add_order_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="jerry"
+            android:text="@{orderList.user.name}"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -54,7 +57,7 @@
             android:id="@+id/text_add_order_note"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="333"
+            android:text=""
             app:layout_constraintHorizontal_bias="0.8"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
