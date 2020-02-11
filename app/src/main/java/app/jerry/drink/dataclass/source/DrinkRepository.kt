@@ -24,5 +24,11 @@ interface DrinkRepository {
 
     suspend fun addOrder(orderList: OrderList, orderId: Long): Result<Boolean>
 
+    suspend fun removeOrder(orderId: Long ,id: String): Result<Boolean>
+
     suspend fun editOrderStatus(orderId: Long, editStatus: Boolean): Result<Boolean>
+
+    fun getUserCurrent(): User
+
+
 }

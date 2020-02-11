@@ -9,11 +9,8 @@ import app.jerry.drink.R
 import app.jerry.drink.dataclass.*
 import app.jerry.drink.dataclass.source.DrinkDataSource
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.DocumentReference
-import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
-import com.google.firebase.firestore.model.DocumentKey
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
@@ -263,7 +260,6 @@ object DrinkRemoteDataSource : DrinkDataSource {
 //                    continuation.resume(Result.Success(list))
                     val order = task.result!!.toObject(Order::class.java)
                     val allOrderList = mutableListOf<OrderList>()
-                    Log.d(TAG,"addOnCompleteListener")
 
 //                    orders
 //                        .document("$orderId").collection("lists").get().addOnSuccessListener {orderListTask->
@@ -358,8 +354,6 @@ object DrinkRemoteDataSource : DrinkDataSource {
                     Log.d(TAG,"getOrderLive = $orderList")
                 }
                 liveData.value = list
-                Log.d(TAG,"liveData = ${liveData.value}")
-
             }
 
         return liveData
@@ -383,6 +377,31 @@ object DrinkRemoteDataSource : DrinkDataSource {
                     } else {
                         task.exception?.let {
 
+                            Log.w(
+                                "",
+                                "[${this::class.simpleName}] Error getting documents. ${it.message}"
+                            )
+                            continuation.resume(Result.Error(it))
+                            return@addOnCompleteListener
+                        }
+                        continuation.resume(Result.Fail(DrinkApplication.instance.getString(R.string.you_know_nothing)))
+                    }
+                }
+        }
+
+    override suspend fun removeOrder(orderId: Long ,id: String): Result<Boolean> =
+        suspendCoroutine { continuation ->
+            val orders = FirebaseFirestore.getInstance().collection(PATH_Orders)
+            val document = orders.document(orderId.toString()).collection("lists").document(id)
+
+            document
+                .delete()
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+//                    continuation.resume(Result.Success(list))
+                        continuation.resume(Result.Success(true))
+                    } else {
+                        task.exception?.let {
                             Log.w(
                                 "",
                                 "[${this::class.simpleName}] Error getting documents. ${it.message}"
@@ -420,5 +439,12 @@ object DrinkRemoteDataSource : DrinkDataSource {
                     }
                 }
         }
+
+    override fun getUserCurrent(): User  {
+        val userCurrent = FirebaseAuth.getInstance().currentUser
+        return User(userCurrent!!.uid, userCurrent.displayName, userCurrent.email, "")
+    }
+
+
 
 }

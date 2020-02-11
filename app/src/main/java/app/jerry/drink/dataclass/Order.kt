@@ -13,7 +13,11 @@ data class Order(
     var timeLimit: String? ="",
     var note: String = "",
     var status: Boolean = true
-): Parcelable
+): Parcelable{
+    fun displayUserId(): String{
+        return user!!.id
+    }
+}
 
 @Parcelize
 data class OrderList(
@@ -33,6 +37,9 @@ data class OrderList(
         return "$sugar$ice"
     }
 
+    fun displayUserId(): String{
+        return user!!.id
+    }
 }
 
 @Parcelize

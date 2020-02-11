@@ -11,17 +11,20 @@
         <import type="android.view.View"/>
     </data>
 
+
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="16dp"
+        android:paddingHorizontal="16dp"
         >
 
         <androidx.appcompat.widget.SearchView
             android:id="@+id/search_view"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="30dp"
             android:layout_marginEnd="25dp"
+            android:background="@drawable/shape_corner_r"
             android:inputType="number"
             app:defaultQueryHint="查詢訂單編號"
             app:iconifiedByDefault="false"
@@ -32,7 +35,7 @@
 
         <ScrollView
             android:id="@+id/scrollView2"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -42,8 +45,9 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingHorizontal="6dp"
+                android:layout_height="match_parent"
+                android:paddingHorizontal="8dp"
+                android:layout_marginTop="16dp"
                 android:background="@drawable/shape_corner_r"
                 android:backgroundTint="#FAF4E4"
                 android:visibility="@{viewModel.orderLists == null ? View.GONE:View.VISIBLE}">
@@ -54,6 +58,7 @@
                     android:layout_height="wrap_content"
                     android:text="@{viewModel.orderLists.order.status == true ? @string/order_status_to_inactive:@string/order_status_to_active}"
                     android:onClick="@{() -> viewModel.editOrderStatusResult()}"
+                    android:visibility="@{viewModel.userStatus == true ? View.VISIBLE:View.GONE}"
                     app:layout_constraintBaseline_toBaselineOf="@+id/text_store_create_order"
                     app:layout_constraintEnd_toEndOf="parent" />
 
@@ -78,9 +83,9 @@
                     android:id="@+id/button_add_order"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
                     android:background="@drawable/background_post_button"
-                    android:padding="6dp"
+                    android:padding="8dp"
+                    android:layout_marginVertical="8dp"
                     android:text="新增品項"
                     android:visibility="@{viewModel.orderLists.order.status == true ? View.VISIBLE:View.GONE}"
                     android:textAlignment="center"

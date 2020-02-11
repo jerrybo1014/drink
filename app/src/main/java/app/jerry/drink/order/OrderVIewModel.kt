@@ -2,14 +2,12 @@ package app.jerry.drink.order
 
 import android.util.Log
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import app.jerry.drink.DrinkApplication
 import app.jerry.drink.R
-import app.jerry.drink.dataclass.OrderList
-import app.jerry.drink.dataclass.OrderLists
-import app.jerry.drink.dataclass.Result
-import app.jerry.drink.dataclass.Store
+import app.jerry.drink.dataclass.*
 import app.jerry.drink.dataclass.source.DrinkRepository
 import app.jerry.drink.dataclass.source.remote.DrinkRemoteDataSource
 import app.jerry.drink.network.LoadApiStatus
@@ -37,6 +35,10 @@ class OrderVIewModel(private val repository: DrinkRepository) : ViewModel() {
 
     val orderLive: LiveData<List<OrderList>>
         get() = _orderLive
+
+    val userCurrent = MutableLiveData<User>().apply {
+        value = repository.getUserCurrent()
+    }
 
 
     // status: The internal MutableLiveData that stores the status of the most recent request
@@ -164,6 +166,58 @@ class OrderVIewModel(private val repository: DrinkRepository) : ViewModel() {
 
     }
 
+
+    fun removeOrderResult(id: String) {
+
+        coroutineScope.launch {
+
+            _status.value = LoadApiStatus.LOADING
+
+
+            val result = repository.removeOrder(orderLists.value?.order?.id!!.toLong(), id)
+
+            /**/
+            when (result) {
+                is Result.Success -> {
+                    _error.value = null
+                    _status.value = LoadApiStatus.DONE
+
+                    getOrderResult(orderLists.value?.order?.id!!.toLong())
+                    /**/
+                    result.data
+                    /**/
+                }
+                is Result.Fail -> {
+                    _error.value = result.error
+                    _status.value = LoadApiStatus.ERROR
+                    null
+                }
+                is Result.Error -> {
+                    _error.value = result.exception.toString()
+                    _status.value = LoadApiStatus.ERROR
+                    null
+                }
+                else -> {
+                    _error.value = DrinkApplication.instance.getString(R.string.you_know_nothing)
+                    _status.value = LoadApiStatus.ERROR
+                    null
+                }
+            }
+            _refreshStatus.value = false
+        }
+
+    }
+
+    val userStatus = MediatorLiveData<Boolean>().apply {
+        addSource(userCurrent){checkIfUsersAreTheSame()}
+        addSource(orderLists){checkIfUsersAreTheSame()}
+    }
+
+    private fun checkIfUsersAreTheSame() {
+        if(userCurrent.value != null && orderLists.value != null) {
+            userStatus.value = userCurrent.value!!.id == orderLists.value!!.order?.user?.id
+        }
+    }
 
 
 }

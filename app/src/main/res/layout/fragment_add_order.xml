@@ -7,28 +7,27 @@
         <variable
             name="viewModel"
             type="app.jerry.drink.order.addorder.AddOrderViewModel" />
+
+        <import type="android.graphics.Color"/>
     </data>
 
-
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/transparent"
+        android:onClick="@{() -> viewModel.leave(false)}">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="16dp"
-            android:background="#FFFFFF"
+            android:background="@drawable/shape_corner_r"
+            android:backgroundTint="#FFFFFF"
             android:layout_marginHorizontal="16dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
-
-            <View
-                android:id="@+id/line_comment"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="#cccccc"
-                android:visibility="invisible"
-                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/add_order_title"
@@ -198,28 +197,19 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="送出品項"
+                android:textColor='@{viewModel.selectedIce == null || viewModel.selectedSugar == null ? Color.parseColor("#FFFFFF"):Color.parseColor("#000000")}'
                 android:background="@drawable/background_post_button"
                 android:textAlignment="center"
                 android:paddingTop="10dp"
                 android:paddingBottom="10dp"
                 android:onClick="@{() -> viewModel.addOrderResult()}"
                 android:enabled="@{viewModel.selectedIce == null || viewModel.selectedSugar == null ? false:true}"
-                android:layout_marginStart="10dp"
-                android:layout_marginEnd="10dp"
-                android:layout_marginTop="25dp"
+                android:layout_marginTop="16dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/edit_text_note" />
 
-            <View
-                android:id="@+id/line_comment_bottom"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginTop="8dp"
-                android:background="#cccccc"
-                android:visibility="invisible"
-                app:layout_constraintTop_toBottomOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

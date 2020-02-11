@@ -28,7 +28,7 @@ class AddOrderFragment : DialogFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-//        setStyle(STYLE_NORMAL, R.style.AddOrderDialog)
+        setStyle(STYLE_NORMAL, R.style.AddOrderDialog)
     }
 
     override fun onCreateView(
@@ -78,6 +78,11 @@ class AddOrderFragment : DialogFragment() {
         viewModel.addOrderfinished.observe(this, Observer {
             if (it != null && it == true){
                 Toast.makeText(DrinkApplication.context, "成功送出", Toast.LENGTH_SHORT).show()
+                dismiss() }
+        })
+
+        viewModel.leave.observe(this, Observer {
+            if (!it){
                 dismiss() }
         })
 

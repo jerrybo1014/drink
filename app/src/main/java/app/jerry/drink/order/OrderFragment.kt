@@ -67,7 +67,6 @@ class OrderFragment : Fragment() {
                 return true
             }
         }
-
         )
 
 

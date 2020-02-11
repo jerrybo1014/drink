@@ -44,7 +44,15 @@ class DefaultDrinkRepository(private val remoteDataSource: DrinkDataSource,
         return remoteDataSource.addOrder(orderList, orderId)
     }
 
+    override suspend fun removeOrder(orderId: Long ,id: String): Result<Boolean> {
+        return remoteDataSource.removeOrder(orderId, id)
+    }
+
     override suspend fun editOrderStatus(orderId: Long, editStatus: Boolean): Result<Boolean> {
         return remoteDataSource.editOrderStatus(orderId, editStatus)
+    }
+
+    override fun getUserCurrent(): User {
+        return remoteDataSource.getUserCurrent()
     }
 }

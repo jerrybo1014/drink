@@ -8,61 +8,105 @@
             name="orderList"
             type="app.jerry.drink.dataclass.OrderList" />
 
+        <variable
+            name="viewModel"
+            type="app.jerry.drink.order.OrderVIewModel" />
+
+        <variable
+            name="userCurrent"
+            type="Boolean" />
+
+        <import type="android.view.View"/>
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="16dp">
+        android:paddingVertical="8dp">
 
-        <TextView
-            android:id="@+id/text_order_list_drink"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@{orderList.drink.drinkName}"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/text_add_order_ice_sugar"
-            android:layout_width="wrap_content"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@{orderList.displayIceSugar()}"
-            app:layout_constraintHorizontal_bias="0.6"
+            android:padding="16dp"
+            android:backgroundTint="@color/White"
+            android:background="@drawable/shape_corner_r"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
-            android:id="@+id/text_order_list_qty"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@{orderList.displayQty()}"
-            app:layout_constraintHorizontal_bias="0.35"
-            app:layout_constraintBaseline_toBaselineOf="@+id/text_order_list_drink"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guide_1"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.3"/>
 
-        <TextView
-            android:id="@+id/text_add_order_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@{orderList.user.name}"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guide_2"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.65"/>
 
-        <TextView
-            android:id="@+id/text_add_order_note"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text=""
-            app:layout_constraintHorizontal_bias="0.8"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            <TextView
+                android:id="@+id/text_order_list_drink"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{orderList.drink.drinkName}"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
+            <TextView
+                android:id="@+id/text_add_order_ice_sugar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{orderList.displayQty()}"
+                app:layout_constraintStart_toStartOf="@+id/guide_2"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/text_order_list_qty"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{orderList.displayIceSugar() }"
+                app:layout_constraintBaseline_toBaselineOf="@+id/text_order_list_drink"
+                app:layout_constraintStart_toStartOf="@id/guide_1" />
+
+            <TextView
+                android:id="@+id/text_add_order_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{orderList.user.name}"
+                android:layout_marginTop="8dp"
+                android:layout_marginStart="8dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/text_order_list_drink" />
+
+            <TextView
+                android:id="@+id/text_add_order_note"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=""
+                app:layout_constraintHorizontal_bias="0.8"
+                app:layout_constraintStart_toStartOf="@+id/guide_1"
+                app:layout_constraintTop_toTopOf="@+id/text_add_order_name" />
+
+            <ImageView
+                android:id="@+id/image_trash"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:tint="@color/myColorPrimaryDark"
+                android:src="@drawable/trash"
+                android:onClick="@{() -> viewModel.removeOrderResult(orderList.id)}"
+                android:visibility="@{userCurrent == true ? View.VISIBLE:View.GONE}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -1,7 +1,11 @@
 package app.jerry.drink.order
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.LifecycleRegistry
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -16,16 +20,57 @@ class OrderListsAdapter(private val viewModel: OrderVIewModel) :
     class OrderListsHolder(private var binding: ItemOrderListsBinding,
                         private var viewModel: OrderVIewModel
     ) :
-        RecyclerView.ViewHolder(binding.root) {
+        RecyclerView.ViewHolder(binding.root), LifecycleOwner {
 
 
         fun bind(orderList: OrderList) {
             binding.orderList = orderList
-//            binding.string = string
-//            binding.detailImage = string
-            // This is important, because it forces the data binding to execute immediately,
-            // which allows the RecyclerView to make the correct view size measurements
+            binding.lifecycleOwner = this
+            binding.viewModel = viewModel
+
+            val userCurrent = orderList.user?.id == viewModel.userCurrent.value?.id
+            Log.d("jerryTest","OrderListsHolder = $userCurrent")
+            binding.userCurrent = userCurrent
+
             binding.executePendingBindings()
+        }
+
+        private val lifecycleRegistry = LifecycleRegistry(this)
+
+        init {
+            lifecycleRegistry.currentState = Lifecycle.State.INITIALIZED
+        }
+
+        fun onAttach() {
+            lifecycleRegistry.currentState = Lifecycle.State.STARTED
+        }
+
+        fun onDetach() {
+            lifecycleRegistry.currentState = Lifecycle.State.CREATED
+        }
+
+        override fun getLifecycle(): Lifecycle {
+            return lifecycleRegistry
+        }
+    }
+
+    /**
+     * It for [LifecycleRegistry] change [onViewAttachedToWindow]
+     */
+    override fun onViewAttachedToWindow(holder: OrderListsHolder) {
+        super.onViewAttachedToWindow(holder)
+        when (holder) {
+            is OrderListsHolder -> holder.onAttach()
+        }
+    }
+
+    /**
+     * It for [LifecycleRegistry] change [onViewDetachedFromWindow]
+     */
+    override fun onViewDetachedFromWindow(holder: OrderListsHolder) {
+        super.onViewDetachedFromWindow(holder)
+        when (holder) {
+            is OrderListsHolder -> holder.onDetach()
         }
     }
 
@@ -34,7 +79,7 @@ class OrderListsAdapter(private val viewModel: OrderVIewModel) :
             oldItem: OrderList,
             newItem: OrderList
         ): Boolean {
-            return oldItem === newItem
+            return oldItem.id == newItem.id
         }
 
         override fun areContentsTheSame(

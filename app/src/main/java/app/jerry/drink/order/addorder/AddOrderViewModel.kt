@@ -39,6 +39,12 @@ class AddOrderViewModel(private val repository: DrinkRepository, private val ord
     val orderList: LiveData<OrderList>
         get() = _orderList
 
+    private val _leave = MutableLiveData<Boolean>()
+
+    val leave: LiveData<Boolean>
+        get() = _leave
+
+
     var selectedIce = MutableLiveData<String>()
     var selectedSugar = MutableLiveData<String>()
     var selectedQty = MutableLiveData<Long>()
@@ -188,6 +194,15 @@ init {
     }
 
 
+    fun leave(needRefresh: Boolean = false) {
+        _leave.value = needRefresh
+    }
+
+    fun onLeft() {
+        _leave.value = null
+    }
+
+
     @InverseMethod("convertLongToString")
     fun convertStringToLong(value: String): Long {
         return try {
@@ -206,5 +221,6 @@ init {
     fun decrease(){
         selectedQty.value = selectedQty.value?.minus(1)
     }
+
 
 }
