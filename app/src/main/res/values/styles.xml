@@ -44,4 +44,8 @@
         <item name="android:windowBackground">@color/transparent</item>
     </style>
 
+    <style name="new_comment">
+        <item name="android:textSize">16dp</item>
+    </style>
+
 </resources>

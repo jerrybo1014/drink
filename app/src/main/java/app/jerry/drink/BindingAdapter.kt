@@ -14,6 +14,8 @@ import app.jerry.drink.order.OrderListsAdapter
 import app.jerry.drink.post.IceAdapter
 import app.jerry.drink.post.SugarAdapter
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.CenterCrop
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 
 @BindingAdapter("imageUrl")
@@ -24,6 +26,36 @@ fun bindImage(imgView: ImageView, imgUrl: String?) {
             .load(imgUri)
             .apply(
                 RequestOptions()
+                    .placeholder(R.drawable.placeholder)
+                    .error(R.drawable.placeholder)
+            )
+            .into(imgView)
+    }
+}
+
+@BindingAdapter("imageUrlCircle")
+fun bindImageCircle(imgView: ImageView, imgUrl: String?) {
+    imgUrl?.let {
+        val imgUri = imgUrl.toUri().buildUpon().scheme("https").build()
+        Glide.with(imgView.context)
+            .load(imgUri)
+            .apply(
+                RequestOptions.circleCropTransform()
+                    .placeholder(R.drawable.placeholder)
+                    .error(R.drawable.placeholder)
+            )
+            .into(imgView)
+    }
+}
+
+@BindingAdapter("imageUrlCorner")
+fun bindImageCorner(imgView: ImageView, imgUrl: String?) {
+    imgUrl?.let {
+        val imgUri = imgUrl.toUri().buildUpon().scheme("https").build()
+        Glide.with(imgView.context)
+            .load(imgUri)
+            .apply(
+                RequestOptions().transform(CenterCrop(),RoundedCorners(15))
                     .placeholder(R.drawable.placeholder)
                     .error(R.drawable.placeholder)
             )

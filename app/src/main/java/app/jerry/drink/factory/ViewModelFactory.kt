@@ -8,6 +8,7 @@ import app.jerry.drink.home.HomeViewModel
 import app.jerry.drink.order.CreateOrderViewModel
 import app.jerry.drink.order.OrderVIewModel
 import app.jerry.drink.post.PostViewModel
+import app.jerry.drink.profile.ProfileViewModel
 
 @Suppress("UNCHECKED_CAST")
 class ViewModelFactory constructor(
@@ -32,6 +33,9 @@ class ViewModelFactory constructor(
 
                 isAssignableFrom(OrderVIewModel::class.java) ->
                     OrderVIewModel(drinkRepository)
+
+                isAssignableFrom(ProfileViewModel::class.java) ->
+                    ProfileViewModel(drinkRepository)
 
                 else ->
                     throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")
