@@ -24,6 +24,7 @@
             android:layout_width="0dp"
             android:layout_height="30dp"
             android:layout_marginEnd="25dp"
+            android:layout_marginTop="16dp"
             android:background="@drawable/shape_corner_r"
             android:inputType="number"
             app:defaultQueryHint="查詢訂單編號"
@@ -48,6 +49,7 @@
                 android:layout_height="match_parent"
                 android:paddingHorizontal="8dp"
                 android:layout_marginTop="16dp"
+
                 android:background="@drawable/shape_corner_r"
                 android:backgroundTint="#FAF4E4"
                 android:visibility="@{viewModel.orderLists == null ? View.GONE:View.VISIBLE}">
@@ -231,11 +233,9 @@
             android:id="@+id/text_add_order"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
             android:text="新增訂單"
-            app:layout_constraintBottom_toTopOf="@+id/scrollView2"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="@+id/search_view" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
