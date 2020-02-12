@@ -1,6 +1,6 @@
 package app.jerry.drink.post
 
-import android.annotation.SuppressLint
+import android.net.Uri
 import android.util.Log
 import android.view.View
 import android.widget.TextView
@@ -18,7 +18,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
-import java.text.SimpleDateFormat
 
 class PostViewModel(private val repository: DrinkRepository) : ViewModel() {
 
@@ -51,7 +50,9 @@ class PostViewModel(private val repository: DrinkRepository) : ViewModel() {
     var selectedSugar = MutableLiveData<String>()
     val editComment = MutableLiveData<String>()
     var commentStar = MutableLiveData<Int>()
-    var postFinshed = MutableLiveData<Boolean>()
+    var postFinished = MutableLiveData<Boolean>()
+
+    var imageUri = MutableLiveData<Uri>()
 
     var selectedIcePosition = MutableLiveData<Int>()
 
@@ -81,7 +82,7 @@ class PostViewModel(private val repository: DrinkRepository) : ViewModel() {
 
 init {
     editComment.value = ""
-    postFinshed.value = false
+    postFinished.value = false
 }
 
     fun getAllStoreResult() {
@@ -173,14 +174,14 @@ init {
                 "",
                 System.currentTimeMillis())
 
-            val result = repository.postComment(comment)
+            val result = repository.postComment(comment, imageUri.value!!)
 
             when (result) {
                 is Result.Success -> {
                     _error.value = null
                     _status.value = LoadApiStatus.DONE
                     Log.d("postComentResult","$result.data")
-                    postFinshed.value = true
+                    postFinished.value = true
                     Toast.makeText(DrinkApplication.context, "成功送出", Toast.LENGTH_SHORT).show()
                     result.data
                 }

@@ -1,6 +1,7 @@
 package app.jerry.drink.dataclass.source.remote
 
 import android.icu.util.Calendar
+import android.net.Uri
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -8,9 +9,15 @@ import app.jerry.drink.DrinkApplication
 import app.jerry.drink.R
 import app.jerry.drink.dataclass.*
 import app.jerry.drink.dataclass.source.DrinkDataSource
+import com.google.android.gms.tasks.Continuation
+import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.UploadTask
+import java.io.File
+import java.util.*
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
@@ -186,35 +193,122 @@ object DrinkRemoteDataSource : DrinkDataSource {
                 }
         }
 
-    override suspend fun postComment(comment: Comment): Result<Boolean> =
+
+//    override suspend fun postComment(comment: Comment): Result<Boolean> =
+//        suspendCoroutine { continuation ->
+//            val comments = FirebaseFirestore.getInstance().collection(PATH_Comments)
+//            val userCurrent = FirebaseAuth.getInstance().currentUser
+//            val document = comments.document()
+//
+//            val storageReference = FirebaseStorage.getInstance().reference
+//
+//            comment.id = document.id
+//            comment.userId = userCurrent!!.uid
+//
+////            val ref = storageReference.child("uploads/" + UUID.randomUUID().toString())
+////            val uploadTask = ref.putFile("")
+//            val file = Uri.fromFile(File("content://com.android.providers.media.documents/document/image%3A159176"))
+//            val riversRef = storageReference.child("uploads/" + UUID.randomUUID().toString())
+//            val uploadTask = riversRef.putFile(file)
+//
+//            uploadTask.continueWithTask(Continuation<UploadTask.TaskSnapshot, Task<Uri>> { taskImage ->
+//                if (!taskImage.isSuccessful) {
+//                    taskImage.exception?.let {
+//                        throw it
+//                    }
+//                }
+//                return@Continuation riversRef.downloadUrl
+//            }).addOnCompleteListener { taskImage ->
+//                if (taskImage.isSuccessful) {
+//
+////                    addUploadRecordToDb(downloadUri.toString())
+//                    comment.drinkImage = taskImage.result.toString()
+//
+//                    document
+//                        .set(comment)
+//                        .addOnCompleteListener { task ->
+//                            if (task.isSuccessful) {
+////                    continuation.resume(Result.Success(list))
+//                                continuation.resume(Result.Success(true))
+//                            } else {
+//                                task.exception?.let {
+//
+//                                    Log.w(
+//                                        "",
+//                                        "[${this::class.simpleName}] Error getting documents. ${it.message}"
+//                                    )
+//                                    continuation.resume(Result.Error(it))
+//                                    return@addOnCompleteListener
+//                                }
+//                                continuation.resume(Result.Fail(DrinkApplication.instance.getString(R.string.you_know_nothing)))
+//                            }
+//                        }
+//
+//
+//                }
+//
+//            }.addOnFailureListener{
+//
+//            }
+//
+//        }
+
+
+    override suspend fun postComment(comment: Comment, uri: Uri): Result<Boolean> =
         suspendCoroutine { continuation ->
             val comments = FirebaseFirestore.getInstance().collection(PATH_Comments)
             val userCurrent = FirebaseAuth.getInstance().currentUser
             val document = comments.document()
+            val storageReference = FirebaseStorage.getInstance().reference
 
             comment.id = document.id
             comment.userId = userCurrent!!.uid
 
-            document
-                .set(comment)
-                .addOnCompleteListener { task ->
-                    if (task.isSuccessful) {
-//                    continuation.resume(Result.Success(list))
-                        continuation.resume(Result.Success(true))
-                    } else {
-                        task.exception?.let {
+            val riversRef = storageReference.child("uploads/" + UUID.randomUUID().toString())
+            val uploadTask = riversRef.putFile(uri)
 
-                            Log.w(
-                                "",
-                                "[${this::class.simpleName}] Error getting documents. ${it.message}"
-                            )
-                            continuation.resume(Result.Error(it))
-                            return@addOnCompleteListener
-                        }
-                        continuation.resume(Result.Fail(DrinkApplication.instance.getString(R.string.you_know_nothing)))
+            uploadTask.continueWithTask(Continuation<UploadTask.TaskSnapshot, Task<Uri>> { taskImage ->
+                if (!taskImage.isSuccessful) {
+                    taskImage.exception?.let {
+                        throw it
                     }
                 }
-        }
+                return@Continuation riversRef.downloadUrl
+            }).addOnCompleteListener { taskImage ->
+                if (taskImage.isSuccessful) {
+
+//                    addUploadRecordToDb(downloadUri.toString())
+                    comment.drinkImage = taskImage.result.toString()
+
+                    document
+                        .set(comment)
+                        .addOnCompleteListener { task ->
+                            if (task.isSuccessful) {
+//                    continuation.resume(Result.Success(list))
+                                continuation.resume(Result.Success(true))
+                            } else {
+                                task.exception?.let {
+
+                                    Log.w(
+                                        "",
+                                        "[${this::class.simpleName}] Error getting documents. ${it.message}"
+                                    )
+                                    continuation.resume(Result.Error(it))
+                                    return@addOnCompleteListener
+                                }
+                                continuation.resume(Result.Fail(DrinkApplication.instance.getString(R.string.you_know_nothing)))
+                            }
+                        }
+
+
+                }
+
+            }.addOnFailureListener{
+
+            }
+
+            }
+
 
     override suspend fun createOrder(order: Order): Result<Boolean> =
         suspendCoroutine { continuation ->

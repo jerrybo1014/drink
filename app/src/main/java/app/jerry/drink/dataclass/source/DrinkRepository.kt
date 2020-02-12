@@ -1,5 +1,6 @@
 package app.jerry.drink.dataclass.source
 
+import android.net.Uri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import app.jerry.drink.dataclass.*
@@ -14,7 +15,7 @@ interface DrinkRepository {
 
     suspend fun getStoreMenu(store: Store): Result<List<Drink>>
 
-    suspend fun postComment(comment: Comment): Result<Boolean>
+    suspend fun postComment(comment: Comment, uri: Uri): Result<Boolean>
 
     suspend fun createOrder(order: Order): Result<Boolean>
 

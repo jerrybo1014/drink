@@ -75,6 +75,7 @@ dependencies {
     // Firebase Auth UI (第三方登入畫面模組)
     implementation 'com.firebaseui:firebase-ui-auth:4.2.1'
 
+    implementation 'com.google.firebase:firebase-storage:19.1.1'
 
     // google map
     implementation 'com.google.android.gms:play-services-maps:17.0.0'

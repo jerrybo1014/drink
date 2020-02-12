@@ -1,5 +1,6 @@
 package app.jerry.drink.dataclass.source
 
+import android.net.Uri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import app.jerry.drink.dataclass.*
@@ -24,8 +25,8 @@ class DefaultDrinkRepository(private val remoteDataSource: DrinkDataSource,
         return remoteDataSource.getStoreMenu(store)
     }
 
-    override suspend fun postComment(comment: Comment): Result<Boolean> {
-        return remoteDataSource.postComment(comment)
+    override suspend fun postComment(comment: Comment, uri: Uri): Result<Boolean> {
+        return remoteDataSource.postComment(comment, uri)
     }
 
     override suspend fun createOrder(order: Order): Result<Boolean> {

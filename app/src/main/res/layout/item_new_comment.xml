@@ -100,9 +100,11 @@
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:layout_marginEnd="16dp"
+                    android:scaleType="centerCrop"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/text_name"
                     app:srcCompat="@drawable/drink_sample"
+                    imageUrl="@{comment.drinkImage}"
                     />
 
                 <TextView

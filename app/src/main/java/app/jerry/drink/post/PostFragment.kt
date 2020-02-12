@@ -1,11 +1,15 @@
 package app.jerry.drink.post
 
+import android.app.Activity
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -15,11 +19,23 @@ import app.jerry.drink.MainActivity
 import app.jerry.drink.R
 import app.jerry.drink.databinding.FragmentPostBinding
 import app.jerry.drink.ext.getVmFactory
+import com.bumptech.glide.Glide
+import com.google.android.gms.tasks.Continuation
+import com.google.android.gms.tasks.Task
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
+import com.google.firebase.storage.UploadTask
+import kotlinx.android.synthetic.main.fragment_post.*
+import java.io.IOException
+import java.util.*
 
 class PostFragment : Fragment() {
 
     lateinit var binding: FragmentPostBinding
     private val viewModel by viewModels<PostViewModel> { getVmFactory() }
+    private val PICK_IMAGE_REQUEST = 3
+    private var filePath: Uri? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -88,7 +104,7 @@ class PostFragment : Fragment() {
             Log.d("allStoreMenu", "$it")
         })
 
-        viewModel.postFinshed.observe(this, Observer {
+        viewModel.postFinished.observe(this, Observer {
             if (it){
                 findNavController().navigateUp()
             }
@@ -96,8 +112,46 @@ class PostFragment : Fragment() {
 
         (activity as MainActivity).binding.bottomNavigationView.visibility = View.GONE
 
+
+
+        viewModel.imageUri.observe(this, Observer {
+            Log.d("jerryTest","imageUri.observe = $it")
+        })
+
+
+        binding.buttonImageUpdate.setOnClickListener {
+            launchGallery()
+        }
+
         return binding.root
     }
+
+    private fun launchGallery() {
+        val intent = Intent()
+        intent.type = "image/*"
+        intent.action = Intent.ACTION_GET_CONTENT
+        startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK) {
+            if(data == null || data.data == null){
+                return
+            }
+
+            filePath = data.data
+            try {
+//                val bitmap = MediaStore.Images.Media.getBitmap(context!!.contentResolver, filePath)
+//                uploadImage.setImageBitmap(bitmap)
+                Glide.with(this).load(filePath).into(image_update)
+                viewModel.imageUri.value = filePath
+            } catch (e: IOException) {
+                e.printStackTrace()
+            }
+        }
+    }
+
 
     override fun onDestroy() {
         super.onDestroy()

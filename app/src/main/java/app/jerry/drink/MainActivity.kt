@@ -30,6 +30,7 @@ import com.firebase.ui.auth.IdpResponse
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.storage.FirebaseStorage
 
 
 class MainActivity : AppCompatActivity() {
@@ -53,6 +54,9 @@ class MainActivity : AppCompatActivity() {
             navController.navigate(R.id.action_global_postFragment)
             binding.fab.hide()
         }
+
+
+
 
 //        val authProvider: List<AuthUI.IdpConfig> = listOf(
 //            AuthUI.IdpConfig.FacebookBuilder().build(),

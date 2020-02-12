@@ -21,7 +21,7 @@ data class Comment(
     val sugar: String = "",
     val star: Int = 0,
     val comment: String = "",
-    val drinkImage : String = "",
+    var drinkImage : String = "",
     var createdTime: Long = 0
 ): Parcelable{
 

@@ -19,10 +19,23 @@
             android:id="@+id/image_update"
             android:layout_width="wrap_content"
             android:layout_height="200dp"
+            android:scaleType="centerCrop"
             android:src="@drawable/placeholder"
+
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/button_image_update"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:src="@drawable/photo"
+            android:tint="#D9FFFFFF"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
+            app:layout_constraintBottom_toBottomOf="@+id/image_update"
+            app:layout_constraintEnd_toEndOf="parent" />
 
         <ImageView
             android:id="@+id/image_store_post_icon"
