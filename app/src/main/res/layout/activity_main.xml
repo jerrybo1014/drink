@@ -30,7 +30,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|end"
             android:layout_margin="@dimen/fab_margin"
-            app:backgroundTint="#36b5b0"
+            app:backgroundTint="#37A0C8"
             app:borderWidth="0dp"
             android:tint="@color/White"
             app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView"

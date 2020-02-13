@@ -1,32 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:tools="http://schemas.android.com/tools"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
 
-<variable
-    name="viewModel"
-    type="app.jerry.drink.profile.ProfileViewModel" />
+        <variable
+            name="viewModel"
+            type="app.jerry.drink.profile.ProfileViewModel" />
 
-        <import type="android.view.View"/>
+        <import type="android.view.View" />
 
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingHorizontal="16dp"
-        >
+        android:background="#EAE7E7"
+        android:paddingHorizontal="16dp">
 
         <ImageView
             android:id="@+id/profile_avatar"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_marginTop="16dp"
             imageUrlCircle="@{viewModel.userCurrent.image}"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_marginTop="16dp"
             android:src="@drawable/icons_36px_profile_image"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -35,38 +36,44 @@
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:layout_marginTop="16dp"
-            android:visibility="gone"
             android:src="@drawable/icons_36px_profile_image"
+            android:visibility="gone"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
             android:id="@+id/profile_avatar_choose"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:src="@drawable/photo"
-            android:tint="#99FFFFFF"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:src="@drawable/ic_mode_edit_black_24dp"
+            android:tint="#FFFFFF"
+            android:background="@drawable/shape_circle_background"
+            android:padding="6dp"
             app:layout_constraintBottom_toBottomOf="@+id/profile_avatar"
             app:layout_constraintEnd_toEndOf="@+id/profile_avatar" />
 
         <ImageView
             android:id="@+id/image_checked"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:src="@drawable/checked"
-            android:tint="#99FFFFFF"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:background="@drawable/shape_circle"
             android:onClick="@{() -> viewModel.uploadAvatarResult()}"
+            android:padding="10dp"
+            android:src="@drawable/checked"
+            android:tint="#66DD00"
             android:visibility="@{viewModel.imageUri == null ? View.GONE:View.VISIBLE}"
             app:layout_constraintEnd_toEndOf="@+id/profile_avatar"
             app:layout_constraintTop_toTopOf="@+id/profile_avatar" />
 
         <ImageView
             android:id="@+id/image_close"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:src="@drawable/close"
-            android:tint="#99FFFFFF"
-            android:onClick="@{() -> viewModel.uploadAvatarResult()}"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:background="@drawable/shape_circle"
+            android:onClick="@{() -> viewModel.uploadAvatarCancel()}"
+            android:padding="10dp"
+            android:src="@drawable/close_1"
+            android:tint="#CC0000"
             android:visibility="@{viewModel.imageUri == null ? View.GONE:View.VISIBLE}"
             app:layout_constraintStart_toStartOf="@+id/profile_avatar"
             app:layout_constraintTop_toTopOf="@+id/profile_avatar" />
@@ -75,9 +82,8 @@
             android:id="@+id/profile_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{viewModel.userCurrent.name}"
-            android:textSize="20dp"
             android:layout_marginStart="16dp"
+            android:textSize="20dp"
             app:layout_constraintStart_toEndOf="@+id/profile_avatar"
             app:layout_constraintTop_toTopOf="@+id/profile_avatar" />
 

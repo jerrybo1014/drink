@@ -105,14 +105,11 @@ class MainActivity : AppCompatActivity() {
                     }
                     Log.d(TAG, "signInWithCredential:no")
                 } else {
-
                     viewModel.checkUserResult()
-                    Log.d(TAG, "signInWithCredential:success ${user.email}")
-                    Log.d(TAG, "signInWithCredential:success ${user.displayName}")
-                    Log.d(TAG, "signInWithCredential:success ${user.uid}")
                 }
 
             }
+
         FirebaseAuth.getInstance().addAuthStateListener(authListener)
 
         /*Wayne write it outside*/

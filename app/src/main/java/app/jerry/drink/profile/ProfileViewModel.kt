@@ -1,8 +1,10 @@
 package app.jerry.drink.profile
 
+import ProfileFragment
 import android.net.Uri
 import android.util.Log
 import android.widget.Toast
+import androidx.core.net.toUri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -13,6 +15,9 @@ import app.jerry.drink.dataclass.Result
 import app.jerry.drink.dataclass.User
 import app.jerry.drink.dataclass.source.DrinkRepository
 import app.jerry.drink.network.LoadApiStatus
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
+import kotlinx.android.synthetic.main.fragment_profile.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -130,8 +135,12 @@ class ProfileViewModel(private val repository: DrinkRepository) : ViewModel() {
         imageUri.value = null
     }
 
-
-
-
+    fun uploadAvatarCancel(){
+        imageUri.value = null
+        userCurrent.value = userCurrent.value!!
+//        val userAvatar = userCurrent.value!!.image!!.toUri().buildUpon().scheme("https").build()
+//        Glide.with(DrinkApplication.context).load(userAvatar).apply(
+//            RequestOptions().circleCrop()).into()
+    }
 
 }
