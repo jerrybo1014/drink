@@ -29,5 +29,7 @@ interface DrinkDataSource {
 
     suspend fun editOrderStatus(orderId: Long, editStatus: Boolean): Result<Boolean>
 
-    fun getUserCurrent(): User
+    suspend fun getUserCurrent():  Result<User>
+
+    suspend fun uploadAvatar(uri: Uri): Result<Boolean>
 }

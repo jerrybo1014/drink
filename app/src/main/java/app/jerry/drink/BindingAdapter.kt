@@ -41,8 +41,8 @@ fun bindImageCircle(imgView: ImageView, imgUrl: String?) {
             .load(imgUri)
             .apply(
                 RequestOptions.circleCropTransform()
-                    .placeholder(R.drawable.placeholder)
-                    .error(R.drawable.placeholder)
+                    .placeholder(R.drawable.icons_36px_profile_image)
+                    .error(R.drawable.icons_36px_profile_image)
             )
             .into(imgView)
     }

@@ -74,8 +74,10 @@ object DrinkRemoteDataSource : DrinkDataSource {
         val users = FirebaseFirestore.getInstance().collection(PATH_Users)
         val commentUser = FirebaseAuth.getInstance().currentUser
 
+
+
+
         comments
-            .orderBy(KEY_CREATED_TIME, Query.Direction.DESCENDING)
             .get()
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
@@ -88,14 +90,15 @@ object DrinkRemoteDataSource : DrinkDataSource {
                         var user: User? = User("", "", "", "")
 
                             users.document(document.get("userId").toString()).get()
-                                .addOnSuccessListener {
+                                .addOnSuccessListener {userInsert ->
 
-                                    user = it.toObject(User::class.java)
+                                    user = userInsert.toObject(User::class.java)
                                     Log.d(TAG, "users.addOnSuccessListener, user=$user")
                                     newComment.user = user
                                     list.add(newComment)
                                     if (list.size == task.result!!.size()) {
                                         Log.w(TAG, "last complete = $list")
+                                        list.sortByDescending { it.createdTime }
                                         continuation.resume(Result.Success(list))
                                     }
 
@@ -176,6 +179,7 @@ object DrinkRemoteDataSource : DrinkDataSource {
 //    }
 
     override suspend fun getAllStore(): Result<List<Store>> = suspendCoroutine { continuation ->
+
         FirebaseFirestore.getInstance()
             .collection(PATH_Stores)
             .get()
@@ -591,10 +595,93 @@ object DrinkRemoteDataSource : DrinkDataSource {
                 }
         }
 
-    override fun getUserCurrent(): User {
+    override suspend fun getUserCurrent(): Result<User> = suspendCoroutine { continuation ->
+        val users = FirebaseFirestore.getInstance().collection(PATH_Users)
         val userCurrent = FirebaseAuth.getInstance().currentUser
-        return User(userCurrent!!.uid, userCurrent.displayName, userCurrent.email, "")
+
+        val user = User(userCurrent!!.uid,userCurrent.displayName,userCurrent.email,"")
+
+        users
+            .document(userCurrent.uid)
+            .get()
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+//                    continuation.resume(Result.Success(list))
+                    user.image = task.result?.data!!["image"].toString()
+                    continuation.resume(Result.Success(user))
+                } else {
+                    task.exception?.let {
+
+                        Log.w(
+                            "",
+                            "[${this::class.simpleName}] Error getting documents. ${it.message}"
+                        )
+                        continuation.resume(Result.Error(it))
+                        return@addOnCompleteListener
+                    }
+                    continuation.resume(Result.Fail(DrinkApplication.instance.getString(R.string.you_know_nothing)))
+                }
+            }
+
     }
 
+
+    override suspend fun uploadAvatar(uri: Uri): Result<Boolean> =
+        suspendCoroutine { continuation ->
+            val users = FirebaseFirestore.getInstance().collection(PATH_Users)
+            val userCurrent = FirebaseAuth.getInstance().currentUser
+            val storageReference = FirebaseStorage.getInstance().reference
+
+            val riversRef = storageReference.child("usersAvatar/" + UUID.randomUUID().toString())
+            val uploadTask = riversRef.putFile(uri)
+
+            uploadTask.continueWithTask(Continuation<UploadTask.TaskSnapshot, Task<Uri>> { taskImage ->
+                if (!taskImage.isSuccessful) {
+                    taskImage.exception?.let {
+                        throw it
+                    }
+                }
+                return@Continuation riversRef.downloadUrl
+            }).addOnCompleteListener { taskImage ->
+                if (taskImage.isSuccessful) {
+
+//                    addUploadRecordToDb(downloadUri.toString())
+                    val imageUri = taskImage.result.toString()
+
+                    users
+                        .document(userCurrent!!.uid)
+                        .update("image",imageUri)
+                        .addOnCompleteListener { task ->
+                            if (task.isSuccessful) {
+//                    continuation.resume(Result.Success(list))
+                                continuation.resume(Result.Success(true))
+                            } else {
+                                task.exception?.let {
+
+                                    Log.w(
+                                        "",
+                                        "[${this::class.simpleName}] Error getting documents. ${it.message}"
+                                    )
+                                    continuation.resume(Result.Error(it))
+                                    return@addOnCompleteListener
+                                }
+                                continuation.resume(
+                                    Result.Fail(
+                                        DrinkApplication.instance.getString(
+                                            R.string.you_know_nothing
+                                        )
+                                    )
+                                )
+                            }
+                        }
+
+
+                }
+
+            }.addOnFailureListener {
+
+            }
+
+        }
 
 }

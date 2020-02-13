@@ -1,6 +1,7 @@
 package app.jerry.drink.order
 
 import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
@@ -36,10 +37,7 @@ class OrderVIewModel(private val repository: DrinkRepository) : ViewModel() {
     val orderLive: LiveData<List<OrderList>>
         get() = _orderLive
 
-    val userCurrent = MutableLiveData<User>().apply {
-        value = repository.getUserCurrent()
-    }
-
+    val userCurrent = MutableLiveData<User>()
 
     // status: The internal MutableLiveData that stores the status of the most recent request
     private val _status = MutableLiveData<LoadApiStatus>()
@@ -66,6 +64,40 @@ class OrderVIewModel(private val repository: DrinkRepository) : ViewModel() {
     private val coroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
 
     init {
+        getUserCurrentResult()
+    }
+
+    private fun getUserCurrentResult(){
+        coroutineScope.launch {
+
+            _status.value = LoadApiStatus.LOADING
+
+            val result = repository.getUserCurrent()
+
+            userCurrent.value = when (result) {
+                is Result.Success -> {
+                    _error.value = null
+                    _status.value = LoadApiStatus.DONE
+                    result.data
+                }
+                is Result.Fail -> {
+                    _error.value = result.error
+                    _status.value = LoadApiStatus.ERROR
+                    null
+                }
+                is Result.Error -> {
+                    _error.value = result.exception.toString()
+                    _status.value = LoadApiStatus.ERROR
+                    null
+                }
+                else -> {
+                    _error.value = DrinkApplication.instance.getString(R.string.you_know_nothing)
+                    _status.value = LoadApiStatus.ERROR
+                    null
+                }
+            }
+            _refreshStatus.value = false
+        }
 
     }
 

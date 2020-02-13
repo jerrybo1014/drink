@@ -53,7 +53,11 @@ class DefaultDrinkRepository(private val remoteDataSource: DrinkDataSource,
         return remoteDataSource.editOrderStatus(orderId, editStatus)
     }
 
-    override fun getUserCurrent(): User {
+    override suspend fun getUserCurrent():  Result<User> {
         return remoteDataSource.getUserCurrent()
+    }
+
+    override suspend fun uploadAvatar(uri: Uri): Result<Boolean> {
+        return remoteDataSource.uploadAvatar(uri)
     }
 }

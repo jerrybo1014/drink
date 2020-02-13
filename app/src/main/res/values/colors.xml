@@ -1,15 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorPrimary">#000000</color>
-    <color name="colorPrimaryDark">#cbba83</color>
+<!--    <color name="colorPrimaryDark">#cbba83</color>-->
+    <color name="colorPrimaryDark">#9dd8c8</color>
     <color name="colorAccent">#D81B60</color>
     <color name="White">#FFFFFF</color>
 
     <color name="colorPrimaryDarkNote">#00574B</color>
     <color name="colorPrimaryNote">#008577</color>
+
+<!--    <color name="myColorPrimaryDark">#cbba83</color>-->
     <color name="myColorPrimaryDark">#cbba83</color>
     <color name="myColorPrimaryLight">#ffffe5</color>
-    <color name="myColorPrimary">#ffecb3</color>
+<!--    <color name="myColorPrimary">#ffecb3</color>-->
+    <color name="myColorPrimary">#9dd8c8</color>
     <color name="bottom_navigation_light">#AAAAAA</color>
     <color name="bottom_navigation_dark">#5f6caf</color>
 

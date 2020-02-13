@@ -6,6 +6,12 @@
     <data>
 
 
+<variable
+    name="viewModel"
+    type="app.jerry.drink.profile.ProfileViewModel" />
+
+        <import type="android.view.View"/>
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -19,16 +25,58 @@
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:layout_marginTop="16dp"
+            imageUrlCircle="@{viewModel.userCurrent.image}"
             android:src="@drawable/icons_36px_profile_image"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/profile_avatar_edit"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginTop="16dp"
+            android:visibility="gone"
+            android:src="@drawable/icons_36px_profile_image"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/profile_avatar_choose"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:src="@drawable/photo"
+            android:tint="#99FFFFFF"
+            app:layout_constraintBottom_toBottomOf="@+id/profile_avatar"
+            app:layout_constraintEnd_toEndOf="@+id/profile_avatar" />
+
+        <ImageView
+            android:id="@+id/image_checked"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:src="@drawable/checked"
+            android:tint="#99FFFFFF"
+            android:onClick="@{() -> viewModel.uploadAvatarResult()}"
+            android:visibility="@{viewModel.imageUri == null ? View.GONE:View.VISIBLE}"
+            app:layout_constraintEnd_toEndOf="@+id/profile_avatar"
+            app:layout_constraintTop_toTopOf="@+id/profile_avatar" />
+
+        <ImageView
+            android:id="@+id/image_close"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:src="@drawable/close"
+            android:tint="#99FFFFFF"
+            android:onClick="@{() -> viewModel.uploadAvatarResult()}"
+            android:visibility="@{viewModel.imageUri == null ? View.GONE:View.VISIBLE}"
+            app:layout_constraintStart_toStartOf="@+id/profile_avatar"
+            app:layout_constraintTop_toTopOf="@+id/profile_avatar" />
 
         <TextView
             android:id="@+id/profile_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="123"
-            android:textSize="32dp"
+            android:text="@{viewModel.userCurrent.name}"
+            android:textSize="20dp"
             android:layout_marginStart="16dp"
             app:layout_constraintStart_toEndOf="@+id/profile_avatar"
             app:layout_constraintTop_toTopOf="@+id/profile_avatar" />
