@@ -11,6 +11,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import app.jerry.drink.MainActivity
+import app.jerry.drink.NavigationDirections
 import app.jerry.drink.R
 import app.jerry.drink.databinding.FragmentHomeBinding
 import app.jerry.drink.dataclass.Comment
@@ -39,7 +40,9 @@ class HomeFragment : Fragment() {
         (activity as MainActivity).binding.fab.show()
 
         val highScoreAdapter = HighScoreAdapter()
-        val newCommentAdapter = NewCommentAdapter()
+        val newCommentAdapter = NewCommentAdapter(NewCommentAdapter.OnClickListener{
+            viewModel.navigationToDetail(it)
+        })
 
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
@@ -59,7 +62,12 @@ class HomeFragment : Fragment() {
         highScoreAdapter.submitList(mockData)
 //        newCommentAdapter.submitList(mockData)
 
-        viewModel.getNewCommentResult()
+        viewModel.navigationToDetail.observe(this, Observer {
+            it?.let {
+                findNavController().navigate(NavigationDirections.actionGlobalDetailFragment(it))
+                viewModel.onDetailNavigated()
+            }
+        })
 
         viewModel.newComment.observe(this, Observer {
             Log.d("newComment","$it")

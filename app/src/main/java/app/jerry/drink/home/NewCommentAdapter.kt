@@ -7,16 +7,27 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import app.jerry.drink.databinding.ItemNewCommentBinding
 import app.jerry.drink.dataclass.Comment
+import app.jerry.drink.dataclass.Drink
+import app.jerry.drink.dataclass.DrinkDetail
+import app.jerry.drink.dataclass.Store
 
-class NewCommentAdapter :
+class NewCommentAdapter(private val onClickListener: OnClickListener ) :
     ListAdapter<Comment, NewCommentAdapter.NewCommentViewHolder>(
         DiffCallback
     ) {
 
+    class OnClickListener(val clickListener: (drinkDetail: DrinkDetail) -> Unit) {
+        fun onClick(drinkDetail: DrinkDetail) = clickListener(drinkDetail)
+    }
+
     class NewCommentViewHolder(private var binding: ItemNewCommentBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(comment: Comment) {
+        fun bind(comment: Comment, onClickListener: OnClickListener) {
+
+            val drinkDetail = DrinkDetail(Drink(comment.drinkId,comment.drinkName)
+                ,Store(comment.storeId,comment.storeName))
             binding.comment = comment
+            binding.root.setOnClickListener { onClickListener.onClick(drinkDetail) }
 //            binding.detailImage = string
             // This is important, because it forces the data binding to execute immediately,
             // which allows the RecyclerView to make the correct view size measurements
@@ -59,6 +70,6 @@ class NewCommentAdapter :
 
     override fun onBindViewHolder(holder: NewCommentViewHolder, position: Int) {
         val comment = getItem(position)
-        holder.bind(comment)
+        holder.bind(comment, onClickListener)
     }
 }

@@ -23,6 +23,8 @@ class AddOrderFragment : DialogFragment() {
         AddOrderFragmentArgs.fromBundle(
             arguments!!
         ).orderLists) }
+
+
     lateinit var binding: FragmentAddOrderBinding
     val TAG = "jerryTest"
 

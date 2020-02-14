@@ -44,7 +44,12 @@
     <fragment
         android:id="@+id/detailFragment"
         android:name="app.jerry.drink.detail.DetailFragment"
-        android:label="DetailFragment" />
+        android:label="DetailFragment" >
+        <argument
+            android:name="drinkDetail"
+            app:argType="app.jerry.drink.dataclass.DrinkDetail" />
+    </fragment>
+
     <fragment
         android:id="@+id/homeSearchFragment"
         android:name="app.jerry.drink.HomeSearchFragment"

@@ -7,6 +7,7 @@ import app.jerry.drink.DrinkApplication
 import app.jerry.drink.network.LoadApiStatus
 import app.jerry.drink.R
 import app.jerry.drink.dataclass.Comment
+import app.jerry.drink.dataclass.DrinkDetail
 import app.jerry.drink.dataclass.Result
 import app.jerry.drink.dataclass.source.DrinkRepository
 import kotlinx.coroutines.CoroutineScope
@@ -20,6 +21,9 @@ class HomeViewModel(private val repository: DrinkRepository) : ViewModel() {
 
     val newComment: LiveData<List<Comment>>
         get() = _newComment
+
+
+    val navigationToDetail = MutableLiveData<DrinkDetail>()
 
     // status: The internal MutableLiveData that stores the status of the most recent request
     private val _status = MutableLiveData<LoadApiStatus>()
@@ -46,6 +50,7 @@ class HomeViewModel(private val repository: DrinkRepository) : ViewModel() {
     private val coroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
 
     init {
+        getNewCommentResult()
     }
 
     fun getNewCommentResult() {
@@ -81,6 +86,15 @@ class HomeViewModel(private val repository: DrinkRepository) : ViewModel() {
             _refreshStatus.value = false
         }
 
+    }
+
+
+    fun navigationToDetail(drinkDetail: DrinkDetail){
+        navigationToDetail.value = drinkDetail
+    }
+
+    fun onDetailNavigated() {
+        navigationToDetail.value = null
     }
 
 
