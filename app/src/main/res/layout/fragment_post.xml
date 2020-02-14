@@ -38,6 +38,17 @@
             app:layout_constraintEnd_toEndOf="parent" />
 
         <ImageView
+            android:id="@+id/button_take_photo"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="16dp"
+            android:src="@drawable/ic_camera_alt_black_24dp"
+            android:tint="#D9FFFFFF"
+            app:layout_constraintBottom_toBottomOf="@+id/image_update"
+            app:layout_constraintEnd_toStartOf="@+id/button_image_update" />
+
+        <ImageView
             android:id="@+id/image_store_post_icon"
             android:layout_width="18dp"
             android:layout_height="18dp"

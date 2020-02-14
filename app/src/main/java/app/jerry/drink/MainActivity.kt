@@ -200,6 +200,18 @@ class MainActivity : AppCompatActivity() {
                 }
                 return
             }
+            10 -> {
+                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    for (permissionsItem in permissions) {
+                        Log.d(TAG, "permissions allow : $permissions")
+                    }
+                } else {
+                    for (permissionsItem in permissions) {
+                        Log.d(TAG, "permissions reject : $permissionsItem")
+                    }
+                }
+                return
+            }
         }
 
     }

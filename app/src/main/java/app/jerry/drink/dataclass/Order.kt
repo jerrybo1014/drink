@@ -1,6 +1,7 @@
 package app.jerry.drink.dataclass
 
 import android.os.Parcelable
+import com.google.firebase.firestore.GeoPoint
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
@@ -47,3 +48,9 @@ data class OrderLists(
     var order: Order? = null,
     var orderLists: List<OrderList>? = listOf()
 ): Parcelable
+
+//@Parcelize
+//data class OrderUser(
+//    var order: GeoPoint? = null,
+//    var orderLists: List<OrderList>? = listOf()
+//): Parcelable

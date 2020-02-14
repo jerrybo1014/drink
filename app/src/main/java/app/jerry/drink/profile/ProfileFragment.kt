@@ -10,6 +10,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import app.jerry.drink.MainActivity
 import app.jerry.drink.R
 import app.jerry.drink.databinding.FragmentOrderBinding
 import app.jerry.drink.databinding.FragmentProfileBinding
@@ -39,9 +40,10 @@ class ProfileFragment : Fragment() {
         binding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_profile, container, false
         )
-
+        (activity as MainActivity).binding.fab.hide()
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
+
         binding.profileAvatarChoose.setOnClickListener {
             launchGallery()
         }
