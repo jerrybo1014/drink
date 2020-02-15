@@ -10,6 +10,7 @@ import app.jerry.drink.dataclass.Comment
 import app.jerry.drink.dataclass.OrderList
 import app.jerry.drink.detail.DetailAdapter
 import app.jerry.drink.ext.toDisplayFormat
+import app.jerry.drink.ext.toDisplayTimePass
 import app.jerry.drink.home.NewCommentAdapter
 import app.jerry.drink.order.OrderListsAdapter
 import app.jerry.drink.post.IceAdapter
@@ -67,6 +68,11 @@ fun bindImageCorner(imgView: ImageView, imgUrl: String?) {
 @BindingAdapter("timeToDisplayFormat")
 fun bindDisplayFormatTime(textView: TextView, time: Long?) {
     textView.text = time?.toDisplayFormat()
+}
+
+@BindingAdapter("timeToDisplayTimePass")
+fun bindDisplayTimePass(textView: TextView, time: Long?) {
+    textView.text = time?.toDisplayTimePass()
 }
 
 @BindingAdapter("listNewComment")

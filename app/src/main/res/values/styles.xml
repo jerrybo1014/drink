@@ -45,7 +45,7 @@
     </style>
 
     <style name="new_comment">
-        <item name="android:textSize">16dp</item>
+
     </style>
 
     <style name="text_detail_star">

@@ -76,19 +76,6 @@
                     app:layout_constraintStart_toStartOf="@+id/text_drink_item"
                     app:layout_constraintTop_toBottomOf="@+id/text_ice_sugar" />
 
-                <TextView
-                    android:id="@+id/text_comment"
-                    style="@style/new_comment"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginEnd="8dp"
-                    android:text="@{comment.comment}"
-                    android:visibility='@{comment.comment == "" ? View.GONE:View.VISIBLE}'
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="@+id/rating_bar_comment"
-                    app:layout_constraintTop_toBottomOf="@+id/rating_bar_comment" />
-
                 <ImageView
                     android:id="@+id/imageView_drink"
                     imageUrlCorner="@{comment.drinkImage}"
@@ -170,6 +157,15 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     android:layout_marginEnd="8dp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    timeToDisplayTimePass="@{comment.createdTime}"
+                    android:layout_marginTop="35dp"
+                    android:layout_marginStart="3dp"
+                    app:layout_constraintStart_toStartOf="@+id/rating_bar_comment"
+                    app:layout_constraintTop_toBottomOf="@+id/text_drink_item" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </com.google.android.material.card.MaterialCardView>

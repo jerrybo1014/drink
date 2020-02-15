@@ -34,7 +34,15 @@ class DetailFragment : Fragment() {
 
         binding.recyclerAllComments.adapter = DetailAdapter()
 
+        (activity as MainActivity).binding.bottomNavigationView.visibility = View.GONE
+
         return binding.root
+    }
+
+
+    override fun onDestroy() {
+        super.onDestroy()
+        (activity as MainActivity).binding.bottomNavigationView.visibility = View.VISIBLE
     }
 
 }
