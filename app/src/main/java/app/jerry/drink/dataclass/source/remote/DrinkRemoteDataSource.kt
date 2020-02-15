@@ -684,4 +684,60 @@ object DrinkRemoteDataSource : DrinkDataSource {
 
         }
 
+    override suspend fun getDetailComment(drinkDetail: DrinkDetail): Result<List<Comment>> = suspendCoroutine { continuation ->
+        val comments = FirebaseFirestore.getInstance().collection(PATH_Comments)
+        val users = FirebaseFirestore.getInstance().collection(PATH_Users)
+
+        comments
+            .whereEqualTo("drinkId", drinkDetail.drink?.drinkId)
+            .get()
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    val list = mutableListOf<Comment>()
+                    for (document in task.result!!) {
+//                        Log.d(TAG, "${document.id} => ${document.data}")
+                        val detailComment = document.toObject(Comment::class.java)
+                        Log.d(TAG, "comments document=$document")
+
+                        var user: User? = User("", "", "", "")
+
+                        users.document(document.get("userId").toString()).get()
+                            .addOnSuccessListener {userInsert ->
+
+                                user = userInsert.toObject(User::class.java)
+                                Log.d(TAG, "users.addOnSuccessListener, user=$user")
+                                detailComment.user = user
+                                list.add(detailComment)
+                                if (list.size == task.result!!.size()) {
+                                    Log.w(TAG, "last complete = $list")
+                                    list.sortByDescending { it.createdTime }
+                                    continuation.resume(Result.Success(list))
+                                }
+
+                            }.addOnFailureListener {
+
+                                Log.d(TAG, "addOnFailureListener")
+                                val detailComment = document.toObject(Comment::class.java)
+                                detailComment.user = user
+                                list.add(detailComment)
+                            }
+                    }
+
+
+                } else {
+                    task.exception?.let {
+
+                        Log.w(
+                            "",
+                            "[${this::class.simpleName}] Error getting documents. ${it.message}"
+                        )
+                        continuation.resume(Result.Error(it))
+                        return@addOnCompleteListener
+                    }
+                    continuation.resume(Result.Fail(DrinkApplication.instance.getString(R.string.you_know_nothing)))
+                }
+            }
+
+    }
+
 }

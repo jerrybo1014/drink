@@ -33,4 +33,6 @@ interface DrinkRepository {
 
     suspend fun uploadAvatar(uri: Uri): Result<Boolean>
 
+    suspend fun getDetailComment(drinkDetail: DrinkDetail): Result<List<Comment>>
+
 }

@@ -60,4 +60,8 @@ class DrinkLocalDataSource(val context: Context) : DrinkDataSource {
     override suspend fun uploadAvatar(uri: Uri): Result<Boolean> {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
+
+    override suspend fun getDetailComment(drinkDetail: DrinkDetail): Result<List<Comment>> {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
 }

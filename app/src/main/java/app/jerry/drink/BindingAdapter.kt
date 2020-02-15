@@ -8,6 +8,7 @@ import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import app.jerry.drink.dataclass.Comment
 import app.jerry.drink.dataclass.OrderList
+import app.jerry.drink.detail.DetailAdapter
 import app.jerry.drink.ext.toDisplayFormat
 import app.jerry.drink.home.NewCommentAdapter
 import app.jerry.drink.order.OrderListsAdapter
@@ -71,6 +72,12 @@ fun bindDisplayFormatTime(textView: TextView, time: Long?) {
 @BindingAdapter("listNewComment")
 fun bindNewComment(recyclerView: RecyclerView, data: List<Comment>?){
     val adapter = recyclerView.adapter as NewCommentAdapter
+    adapter.submitList(data)
+}
+
+@BindingAdapter("listDetailComment")
+fun bindDetailComment(recyclerView: RecyclerView, data: List<Comment>?){
+    val adapter = recyclerView.adapter as DetailAdapter
     adapter.submitList(data)
 }
 

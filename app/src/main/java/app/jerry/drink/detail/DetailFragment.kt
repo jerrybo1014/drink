@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import app.jerry.drink.MainActivity
 import app.jerry.drink.R
 import app.jerry.drink.databinding.FragmentDetailBinding
 import app.jerry.drink.ext.getVmFactory
@@ -27,8 +28,11 @@ class DetailFragment : Fragment() {
         binding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_detail, container, false
         )
+        (activity as MainActivity).binding.fab.hide()
+        binding.viewModel = viewModel
+        binding.lifecycleOwner = this
 
-
+        binding.recyclerAllComments.adapter = DetailAdapter()
 
         return binding.root
     }

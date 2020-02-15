@@ -60,4 +60,8 @@ class DefaultDrinkRepository(private val remoteDataSource: DrinkDataSource,
     override suspend fun uploadAvatar(uri: Uri): Result<Boolean> {
         return remoteDataSource.uploadAvatar(uri)
     }
+
+    override suspend fun getDetailComment(drinkDetail: DrinkDetail): Result<List<Comment>> {
+        return remoteDataSource.getDetailComment(drinkDetail)
+    }
 }

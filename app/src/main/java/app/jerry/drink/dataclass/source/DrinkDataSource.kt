@@ -32,4 +32,6 @@ interface DrinkDataSource {
     suspend fun getUserCurrent():  Result<User>
 
     suspend fun uploadAvatar(uri: Uri): Result<Boolean>
+
+    suspend fun getDetailComment(drinkDetail: DrinkDetail): Result<List<Comment>>
 }

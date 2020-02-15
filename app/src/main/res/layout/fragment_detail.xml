@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
+        <variable
+            name="viewModel"
+            type="app.jerry.drink.detail.DetailViewModel" />
+
 
     </data>
 
@@ -15,7 +20,9 @@
             android:id="@+id/detail_drink_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="大正紅茶"
+            android:text="@{viewModel.drinkInformation.drink.drinkName}"
+            android:layout_marginTop="16dp"
+            android:layout_marginStart="8dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -23,19 +30,187 @@
             android:id="@+id/detail_store_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="comebuy"
-            app:layout_constraintStart_toStartOf="parent"
+            android:text="@{viewModel.drinkInformation.store.storeName}"
+            app:layout_constraintStart_toStartOf="@+id/detail_drink_name"
             app:layout_constraintTop_toBottomOf="@+id/detail_drink_name" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayout2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="32dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/detail_store_name">
+
+
+            <TextView
+                android:id="@+id/text_five"
+                style="@style/text_detail_star"
+                android:text="5"
+                app:layout_constraintBottom_toBottomOf="@+id/progressBar_five"
+                app:layout_constraintEnd_toStartOf="@+id/progressBar_five"
+                app:layout_constraintTop_toTopOf="@+id/progressBar_five" />
+
+            <TextView
+                android:id="@+id/text_four"
+                style="@style/text_detail_star"
+                android:text="4"
+                app:layout_constraintBottom_toBottomOf="@+id/progressBar_four"
+                app:layout_constraintEnd_toStartOf="@+id/progressBar_four"
+                app:layout_constraintTop_toTopOf="@+id/progressBar_four" />
+
+            <TextView
+                android:id="@+id/text_three"
+                style="@style/text_detail_star"
+                android:text="3"
+                app:layout_constraintBottom_toBottomOf="@+id/progressBar_three"
+                app:layout_constraintEnd_toStartOf="@+id/progressBar_three"
+                app:layout_constraintTop_toTopOf="@+id/progressBar_three" />
+
+            <TextView
+                android:id="@+id/text_two"
+                style="@style/text_detail_star"
+                android:text="2"
+                app:layout_constraintBottom_toBottomOf="@+id/progressBar_two"
+                app:layout_constraintEnd_toStartOf="@+id/progressBar_two"
+                app:layout_constraintTop_toTopOf="@+id/progressBar_two" />
+
+            <TextView
+                android:id="@+id/text_one"
+                style="@style/text_detail_star"
+                android:text="1"
+                app:layout_constraintBottom_toBottomOf="@+id/progressBar_one"
+                app:layout_constraintEnd_toStartOf="@+id/progressBar_one"
+                app:layout_constraintTop_toTopOf="@+id/progressBar_one" />
+
+
+            <ProgressBar
+                android:id="@+id/progressBar_five"
+                style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                android:layout_width="165dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:max="@{viewModel.star.qty}"
+                android:progress="@{viewModel.star.fiveStar}"
+                android:progressDrawable="@drawable/custom_progressbar_horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ProgressBar
+                android:id="@+id/progressBar_four"
+                style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                android:layout_width="165dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="16dp"
+                android:max="@{viewModel.star.qty}"
+                android:progress="@{viewModel.star.fourStar}"
+                android:progressDrawable="@drawable/custom_progressbar_horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/progressBar_five" />
+
+            <ProgressBar
+                android:id="@+id/progressBar_three"
+                style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                android:layout_width="165dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="16dp"
+                android:max="@{viewModel.star.qty}"
+                android:progress="@{viewModel.star.threeStar}"
+                android:progressDrawable="@drawable/custom_progressbar_horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/progressBar_four" />
+
+            <ProgressBar
+                android:id="@+id/progressBar_two"
+                style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                android:layout_width="165dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="16dp"
+                android:max="@{viewModel.star.qty}"
+                android:progress="@{viewModel.star.twoStar}"
+                android:progressDrawable="@drawable/custom_progressbar_horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/progressBar_three" />
+
+            <ProgressBar
+                android:id="@+id/progressBar_one"
+                style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                android:layout_width="165dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="16dp"
+                android:max="@{viewModel.star.qty}"
+                android:progress="@{viewModel.star.oneStar}"
+                android:progressDrawable="@drawable/custom_progressbar_horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/progressBar_two" />
+
+
+            <TextView
+                android:id="@+id/text_star_avg"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:includeFontPadding="false"
+                android:text="@{Float.toString(viewModel.star.avgStar)}"
+                android:textColor="#000000"
+                android:textSize="56dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <RatingBar
+                android:id="@+id/rating_bar_comment"
+                style="@style/Widget.AppCompat.RatingBar.Small"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:isIndicator="true"
+
+                android:progressTint="@color/star"
+                android:rating="@{viewModel.star.avgStar}"
+                app:layout_constraintEnd_toEndOf="@+id/text_star_avg"
+                app:layout_constraintStart_toStartOf="@+id/text_star_avg"
+                app:layout_constraintTop_toBottomOf="@+id/text_star_avg" />
+
+            <TextView
+                android:id="@+id/text_comment_qty"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{Long.toString(viewModel.star.qty)}"
+                android:textSize="12dp"
+                app:layout_constraintEnd_toEndOf="@+id/text_star_avg"
+                app:layout_constraintStart_toStartOf="@+id/text_star_avg"
+                app:layout_constraintTop_toBottomOf="@+id/rating_bar_comment" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        <TextView
+            android:id="@+id/text_all_comment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="所有評論"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:textSize="18dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/constraintLayout2" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_all_comments"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginTop="8dp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/detail_store_name" />
-
+            app:layout_constraintTop_toBottomOf="@+id/text_all_comment"
+            app:listDetailComment="@{viewModel.detailComment}" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
