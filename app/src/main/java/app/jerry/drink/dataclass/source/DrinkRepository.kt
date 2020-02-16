@@ -35,4 +35,7 @@ interface DrinkRepository {
 
     suspend fun getDetailComment(drinkDetail: DrinkDetail): Result<List<Comment>>
 
+
+
+    suspend fun getUserComment(): Result<List<Comment>>
 }

@@ -15,7 +15,7 @@
         <com.google.android.material.card.MaterialCardView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
+            android:layout_margin="4dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -42,8 +42,10 @@
                     android:id="@+id/text_drink_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="紅茶拿鐵"
                     android:layout_marginStart="3dp"
+                    android:fontFamily="@font/noto_sans"
+                    android:text="紅茶拿鐵"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="@+id/imageView"
                     app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
@@ -55,6 +57,7 @@
                     android:layout_marginStart="6dp"
                     android:textColor="#000000"
                     android:textSize="10dp"
+                    android:visibility="gone"
                     app:layout_constraintBottom_toBottomOf="@+id/icon_star"
                     app:layout_constraintStart_toEndOf="@+id/icon_star"
                     app:layout_constraintTop_toTopOf="@+id/icon_star" />
@@ -67,7 +70,7 @@
                     android:layout_marginBottom="3dp"
                     android:src="@drawable/star_icon"
                     android:tint="@color/myColorPrimaryDark"
-
+                    android:visibility="gone"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="@+id/text_drink_name"
                     app:layout_constraintTop_toBottomOf="@+id/text_drink_name" />
@@ -76,6 +79,7 @@
                     android:id="@+id/icon_comment"
                     android:layout_width="15dp"
                     android:layout_height="15dp"
+                    android:visibility="gone"
                     android:src="@drawable/comment_icon"
                     android:tint="@color/myColorPrimaryDark"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -89,6 +93,7 @@
                     android:text="87"
                     android:textColor="#000000"
                     android:textSize="10dp"
+                    android:visibility="gone"
                     android:layout_marginStart="6dp"
                     app:layout_constraintBottom_toBottomOf="@+id/icon_comment"
                     app:layout_constraintStart_toEndOf="@+id/icon_comment"

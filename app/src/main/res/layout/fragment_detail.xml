@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:tools="http://schemas.android.com/tools"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -20,9 +20,9 @@
             android:id="@+id/text_drink_information"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="飲品資訊"
-            android:textSize="18dp"
             android:layout_marginStart="16dp"
+            android:text="飲品資訊"
+            android:textSize="16dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -42,9 +42,9 @@
             android:id="@+id/image_drink_item_detail"
             android:layout_width="25dp"
             android:layout_height="25dp"
-            android:src="@drawable/cocktail"
             android:layout_marginStart="16dp"
             android:layout_marginTop="12dp"
+            android:src="@drawable/cocktail"
             android:tint="@color/myColorPrimaryDark"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/image_store_item_detail" />
@@ -53,6 +53,7 @@
             android:id="@+id/detail_drink_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/noto_sans"
             android:text="@{viewModel.drinkInformation.drink.drinkName}"
             android:textColor="#000000"
             android:textSize="16dp"
@@ -65,6 +66,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
+            android:fontFamily="@font/noto_sans"
             android:text="@{viewModel.drinkInformation.store.storeName}"
             android:textColor="#000000"
             android:textSize="16dp"
@@ -95,6 +97,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="6dp"
+                android:fontFamily="@font/noto_sans"
                 android:text="附近店家"
                 android:textColor="#37A0C8"
                 android:textSize="12dp"
@@ -117,9 +120,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="6dp"
+                android:fontFamily="@font/noto_sans"
                 android:text="前往官網"
                 android:textColor="#37A0C8"
-
                 android:textSize="12dp"
                 app:layout_constraintEnd_toEndOf="@+id/image_navigation_to_internet"
                 app:layout_constraintStart_toStartOf="@+id/image_navigation_to_internet"
@@ -139,14 +142,12 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-
-
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraintLayout2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingHorizontal="28dp"
             android:layout_marginTop="16dp"
+            android:paddingHorizontal="28dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
@@ -298,10 +299,10 @@
             android:id="@+id/text_all_comment"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="所有評論"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
-            android:textSize="18dp"
+            android:text="所有評論"
+            android:textSize="16dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/constraintLayout2" />
 

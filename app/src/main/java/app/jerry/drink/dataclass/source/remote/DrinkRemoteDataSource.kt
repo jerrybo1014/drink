@@ -74,9 +74,6 @@ object DrinkRemoteDataSource : DrinkDataSource {
         val users = FirebaseFirestore.getInstance().collection(PATH_Users)
         val commentUser = FirebaseAuth.getInstance().currentUser
 
-
-
-
         comments
             .get()
             .addOnCompleteListener { task ->
@@ -89,27 +86,27 @@ object DrinkRemoteDataSource : DrinkDataSource {
 
                         var user: User? = User("", "", "", "")
 
-                            users.document(document.get("userId").toString()).get()
-                                .addOnSuccessListener {userInsert ->
+                        users.document(document.get("userId").toString()).get()
+                            .addOnSuccessListener { userInsert ->
 
-                                    user = userInsert.toObject(User::class.java)
-                                    Log.d(TAG, "users.addOnSuccessListener, user=$user")
-                                    newComment.user = user
-                                    list.add(newComment)
-                                    if (list.size == task.result!!.size()) {
-                                        Log.w(TAG, "last complete = $list")
-                                        list.sortByDescending { it.createdTime }
-                                        continuation.resume(Result.Success(list))
-                                    }
-
-                                }.addOnFailureListener {
-
-                                    Log.d(TAG, "addOnFailureListener")
-                                    val newComment = document.toObject(Comment::class.java)
-                                    newComment.user = user
-                                    list.add(newComment)
+                                user = userInsert.toObject(User::class.java)
+                                Log.d(TAG, "users.addOnSuccessListener, user=$user")
+                                newComment.user = user
+                                list.add(newComment)
+                                if (list.size == task.result!!.size()) {
+                                    Log.w(TAG, "last complete = $list")
+                                    list.sortByDescending { it.createdTime }
+                                    continuation.resume(Result.Success(list))
                                 }
-                        }
+
+                            }.addOnFailureListener {
+
+                                Log.d(TAG, "addOnFailureListener")
+                                val newComment = document.toObject(Comment::class.java)
+                                newComment.user = user
+                                list.add(newComment)
+                            }
+                    }
 
 
                 } else {
@@ -599,7 +596,7 @@ object DrinkRemoteDataSource : DrinkDataSource {
         val users = FirebaseFirestore.getInstance().collection(PATH_Users)
         val userCurrent = FirebaseAuth.getInstance().currentUser
 
-        val user = User(userCurrent!!.uid,userCurrent.displayName,userCurrent.email,"")
+        val user = User(userCurrent!!.uid, userCurrent.displayName, userCurrent.email, "")
 
         users
             .document(userCurrent.uid)
@@ -650,7 +647,7 @@ object DrinkRemoteDataSource : DrinkDataSource {
 
                     users
                         .document(userCurrent!!.uid)
-                        .update("image",imageUri)
+                        .update("image", imageUri)
                         .addOnCompleteListener { task ->
                             if (task.isSuccessful) {
 //                    continuation.resume(Result.Success(list))
@@ -684,60 +681,94 @@ object DrinkRemoteDataSource : DrinkDataSource {
 
         }
 
-    override suspend fun getDetailComment(drinkDetail: DrinkDetail): Result<List<Comment>> = suspendCoroutine { continuation ->
-        val comments = FirebaseFirestore.getInstance().collection(PATH_Comments)
-        val users = FirebaseFirestore.getInstance().collection(PATH_Users)
+    override suspend fun getDetailComment(drinkDetail: DrinkDetail): Result<List<Comment>> =
+        suspendCoroutine { continuation ->
+            val comments = FirebaseFirestore.getInstance().collection(PATH_Comments)
+            val users = FirebaseFirestore.getInstance().collection(PATH_Users)
 
-        comments
-            .whereEqualTo("drinkId", drinkDetail.drink?.drinkId)
-            .get()
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    val list = mutableListOf<Comment>()
-                    for (document in task.result!!) {
+            comments
+                .whereEqualTo("drinkId", drinkDetail.drink?.drinkId)
+                .get()
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        val list = mutableListOf<Comment>()
+                        for (document in task.result!!) {
 //                        Log.d(TAG, "${document.id} => ${document.data}")
-                        val detailComment = document.toObject(Comment::class.java)
-                        Log.d(TAG, "comments document=$document")
+                            val detailComment = document.toObject(Comment::class.java)
+                            Log.d(TAG, "comments document=$document")
 
-                        var user: User? = User("", "", "", "")
+                            var user: User? = User("", "", "", "")
 
-                        users.document(document.get("userId").toString()).get()
-                            .addOnSuccessListener {userInsert ->
+                            users.document(document.get("userId").toString()).get()
+                                .addOnSuccessListener { userInsert ->
 
-                                user = userInsert.toObject(User::class.java)
-                                Log.d(TAG, "users.addOnSuccessListener, user=$user")
-                                detailComment.user = user
-                                list.add(detailComment)
-                                if (list.size == task.result!!.size()) {
-                                    Log.w(TAG, "last complete = $list")
-                                    list.sortByDescending { it.createdTime }
-                                    continuation.resume(Result.Success(list))
+                                    user = userInsert.toObject(User::class.java)
+                                    Log.d(TAG, "users.addOnSuccessListener, user=$user")
+                                    detailComment.user = user
+                                    list.add(detailComment)
+                                    if (list.size == task.result!!.size()) {
+                                        Log.w(TAG, "last complete = $list")
+                                        list.sortByDescending { it.createdTime }
+                                        continuation.resume(Result.Success(list))
+                                    }
+
+                                }.addOnFailureListener {
+
+                                    Log.d(TAG, "addOnFailureListener")
+                                    val detailComment = document.toObject(Comment::class.java)
+                                    detailComment.user = user
+                                    list.add(detailComment)
                                 }
+                        }
 
-                            }.addOnFailureListener {
 
-                                Log.d(TAG, "addOnFailureListener")
-                                val detailComment = document.toObject(Comment::class.java)
-                                detailComment.user = user
-                                list.add(detailComment)
-                            }
+                    } else {
+                        task.exception?.let {
+
+                            Log.w(
+                                "",
+                                "[${this::class.simpleName}] Error getting documents. ${it.message}"
+                            )
+                            continuation.resume(Result.Error(it))
+                            return@addOnCompleteListener
+                        }
+                        continuation.resume(Result.Fail(DrinkApplication.instance.getString(R.string.you_know_nothing)))
                     }
-
-
-                } else {
-                    task.exception?.let {
-
-                        Log.w(
-                            "",
-                            "[${this::class.simpleName}] Error getting documents. ${it.message}"
-                        )
-                        continuation.resume(Result.Error(it))
-                        return@addOnCompleteListener
-                    }
-                    continuation.resume(Result.Fail(DrinkApplication.instance.getString(R.string.you_know_nothing)))
                 }
-            }
 
-    }
+        }
+
+    override suspend fun getUserComment(): Result<List<Comment>> =
+        suspendCoroutine { continuation ->
+            val comments = FirebaseFirestore.getInstance().collection(PATH_Comments)
+            val userCurrent = FirebaseAuth.getInstance().currentUser
+
+            comments
+                .whereEqualTo("userId", userCurrent?.uid)
+                .get()
+                .addOnCompleteListener { task ->
+                    val list = mutableListOf<Comment>()
+                    if (task.isSuccessful) {
+                        for (document in task.result!!) {
+                            val comment = document.toObject(Comment::class.java)
+                            list.add(comment)
+                        }
+                        list.sortByDescending { it.createdTime }
+                        continuation.resume(Result.Success(list))
+                    } else {
+                        task.exception?.let {
+
+                            Log.w(
+                                "",
+                                "[${this::class.simpleName}] Error getting documents. ${it.message}"
+                            )
+                            continuation.resume(Result.Error(it))
+                            return@addOnCompleteListener
+                        }
+                        continuation.resume(Result.Fail(DrinkApplication.instance.getString(R.string.you_know_nothing)))
+                    }
+                }
+
+        }
 
 }

@@ -98,21 +98,6 @@ class DetailViewModel(private val repository: DrinkRepository, private val drink
 
     }
 
-    val displayAvgStar = Transformations.map(_detailComment) {
-        var totalStar: Double = 0.0
-        for (star in it){
-            val starNow = star.star.toDouble()
-            totalStar += starNow
-        }
-        val avg: Double = totalStar / it.size
-        val numberFormat = NumberFormat.getNumberInstance()
-        numberFormat.maximumFractionDigits = 1
-        numberFormat.minimumFractionDigits = 1
-
-        Log.d("jerryTest","displayAvgStar = $avgStar")
-        return@map numberFormat.format(avg).toString()
-    }
-
     fun calculateStar (detailComment: List<Comment>) {
         var totalStar: Float = 0F
         var oneStar = 0

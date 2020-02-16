@@ -10,13 +10,17 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import app.jerry.drink.MainActivity
+import app.jerry.drink.NavigationDirections
 import app.jerry.drink.R
 import app.jerry.drink.databinding.FragmentOrderBinding
 import app.jerry.drink.databinding.FragmentProfileBinding
 import app.jerry.drink.ext.getVmFactory
 import app.jerry.drink.home.HomeViewModel
+import app.jerry.drink.home.NewCommentAdapter
 import app.jerry.drink.profile.ProfileViewModel
+import app.jerry.drink.profile.UserCommentAdapter
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
@@ -40,9 +44,16 @@ class ProfileFragment : Fragment() {
         binding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_profile, container, false
         )
+
         (activity as MainActivity).binding.fab.hide()
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
+
+        val userCommentAdapter = UserCommentAdapter(UserCommentAdapter.OnClickListener{
+            viewModel.navigationToDetail(it)
+        })
+
+        binding.recyclerProfileAllComments.adapter = userCommentAdapter
 
         binding.profileAvatarChoose.setOnClickListener {
             launchGallery()
@@ -50,6 +61,13 @@ class ProfileFragment : Fragment() {
 
         viewModel.userCurrent.observe(this, Observer {
             Log.d("userCurrent.observe","userCurrent = $it")
+        })
+
+        viewModel.navigationToDetail.observe(this, Observer {
+            it?.let {
+                findNavController().navigate(NavigationDirections.actionGlobalDetailFragment(it))
+                viewModel.onDetailNavigated()
+            }
         })
 
         return binding.root

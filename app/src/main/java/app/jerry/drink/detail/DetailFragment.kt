@@ -1,5 +1,7 @@
 package app.jerry.drink.detail
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -35,6 +37,14 @@ class DetailFragment : Fragment() {
         binding.recyclerAllComments.adapter = DetailAdapter()
 
         (activity as MainActivity).binding.bottomNavigationView.visibility = View.GONE
+
+        binding.layoutNavigationToInternet.setOnClickListener {
+            val uri = Uri.parse("http://50lan.com/web/news.asp")
+            val intent = Intent(Intent.ACTION_VIEW, uri)
+//            if (intent.resolveActivity(getPackageManager()) != null) {
+//                final ComponentName componentName = intent.resolveActivity(getPackageManager())
+            startActivity(Intent.createChooser(intent, "即將跳轉，請選擇瀏覽器"))
+        }
 
         return binding.root
     }
