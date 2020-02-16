@@ -14,7 +14,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#EAE7E7">
+        android:background="#FAF4E4">
 
             <TextView
                 android:id="@+id/text_home_high_score"
@@ -35,6 +35,7 @@
                 android:layout_marginTop="4dp"
                 android:orientation="horizontal"
                 android:paddingHorizontal="8dp"
+                listHighScore="@{viewModel.newDrinkRank}"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

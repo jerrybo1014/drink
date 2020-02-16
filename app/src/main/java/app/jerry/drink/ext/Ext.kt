@@ -34,7 +34,8 @@ fun Long.toDisplayTimePass(): String {
         months >= 1 -> "${months}個月前"
         days >= 1 -> "${days}天前"
         hours >= 1 -> "${hours}小時"
-        else -> "${minutes}分鐘"
+        minutes >= 1 -> "${minutes}分鐘"
+        else -> "剛剛"
     }
 
     }

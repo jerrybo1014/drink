@@ -15,6 +15,8 @@ import app.jerry.drink.NavigationDirections
 import app.jerry.drink.R
 import app.jerry.drink.databinding.FragmentHomeBinding
 import app.jerry.drink.dataclass.Comment
+import app.jerry.drink.dataclass.Drink
+import app.jerry.drink.dataclass.Store
 import app.jerry.drink.dataclass.User
 import app.jerry.drink.ext.getVmFactory
 
@@ -34,13 +36,16 @@ class HomeFragment : Fragment() {
 
         (activity as MainActivity).binding.layoutHomeSearch.setOnClickListener {
             findNavController().navigate(R.id.action_global_homeSearchFragment)
-            Log.d("jerryTest","layoutHomeSearch")
+            Log.d("jerryTest", "layoutHomeSearch")
         }
 
         (activity as MainActivity).binding.fab.show()
 
-        val highScoreAdapter = HighScoreAdapter()
-        val newCommentAdapter = NewCommentAdapter(NewCommentAdapter.OnClickListener{
+        val highScoreAdapter = HighScoreAdapter(HighScoreAdapter.OnClickListener {
+            viewModel.navigationToDetail(it)
+        })
+        
+        val newCommentAdapter = NewCommentAdapter(NewCommentAdapter.OnClickListener {
             viewModel.navigationToDetail(it)
         })
 
@@ -50,18 +55,6 @@ class HomeFragment : Fragment() {
         binding.recyclerHighScore.adapter = highScoreAdapter
         binding.recyclerNewComment.adapter = newCommentAdapter
 
-        val mockData = mutableListOf<Comment>()
-        val comment = Comment("",User("","","","")
-            ,"","","","","","","",1,"","",0)
-        mockData.add(comment)
-        mockData.add(comment)
-        mockData.add(comment)
-        mockData.add(comment)
-//        mockData.add(comment)
-//
-        highScoreAdapter.submitList(mockData)
-//        newCommentAdapter.submitList(mockData)
-
         viewModel.navigationToDetail.observe(this, Observer {
             it?.let {
                 findNavController().navigate(NavigationDirections.actionGlobalDetailFragment(it))
@@ -70,7 +63,7 @@ class HomeFragment : Fragment() {
         })
 
         viewModel.newComment.observe(this, Observer {
-            Log.d("newComment","$it")
+            Log.d("newComment", "$it")
         })
 
         return binding.root

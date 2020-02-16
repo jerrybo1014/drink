@@ -8,12 +8,14 @@ import app.jerry.drink.network.LoadApiStatus
 import app.jerry.drink.R
 import app.jerry.drink.dataclass.Comment
 import app.jerry.drink.dataclass.DrinkDetail
+import app.jerry.drink.dataclass.DrinkRank
 import app.jerry.drink.dataclass.Result
 import app.jerry.drink.dataclass.source.DrinkRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import java.text.NumberFormat
 
 class HomeViewModel(private val repository: DrinkRepository) : ViewModel() {
 
@@ -21,6 +23,11 @@ class HomeViewModel(private val repository: DrinkRepository) : ViewModel() {
 
     val newComment: LiveData<List<Comment>>
         get() = _newComment
+
+    private val _newDrinkRank = MutableLiveData<List<DrinkRank>>()
+
+    val newDrinkRank: LiveData<List<DrinkRank>>
+        get() = _newDrinkRank
 
 
     val navigationToDetail = MutableLiveData<DrinkDetail>()
@@ -65,6 +72,7 @@ class HomeViewModel(private val repository: DrinkRepository) : ViewModel() {
                 is Result.Success -> {
                     _error.value = null
                     _status.value = LoadApiStatus.DONE
+                    getDrinkRank(result.data)
                     result.data
                 }
                 is Result.Fail -> {
@@ -89,7 +97,49 @@ class HomeViewModel(private val repository: DrinkRepository) : ViewModel() {
     }
 
 
-    fun navigationToDetail(drinkDetail: DrinkDetail){
+    fun getDrinkRank(commnetList: List<Comment>) {
+
+        val scoreRank = mutableListOf<DrinkRank>()
+        for (commentUnit in commnetList) {
+            /*-------------------------------------------------------------*/
+            var haveId = false
+            var position = -1
+
+            for (checkId in scoreRank) {
+                if (commentUnit.drink.drinkId == checkId.drink.drinkId) {
+                    haveId = true
+                    position = scoreRank.indexOf(checkId)
+                }
+            }
+
+            if (haveId) {
+                var scoreSum = 0F
+                scoreRank[position].commentList.add(commentUnit)
+                for (score in scoreRank[position].commentList) {
+                    scoreSum += score.star
+                }
+                val avg: Float = scoreSum / scoreRank[position].commentList.size
+                val numberFormat = NumberFormat.getNumberInstance()
+                numberFormat.maximumFractionDigits = 1
+                numberFormat.minimumFractionDigits = 1
+                val avgStar = numberFormat.format(avg).toFloat()
+                scoreRank[position].score = avgStar
+            } else {
+                val newDrinkRank = DrinkRank(
+                    mutableListOf(commentUnit),
+                    commentUnit.drink,
+                    commentUnit.store,
+                    commentUnit.star.toFloat()
+                )
+                scoreRank.add(newDrinkRank)
+            }
+        }
+        /*---------------------------------------------------------------------*/
+        scoreRank.sortByDescending { it.score }
+        _newDrinkRank.value = scoreRank
+    }
+
+    fun navigationToDetail(drinkDetail: DrinkDetail) {
         navigationToDetail.value = drinkDetail
     }
 

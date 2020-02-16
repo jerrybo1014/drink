@@ -1,5 +1,6 @@
 package app.jerry.drink.home
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -7,33 +8,45 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import app.jerry.drink.databinding.ItemHighScoreBinding
 import app.jerry.drink.dataclass.Comment
+import app.jerry.drink.dataclass.DrinkDetail
+import app.jerry.drink.dataclass.DrinkRank
 
-class HighScoreAdapter :
-    ListAdapter<Comment, HighScoreAdapter.HighestScoreViewHolder>(
+class HighScoreAdapter(private val onClickListener: HighScoreAdapter.OnClickListener) :
+    ListAdapter<DrinkRank, HighScoreAdapter.HighestScoreViewHolder>(
         DiffCallback
     ) {
 
+    class OnClickListener(val clickListener: (drinkDetail: DrinkDetail) -> Unit) {
+        fun onClick(drinkDetail: DrinkDetail) = clickListener(drinkDetail)
+    }
+
     class HighestScoreViewHolder(private var binding: ItemHighScoreBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(comment: Comment) {
-//            binding.detailImage = string
-            // This is important, because it forces the data binding to execute immediately,
-            // which allows the RecyclerView to make the correct view size measurements
+        fun bind(drinkRank: DrinkRank, onClickListener: HighScoreAdapter.OnClickListener) {
+
+            val drinkDetail = DrinkDetail(drinkRank.drink
+                , drinkRank.store)
+            binding.root.setOnClickListener { onClickListener.onClick(drinkDetail) }
+
+            val imageRandom = (Math.random() * drinkRank.commentList.size).toInt()
+            Log.d("jerryTest","imageRandom = $imageRandom")
+            binding.image = drinkRank.commentList[imageRandom].drinkImage
+            binding.drinkRank = drinkRank
             binding.executePendingBindings()
         }
     }
 
-    companion object DiffCallback : DiffUtil.ItemCallback<Comment>() {
+    companion object DiffCallback : DiffUtil.ItemCallback<DrinkRank>() {
         override fun areItemsTheSame(
-            oldItem: Comment,
-            newItem: Comment
+            oldItem: DrinkRank,
+            newItem: DrinkRank
         ): Boolean {
-            return oldItem.id == newItem.id
+            return oldItem == newItem
         }
 
         override fun areContentsTheSame(
-            oldItem: Comment,
-            newItem: Comment
+            oldItem: DrinkRank,
+            newItem: DrinkRank
         ): Boolean {
             return oldItem == newItem
         }
@@ -57,7 +70,7 @@ class HighScoreAdapter :
      */
 
     override fun onBindViewHolder(holder: HighestScoreViewHolder, position: Int) {
-        val comment = getItem(position)
-        holder.bind(comment)
+        val drinkRank = getItem(position)
+        holder.bind(drinkRank, onClickListener)
     }
 }

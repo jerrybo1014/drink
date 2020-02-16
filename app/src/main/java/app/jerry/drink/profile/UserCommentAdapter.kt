@@ -25,8 +25,8 @@ class UserCommentAdapter(private val onClickListener: OnClickListener ) :
         fun bind(comment: Comment, onClickListener: OnClickListener) {
 
             val drinkDetail = DrinkDetail(
-                Drink(comment.drinkId,comment.drinkName)
-                , Store(comment.storeId,comment.storeName)
+                comment.drink
+                , comment.store
             )
             binding.comment = comment
             binding.root.setOnClickListener { onClickListener.onClick(drinkDetail) }

@@ -17,6 +17,7 @@ import com.google.firebase.firestore.Query
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.UploadTask
 import java.io.File
+import java.text.NumberFormat
 import java.util.*
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
@@ -79,10 +80,42 @@ object DrinkRemoteDataSource : DrinkDataSource {
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     val list = mutableListOf<Comment>()
+                    val scoreRank = mutableListOf<DrinkRank>()
                     for (document in task.result!!) {
 //                        Log.d(TAG, "${document.id} => ${document.data}")
                         val newComment = document.toObject(Comment::class.java)
                         Log.d(TAG, "comments document=$document")
+
+                        /*-------------------------------------------------------------*/
+//                        var haveId = false
+//                        var position = -1
+//
+//                        for (checkId in scoreRank) {
+//                            if (newComment.drink.drinkId == checkId.drink.drinkId) {
+//                                haveId = true
+//                                position = scoreRank.indexOf(checkId)
+//                            }
+//                        }
+//
+//                        if (haveId) {
+//                            var scoreSum = 0F
+//                            scoreRank[position].commentList.add(newComment)
+//                            for(score in scoreRank[position].commentList){
+//                                scoreSum += score.star
+//                            }
+//                            val avg: Float = scoreSum / scoreRank[position].commentList.size
+//                            val numberFormat = NumberFormat.getNumberInstance()
+//                            numberFormat.maximumFractionDigits = 1
+//                            numberFormat.minimumFractionDigits = 1
+//                            val avgStar = numberFormat.format(avg).toFloat()
+//                            scoreRank[position].score = avgStar
+//                        }else{
+//                            val newDrinkRank = DrinkRank(mutableListOf(newComment), newComment.drink, newComment.star.toFloat())
+//                            scoreRank.add(newDrinkRank)
+//                        }
+
+                        /*---------------------------------------------------------------------*/
+
 
                         var user: User? = User("", "", "", "")
 
@@ -93,9 +126,12 @@ object DrinkRemoteDataSource : DrinkDataSource {
                                 Log.d(TAG, "users.addOnSuccessListener, user=$user")
                                 newComment.user = user
                                 list.add(newComment)
+
                                 if (list.size == task.result!!.size()) {
                                     Log.w(TAG, "last complete = $list")
                                     list.sortByDescending { it.createdTime }
+                                    Log.w(TAG, "list.sortBy { it.drink.drinkId } = $list")
+
                                     continuation.resume(Result.Success(list))
                                 }
 
@@ -686,8 +722,9 @@ object DrinkRemoteDataSource : DrinkDataSource {
             val comments = FirebaseFirestore.getInstance().collection(PATH_Comments)
             val users = FirebaseFirestore.getInstance().collection(PATH_Users)
 
+
             comments
-                .whereEqualTo("drinkId", drinkDetail.drink?.drinkId)
+                .whereEqualTo("drink", drinkDetail.drink)
                 .get()
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {

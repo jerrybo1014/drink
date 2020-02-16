@@ -24,8 +24,8 @@ class NewCommentAdapter(private val onClickListener: OnClickListener ) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(comment: Comment, onClickListener: OnClickListener) {
 
-            val drinkDetail = DrinkDetail(Drink(comment.drinkId,comment.drinkName)
-                ,Store(comment.storeId,comment.storeName))
+            val drinkDetail = DrinkDetail(comment.drink
+                ,comment.store)
             binding.comment = comment
             binding.root.setOnClickListener { onClickListener.onClick(drinkDetail) }
 //            binding.detailImage = string

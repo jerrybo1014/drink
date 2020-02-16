@@ -7,10 +7,12 @@ import androidx.core.net.toUri
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import app.jerry.drink.dataclass.Comment
+import app.jerry.drink.dataclass.DrinkRank
 import app.jerry.drink.dataclass.OrderList
 import app.jerry.drink.detail.DetailAdapter
 import app.jerry.drink.ext.toDisplayFormat
 import app.jerry.drink.ext.toDisplayTimePass
+import app.jerry.drink.home.HighScoreAdapter
 import app.jerry.drink.home.NewCommentAdapter
 import app.jerry.drink.order.OrderListsAdapter
 import app.jerry.drink.post.IceAdapter
@@ -79,6 +81,12 @@ fun bindDisplayTimePass(textView: TextView, time: Long?) {
 @BindingAdapter("listNewComment")
 fun bindNewComment(recyclerView: RecyclerView, data: List<Comment>?){
     val adapter = recyclerView.adapter as NewCommentAdapter
+    adapter.submitList(data)
+}
+
+@BindingAdapter("listHighScore")
+fun bindHighScore(recyclerView: RecyclerView, data: List<DrinkRank>?){
+    val adapter = recyclerView.adapter as HighScoreAdapter
     adapter.submitList(data)
 }
 
