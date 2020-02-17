@@ -1,7 +1,9 @@
 package app.jerry.drink
 
 import android.util.Log
+import android.view.View
 import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.core.net.toUri
 import androidx.databinding.BindingAdapter
@@ -15,6 +17,7 @@ import app.jerry.drink.ext.toDisplayFormat
 import app.jerry.drink.ext.toDisplayTimePass
 import app.jerry.drink.home.HighScoreAdapter
 import app.jerry.drink.home.NewCommentAdapter
+import app.jerry.drink.network.LoadApiStatus
 import app.jerry.drink.order.OrderListsAdapter
 import app.jerry.drink.post.IceAdapter
 import app.jerry.drink.post.SugarAdapter
@@ -67,6 +70,22 @@ fun bindImageCorner(imgView: ImageView, imgUrl: String?) {
                     .error(R.drawable.placeholder)
             )
             .into(imgView)
+    }
+}
+
+@BindingAdapter("setupApiStatus")
+fun bindApiStatus(view: ProgressBar, status: LoadApiStatus?) {
+    when (status) {
+        LoadApiStatus.LOADING -> view.visibility = View.VISIBLE
+        LoadApiStatus.DONE, LoadApiStatus.ERROR -> view.visibility = View.GONE
+    }
+}
+
+@BindingAdapter("setupContentStatus")
+fun bindContentStatus(view: View, status: LoadApiStatus?) {
+    when (status) {
+        LoadApiStatus.LOADING -> view.visibility = View.GONE
+        LoadApiStatus.DONE, LoadApiStatus.ERROR -> view.visibility = View.VISIBLE
     }
 }
 

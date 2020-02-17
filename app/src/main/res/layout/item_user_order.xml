@@ -56,10 +56,22 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:textSize="14dp"
+                    android:textIsSelectable="true"
                     android:fontFamily="@font/noto_sans"
                     android:text="@{order.id}"
                     app:layout_constraintBaseline_toBaselineOf="@+id/text_host_order"
                     app:layout_constraintStart_toEndOf="@+id/text_host_order" />
+
+                <ImageView
+                    android:id="@+id/image_copy_order"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_marginStart="8dp"
+                    android:tint="#999999"
+                    android:src="@drawable/ic_content_copy_black_24dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/order_host_name"
+                    app:layout_constraintStart_toEndOf="@+id/order_host_name"
+                    app:layout_constraintTop_toTopOf="@+id/order_host_name" />
 
                 <ImageView
                     android:id="@+id/image_store_order"

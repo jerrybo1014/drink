@@ -18,6 +18,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:paddingHorizontal="16dp"
+        android:background="@color/home_background"
         >
 
         <androidx.appcompat.widget.SearchView
@@ -39,193 +40,208 @@
             android:id="@+id/scrollView2"
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:layout_marginTop="16dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/search_view">
 
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:paddingHorizontal="8dp"
-                android:layout_marginTop="16dp"
-                android:background="@drawable/shape_corner_r"
-                android:backgroundTint="#FAF4E4"
-                android:visibility="@{viewModel.orderLists.order == null  ? View.GONE:View.VISIBLE}">
-
-                <TextView
-                    android:id="@+id/text_edit_order_status"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@{viewModel.orderLists.order.status == true ? @string/order_status_to_inactive:@string/order_status_to_active}"
-                    android:onClick="@{() -> viewModel.editOrderStatusResult()}"
-                    android:visibility="@{viewModel.userStatus == true ? View.VISIBLE:View.GONE}"
-                    app:layout_constraintBaseline_toBaselineOf="@+id/text_store_create_order"
-                    app:layout_constraintEnd_toEndOf="parent" />
-
-                <TextView
-                    android:id="@+id/text_status_add_order"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text='@{viewModel.orderLists.order.status == true ? @string/order_status_active:@string/order_status_inactive}'
-                    app:layout_constraintBaseline_toBaselineOf="@+id/text_note"
-                    app:layout_constraintEnd_toEndOf="parent" />
-
-                <TextView
-                    android:id="@+id/text_order_id"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@{viewModel.orderLists.order.id}"
-                    app:layout_constraintBaseline_toBaselineOf="@+id/text_time_order"
-                    app:layout_constraintEnd_toEndOf="parent" />
-
-
-                <TextView
-                    android:id="@+id/button_add_order"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/background_post_button"
-                    android:padding="8dp"
-                    android:layout_marginVertical="8dp"
-                    android:text="新增品項"
-                    android:visibility="@{viewModel.orderLists.order.status == true ? View.VISIBLE:View.GONE}"
-                    android:textAlignment="center"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/recycler_order_list" />
-
-                <ImageView
-                    android:id="@+id/image_host_order"
-                    style="@style/add_order_icon_style"
-                    android:src="@drawable/people"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/text_host_order"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:text="@string/order_host"
-                    android:textSize="16dp"
-                    app:layout_constraintBottom_toBottomOf="@+id/image_host_order"
-                    app:layout_constraintStart_toEndOf="@+id/image_host_order"
-                    app:layout_constraintTop_toTopOf="@+id/image_host_order" />
-
-                <TextView
-                    android:id="@+id/order_host_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:text="@{viewModel.orderLists.order.user.name}"
-                    app:layout_constraintBaseline_toBaselineOf="@+id/text_host_order"
-                    app:layout_constraintStart_toEndOf="@+id/text_host_order" />
-
-                <ImageView
-                    android:id="@+id/image_store_order"
-                    style="@style/add_order_icon_style"
-                    android:src="@drawable/store_icon"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/image_host_order" />
-
-                <TextView
-                    android:id="@+id/text_store_create_order"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:text="@string/post_store"
-                    android:textSize="16dp"
-                    app:layout_constraintBottom_toBottomOf="@+id/image_store_order"
-                    app:layout_constraintStart_toEndOf="@+id/image_store_order"
-                    app:layout_constraintTop_toTopOf="@+id/image_store_order" />
-
-                <TextView
-                    android:id="@+id/order_host_store"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:text="@{viewModel.orderLists.order.store.storeName}"
-                    app:layout_constraintBaseline_toBaselineOf="@+id/text_store_create_order"
-                    app:layout_constraintStart_toEndOf="@+id/text_host_order" />
-
-
-                <ImageView
-                    android:id="@+id/image_time_order"
-                    style="@style/add_order_icon_style"
-                    android:src="@drawable/clock_1"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/image_store_order" />
-
-                <TextView
-                    android:id="@+id/text_time_order"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:text="@string/post_time"
-                    android:textSize="16dp"
-                    app:layout_constraintBottom_toBottomOf="@+id/image_time_order"
-                    app:layout_constraintStart_toEndOf="@+id/image_time_order"
-                    app:layout_constraintTop_toTopOf="@+id/image_time_order" />
-
-                <TextView
-                    android:id="@+id/order_time_limit"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:text="@{viewModel.orderLists.order.timeLimit}"
-                    app:layout_constraintBaseline_toBaselineOf="@+id/text_time_order"
-                    app:layout_constraintStart_toEndOf="@+id/text_host_order" />
-
-
-                <ImageView
-                    android:id="@+id/image_note_create_order"
-                    style="@style/add_order_icon_style"
-                    android:src="@drawable/notes"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/image_time_order" />
-
-                <TextView
-                    android:id="@+id/text_note"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:text="備註"
-                    android:textSize="16dp"
-                    app:layout_constraintBottom_toBottomOf="@+id/image_note_create_order"
-                    app:layout_constraintStart_toEndOf="@+id/image_note_create_order"
-                    app:layout_constraintTop_toTopOf="@+id/image_note_create_order" />
-
-                <TextView
-                    android:id="@+id/order_note"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:text="@{viewModel.orderLists.order.note}"
-                    app:layout_constraintBaseline_toBaselineOf="@+id/text_note"
-                    app:layout_constraintStart_toEndOf="@+id/text_host_order" />
-
-                <View
-                    android:id="@+id/line_add_order"
+                <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginTop="6dp"
-                    android:background="#999999"
-                    app:layout_constraintTop_toBottomOf="@+id/text_note" />
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recycler_order_list"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    android:layout_height="match_parent"
                     app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_margin="2dp"
+                    app:cardCornerRadius="10dp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/image_note_create_order" />
+                    app:layout_constraintTop_toTopOf="parent">
 
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/shape_corner_r"
+                        android:backgroundTint="@color/White"
+                        android:paddingHorizontal="8dp"
+                        android:visibility="@{viewModel.orderLists.order == null  ? View.GONE:View.VISIBLE}">
+
+                        <TextView
+                            android:id="@+id/text_edit_order_status"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:onClick="@{() -> viewModel.editOrderStatusResult()}"
+                            android:text="@{viewModel.orderLists.order.status == true ? @string/order_status_to_inactive:@string/order_status_to_active}"
+                            android:visibility="@{viewModel.userStatus == true ? View.VISIBLE:View.GONE}"
+                            app:layout_constraintBaseline_toBaselineOf="@+id/text_store_create_order"
+                            app:layout_constraintEnd_toEndOf="parent" />
+
+                        <TextView
+                            android:id="@+id/text_status_add_order"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text='@{viewModel.orderLists.order.status == true ? @string/order_status_active:@string/order_status_inactive}'
+                            app:layout_constraintBaseline_toBaselineOf="@+id/text_note"
+                            app:layout_constraintEnd_toEndOf="parent" />
+
+                        <TextView
+                            android:id="@+id/text_order_id"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@{viewModel.orderLists.order.id}"
+                            app:layout_constraintBaseline_toBaselineOf="@+id/text_time_order"
+                            app:layout_constraintEnd_toEndOf="parent" />
+
+
+                        <TextView
+                            android:id="@+id/button_add_order"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginVertical="8dp"
+                            android:background="@drawable/background_post_button"
+                            android:padding="8dp"
+                            android:text="新增品項"
+                            android:textSize="16dp"
+                            android:fontFamily="@font/noto_sans"
+                            android:textAlignment="center"
+                            android:visibility="@{viewModel.orderLists.order.status == true ? View.VISIBLE:View.GONE}"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/recycler_order_list" />
+
+                        <ImageView
+                            android:id="@+id/image_host_order"
+                            style="@style/add_order_icon_style"
+                            android:src="@drawable/people"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/text_host_order"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:text="@string/order_host"
+                            android:textSize="16dp"
+                            app:layout_constraintBottom_toBottomOf="@+id/image_host_order"
+                            app:layout_constraintStart_toEndOf="@+id/image_host_order"
+                            app:layout_constraintTop_toTopOf="@+id/image_host_order" />
+
+                        <TextView
+                            android:id="@+id/order_host_name"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
+                            android:text="@{viewModel.orderLists.order.user.name}"
+                            app:layout_constraintBaseline_toBaselineOf="@+id/text_host_order"
+                            app:layout_constraintStart_toEndOf="@+id/text_host_order" />
+
+                        <ImageView
+                            android:id="@+id/image_store_order"
+                            style="@style/add_order_icon_style"
+                            android:src="@drawable/store_icon"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/image_host_order" />
+
+                        <TextView
+                            android:id="@+id/text_store_create_order"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:text="@string/post_store"
+                            android:textSize="16dp"
+                            app:layout_constraintBottom_toBottomOf="@+id/image_store_order"
+                            app:layout_constraintStart_toEndOf="@+id/image_store_order"
+                            app:layout_constraintTop_toTopOf="@+id/image_store_order" />
+
+                        <TextView
+                            android:id="@+id/order_host_store"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
+                            android:text="@{viewModel.orderLists.order.store.storeName}"
+                            app:layout_constraintBaseline_toBaselineOf="@+id/text_store_create_order"
+                            app:layout_constraintStart_toEndOf="@+id/text_host_order" />
+
+
+                        <ImageView
+                            android:id="@+id/image_time_order"
+                            style="@style/add_order_icon_style"
+                            android:src="@drawable/clock_1"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/image_store_order" />
+
+                        <TextView
+                            android:id="@+id/text_time_order"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:text="@string/post_time"
+                            android:textSize="16dp"
+                            app:layout_constraintBottom_toBottomOf="@+id/image_time_order"
+                            app:layout_constraintStart_toEndOf="@+id/image_time_order"
+                            app:layout_constraintTop_toTopOf="@+id/image_time_order" />
+
+                        <TextView
+                            android:id="@+id/order_time_limit"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
+                            android:text="@{viewModel.orderLists.order.timeLimit}"
+                            app:layout_constraintBaseline_toBaselineOf="@+id/text_time_order"
+                            app:layout_constraintStart_toEndOf="@+id/text_host_order" />
+
+
+                        <ImageView
+                            android:id="@+id/image_note_create_order"
+                            style="@style/add_order_icon_style"
+                            android:src="@drawable/notes"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/image_time_order" />
+
+                        <TextView
+                            android:id="@+id/text_note"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:text="備註"
+                            android:textSize="16dp"
+                            app:layout_constraintBottom_toBottomOf="@+id/image_note_create_order"
+                            app:layout_constraintStart_toEndOf="@+id/image_note_create_order"
+                            app:layout_constraintTop_toTopOf="@+id/image_note_create_order" />
+
+                        <TextView
+                            android:id="@+id/order_note"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
+                            android:text="@{viewModel.orderLists.order.note}"
+                            app:layout_constraintBaseline_toBaselineOf="@+id/text_note"
+                            app:layout_constraintStart_toEndOf="@+id/text_host_order" />
+
+                        <View
+                            android:id="@+id/line_add_order"
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="6dp"
+                            android:background="#666666"
+                            android:visibility="invisible"
+                            app:layout_constraintTop_toBottomOf="@+id/text_note" />
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/recycler_order_list"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/image_note_create_order" />
+
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </androidx.cardview.widget.CardView>
+
 
         </ScrollView>
 

@@ -20,10 +20,6 @@
 
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="8dp">
 
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -31,7 +27,6 @@
             android:layout_height="wrap_content"
             android:backgroundTint="@color/White"
             android:background="@drawable/shape_corner_r"
-            android:padding="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -42,19 +37,23 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
-                app:layout_constraintGuide_percent="0.3"/>
+                app:layout_constraintGuide_percent="0.5" />
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/guide_2"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
-                app:layout_constraintGuide_percent="0.65"/>
+                app:layout_constraintGuide_percent="0.8"/>
 
             <TextView
                 android:id="@+id/text_order_list_drink"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textSize="14dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginStart="8dp"
+                android:fontFamily="@font/noto_sans"
                 android:text="@{orderList.drink.drinkName}"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -63,6 +62,9 @@
                 android:id="@+id/text_add_order_ice_sugar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textSize="14dp"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@font/noto_sans"
                 android:text="@{orderList.displayQty()}"
                 app:layout_constraintStart_toStartOf="@+id/guide_2"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -71,6 +73,8 @@
                 android:id="@+id/text_order_list_qty"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textSize="14dp"
+                android:fontFamily="@font/noto_sans"
                 android:text="@{orderList.displayIceSugar() }"
                 app:layout_constraintBaseline_toBaselineOf="@+id/text_order_list_drink"
                 app:layout_constraintStart_toStartOf="@id/guide_1" />
@@ -79,9 +83,13 @@
                 android:id="@+id/text_add_order_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@{orderList.user.name}"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="8dp"
                 android:layout_marginStart="8dp"
+                android:fontFamily="@font/noto_sans"
+                android:text="@{orderList.note}"
+                android:textSize="14dp"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/text_order_list_drink" />
 
@@ -89,8 +97,9 @@
                 android:id="@+id/text_add_order_note"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text=""
-                app:layout_constraintHorizontal_bias="0.8"
+                android:textSize="14dp"
+                android:fontFamily="@font/noto_sans"
+                android:text="@{orderList.user.name}"
                 app:layout_constraintStart_toStartOf="@+id/guide_1"
                 app:layout_constraintTop_toTopOf="@+id/text_add_order_name" />
 
@@ -98,6 +107,8 @@
                 android:id="@+id/image_trash"
                 android:layout_width="18dp"
                 android:layout_height="18dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
                 android:tint="@color/myColorPrimaryDark"
                 android:src="@drawable/trash"
                 android:onClick="@{() -> viewModel.removeOrderResult(orderList.id)}"
@@ -106,7 +117,15 @@
                 app:layout_constraintTop_toTopOf="parent"
                 />
 
+            <View
+                android:id="@+id/line_add_order"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#99AAAAAA"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:layout_editor_absoluteX="8dp" />
+
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

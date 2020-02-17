@@ -61,9 +61,21 @@ class HomeFragment : Fragment() {
             }
         })
 
+        binding.layoutSwipeRefreshHome.setOnRefreshListener {
+            viewModel.refresh()
+        }
+
+        viewModel.refreshStatus.observe(this, Observer {
+            it?.let {
+                binding.layoutSwipeRefreshHome.isRefreshing = it
+            }
+        })
+
         viewModel.newComment.observe(this, Observer {
             Log.d("newComment", "$it")
         })
+
+
 
         return binding.root
     }

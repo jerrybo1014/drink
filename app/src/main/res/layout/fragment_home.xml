@@ -16,6 +16,22 @@
         android:layout_height="match_parent"
         android:background="@color/home_background">
 
+
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/layout_swipe_refresh_home"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/layout_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:setupContentStatus="@{viewModel.status}">
+
             <TextView
                 android:id="@+id/text_home_high_score"
                 android:layout_width="wrap_content"
@@ -27,6 +43,7 @@
                 android:layout_marginTop="8dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
+
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler_high_score"
@@ -63,6 +80,20 @@
                 app:layout_constraintTop_toBottomOf="@+id/text_home_new_comment"
                 app:listNewComment="@{viewModel.newComment}"
                 />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+        <ProgressBar
+            android:theme="@style/ProgressTheme"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:setupApiStatus="@{viewModel.status}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

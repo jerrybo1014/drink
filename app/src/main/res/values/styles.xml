@@ -41,6 +41,10 @@
         <item name="android:tint">@color/myColorPrimaryDark</item>
     </style>
 
+    <style name="ProgressTheme" parent="Widget.AppCompat.ProgressBar">
+        <item name="colorAccent">@color/black_3f3a3a</item>
+    </style>
+
     <style name="AddOrderDialog">
         <item name="android:windowBackground">@color/transparent</item>
     </style>

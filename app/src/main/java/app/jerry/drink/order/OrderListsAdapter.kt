@@ -1,5 +1,8 @@
 package app.jerry.drink.order
 
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -9,6 +12,7 @@ import androidx.lifecycle.LifecycleRegistry
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import app.jerry.drink.DrinkApplication
 import app.jerry.drink.databinding.ItemOrderListsBinding
 import app.jerry.drink.dataclass.OrderList
 
@@ -27,6 +31,11 @@ class OrderListsAdapter(private val viewModel: OrderVIewModel) :
             binding.orderList = orderList
             binding.lifecycleOwner = this
             binding.viewModel = viewModel
+
+//            val clipboardManager = ClipboardManager.OnPrimaryClipChangedListener {
+//
+//            }
+
 
             val userCurrent = orderList.user?.id == viewModel.userCurrent.value?.id
             Log.d("jerryTest","OrderListsHolder = $userCurrent")

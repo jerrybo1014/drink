@@ -1,10 +1,15 @@
 package app.jerry.drink.profile
 
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import app.jerry.drink.DrinkApplication
 import app.jerry.drink.databinding.ItemUserOrderBinding
 import app.jerry.drink.dataclass.DrinkDetail
 import app.jerry.drink.dataclass.Order
@@ -22,6 +27,16 @@ class UserOrderAdapter(private val onClickListener: UserOrderAdapter.OnClickList
     class UserOrderViewHolder(private var binding: ItemUserOrderBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(order: Order, onClickListener: UserOrderAdapter.OnClickListener) {
+
+
+            val clipboardManager : ClipboardManager
+                    = (DrinkApplication.context.getSystemService(Context.CLIPBOARD_SERVICE)) as ClipboardManager
+            val clipData = ClipData.newPlainText("orderIdText", order.id)
+
+            binding.imageCopyOrder.setOnClickListener {
+                clipboardManager.setPrimaryClip(clipData)
+                Toast.makeText(DrinkApplication.context, "已複製編號至剪貼簿", Toast.LENGTH_SHORT).show()
+            }
 
 
             binding.textNavigationToOrder.setOnClickListener { onClickListener.onClick(order.id) }

@@ -34,6 +34,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="新增品項"
+                android:textSize="20dp"
+                android:fontFamily="@font/noto_sans"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -52,6 +54,8 @@
                 android:id="@+id/text_drink"
                 style="@style/post_text_title"
                 android:text="@string/post_drink"
+                android:textSize="16dp"
+                android:fontFamily="@font/noto_sans"
                 app:layout_constraintStart_toEndOf="@+id/image_drink"
                 app:layout_constraintTop_toBottomOf="@+id/add_order_title" />
 
@@ -65,6 +69,8 @@
                 android:paddingEnd="12dp"
                 android:paddingBottom="16dp"
                 android:prompt="@string/spinner_store"
+                android:textSize="16dp"
+                android:fontFamily="@font/noto_sans"
                 android:spinnerMode="dropdown"
                 app:layout_constraintBottom_toBottomOf="@+id/text_drink"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -85,6 +91,8 @@
                 android:id="@+id/text_ice"
                 style="@style/post_text_title"
                 android:text="@string/post_ice"
+                android:textSize="16dp"
+                android:fontFamily="@font/noto_sans"
                 app:layout_constraintStart_toEndOf="@id/image_ice"
                 app:layout_constraintTop_toBottomOf="@+id/text_drink" />
 
@@ -116,6 +124,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/post_sugar"
+                android:textSize="16dp"
+                android:fontFamily="@font/noto_sans"
                 app:layout_constraintStart_toEndOf="@id/image_ice"
                 app:layout_constraintTop_toBottomOf="@+id/text_ice" />
 
@@ -175,7 +185,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="6dp"
                 android:inputType="number"
-                android:padding="3dp"
+                android:paddingBottom="4dp"
+                android:textSize="16dp"
+                android:fontFamily="@font/noto_sans"
                 android:text="@={viewModel.convertLongToString(viewModel.orderList.qty)}"
                 android:textAlignment="center"
                 app:layout_constraintBaseline_toBaselineOf="@+id/text_qyt"
@@ -187,6 +199,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="6dp"
                 android:gravity="start"
+                android:textSize="16dp"
+                android:fontFamily="@font/noto_sans"
                 android:text="@={viewModel.orderList.note}"
                 app:layout_constraintBaseline_toBaselineOf="@+id/text_note"
                 app:layout_constraintEnd_toEndOf="parent"

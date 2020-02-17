@@ -13,257 +13,286 @@
 
     </data>
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#EAE7E7">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="#EAE7E7"
-            android:paddingHorizontal="16dp">
-
-            <ImageView
-                android:id="@+id/profile_avatar"
-                imageUrlCircle="@{viewModel.userCurrent.image}"
-                android:layout_width="150dp"
-                android:layout_height="150dp"
-                android:layout_marginTop="16dp"
-                android:src="@drawable/icons_36px_profile_image"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-
-            <ImageView
-                android:id="@+id/profile_avatar_choose"
-                android:layout_width="35dp"
-                android:layout_height="35dp"
-                android:background="@drawable/shape_circle_background"
-                android:padding="6dp"
-                android:src="@drawable/ic_mode_edit_black_24dp"
-                android:tint="#FFFFFF"
-                app:layout_constraintBottom_toBottomOf="@+id/profile_avatar"
-                app:layout_constraintEnd_toEndOf="@+id/profile_avatar" />
-
-            <ImageView
-                android:id="@+id/image_checked"
-                android:layout_width="35dp"
-                android:layout_height="35dp"
-                android:background="@drawable/shape_circle"
-                android:onClick="@{() -> viewModel.uploadAvatarResult()}"
-                android:padding="10dp"
-                android:src="@drawable/checked"
-                android:tint="#66DD00"
-                android:visibility="@{viewModel.imageUri == null ? View.GONE:View.VISIBLE}"
-                app:layout_constraintEnd_toEndOf="@+id/profile_avatar"
-                app:layout_constraintTop_toTopOf="@+id/profile_avatar" />
-
-            <ImageView
-                android:id="@+id/image_close"
-                android:layout_width="35dp"
-                android:layout_height="35dp"
-                android:background="@drawable/shape_circle"
-                android:onClick="@{() -> viewModel.uploadAvatarCancel()}"
-                android:padding="10dp"
-                android:src="@drawable/close_1"
-                android:tint="#CC0000"
-                android:visibility="@{viewModel.imageUri == null ? View.GONE:View.VISIBLE}"
-                app:layout_constraintStart_toStartOf="@+id/profile_avatar"
-                app:layout_constraintTop_toTopOf="@+id/profile_avatar" />
-
-            <TextView
-                android:id="@+id/profile_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:fontFamily="@font/noto_sans"
-                android:text="@{viewModel.userCurrent.name}"
-                android:textSize="20dp"
-                app:layout_constraintEnd_toEndOf="@+id/profile_avatar"
-                app:layout_constraintStart_toStartOf="@+id/profile_avatar"
-                app:layout_constraintTop_toBottomOf="@+id/profile_avatar" />
-
-            <TextView
-                android:id="@+id/profile_email"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/noto_sans"
-                android:text="@{viewModel.userCurrent.email}"
-                android:textSize="16dp"
-                app:layout_constraintEnd_toEndOf="@+id/profile_name"
-                app:layout_constraintStart_toStartOf="@+id/profile_name"
-                app:layout_constraintTop_toBottomOf="@+id/profile_name" />
-
-            <View
-                android:id="@+id/line_add_order"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginTop="16dp"
-                android:background="#999999"
-                app:layout_constraintTop_toBottomOf="@+id/profile_email" />
-
+            android:layout_height="match_parent"
+            android:background="#EAE7E7">
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/constraintLayout4"
+                android:id="@+id/profile_content"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
                 android:background="#EAE7E7"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/line_add_order">
+                android:paddingHorizontal="16dp"
+                app:setupContentStatus="@{viewModel.status}">
 
                 <ImageView
-                    android:id="@+id/image_profile_all_comment"
-                    android:layout_width="26dp"
-                    android:layout_height="26dp"
-                    android:background="@drawable/shape_circle_background"
-                    android:backgroundTint="@color/myColorPrimaryDark"
-                    android:padding="6dp"
-                    android:src="@drawable/comment_icon"
-                    android:tint="@color/White"
+                    android:id="@+id/profile_avatar"
+                    imageUrlCircle="@{viewModel.userCurrent.image}"
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
+                    android:layout_marginTop="16dp"
+                    android:src="@drawable/icons_36px_profile_image"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <TextView
-                    android:id="@+id/textView_all_comments"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:fontFamily="@font/noto_sans"
-                    android:text="評論紀錄"
-                    android:textSize="16dp"
-                    app:layout_constraintBottom_toBottomOf="@+id/image_profile_all_comment"
-                    app:layout_constraintStart_toEndOf="@+id/image_profile_all_comment"
-                    app:layout_constraintTop_toTopOf="@id/image_profile_all_comment" />
+
+                <ImageView
+                    android:id="@+id/profile_avatar_choose"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:background="@drawable/shape_circle_background"
+                    android:padding="6dp"
+                    android:src="@drawable/ic_mode_edit_black_24dp"
+                    android:tint="#FFFFFF"
+                    app:layout_constraintBottom_toBottomOf="@+id/profile_avatar"
+                    app:layout_constraintEnd_toEndOf="@+id/profile_avatar" />
+
+                <ImageView
+                    android:id="@+id/image_checked"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:background="@drawable/shape_circle"
+                    android:onClick="@{() -> viewModel.uploadAvatarResult()}"
+                    android:padding="10dp"
+                    android:src="@drawable/checked"
+                    android:tint="#66DD00"
+                    android:visibility="@{viewModel.imageUri == null ? View.GONE:View.VISIBLE}"
+                    app:layout_constraintEnd_toEndOf="@+id/profile_avatar"
+                    app:layout_constraintTop_toTopOf="@+id/profile_avatar" />
+
+                <ImageView
+                    android:id="@+id/image_close"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:background="@drawable/shape_circle"
+                    android:onClick="@{() -> viewModel.uploadAvatarCancel()}"
+                    android:padding="10dp"
+                    android:src="@drawable/close_1"
+                    android:tint="#CC0000"
+                    android:visibility="@{viewModel.imageUri == null ? View.GONE:View.VISIBLE}"
+                    app:layout_constraintStart_toStartOf="@+id/profile_avatar"
+                    app:layout_constraintTop_toTopOf="@+id/profile_avatar" />
 
                 <TextView
-                    android:id="@+id/textView_all_comments_qty"
+                    android:id="@+id/profile_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:fontFamily="@font/noto_sans"
+                    android:text="@{viewModel.userCurrent.name}"
+                    android:textSize="20dp"
+                    app:layout_constraintEnd_toEndOf="@+id/profile_avatar"
+                    app:layout_constraintStart_toStartOf="@+id/profile_avatar"
+                    app:layout_constraintTop_toBottomOf="@+id/profile_avatar" />
+
+                <TextView
+                    android:id="@+id/profile_email"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/noto_sans"
-                    android:text='@{"("+Long.toString(viewModel.userComment.size())+")"}'
+                    android:text="@{viewModel.userCurrent.email}"
                     android:textSize="16dp"
-                    android:layout_marginStart="8dp"
-                    app:layout_constraintBottom_toBottomOf="@+id/image_profile_all_comment"
-                    app:layout_constraintStart_toEndOf="@+id/textView_all_comments"
-                    app:layout_constraintTop_toTopOf="@id/image_profile_all_comment" />
+                    app:layout_constraintEnd_toEndOf="@+id/profile_name"
+                    app:layout_constraintStart_toStartOf="@+id/profile_name"
+                    app:layout_constraintTop_toBottomOf="@+id/profile_name" />
 
                 <View
-                    android:id="@+id/line_all_comments"
+                    android:id="@+id/line_add_order"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_marginTop="16dp"
                     android:background="#999999"
-                    app:layout_constraintTop_toBottomOf="@+id/relative_all_comment" />
+                    app:layout_constraintTop_toBottomOf="@+id/profile_email" />
 
-                <ImageView
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:layout_marginEnd="8dp"
-                    android:onClick="@{() -> viewModel.allCommentStatus()}"
-                    android:src="@drawable/ic_keyboard_arrow_down_black_24dp"
-                    app:layout_constraintBottom_toBottomOf="@+id/textView_all_comments"
-                    app:layout_constraintDimensionRatio="1.0"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/textView_all_comments" />
 
-                <RelativeLayout
-                    android:id="@+id/relative_all_comment"
-                    android:layout_width="wrap_content"
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/constraintLayout4"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:visibility="@{viewModel.allCommentStatus == true ? View.VISIBLE:View.GONE}"
+                    android:layout_marginTop="16dp"
+                    android:background="#EAE7E7"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textView_all_comments">
+                    app:layout_constraintTop_toBottomOf="@+id/line_add_order">
 
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/recycler_profile_all_comments"
-                        android:layout_width="match_parent"
+                    <ImageView
+                        android:id="@+id/image_profile_all_comment"
+                        android:layout_width="26dp"
+                        android:layout_height="26dp"
+                        android:background="@drawable/shape_circle_background"
+                        android:backgroundTint="#008581"
+                        android:padding="6dp"
+                        android:src="@drawable/comment_icon"
+                        android:tint="@color/White"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/textView_all_comments"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:nestedScrollingEnabled="false"
-                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                        app:listUserComment="@{viewModel.userComment}" />
-                </RelativeLayout>
+                        android:layout_marginStart="8dp"
+                        android:fontFamily="@font/noto_sans"
+                        android:text="評論紀錄"
+                        android:textSize="16dp"
+                        app:layout_constraintBottom_toBottomOf="@+id/image_profile_all_comment"
+                        app:layout_constraintStart_toEndOf="@+id/image_profile_all_comment"
+                        app:layout_constraintTop_toTopOf="@id/image_profile_all_comment" />
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
+                    <TextView
+                        android:id="@+id/textView_all_comments_qty"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:fontFamily="@font/noto_sans"
+                        android:text='@{"("+Long.toString(viewModel.userComment.size())+")"}'
+                        android:textSize="16dp"
+                        app:layout_constraintBottom_toBottomOf="@+id/image_profile_all_comment"
+                        app:layout_constraintStart_toEndOf="@+id/textView_all_comments"
+                        app:layout_constraintTop_toTopOf="@id/image_profile_all_comment" />
+
+                    <View
+                        android:id="@+id/line_all_comments"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="16dp"
+                        android:background="#999999"
+                        app:layout_constraintTop_toBottomOf="@+id/relative_all_comment" />
+
+                    <ImageView
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_marginEnd="8dp"
+                        android:onClick="@{() -> viewModel.allCommentStatus()}"
+                        android:src="@drawable/ic_keyboard_arrow_down_black_24dp"
+                        app:layout_constraintBottom_toBottomOf="@+id/textView_all_comments"
+                        app:layout_constraintDimensionRatio="1.0"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/textView_all_comments" />
+
+                    <RelativeLayout
+                        android:id="@+id/relative_all_comment"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:visibility="@{viewModel.allCommentStatus == true ? View.VISIBLE:View.GONE}"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textView_all_comments">
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/recycler_profile_all_comments"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:nestedScrollingEnabled="false"
+                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                            app:listUserComment="@{viewModel.userComment}" />
+                    </RelativeLayout>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                app:layout_constraintTop_toBottomOf="@+id/constraintLayout4">
-
-                <ImageView
-                    android:id="@+id/image_profile_all_otder"
-                    android:layout_width="26dp"
-                    android:layout_height="26dp"
-                    android:background="@drawable/shape_circle_background"
-                    android:backgroundTint="@color/myColorPrimaryDark"
-                    android:padding="6dp"
-                    android:src="@drawable/bottom_navigation_order_1"
-                    android:tint="@color/White"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/textView_all_orders"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:fontFamily="@font/noto_sans"
-                    android:text="揪團紀錄 (3345678)"
-                    android:textSize="16dp"
-                    app:layout_constraintBottom_toBottomOf="@+id/image_profile_all_otder"
-                    app:layout_constraintStart_toEndOf="@+id/image_profile_all_otder"
-                    app:layout_constraintTop_toTopOf="@+id/image_profile_all_otder" />
-
-                <View
-                    android:id="@+id/line_all_orders"
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="1dp"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
-                    android:background="#999999"
-                    app:layout_constraintTop_toBottomOf="@+id/relative_all_order" />
+                    app:layout_constraintTop_toBottomOf="@+id/constraintLayout4">
 
-                <ImageView
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:layout_marginEnd="8dp"
-                    android:src="@drawable/ic_keyboard_arrow_down_black_24dp"
-                    app:layout_constraintBottom_toBottomOf="@+id/textView_all_orders"
-                    android:onClick="@{() -> viewModel.allOrderStatus()}"
-                    app:layout_constraintDimensionRatio="1.0"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/textView_all_orders" />
+                    <ImageView
+                        android:id="@+id/image_profile_all_otder"
+                        android:layout_width="26dp"
+                        android:layout_height="26dp"
+                        android:background="@drawable/shape_circle_background"
+                        android:backgroundTint="#008581"
+                        android:padding="6dp"
+                        android:src="@drawable/bottom_navigation_order_1"
+                        android:tint="@color/White"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/textView_all_orders"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:fontFamily="@font/noto_sans"
+                        android:text="揪團紀錄"
+                        android:textSize="16dp"
+                        app:layout_constraintBottom_toBottomOf="@+id/image_profile_all_otder"
+                        app:layout_constraintStart_toEndOf="@+id/image_profile_all_otder"
+                        app:layout_constraintTop_toTopOf="@+id/image_profile_all_otder" />
+
+                    <TextView
+                        android:id="@+id/textView_all_order_qty"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:fontFamily="@font/noto_sans"
+                        android:text='@{"("+Long.toString(viewModel.userOrder.size())+")"}'
+                        android:textSize="16dp"
+                        app:layout_constraintBottom_toBottomOf="@+id/textView_all_orders"
+                        app:layout_constraintStart_toEndOf="@+id/textView_all_orders"
+                        app:layout_constraintTop_toTopOf="@id/textView_all_orders" />
 
 
-                <RelativeLayout
-                    android:id="@+id/relative_all_order"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:visibility="@{viewModel.allOrderStatus == true ? View.VISIBLE:View.GONE}"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textView_all_orders">
+                    <View
+                        android:id="@+id/line_all_orders"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="16dp"
+                        android:background="#999999"
+                        app:layout_constraintTop_toBottomOf="@+id/relative_all_order" />
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recycler_profile_all_orders"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    app:listUserOrder="@{viewModel.userOrder}"
-                    />
+                    <ImageView
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_marginEnd="8dp"
+                        android:onClick="@{() -> viewModel.allOrderStatus()}"
+                        android:src="@drawable/ic_keyboard_arrow_down_black_24dp"
+                        app:layout_constraintBottom_toBottomOf="@+id/textView_all_orders"
+                        app:layout_constraintDimensionRatio="1.0"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/textView_all_orders" />
 
-                </RelativeLayout>
 
+                    <RelativeLayout
+                        android:id="@+id/relative_all_order"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:visibility="@{viewModel.allOrderStatus == true ? View.VISIBLE:View.GONE}"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textView_all_orders">
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/recycler_profile_all_orders"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                            app:listUserOrder="@{viewModel.userOrder}" />
+
+                    </RelativeLayout>
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
+            
+        </ScrollView>
+    <ProgressBar
+        android:theme="@style/ProgressTheme"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:setupApiStatus="@{viewModel.status}"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+</androidx.constraintlayout.widget.ConstraintLayout>
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-    </ScrollView>
 </layout>

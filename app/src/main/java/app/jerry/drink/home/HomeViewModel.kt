@@ -139,6 +139,13 @@ class HomeViewModel(private val repository: DrinkRepository) : ViewModel() {
         _newDrinkRank.value = scoreRank
     }
 
+    fun refresh() {
+        if (status.value != LoadApiStatus.LOADING) {
+            getNewCommentResult()
+        }
+    }
+
+
     fun navigationToDetail(drinkDetail: DrinkDetail) {
         navigationToDetail.value = drinkDetail
     }
