@@ -3,6 +3,7 @@ package app.jerry.drink.dataclass.source.remote
 import android.icu.util.Calendar
 import android.net.Uri
 import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import app.jerry.drink.DrinkApplication
@@ -789,6 +790,43 @@ object DrinkRemoteDataSource : DrinkDataSource {
                         for (document in task.result!!) {
                             val comment = document.toObject(Comment::class.java)
                             list.add(comment)
+                        }
+                        list.sortByDescending { it.createdTime }
+                        continuation.resume(Result.Success(list))
+                    } else {
+                        task.exception?.let {
+
+                            Log.w(
+                                "",
+                                "[${this::class.simpleName}] Error getting documents. ${it.message}"
+                            )
+                            continuation.resume(Result.Error(it))
+                            return@addOnCompleteListener
+                        }
+                        continuation.resume(Result.Fail(DrinkApplication.instance.getString(R.string.you_know_nothing)))
+                    }
+                }
+
+        }
+
+    override suspend fun getUserOrder(): Result<List<Order>> =
+        suspendCoroutine { continuation ->
+            val orders = FirebaseFirestore.getInstance().collection(PATH_Orders)
+            val userCurrent = FirebaseAuth.getInstance().currentUser
+            var user = User("","","","")
+            userCurrent?.let {
+                user = User(userCurrent.uid, userCurrent.displayName, userCurrent.email,"")
+            }
+
+            orders
+                .whereEqualTo("user", user)
+                .get()
+                .addOnCompleteListener { task ->
+                    val list = mutableListOf<Order>()
+                    if (task.isSuccessful) {
+                        for (document in task.result!!) {
+                            val order = document.toObject(Order::class.java)
+                            list.add(order)
                         }
                         list.sortByDescending { it.createdTime }
                         continuation.resume(Result.Success(list))

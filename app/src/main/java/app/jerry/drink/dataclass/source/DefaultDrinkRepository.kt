@@ -68,4 +68,8 @@ class DefaultDrinkRepository(private val remoteDataSource: DrinkDataSource,
     override suspend fun getUserComment(): Result<List<Comment>> {
         return remoteDataSource.getUserComment()
     }
+
+    override suspend fun getUserOrder(): Result<List<Order>> {
+        return remoteDataSource.getUserOrder()
+    }
 }

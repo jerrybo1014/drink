@@ -22,7 +22,6 @@ import app.jerry.drink.ext.getVmFactory
 
 class HomeFragment : Fragment() {
 
-
     lateinit var binding: FragmentHomeBinding
     private val viewModel by viewModels<HomeViewModel> { getVmFactory() }
 
@@ -44,7 +43,7 @@ class HomeFragment : Fragment() {
         val highScoreAdapter = HighScoreAdapter(HighScoreAdapter.OnClickListener {
             viewModel.navigationToDetail(it)
         })
-        
+
         val newCommentAdapter = NewCommentAdapter(NewCommentAdapter.OnClickListener {
             viewModel.navigationToDetail(it)
         })

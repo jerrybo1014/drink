@@ -92,6 +92,7 @@ class RadarFragment : Fragment(), OnMapReadyCallback {
 //        mmm.getLastKnownLocation(LocationManager.GPS_PROVIDER)
         myGoogleMap.uiSettings.isZoomControlsEnabled=true
         myGoogleMap.uiSettings.isMyLocationButtonEnabled=true
+        myGoogleMap.uiSettings.isIndoorLevelPickerEnabled= true
         myGoogleMap.isMyLocationEnabled=true
 
         myGoogleMap.uiSettings.isMapToolbarEnabled=true

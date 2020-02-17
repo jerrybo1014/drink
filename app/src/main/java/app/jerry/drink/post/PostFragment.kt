@@ -269,6 +269,7 @@ class PostFragment : Fragment() {
                     null
                 )
             )
+
             val newBitmap = uri.getBitmap(100, 100)
             val newUri = Uri.parse(
                 MediaStore.Images.Media.insertImage(

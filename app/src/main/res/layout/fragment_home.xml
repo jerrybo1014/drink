@@ -14,7 +14,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#FAF4E4">
+        android:background="@color/home_background">
 
             <TextView
                 android:id="@+id/text_home_high_score"

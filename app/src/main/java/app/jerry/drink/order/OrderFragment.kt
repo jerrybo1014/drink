@@ -69,7 +69,6 @@ class OrderFragment : Fragment() {
         }
         )
 
-
         return binding.root
     }
 

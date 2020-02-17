@@ -46,17 +46,14 @@
 
                 <RatingBar
                     android:id="@+id/rating_bar_comment"
+                    style="@style/Widget.AppCompat.RatingBar.Small"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:isIndicator="true"
                     android:layout_marginTop="8dp"
+                    android:isIndicator="true"
                     android:progressTint="@color/star"
                     android:rating="@{comment.star}"
                     android:stepSize="1"
-                    android:scaleX=".4"
-                    android:scaleY=".4"
-                    android:transformPivotX="0dp"
-                    android:transformPivotY="0dp"
                     app:layout_constraintStart_toStartOf="@+id/text_drink_item"
                     app:layout_constraintTop_toBottomOf="@+id/text_ice_sugar" />
 
@@ -79,9 +76,8 @@
                     android:layout_marginStart="6dp"
                     android:text="@{comment.store.storeName}"
                     style="@style/new_comment"
-                    android:textSize="16dp"
-                    android:fontFamily="@font/noto_sans"
-                    android:textColor="#000000"
+                    android:textSize="14dp"
+                    android:fontFamily="@font/noto_sans_bold"
                     app:layout_constraintBottom_toBottomOf="@+id/image_store_item"
                     app:layout_constraintStart_toEndOf="@+id/image_store_item"
                     app:layout_constraintTop_toTopOf="@+id/image_store_item" />
@@ -104,9 +100,8 @@
                     android:layout_height="wrap_content"
                     android:text="@{comment.iceAndSugar()}"
                     style="@style/new_comment"
-                    android:textSize="16dp"
-                    android:fontFamily="@font/noto_sans"
-                    android:textColor="#000000"
+                    android:textSize="14dp"
+                    android:fontFamily="@font/noto_sans_bold"
                     android:layout_marginStart="6dp"
                     app:layout_constraintStart_toEndOf="@+id/view_drink_item"
                     app:layout_constraintTop_toTopOf="@+id/text_ice_sugar" />
@@ -116,7 +111,6 @@
                     android:layout_width="18dp"
                     android:layout_height="18dp"
                     android:layout_marginTop="8dp"
-
                     android:src="@drawable/cocktail"
                     android:tint="@color/myColorPrimaryDark"
                     app:layout_constraintStart_toStartOf="@+id/image_store_item"
@@ -127,38 +121,53 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@{comment.drink.drinkName}"
-                    android:textSize="16dp"
-                    android:fontFamily="@font/noto_sans"
-                    android:textColor="#000000"
+                    android:textSize="14dp"
+                    android:fontFamily="@font/noto_sans_bold"
                     style="@style/new_comment"
                     app:layout_constraintStart_toStartOf="@+id/text_store"
                     app:layout_constraintTop_toTopOf="@+id/text_drink_item"
                     app:layout_constraintBottom_toBottomOf="@+id/text_drink_item"
-
                     />
 
                 <TextView
+                    android:id="@+id/textView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:fontFamily="@font/noto_sans_bold"
                     android:text="查看全部 >"
                     android:textSize="12dp"
-                    android:fontFamily="@font/noto_sans"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    android:layout_marginEnd="8dp"/>
+                 />
 
                 <TextView
+                    timeToDisplayFormat="@{comment.createdTime}"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    timeToDisplayTimePass="@{comment.createdTime}"
-                    android:layout_marginTop="35dp"
-                    android:layout_marginStart="3dp"
+                    android:fontFamily="@font/noto_sans"
+                    android:textSize="12dp"
+                    android:layout_marginStart="8dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/rating_bar_comment"
+                    app:layout_constraintStart_toEndOf="@+id/rating_bar_comment"
+                    app:layout_constraintTop_toTopOf="@+id/rating_bar_comment" />
+
+                <TextView
+                    android:id="@+id/text_user_comment"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="16dp"
+                    android:text="@{comment.comment}"
                     android:textSize="12dp"
                     android:fontFamily="@font/noto_sans"
+                    app:layout_constraintEnd_toStartOf="@+id/textView"
                     app:layout_constraintStart_toStartOf="@+id/rating_bar_comment"
-                    app:layout_constraintTop_toBottomOf="@+id/text_drink_item" />
+                    app:layout_constraintTop_toBottomOf="@+id/rating_bar_comment" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
+
         </com.google.android.material.card.MaterialCardView>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

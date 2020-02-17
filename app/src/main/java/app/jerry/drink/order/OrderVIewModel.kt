@@ -104,6 +104,7 @@ class OrderVIewModel(private val repository: DrinkRepository) : ViewModel() {
     fun test(id: Long) {
         _orderLive = repository.getOrderLive(id) as MutableLiveData<List<OrderList>>
     }
+
     fun getOrderLiveResult(orderId: Long){
         _orderLive = repository.getOrderLive(orderId) as MutableLiveData<List<OrderList>>
 
@@ -120,6 +121,7 @@ class OrderVIewModel(private val repository: DrinkRepository) : ViewModel() {
         /**/
 
         coroutineScope.launch {
+
             _orderLive = repository.getOrderLive(orderId) as MutableLiveData<List<OrderList>>
 
             _status.value = LoadApiStatus.LOADING
@@ -131,6 +133,9 @@ class OrderVIewModel(private val repository: DrinkRepository) : ViewModel() {
                 is Result.Success -> {
                     _error.value = null
                     _status.value = LoadApiStatus.DONE
+                    if (result.data.order == null){
+                        Toast.makeText(DrinkApplication.context,"查無訂單!",Toast.LENGTH_SHORT).show()
+                    }
                     /**/
                     result.data
                     /**/

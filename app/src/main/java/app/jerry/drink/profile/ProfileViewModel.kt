@@ -10,10 +10,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import app.jerry.drink.DrinkApplication
 import app.jerry.drink.R
-import app.jerry.drink.dataclass.Comment
-import app.jerry.drink.dataclass.DrinkDetail
-import app.jerry.drink.dataclass.Result
-import app.jerry.drink.dataclass.User
+import app.jerry.drink.dataclass.*
 import app.jerry.drink.dataclass.source.DrinkRepository
 import app.jerry.drink.network.LoadApiStatus
 import com.bumptech.glide.Glide
@@ -32,7 +29,20 @@ class ProfileViewModel(private val repository: DrinkRepository) : ViewModel() {
     val userComment: LiveData<List<Comment>>
         get() = _userComment
 
+    private val _userOrder = MutableLiveData<List<Order>>()
+
+    val userOrder: LiveData<List<Order>>
+        get() = _userOrder
+
     var imageUri = MutableLiveData<Uri>()
+
+    var allCommentStatus = MutableLiveData<Boolean>().apply {
+        value = false
+    }
+
+    val allOrderStatus = MutableLiveData<Boolean>().apply {
+        value = false
+    }
 
     val userCurrent = MutableLiveData<User>()
     val navigationToDetail = MutableLiveData<DrinkDetail>()
@@ -65,6 +75,7 @@ class ProfileViewModel(private val repository: DrinkRepository) : ViewModel() {
         imageUri.value = null
         getUserCurrentResult()
         getUserCommentResult()
+        getUserOrderResult()
     }
 
     private fun getUserCurrentResult(){
@@ -173,6 +184,40 @@ class ProfileViewModel(private val repository: DrinkRepository) : ViewModel() {
 
     }
 
+    private fun getUserOrderResult(){
+        coroutineScope.launch {
+
+            _status.value = LoadApiStatus.LOADING
+
+            val result = repository.getUserOrder()
+
+            _userOrder.value = when (result) {
+                is Result.Success -> {
+                    _error.value = null
+                    _status.value = LoadApiStatus.DONE
+                    result.data
+                }
+                is Result.Fail -> {
+                    _error.value = result.error
+                    _status.value = LoadApiStatus.ERROR
+                    null
+                }
+                is Result.Error -> {
+                    _error.value = result.exception.toString()
+                    _status.value = LoadApiStatus.ERROR
+                    null
+                }
+                else -> {
+                    _error.value = DrinkApplication.instance.getString(R.string.you_know_nothing)
+                    _status.value = LoadApiStatus.ERROR
+                    null
+                }
+            }
+            _refreshStatus.value = false
+        }
+
+    }
+
     fun uploadAvatarFinished(){
         imageUri.value = null
     }
@@ -188,6 +233,18 @@ class ProfileViewModel(private val repository: DrinkRepository) : ViewModel() {
 
     fun onDetailNavigated() {
         navigationToDetail.value = null
+    }
+
+    fun allCommentStatus(){
+        allCommentStatus.value?.let {
+            allCommentStatus.value = !it
+        }
+    }
+
+    fun allOrderStatus(){
+        allOrderStatus.value?.let {
+            allOrderStatus.value = !it
+        }
     }
 
 }

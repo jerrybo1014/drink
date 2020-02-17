@@ -9,6 +9,7 @@
             type="app.jerry.drink.order.OrderVIewModel" />
 
         <import type="android.view.View"/>
+        <import type="java.util.List"/>
     </data>
 
 
@@ -49,10 +50,9 @@
                 android:layout_height="match_parent"
                 android:paddingHorizontal="8dp"
                 android:layout_marginTop="16dp"
-
                 android:background="@drawable/shape_corner_r"
                 android:backgroundTint="#FAF4E4"
-                android:visibility="@{viewModel.orderLists == null ? View.GONE:View.VISIBLE}">
+                android:visibility="@{viewModel.orderLists.order == null  ? View.GONE:View.VISIBLE}">
 
                 <TextView
                     android:id="@+id/text_edit_order_status"

@@ -78,11 +78,23 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
+                android:fontFamily="@font/noto_sans"
                 android:text="@{viewModel.userCurrent.name}"
                 android:textSize="20dp"
                 app:layout_constraintEnd_toEndOf="@+id/profile_avatar"
                 app:layout_constraintStart_toStartOf="@+id/profile_avatar"
                 app:layout_constraintTop_toBottomOf="@+id/profile_avatar" />
+
+            <TextView
+                android:id="@+id/profile_email"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/noto_sans"
+                android:text="@{viewModel.userCurrent.email}"
+                android:textSize="16dp"
+                app:layout_constraintEnd_toEndOf="@+id/profile_name"
+                app:layout_constraintStart_toStartOf="@+id/profile_name"
+                app:layout_constraintTop_toBottomOf="@+id/profile_name" />
 
             <View
                 android:id="@+id/line_add_order"
@@ -90,7 +102,7 @@
                 android:layout_height="1dp"
                 android:layout_marginTop="16dp"
                 android:background="#999999"
-                app:layout_constraintTop_toBottomOf="@+id/profile_name" />
+                app:layout_constraintTop_toBottomOf="@+id/profile_email" />
 
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -103,14 +115,41 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/line_add_order">
 
+                <ImageView
+                    android:id="@+id/image_profile_all_comment"
+                    android:layout_width="26dp"
+                    android:layout_height="26dp"
+                    android:background="@drawable/shape_circle_background"
+                    android:backgroundTint="@color/myColorPrimaryDark"
+                    android:padding="6dp"
+                    android:src="@drawable/comment_icon"
+                    android:tint="@color/White"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
                 <TextView
                     android:id="@+id/textView_all_comments"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="所有評論 (5566)"
+                    android:layout_marginStart="8dp"
+                    android:fontFamily="@font/noto_sans"
+                    android:text="評論紀錄"
                     android:textSize="16dp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintBottom_toBottomOf="@+id/image_profile_all_comment"
+                    app:layout_constraintStart_toEndOf="@+id/image_profile_all_comment"
+                    app:layout_constraintTop_toTopOf="@id/image_profile_all_comment" />
+
+                <TextView
+                    android:id="@+id/textView_all_comments_qty"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/noto_sans"
+                    android:text='@{"("+Long.toString(viewModel.userComment.size())+")"}'
+                    android:textSize="16dp"
+                    android:layout_marginStart="8dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/image_profile_all_comment"
+                    app:layout_constraintStart_toEndOf="@+id/textView_all_comments"
+                    app:layout_constraintTop_toTopOf="@id/image_profile_all_comment" />
 
                 <View
                     android:id="@+id/line_all_comments"
@@ -120,11 +159,23 @@
                     android:background="#999999"
                     app:layout_constraintTop_toBottomOf="@+id/relative_all_comment" />
 
+                <ImageView
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_marginEnd="8dp"
+                    android:onClick="@{() -> viewModel.allCommentStatus()}"
+                    android:src="@drawable/ic_keyboard_arrow_down_black_24dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/textView_all_comments"
+                    app:layout_constraintDimensionRatio="1.0"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/textView_all_comments" />
+
                 <RelativeLayout
                     android:id="@+id/relative_all_comment"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:visibility="gone"
+                    android:layout_marginTop="8dp"
+                    android:visibility="@{viewModel.allCommentStatus == true ? View.VISIBLE:View.GONE}"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textView_all_comments">
 
@@ -146,14 +197,29 @@
                 android:layout_marginTop="16dp"
                 app:layout_constraintTop_toBottomOf="@+id/constraintLayout4">
 
+                <ImageView
+                    android:id="@+id/image_profile_all_otder"
+                    android:layout_width="26dp"
+                    android:layout_height="26dp"
+                    android:background="@drawable/shape_circle_background"
+                    android:backgroundTint="@color/myColorPrimaryDark"
+                    android:padding="6dp"
+                    android:src="@drawable/bottom_navigation_order_1"
+                    android:tint="@color/White"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
                 <TextView
                     android:id="@+id/textView_all_orders"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="所有訂單 (3345678)"
+                    android:layout_marginStart="8dp"
+                    android:fontFamily="@font/noto_sans"
+                    android:text="揪團紀錄 (3345678)"
                     android:textSize="16dp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintBottom_toBottomOf="@+id/image_profile_all_otder"
+                    app:layout_constraintStart_toEndOf="@+id/image_profile_all_otder"
+                    app:layout_constraintTop_toTopOf="@+id/image_profile_all_otder" />
 
                 <View
                     android:id="@+id/line_all_orders"
@@ -161,14 +227,39 @@
                     android:layout_height="1dp"
                     android:layout_marginTop="16dp"
                     android:background="#999999"
-                    app:layout_constraintTop_toBottomOf="@+id/recycler_profile_all_orders" />
+                    app:layout_constraintTop_toBottomOf="@+id/relative_all_order" />
+
+                <ImageView
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_marginEnd="8dp"
+                    android:src="@drawable/ic_keyboard_arrow_down_black_24dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/textView_all_orders"
+                    android:onClick="@{() -> viewModel.allOrderStatus()}"
+                    app:layout_constraintDimensionRatio="1.0"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/textView_all_orders" />
+
+
+                <RelativeLayout
+                    android:id="@+id/relative_all_order"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:visibility="@{viewModel.allOrderStatus == true ? View.VISIBLE:View.GONE}"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView_all_orders">
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recycler_profile_all_orders"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    app:layout_constraintTop_toBottomOf="@+id/textView_all_orders" />
+                    app:listUserOrder="@{viewModel.userOrder}"
+                    />
+
+                </RelativeLayout>
+
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

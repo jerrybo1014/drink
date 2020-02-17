@@ -1,292 +1,304 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="viewModel"
             type="app.jerry.drink.post.PostViewModel" />
     </data>
 
-
-<androidx.constraintlayout.widget.ConstraintLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <ScrollView
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_height="match_parent">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/layout_store"
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-
-            <ImageView
-                android:id="@+id/image_update"
-                android:layout_width="wrap_content"
-                android:layout_height="200dp"
-                android:scaleType="centerCrop"
-                android:src="@drawable/placeholder"
-
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <ImageView
-                android:id="@+id/button_image_update"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginBottom="8dp"
-                android:src="@drawable/photo"
-                android:tint="#D9FFFFFF"
-                app:layout_constraintBottom_toBottomOf="@+id/image_update"
-                app:layout_constraintEnd_toEndOf="parent" />
-
-            <ImageView
-                android:id="@+id/button_take_photo"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginBottom="8dp"
-                android:src="@drawable/ic_camera_alt_black_24dp"
-                android:tint="#D9FFFFFF"
-                app:layout_constraintBottom_toBottomOf="@+id/image_update"
-                app:layout_constraintEnd_toStartOf="@+id/button_image_update" />
-
-            <ImageView
-                android:id="@+id/image_store_post_icon"
-                android:layout_width="18dp"
-                android:layout_height="18dp"
-                android:layout_marginStart="16dp"
-                android:src="@drawable/store_icon"
-                android:tint="@color/myColorPrimaryDark"
-                app:layout_constraintBottom_toBottomOf="@+id/text_store"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/text_store" />
-
-
-            <TextView
-                android:id="@+id/text_store"
-                style="@style/post_text_title"
-                android:text="@string/post_store"
-                app:layout_constraintStart_toEndOf="@id/image_store_post_icon"
-                app:layout_constraintTop_toBottomOf="@id/image_update" />
-
-
-            <Spinner
-                android:id="@+id/spinner_store"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="16dp"
-                android:entries="@{viewModel.displayAllStore}"
-                android:paddingStart="12dp"
-                android:paddingTop="16dp"
-                android:paddingEnd="12dp"
-                android:paddingBottom="16dp"
-                android:prompt="@string/spinner_store"
-                android:spinnerMode="dialog"
-                app:layout_constraintBottom_toBottomOf="@+id/text_store"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/text_store"
-                app:layout_constraintTop_toTopOf="@+id/text_store" />
+            android:layout_height="match_parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/layout_item"
+                android:id="@+id/layout_store"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingStart="16dp"
-                android:paddingEnd="16dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/text_store">
+                android:layout_height="wrap_content">
+
 
                 <ImageView
-                    android:id="@+id/image_drink_post_icon"
-                    android:layout_width="18dp"
-                    android:layout_height="18dp"
-                    android:src="@drawable/drink_icon"
-                    android:tint="@color/myColorPrimaryDark"
-                    app:layout_constraintBottom_toBottomOf="@+id/text_drink"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/text_drink" />
+                    android:id="@+id/image_update"
+                    android:layout_width="wrap_content"
+                    android:layout_height="200dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/placeholder"
 
-                <TextView
-                    android:id="@+id/text_drink"
-                    style="@style/post_text_title"
-                    android:text="@string/post_drink"
-                    app:layout_constraintStart_toEndOf="@+id/image_drink_post_icon"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
+                <ImageView
+                    android:id="@+id/button_image_update"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:src="@drawable/photo"
+                    android:tint="#D9FFFFFF"
+                    app:layout_constraintBottom_toBottomOf="@+id/image_update"
+                    app:layout_constraintEnd_toEndOf="parent" />
+
+                <ImageView
+                    android:id="@+id/button_take_photo"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginBottom="8dp"
+                    android:src="@drawable/ic_camera_alt_black_24dp"
+                    android:tint="#D9FFFFFF"
+                    app:layout_constraintBottom_toBottomOf="@+id/image_update"
+                    app:layout_constraintEnd_toStartOf="@+id/button_image_update" />
+
+                <ImageView
+                    android:id="@+id/image_store_post_icon"
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:layout_marginStart="16dp"
+                    android:src="@drawable/store_icon"
+                    android:tint="@color/myColorPrimaryDark"
+                    app:layout_constraintBottom_toBottomOf="@+id/text_store"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/text_store" />
+
+
+                <TextView
+                    android:id="@+id/text_store"
+                    style="@style/post_text_title"
+                    android:fontFamily="@font/noto_sans"
+                    android:text="@string/post_store"
+                    android:textSize="16dp"
+                    app:layout_constraintStart_toEndOf="@id/image_store_post_icon"
+                    app:layout_constraintTop_toBottomOf="@id/image_update" />
+
                 <Spinner
-                    android:id="@+id/spinner_drink"
+                    android:id="@+id/spinner_store"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:entries="@{viewModel.displayStoreDrink}"
+                    android:layout_marginEnd="16dp"
+                    android:entries="@{viewModel.displayAllStore}"
                     android:paddingStart="12dp"
                     android:paddingTop="16dp"
                     android:paddingEnd="12dp"
                     android:paddingBottom="16dp"
                     android:prompt="@string/spinner_store"
                     android:spinnerMode="dialog"
-                    app:layout_constraintBottom_toBottomOf="@+id/text_drink"
+                    android:textSize="16dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/text_store"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/text_drink"
-                    app:layout_constraintTop_toTopOf="@+id/text_drink" />
+                    app:layout_constraintStart_toEndOf="@+id/text_store"
+                    app:layout_constraintTop_toTopOf="@+id/text_store" />
 
-                <ImageView
-                    android:id="@+id/image_ice_post_icon"
-                    android:layout_width="18dp"
-                    android:layout_height="18dp"
-                    android:src="@drawable/ice_cube"
-                    android:tint="@color/myColorPrimaryDark"
-                    app:layout_constraintBottom_toBottomOf="@+id/text_ice"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/text_ice" />
-
-                <TextView
-                    android:id="@+id/text_ice"
-                    style="@style/post_text_title"
-                    android:text="@string/post_ice"
-                    app:layout_constraintStart_toEndOf="@id/image_ice_post_icon"
-                    app:layout_constraintTop_toBottomOf="@+id/text_drink" />
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recycler_ice"
-                    android:layout_width="wrap_content"
-                    android:layout_height="30dp"
-                    android:layout_marginStart="6dp"
-                    android:orientation="horizontal"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    app:layout_constraintBottom_toBottomOf="@+id/text_ice"
-                    app:layout_constraintStart_toEndOf="@+id/text_ice"
-                    app:layout_constraintTop_toTopOf="@+id/text_ice" />
-
-                <ImageView
-                    android:id="@+id/image_sugar_post_icon"
-                    android:layout_width="18dp"
-                    android:layout_height="18dp"
-                    android:src="@drawable/sugar"
-                    android:tint="@color/myColorPrimaryDark"
-                    app:layout_constraintBottom_toBottomOf="@+id/text_sugar"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/text_sugar" />
-
-                <TextView
-                    android:id="@+id/text_sugar"
-                    style="@style/post_text_title"
-                    android:layout_width="wrap_content"
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/layout_item"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/post_sugar"
-                    app:layout_constraintStart_toEndOf="@id/image_ice_post_icon"
-                    app:layout_constraintTop_toBottomOf="@+id/text_ice" />
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/text_store">
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recycler_sugar"
-                    android:layout_width="wrap_content"
-                    android:layout_height="30dp"
-                    android:layout_marginStart="6dp"
-                    android:orientation="horizontal"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    app:layout_constraintBottom_toBottomOf="@+id/text_sugar"
-                    app:layout_constraintStart_toEndOf="@+id/text_sugar"
-                    app:layout_constraintTop_toTopOf="@+id/text_sugar" />
+                    <ImageView
+                        android:id="@+id/image_drink_post_icon"
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:src="@drawable/drink_icon"
+                        android:tint="@color/myColorPrimaryDark"
+                        app:layout_constraintBottom_toBottomOf="@+id/text_drink"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/text_drink" />
 
-                <ImageView
-                    android:id="@+id/image_comment_post_icon"
-                    android:layout_width="18dp"
-                    android:layout_height="18dp"
-                    android:src="@drawable/comment_icon"
-                    android:tint="@color/myColorPrimaryDark"
-                    app:layout_constraintBottom_toBottomOf="@+id/text_comment"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/text_comment" />
+                    <TextView
+                        android:id="@+id/text_drink"
+                        style="@style/post_text_title"
+                        android:fontFamily="@font/noto_sans"
+                        android:text="@string/post_drink"
+                        android:textSize="16dp"
+                        app:layout_constraintStart_toEndOf="@+id/image_drink_post_icon"
+                        app:layout_constraintTop_toTopOf="parent" />
 
-                <TextView
-                    android:id="@+id/text_comment"
-                    style="@style/post_text_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/post_comment"
-                    app:layout_constraintStart_toEndOf="@id/image_comment_post_icon"
-                    app:layout_constraintTop_toBottomOf="@+id/text_sugar" />
+                    <Spinner
+                        android:id="@+id/spinner_drink"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:entries="@{viewModel.displayStoreDrink}"
+                        android:paddingStart="12dp"
+                        android:paddingTop="16dp"
+                        android:paddingEnd="12dp"
+                        android:paddingBottom="16dp"
+                        android:prompt="@string/spinner_store"
+                        android:spinnerMode="dialog"
+                        android:textSize="16dp"
+                        app:layout_constraintBottom_toBottomOf="@+id/text_drink"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/text_drink"
+                        app:layout_constraintTop_toTopOf="@+id/text_drink" />
 
-                <RatingBar
-                    android:id="@+id/rating_bar_comment"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="6dp"
-                    android:progressTint="#FFD700"
-                    android:rating="1"
-                    android:scaleX=".5"
-                    android:scaleY=".5"
-                    android:stepSize="1"
-                    android:transformPivotX="0dp"
-                    android:transformPivotY="0dp"
-                    app:layout_constraintStart_toEndOf="@+id/text_comment"
-                    app:layout_constraintTop_toTopOf="@+id/text_comment" />
+                    <ImageView
+                        android:id="@+id/image_ice_post_icon"
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:src="@drawable/ice_cube"
+                        android:tint="@color/myColorPrimaryDark"
+                        app:layout_constraintBottom_toBottomOf="@+id/text_ice"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/text_ice" />
 
-                <EditText
-                    android:id="@+id/response_comment_edit_text"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:background="@drawable/frame_background"
-                    android:gravity="top"
-                    android:hint="@string/post_enter_comment"
-                    android:lines="5"
-                    android:padding="6dp"
-                    android:text="@={viewModel.editComment}"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="@+id/text_comment"
-                    app:layout_constraintTop_toBottomOf="@+id/text_comment" />
+                    <TextView
+                        android:id="@+id/text_ice"
+                        style="@style/post_text_title"
+                        android:fontFamily="@font/noto_sans"
+                        android:text="@string/post_ice"
+                        android:textSize="16dp"
+                        app:layout_constraintStart_toEndOf="@id/image_ice_post_icon"
+                        app:layout_constraintTop_toBottomOf="@+id/text_drink" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recycler_ice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="30dp"
+                        android:layout_marginStart="6dp"
+                        android:fontFamily="@font/noto_sans"
+                        android:orientation="horizontal"
+                        android:textSize="14dp"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        app:layout_constraintBottom_toBottomOf="@+id/text_ice"
+                        app:layout_constraintStart_toEndOf="@+id/text_ice"
+                        app:layout_constraintTop_toTopOf="@+id/text_ice" />
+
+                    <ImageView
+                        android:id="@+id/image_sugar_post_icon"
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:src="@drawable/sugar"
+                        android:tint="@color/myColorPrimaryDark"
+                        app:layout_constraintBottom_toBottomOf="@+id/text_sugar"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/text_sugar" />
+
+                    <TextView
+                        android:id="@+id/text_sugar"
+                        style="@style/post_text_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/noto_sans"
+                        android:text="@string/post_sugar"
+                        android:textSize="16dp"
+                        app:layout_constraintStart_toEndOf="@id/image_ice_post_icon"
+                        app:layout_constraintTop_toBottomOf="@+id/text_ice" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recycler_sugar"
+                        android:layout_width="wrap_content"
+                        android:layout_height="30dp"
+                        android:layout_marginStart="6dp"
+                        android:orientation="horizontal"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        app:layout_constraintBottom_toBottomOf="@+id/text_sugar"
+                        app:layout_constraintStart_toEndOf="@+id/text_sugar"
+                        app:layout_constraintTop_toTopOf="@+id/text_sugar" />
+
+                    <ImageView
+                        android:id="@+id/image_comment_post_icon"
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:src="@drawable/comment_icon"
+                        android:tint="@color/myColorPrimaryDark"
+                        app:layout_constraintBottom_toBottomOf="@+id/text_comment"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/text_comment" />
+
+                    <TextView
+                        android:id="@+id/text_comment"
+                        style="@style/post_text_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/noto_sans"
+                        android:text="@string/post_comment"
+                        android:textSize="16dp"
+                        app:layout_constraintStart_toEndOf="@id/image_comment_post_icon"
+                        app:layout_constraintTop_toBottomOf="@+id/text_sugar" />
+
+                    <RatingBar
+                        android:id="@+id/rating_bar_comment"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="6dp"
+                        android:progressTint="#FFD700"
+                        android:rating="1"
+                        android:scaleX=".5"
+                        android:scaleY=".5"
+                        android:stepSize="1"
+                        android:transformPivotX="0dp"
+                        android:transformPivotY="0dp"
+                        app:layout_constraintStart_toEndOf="@+id/text_comment"
+                        app:layout_constraintTop_toTopOf="@+id/text_comment" />
+
+                    <EditText
+                        android:id="@+id/response_comment_edit_text"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:background="@drawable/frame_background"
+                        android:gravity="top"
+                        android:hint="@string/post_enter_comment"
+                        android:lines="5"
+                        android:padding="6dp"
+                        android:text="@={viewModel.editComment}"
+                        android:textSize="14sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/text_comment" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
+        </ScrollView>
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayout"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:background="#ffffff"
+            android:elevation="15dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <Button
+                android:id="@+id/cart_button"
+                style="@style/Button_post_comment"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_margin="16dp"
+                android:background="@drawable/background_post_button"
+                android:enabled="@{viewModel.editComment.trim() == null || viewModel.commentStar==0 || viewModel.selectedIce==null || viewModel.selectedSugar==null ? false:true}"
+                android:letterSpacing="1.2"
+                android:onClick="@{() -> viewModel.postCommentResult()}"
+                android:text="送出評論"
+                android:textColor="#ffffff"
+                android:textSize="16dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </ScrollView>
-
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraintLayout"
-        android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:background="#ffffff"
-        android:elevation="15dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
-
-        <Button
-            android:id="@+id/cart_button"
-            style="@style/Button_post_comment"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_margin="16dp"
-            android:background="@drawable/background_post_button"
-            android:enabled="@{viewModel.editComment.trim() == null || viewModel.commentStar==0 || viewModel.selectedIce==null || viewModel.selectedSugar==null ? false:true}"
-            android:letterSpacing="1.2"
-            android:onClick="@{() -> viewModel.postCommentResult()}"
-            android:text="送出評論"
-            android:textColor="#ffffff"
-            android:textSize="16dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-
-</androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -4,33 +4,167 @@
 
     <data>
 
+        <variable
+            name="order"
+            type="app.jerry.drink.dataclass.Order" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
-
-        <androidx.cardview.widget.CardView
-            android:id="@+id/profile_user_order_card"
+        <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
-            android:layout_height="200dp"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="4dp"
+            app:cardCornerRadius="10dp"
+            app:cardElevation="1dp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content"
+                android:background="@color/White"
+                android:paddingBottom="8dp">
 
 
+                <ImageView
+                    android:id="@+id/image_host_order"
+                    style="@style/order_icon_style"
+                    android:src="@drawable/ic_featured_play_list_black_24dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/text_host_order"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/text_host_order" />
+
+                <TextView
+                    android:id="@+id/text_host_order"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginTop="8dp"
+                    android:text="@string/order_id"
+                    android:textSize="14dp"
+                    app:layout_constraintStart_toEndOf="@+id/image_host_order"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/order_host_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:textSize="14dp"
+                    android:fontFamily="@font/noto_sans"
+                    android:text="@{order.id}"
+                    app:layout_constraintBaseline_toBaselineOf="@+id/text_host_order"
+                    app:layout_constraintStart_toEndOf="@+id/text_host_order" />
+
+                <ImageView
+                    android:id="@+id/image_store_order"
+                    style="@style/order_icon_style"
+                    android:src="@drawable/store_icon"
+                    app:layout_constraintBottom_toBottomOf="@+id/text_store_create_order"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/text_store_create_order" />
+                    \/>
+
+                <TextView
+                    android:id="@+id/text_store_create_order"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="@string/post_store"
+                    android:textSize="14dp"
+                    app:layout_constraintStart_toStartOf="@+id/text_host_order"
+                    app:layout_constraintTop_toBottomOf="@+id/text_host_order" />
+
+                <TextView
+                    android:id="@+id/order_host_store"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:text="@{order.store.storeName}"
+                    android:textSize="14dp"
+                    android:fontFamily="@font/noto_sans"
+                    app:layout_constraintBaseline_toBaselineOf="@+id/text_store_create_order"
+                    app:layout_constraintStart_toEndOf="@+id/text_host_order" />
 
 
+                <ImageView
+                    android:id="@+id/image_time_order"
+                    style="@style/order_icon_style"
+                    android:src="@drawable/clock_1"
+                    app:layout_constraintBottom_toBottomOf="@+id/text_time_order"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/text_time_order" />
+
+                <TextView
+                    android:id="@+id/text_time_order"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="@string/post_time"
+                    android:textSize="14dp"
+                    app:layout_constraintStart_toStartOf="@+id/text_store_create_order"
+                    app:layout_constraintTop_toBottomOf="@+id/text_store_create_order" />
+
+                <TextView
+                    android:id="@+id/order_time_limit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:text="@{order.timeLimit}"
+                    android:textSize="14dp"
+                    android:fontFamily="@font/noto_sans"
+                    app:layout_constraintBaseline_toBaselineOf="@+id/text_time_order"
+                    app:layout_constraintStart_toEndOf="@+id/text_host_order" />
+
+
+                <ImageView
+                    android:id="@+id/image_note_create_order"
+                    style="@style/order_icon_style"
+                    android:src="@drawable/notes"
+                    app:layout_constraintBottom_toBottomOf="@+id/text_note"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/text_note" />
+
+                <TextView
+                    android:id="@+id/text_note"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="備註"
+                    android:textSize="14dp"
+                    android:layout_marginTop="8dp"
+                    app:layout_constraintStart_toStartOf="@+id/text_time_order"
+                    app:layout_constraintTop_toBottomOf="@+id/text_time_order" />
+
+                <TextView
+                    android:id="@+id/order_note"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:text="@{order.note}"
+                    android:textSize="14dp"
+                    android:fontFamily="@font/noto_sans"
+                    app:layout_constraintBaseline_toBaselineOf="@+id/text_note"
+                    app:layout_constraintStart_toEndOf="@+id/text_host_order" />
+
+                <TextView
+                    android:id="@+id/text_order_id"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/noto_sans"
+                    android:text="前往訂單 >"
+                    android:textSize="12dp"
+                    android:layout_marginEnd="8dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-        </androidx.cardview.widget.CardView>
-
+        </com.google.android.material.card.MaterialCardView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

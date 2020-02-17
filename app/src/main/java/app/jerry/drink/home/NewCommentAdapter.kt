@@ -27,7 +27,7 @@ class NewCommentAdapter(private val onClickListener: OnClickListener ) :
             val drinkDetail = DrinkDetail(comment.drink
                 ,comment.store)
             binding.comment = comment
-            binding.root.setOnClickListener { onClickListener.onClick(drinkDetail) }
+            binding.textNavigationToDetail.setOnClickListener { onClickListener.onClick(drinkDetail) }
 //            binding.detailImage = string
             // This is important, because it forces the data binding to execute immediately,
             // which allows the RecyclerView to make the correct view size measurements

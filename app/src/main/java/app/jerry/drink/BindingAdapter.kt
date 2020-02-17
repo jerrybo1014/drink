@@ -8,6 +8,7 @@ import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import app.jerry.drink.dataclass.Comment
 import app.jerry.drink.dataclass.DrinkRank
+import app.jerry.drink.dataclass.Order
 import app.jerry.drink.dataclass.OrderList
 import app.jerry.drink.detail.DetailAdapter
 import app.jerry.drink.ext.toDisplayFormat
@@ -18,6 +19,7 @@ import app.jerry.drink.order.OrderListsAdapter
 import app.jerry.drink.post.IceAdapter
 import app.jerry.drink.post.SugarAdapter
 import app.jerry.drink.profile.UserCommentAdapter
+import app.jerry.drink.profile.UserOrderAdapter
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
@@ -99,6 +101,12 @@ fun bindDetailComment(recyclerView: RecyclerView, data: List<Comment>?){
 @BindingAdapter("listUserComment")
 fun bindUserComment(recyclerView: RecyclerView, data: List<Comment>?){
     val adapter = recyclerView.adapter as UserCommentAdapter
+    adapter.submitList(data)
+}
+
+@BindingAdapter("listUserOrder")
+fun bindUserOrder(recyclerView: RecyclerView, data: List<Order>?){
+    val adapter = recyclerView.adapter as UserOrderAdapter
     adapter.submitList(data)
 }
 

@@ -21,6 +21,7 @@ import app.jerry.drink.home.HomeViewModel
 import app.jerry.drink.home.NewCommentAdapter
 import app.jerry.drink.profile.ProfileViewModel
 import app.jerry.drink.profile.UserCommentAdapter
+import app.jerry.drink.profile.UserOrderAdapter
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
@@ -53,7 +54,10 @@ class ProfileFragment : Fragment() {
             viewModel.navigationToDetail(it)
         })
 
+        val userOrderAdapter = UserOrderAdapter()
+
         binding.recyclerProfileAllComments.adapter = userCommentAdapter
+        binding.recyclerProfileAllOrders.adapter = userOrderAdapter
 
         binding.profileAvatarChoose.setOnClickListener {
             launchGallery()
