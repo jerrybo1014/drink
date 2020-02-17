@@ -50,11 +50,13 @@ class ProfileFragment : Fragment() {
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
 
-        val userCommentAdapter = UserCommentAdapter(UserCommentAdapter.OnClickListener{
+        val userCommentAdapter = UserCommentAdapter(UserCommentAdapter.OnClickListener {
             viewModel.navigationToDetail(it)
         })
 
-        val userOrderAdapter = UserOrderAdapter()
+        val userOrderAdapter = UserOrderAdapter(UserOrderAdapter.OnClickListener {
+            viewModel.navigationToOrder(it)
+        })
 
         binding.recyclerProfileAllComments.adapter = userCommentAdapter
         binding.recyclerProfileAllOrders.adapter = userOrderAdapter
@@ -64,13 +66,20 @@ class ProfileFragment : Fragment() {
         }
 
         viewModel.userCurrent.observe(this, Observer {
-            Log.d("userCurrent.observe","userCurrent = $it")
+            Log.d("userCurrent.observe", "userCurrent = $it")
         })
 
         viewModel.navigationToDetail.observe(this, Observer {
             it?.let {
                 findNavController().navigate(NavigationDirections.actionGlobalDetailFragment(it))
                 viewModel.onDetailNavigated()
+            }
+        })
+
+        viewModel.navigationToOrder.observe(this, Observer {
+            it?.let {
+                findNavController().navigate(NavigationDirections.actionGlobalOrderFragment(it))
+                viewModel.onOrderNavigated()
             }
         })
 
@@ -87,7 +96,7 @@ class ProfileFragment : Fragment() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == PICK_AVATAR_REQUEST && resultCode == Activity.RESULT_OK) {
-            if(data == null || data.data == null){
+            if (data == null || data.data == null) {
                 return
             }
 
@@ -96,7 +105,8 @@ class ProfileFragment : Fragment() {
 //                val bitmap = MediaStore.Images.Media.getBitmap(context!!.contentResolver, filePath)
 //                uploadImage.setImageBitmap(bitmap)
                 Glide.with(this).load(filePath).apply(
-                    RequestOptions().circleCrop()).into(profile_avatar)
+                    RequestOptions().circleCrop()
+                ).into(profile_avatar)
                 viewModel.imageUri.value = filePath
             } catch (e: IOException) {
                 e.printStackTrace()

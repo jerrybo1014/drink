@@ -31,9 +31,6 @@ class ViewModelFactory constructor(
                 isAssignableFrom(CreateOrderViewModel::class.java) ->
                     CreateOrderViewModel(drinkRepository)
 
-                isAssignableFrom(OrderVIewModel::class.java) ->
-                    OrderVIewModel(drinkRepository)
-
                 isAssignableFrom(ProfileViewModel::class.java) ->
                     ProfileViewModel(drinkRepository)
 

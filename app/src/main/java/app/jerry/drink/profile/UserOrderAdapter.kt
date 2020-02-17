@@ -6,23 +6,28 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import app.jerry.drink.databinding.ItemUserOrderBinding
+import app.jerry.drink.dataclass.DrinkDetail
 import app.jerry.drink.dataclass.Order
+import app.jerry.drink.home.NewCommentAdapter
 
-class UserOrderAdapter :
+class UserOrderAdapter(private val onClickListener: UserOrderAdapter.OnClickListener) :
     ListAdapter<Order, UserOrderAdapter.UserOrderViewHolder>(
         DiffCallback
     ) {
 
-//    class OnClickListener(val clickListener: (drinkDetail: DrinkDetail) -> Unit) {
-//        fun onClick(drinkDetail: DrinkDetail) = clickListener(drinkDetail)
-//    }
+    class OnClickListener(val clickListener: (orderId: String) -> Unit) {
+        fun onClick(orderId: String) = clickListener(orderId)
+    }
 
     class UserOrderViewHolder(private var binding: ItemUserOrderBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(order: Order) {
+        fun bind(order: Order, onClickListener: UserOrderAdapter.OnClickListener) {
 
 
+            binding.textNavigationToOrder.setOnClickListener { onClickListener.onClick(order.id) }
             binding.order = order
+
+
 //            binding.root.setOnClickListener { onClickListener.onClick(drinkDetail) }
 //            binding.detailImage = string
             // This is important, because it forces the data binding to execute immediately,
@@ -66,6 +71,6 @@ class UserOrderAdapter :
 
     override fun onBindViewHolder(holder: UserOrderViewHolder, position: Int) {
         val order = getItem(position)
-        holder.bind(order)
+        holder.bind(order, onClickListener)
     }
 }

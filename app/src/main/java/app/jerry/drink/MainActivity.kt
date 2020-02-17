@@ -168,14 +168,13 @@ class MainActivity : AppCompatActivity() {
                     }
                 }
                 R.id.orderFragment -> {
-                    navController.navigate(R.id.action_global_orderFragment)
+                    navController.navigate(NavigationDirections.actionGlobalOrderFragment("1"))
                 }
                 R.id.profileFragment -> {
                     navController.navigate(R.id.action_global_profileFragment)
                 }
             };false
         }
-
 
     }
 

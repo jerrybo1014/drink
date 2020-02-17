@@ -46,6 +46,7 @@ class ProfileViewModel(private val repository: DrinkRepository) : ViewModel() {
 
     val userCurrent = MutableLiveData<User>()
     val navigationToDetail = MutableLiveData<DrinkDetail>()
+    val navigationToOrder = MutableLiveData<String>()
 
     // status: The internal MutableLiveData that stores the status of the most recent request
     private val _status = MutableLiveData<LoadApiStatus>()
@@ -231,8 +232,16 @@ class ProfileViewModel(private val repository: DrinkRepository) : ViewModel() {
         navigationToDetail.value = drinkDetail
     }
 
+    fun navigationToOrder(orderId: String){
+        navigationToOrder.value = orderId
+    }
+
     fun onDetailNavigated() {
         navigationToDetail.value = null
+    }
+
+    fun onOrderNavigated() {
+        navigationToOrder.value = null
     }
 
     fun allCommentStatus(){

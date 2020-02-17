@@ -18,7 +18,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
-class OrderVIewModel(private val repository: DrinkRepository) : ViewModel() {
+class OrderVIewModel(private val repository: DrinkRepository, private val orderId: String) : ViewModel() {
 
 
     private val _enterOrderId = MutableLiveData<Long>()
@@ -65,6 +65,13 @@ class OrderVIewModel(private val repository: DrinkRepository) : ViewModel() {
 
     init {
         getUserCurrentResult()
+        getInit()
+    }
+
+    private fun getInit(){
+        if (orderId != "1"){
+            getOrderResult(orderId.toLong())
+        }
     }
 
     private fun getUserCurrentResult(){
@@ -105,16 +112,10 @@ class OrderVIewModel(private val repository: DrinkRepository) : ViewModel() {
         _orderLive = repository.getOrderLive(id) as MutableLiveData<List<OrderList>>
     }
 
-    fun getOrderLiveResult(orderId: Long){
-        _orderLive = repository.getOrderLive(orderId) as MutableLiveData<List<OrderList>>
-
-        Log.d("getOrderLiveResult","_orderLive = ${repository.getOrderLive(orderId).value}")
-    }
 
     fun getOrderResult(orderId: Long) {
 
-//        getOrderLiveResult(orderId)
-//        _orderLive = repository.getOrderLive(orderId) as MutableLiveData<List<OrderList>>
+        _orderLive = repository.getOrderLive(orderId) as MutableLiveData<List<OrderList>>
         Log.d("getOrderLiveResult","_orderLive = ${repository.getOrderLive(orderId).value}")
         /**/
 //        _orderLists.value?.orderLists = repository.getOrderLive(orderId).value

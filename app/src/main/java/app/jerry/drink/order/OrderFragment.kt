@@ -22,7 +22,12 @@ import app.jerry.drink.ext.getVmFactory
 class OrderFragment : Fragment() {
 
 
-    private val viewModel by viewModels<OrderVIewModel> { getVmFactory() }
+    private val viewModel by viewModels<OrderVIewModel> {
+        getVmFactory(
+            OrderFragmentArgs
+                .fromBundle(arguments!!).orderId
+        )
+    }
     lateinit var binding: FragmentOrderBinding
 
     override fun onCreateView(
@@ -39,7 +44,7 @@ class OrderFragment : Fragment() {
 
         binding.textAddOrder.setOnClickListener {
             childFragmentManager.let {
-             CreateOrderFragment().show(it,"")
+                CreateOrderFragment().show(it, "")
             }
         }
 
@@ -47,19 +52,24 @@ class OrderFragment : Fragment() {
         binding.recyclerOrderList.adapter = orderListAdapter
 
         binding.buttonAddOrder.setOnClickListener {
-            findNavController().navigate(NavigationDirections.actionGlobalAddOrderFragement(viewModel.orderLists.value!!))
+            findNavController().navigate(
+                NavigationDirections.actionGlobalAddOrderFragement(
+                    viewModel.orderLists.value!!
+                )
+            )
         }
 
-        binding.searchView.setOnQueryTextListener( object : OnQueryTextListener{
+        binding.searchView.setOnQueryTextListener(object : OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
-                viewModel.getOrderResult(query!!.toLong())
+                query?.let {
+                    viewModel.getOrderResult(it.toLong())
+                }
 //                viewModel.getOrderLiveResult(query.toLong())
-                viewModel.test(query.toLong())
 
-                viewModel.orderLive.observe(this@OrderFragment, Observer {
-                    Log.d("viewModel.orderLive","$it")
-                    orderListAdapter.submitList(it)
-                })
+//                viewModel.orderLive.observe(this@OrderFragment, Observer {
+//                    Log.d("viewModel.orderLive", "$it")
+//                    orderListAdapter.submitList(it)
+//                })
                 return true
             }
 
@@ -68,6 +78,13 @@ class OrderFragment : Fragment() {
             }
         }
         )
+
+        viewModel.orderLists.observe(this, Observer {
+            viewModel.orderLive.observe(this@OrderFragment, Observer {
+                Log.d("viewModel.orderLive", "$it")
+                orderListAdapter.submitList(it)
+            })
+        })
 
         return binding.root
     }
