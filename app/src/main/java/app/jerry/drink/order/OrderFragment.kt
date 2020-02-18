@@ -42,7 +42,7 @@ class OrderFragment : Fragment() {
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
 
-        binding.textAddOrder.setOnClickListener {
+        binding.imageAddOrder.setOnClickListener {
             childFragmentManager.let {
                 CreateOrderFragment().show(it, "")
             }
@@ -58,6 +58,8 @@ class OrderFragment : Fragment() {
                 )
             )
         }
+
+
 
         binding.searchView.setOnQueryTextListener(object : OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {

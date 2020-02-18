@@ -8,6 +8,9 @@
         <variable
             name="viewModel"
             type="app.jerry.drink.post.PostViewModel" />
+        <import type="app.jerry.drink.network.LoadApiStatus"/>
+        <import type="android.view.View"/>
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -16,7 +19,8 @@
 
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toTopOf="@+id/constraintLayout"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -70,7 +74,6 @@
                     app:layout_constraintBottom_toBottomOf="@+id/text_store"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="@+id/text_store" />
-
 
                 <TextView
                     android:id="@+id/text_store"
@@ -136,7 +139,7 @@
                         android:paddingTop="16dp"
                         android:paddingEnd="12dp"
                         android:paddingBottom="16dp"
-                        android:prompt="@string/spinner_store"
+                        android:prompt="@string/spinner_drink"
                         android:spinnerMode="dialog"
                         android:textSize="16dp"
                         app:layout_constraintBottom_toBottomOf="@+id/text_drink"
@@ -288,14 +291,25 @@
                 android:enabled="@{viewModel.editComment.trim() == null || viewModel.commentStar==0 || viewModel.selectedIce==null || viewModel.selectedSugar==null ? false:true}"
                 android:letterSpacing="1.2"
                 android:onClick="@{() -> viewModel.postCommentResult()}"
-                android:text="送出評論"
+                android:text='@{viewModel.postStatus == LoadApiStatus.LOADING ? "": @string/post_button}'
                 android:textColor="#ffffff"
                 android:textSize="16dp"
+
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
+
+            <ProgressBar
+                android:layout_width="26dp"
+                android:layout_height="26dp"
+                android:theme="@style/ProgressThemeDark"
+                android:visibility="@{viewModel.postStatus == LoadApiStatus.LOADING ? View.VISIBLE : View.GONE}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

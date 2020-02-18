@@ -278,12 +278,12 @@
 
                     </RelativeLayout>
 
-
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
-            
+
         </ScrollView>
+
     <ProgressBar
         android:theme="@style/ProgressTheme"
         android:layout_width="wrap_content"
@@ -293,6 +293,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>

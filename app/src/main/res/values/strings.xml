@@ -25,14 +25,16 @@
     <string name="title_activity_maps">Map</string>
     <string name="spinner_store">請選擇店家</string>
     <string name="spinner_drink">請選擇飲品</string>
+    <string name="post_button">送出評論</string>
 
     <!-- order page -->
     <string name="order_host">主揪</string>
     <string name="order_id">編號</string>
-    <string name="order_status_active">狀態 : 開啟中</string>
-    <string name="order_status_inactive">狀態 : 已關閉</string>
+    <string name="order_status_active">開啟中</string>
+    <string name="order_status_inactive">已關閉</string>
     <string name="order_status_to_active">開啟訂單</string>
     <string name="order_status_to_inactive">結束訂單</string>
+    <string name="create_order">新增訂單</string>
 
     <!-- Fb login -->
     <string name="facebook_app_id">473522680006069</string>

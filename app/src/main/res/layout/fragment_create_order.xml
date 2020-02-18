@@ -8,7 +8,8 @@
         <variable
             name="viewModel"
             type="app.jerry.drink.order.CreateOrderViewModel" />
-
+        <import type="app.jerry.drink.network.LoadApiStatus"/>
+        <import type="android.view.View"/>
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -65,7 +66,7 @@
             android:paddingEnd="12dp"
             android:paddingBottom="16dp"
             android:prompt="@string/spinner_store"
-            android:spinnerMode="dialog"
+            android:spinnerMode="dropdown"
             android:textSize="16dp"
             android:fontFamily="@font/noto_sans"
             app:layout_constraintBottom_toBottomOf="@+id/text_store_create_order"
@@ -131,7 +132,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
             android:gravity="start"
-            android:paddingBottom="2dp"
+            android:paddingBottom="8dp"
             android:text="@={viewModel.enterNote}"
             android:textSize="16dp"
             android:fontFamily="@font/noto_sans"
@@ -143,7 +144,7 @@
             android:id="@+id/button_create_order"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="送出訂單"
+            android:text='@{viewModel.postStatus == LoadApiStatus.LOADING ? "": @string/create_order}'
             android:background="@drawable/background_post_button"
             android:textAlignment="center"
             android:paddingTop="10dp"
@@ -159,6 +160,15 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/edit_text_note" />
 
+        <ProgressBar
+            android:layout_width="26dp"
+            android:layout_height="26dp"
+            android:theme="@style/ProgressThemeDark"
+            android:visibility="@{viewModel.postStatus == LoadApiStatus.LOADING ? View.VISIBLE : View.GONE}"
+            app:layout_constraintBottom_toBottomOf="@+id/button_create_order"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/button_create_order" />
 
         <View
             android:id="@+id/line_comment_bottom"

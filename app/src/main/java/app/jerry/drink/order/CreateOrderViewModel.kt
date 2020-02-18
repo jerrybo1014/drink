@@ -42,6 +42,13 @@ class CreateOrderViewModel(private val repository: DrinkRepository) : ViewModel(
     val status: LiveData<LoadApiStatus>
         get() = _status
 
+
+    // postStatus: The internal MutableLiveData that stores the status of the most recent request
+    private val _postStatus = MutableLiveData<LoadApiStatus>()
+
+    val postStatus: LiveData<LoadApiStatus>
+        get() = _postStatus
+
     // error: The internal MutableLiveData that stores the error of the most recent request
     private val _error = MutableLiveData<String>()
 
@@ -116,30 +123,30 @@ class CreateOrderViewModel(private val repository: DrinkRepository) : ViewModel(
                 true
             )
 
-            _status.value = LoadApiStatus.LOADING
+            _postStatus.value = LoadApiStatus.LOADING
 
             val result = repository.createOrder(order)
 
             createOrderFinished.value = when (result) {
                 is Result.Success -> {
                     _error.value = null
-                    _status.value = LoadApiStatus.DONE
+                    _postStatus.value = LoadApiStatus.DONE
                     Toast.makeText(DrinkApplication.context, "成功送出", Toast.LENGTH_SHORT).show()
                     result.data
                 }
                 is Result.Fail -> {
                     _error.value = result.error
-                    _status.value = LoadApiStatus.ERROR
+                    _postStatus.value = LoadApiStatus.ERROR
                     null
                 }
                 is Result.Error -> {
                     _error.value = result.exception.toString()
-                    _status.value = LoadApiStatus.ERROR
+                    _postStatus.value = LoadApiStatus.ERROR
                     null
                 }
                 else -> {
                     _error.value = DrinkApplication.instance.getString(R.string.you_know_nothing)
-                    _status.value = LoadApiStatus.ERROR
+                    _postStatus.value = LoadApiStatus.ERROR
                     null
                 }
             }

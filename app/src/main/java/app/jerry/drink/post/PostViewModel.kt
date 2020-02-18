@@ -62,6 +62,12 @@ class PostViewModel(private val repository: DrinkRepository) : ViewModel() {
     val status: LiveData<LoadApiStatus>
         get() = _status
 
+    // postStatus: The internal MutableLiveData that stores the status of the most recent request
+    private val _postStatus = MutableLiveData<LoadApiStatus>()
+
+    val postStatus: LiveData<LoadApiStatus>
+        get() = _postStatus
+
     // error: The internal MutableLiveData that stores the error of the most recent request
     private val _error = MutableLiveData<String>()
 
@@ -157,7 +163,7 @@ init {
     fun postCommentResult() {
         coroutineScope.launch {
 
-            _status.value = LoadApiStatus.LOADING
+            _postStatus.value = LoadApiStatus.LOADING
 
             val comment = Comment(
                 "",
@@ -177,7 +183,7 @@ init {
             when (result) {
                 is Result.Success -> {
                     _error.value = null
-                    _status.value = LoadApiStatus.DONE
+                    _postStatus.value = LoadApiStatus.DONE
                     Log.d("postComentResult","$result.data")
                     postFinished.value = true
                     Toast.makeText(DrinkApplication.context, "成功送出", Toast.LENGTH_SHORT).show()
@@ -185,17 +191,17 @@ init {
                 }
                 is Result.Fail -> {
                     _error.value = result.error
-                    _status.value = LoadApiStatus.ERROR
+                    _postStatus.value = LoadApiStatus.ERROR
                     null
                 }
                 is Result.Error -> {
                     _error.value = result.exception.toString()
-                    _status.value = LoadApiStatus.ERROR
+                    _postStatus.value = LoadApiStatus.ERROR
                     null
                 }
                 else -> {
                     _error.value = DrinkApplication.instance.getString(R.string.you_know_nothing)
-                    _status.value = LoadApiStatus.ERROR
+                    _postStatus.value = LoadApiStatus.ERROR
                     null
                 }
             }

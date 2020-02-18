@@ -23,6 +23,7 @@
 
     <color name="item_selected">#cbba83</color>
     <color name="transparent">#66000000</color>
+    <color name="all_transparent">#00000000</color>
     <color name="transparent_icon">#33000000</color>
     <color name="star">#FFAA33</color>
     <color name="home_background">#EAE7E7</color>

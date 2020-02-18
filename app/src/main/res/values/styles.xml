@@ -6,6 +6,8 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <!--        <item name="colorAccent">#00DD00</item>-->
+
     </style>
 
     <style name="AppTheme.NoActionBar">
@@ -26,6 +28,16 @@
         <item name="android:fontFamily">@font/noto_sans</item>
     </style>
 
+    <style name="MySwitch" parent="Theme.AppCompat.Light">
+        <!-- Active thumb color & Active track color(30% transparency) switch 打开时的拇指按钮的颜色 轨迹颜色默认为30%这个颜色 -->
+        <item name="colorControlActivated">#00AA00</item>
+        <!-- Inactive thumb color switch关闭时的拇指按钮的颜色 -->
+        <item name="colorSwitchThumbNormal">#666666</item>
+        <!-- Inactive track color(30% transparency) switch关闭时的轨迹的颜色 30%这个颜色 -->
+        <item name="android:colorForeground">#999999</item>
+        <!--使用方法： 在布局文件中给需要自定义控件中增加app:theme="@style/MySwitch"-->
+    </style>
+
     <style name="SignInDialog">
         <item name="android:windowBackground">@color/myColorPrimaryLight</item>
     </style>
@@ -37,12 +49,16 @@
     <style name="add_order_icon_style">
         <item name="android:layout_width">18dp</item>
         <item name="android:layout_height">18dp</item>
-        <item name="android:layout_marginTop">20dp</item>
+        <item name="android:layout_marginTop">12dp</item>
         <item name="android:tint">@color/myColorPrimaryDark</item>
     </style>
 
     <style name="ProgressTheme" parent="Widget.AppCompat.ProgressBar">
         <item name="colorAccent">@color/black_3f3a3a</item>
+    </style>
+
+    <style name="ProgressThemeDark" parent="Widget.AppCompat.ProgressBar">
+        <item name="colorAccent">@color/White</item>
     </style>
 
     <style name="AddOrderDialog">
