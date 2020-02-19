@@ -172,18 +172,17 @@ class PostFragment : Fragment() {
         val loadCameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
 
         if (ContextCompat.checkSelfPermission(
-                (activity as MainActivity),
+                DrinkApplication.instance,
                 Manifest.permission.CAMERA
             )
             != PackageManager.PERMISSION_GRANTED
         ) {
 
             if (ActivityCompat.shouldShowRequestPermissionRationale(
-                    (activity as MainActivity),
+                    (activity as MainActivity) ,
                     Manifest.permission.CAMERA
                 )
             ) {
-//
                 AlertDialog.Builder(context!!)
                     .setMessage("需要開啟相機，再不給試試看")
                     .setPositiveButton("前往設定") { _, _ ->
@@ -199,6 +198,7 @@ class PostFragment : Fragment() {
                     .show()
 
             } else {
+
                 ActivityCompat.requestPermissions(
                     (activity as MainActivity),
                     arrayOf(

@@ -72,6 +72,7 @@
                 android:textSize="16dp"
                 android:fontFamily="@font/noto_sans"
                 android:spinnerMode="dropdown"
+
                 app:layout_constraintBottom_toBottomOf="@+id/text_drink"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/text_drink"

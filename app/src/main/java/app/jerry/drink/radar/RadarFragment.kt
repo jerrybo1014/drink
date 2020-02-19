@@ -163,22 +163,22 @@ class RadarFragment : Fragment(), OnMapReadyCallback {
                             val width = 100
 
                             // if (isAdded) to avoid fragment not attach context
-                            @Suppress("DEPRECATION")
-                            val iconDraw = if (isAdded){
-                                val bitmapdraw = resources.getDrawable(R.drawable.drink_map_icon_1)
-                                val b = bitmapdraw.toBitmap()
-                                val smallMarker = Bitmap.createScaledBitmap(b, width, height, false)
-                                BitmapDescriptorFactory.fromBitmap(smallMarker)
-                            }else{
-                                BitmapDescriptorFactory.defaultMarker()
-                            }
+//                            @Suppress("DEPRECATION")
+//                            val iconDraw = if (isAdded){
+//                                val bitmapdraw = resources.getDrawable(R.drawable.drink_map_icon_1)
+//                                val b = bitmapdraw.toBitmap()
+//                                val smallMarker = Bitmap.createScaledBitmap(b, width, height, false)
+//                                BitmapDescriptorFactory.fromBitmap(smallMarker)
+//                            }else{
+//                                BitmapDescriptorFactory.defaultMarker()
+//                            }
 
                             val queryResult = LatLng(it.latitude,it.longitude)
                             googleMap.addMarker(MarkerOptions().position(queryResult)
                                 .title("${document.data["branchName"]}")
                                 .snippet("${document.data["storeName"]}")
 //                                .icon(BitmapDescriptorFactory.fromResource(R.drawable.bottom_navigation_home_1))
-                                .icon(iconDraw)
+//                                .icon(iconDraw)
                                 )
                         }
                     }

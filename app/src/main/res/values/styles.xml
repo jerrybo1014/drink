@@ -83,4 +83,9 @@
         <item name="android:tint">@color/myColorPrimaryDark</item>
     </style>
 
+    <style name="Widget.BottomNavigationView" parent="Widget.Design.BottomNavigationView">
+        <item name="fontFamily">@font/noto_sans</item>
+        <item name="android:textSize">12dp</item>
+    </style>
+
 </resources>

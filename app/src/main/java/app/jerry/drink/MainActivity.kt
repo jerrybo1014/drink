@@ -43,6 +43,8 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+
 //        setSupportActionBar(toolbar)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
@@ -56,7 +58,17 @@ class MainActivity : AppCompatActivity() {
         }
 
 
+        val intent = intent
+        if (null != intent.extras) {
+            if (null != intent.data) {
+                val uri = intent.data
+                val orderId = uri!!.getQueryParameter("id")
+                orderId?.let {
+                    navController.navigate(NavigationDirections.actionGlobalOrderFragment(orderId))
+                }
 
+            }
+        }
 
 //        val authProvider: List<AuthUI.IdpConfig> = listOf(
 //            AuthUI.IdpConfig.FacebookBuilder().build(),
@@ -199,6 +211,8 @@ class MainActivity : AppCompatActivity() {
                 }
                 return
             }
+
+
             10 -> {
                 if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     for (permissionsItem in permissions) {
@@ -252,10 +266,9 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-
-    private val locationListener =  object : LocationListener {
+    private val locationListener = object : LocationListener {
         override fun onLocationChanged(location: Location?) {
-            Log.d(TAG,"onLocationChanged ${location!!.latitude}")
+            Log.d(TAG, "onLocationChanged ${location!!.latitude}")
         }
 
         override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {
@@ -269,31 +282,35 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    fun getMyLocation (): Location?{
+    fun getMyLocation(): Location? {
         val myLocationService = getSystemService(Context.LOCATION_SERVICE) as LocationManager
         return if (ContextCompat.checkSelfPermission(
                 this,
                 permission.ACCESS_FINE_LOCATION
             )
             == PackageManager.PERMISSION_GRANTED
-        ){
-            Log.d(TAG,"myLocationService.getLastKnownLocation(LocationManager.GPS_PROVIDER)")
-            myLocationService.requestLocationUpdates(LocationManager.GPS_PROVIDER,0L,0F,object : LocationListener {
-                override fun onLocationChanged(location: Location?) {
-                    Log.d(TAG,"onLocationChanged ${location!!.latitude}")
+        ) {
+            Log.d(TAG, "myLocationService.getLastKnownLocation(LocationManager.GPS_PROVIDER)")
+            myLocationService.requestLocationUpdates(
+                LocationManager.GPS_PROVIDER,
+                0L,
+                0F,
+                object : LocationListener {
+                    override fun onLocationChanged(location: Location?) {
+                        Log.d(TAG, "onLocationChanged ${location!!.latitude}")
 //                    loctionGps = location
-                }
+                    }
 
-                override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {
-                }
+                    override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {
+                    }
 
-                override fun onProviderEnabled(provider: String?) {
-                }
+                    override fun onProviderEnabled(provider: String?) {
+                    }
 
-                override fun onProviderDisabled(provider: String?) {
-                }
+                    override fun onProviderDisabled(provider: String?) {
+                    }
 
-            })
+                })
 
 //            Log.d("myLocationService","${myLocationService.getLastKnownLocation(LocationManager.GPS_PROVIDER).latitude}")
             myLocationService.getLastKnownLocation(LocationManager.GPS_PROVIDER)
@@ -303,11 +320,10 @@ class MainActivity : AppCompatActivity() {
 //                Looper.myLooper())
 //            Log.d(TAG,"fusedLocationProviderClient.lastLocation.result ${fusedLocationProviderClient.lastLocation.result?.latitude}")
 //            fusedLocationProviderClient.lastLocation.result
-        }else {
+        } else {
             null
         }
     }
-
 
 
 }

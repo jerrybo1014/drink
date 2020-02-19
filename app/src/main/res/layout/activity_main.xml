@@ -57,6 +57,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:menu="@menu/bottom_navigation_menu"
+            android:theme="@style/Widget.BottomNavigationView"
             android:elevation="10dp"
             android:background="@color/White" />
 

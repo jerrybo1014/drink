@@ -9,7 +9,7 @@
             type="app.jerry.drink.order.OrderVIewModel" />
 
         <import type="android.view.View"/>
-        <import type="java.util.List"/>
+        <import type="app.jerry.drink.network.LoadApiStatus"/>
     </data>
 
 
@@ -34,7 +34,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:queryHint="查詢訂單編號" />
-
 
         <ScrollView
             android:id="@+id/scrollView2"
@@ -71,17 +70,21 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text='@{viewModel.orderLists.order.status == true ? @string/order_status_active:@string/order_status_inactive}'
-                        app:layout_constraintBottom_toBottomOf="@+id/switch1"
+                        android:layout_marginTop="8dp"
+                        app:layout_constraintHorizontal_bias="1.0"
                         app:layout_constraintEnd_toStartOf="@+id/switch1"
-                        app:layout_constraintTop_toTopOf="@+id/switch1" />
+                        app:layout_constraintTop_toTopOf="parent" />
+
 
                     <TextView
                         android:id="@+id/text_order_id"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@{viewModel.orderLists.order.id}"
-                        app:layout_constraintBaseline_toBaselineOf="@+id/text_note"
-                        app:layout_constraintEnd_toEndOf="parent" />
+                        android:layout_marginStart="16dp"
+                        app:layout_constraintStart_toEndOf="@+id/textView_order_id"
+                        app:layout_constraintBaseline_toBaselineOf="@+id/textView_order_id"
+                />
 
 
                     <TextView
@@ -101,12 +104,34 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/recycler_order_list" />
 
+
+                    <ImageView
+                        android:id="@+id/image_order_id"
+                        style="@style/add_order_icon_style"
+                        android:src="@drawable/ic_featured_play_list_black_24dp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/textView_order_id"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/order_id"
+                        android:textSize="16dp"
+                        android:fontFamily="@font/noto_sans"
+                        android:layout_marginStart="10dp"
+                        app:layout_constraintBottom_toBottomOf="@+id/image_order_id"
+                        app:layout_constraintStart_toEndOf="@+id/image_order_id"
+                        app:layout_constraintTop_toTopOf="@+id/image_order_id" />
+
+
+
                     <ImageView
                         android:id="@+id/image_host_order"
                         style="@style/add_order_icon_style"
                         android:src="@drawable/people"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toBottomOf="@+id/image_order_id" />
 
                     <TextView
                         android:id="@+id/text_host_order"
@@ -234,6 +259,7 @@
                         android:id="@+id/switch1"
                         android:checked="@{viewModel.orderLists.order.status==true ? true:false}"
                         android:onClick="@{() -> viewModel.editOrderStatusResult()}"
+                        android:visibility="@{viewModel.userStatus==true ? View.VISIBLE:View.INVISIBLE}"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:backgroundTint="@color/myColorPrimaryDark"
@@ -241,6 +267,18 @@
                         android:theme="@style/MySwitch"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
+
+
+                    <ImageView
+                        android:id="@+id/image_share"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_share_black_24dp"
+                        android:tint="#B3FFFFFF"
+                        app:layout_constraintBottom_toBottomOf="@+id/text_order_id"
+                        app:layout_constraintStart_toEndOf="@+id/text_order_id"
+                        app:layout_constraintTop_toTopOf="@+id/text_order_id" />
+
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.cardview.widget.CardView>
@@ -253,9 +291,9 @@
             android:layout_width="200dp"
             android:layout_height="200dp"
             android:clickable="true"
-            android:tint="@color/myColorPrimaryDark"
+            android:tint="#B3FFFFFF"
             android:src="@drawable/add_order"
-            android:visibility="@{viewModel.orderLists.order == null  ? View.VISIBLE:View.GONE}"
+            android:visibility="@{viewModel.orderLists.order == null  &amp; viewModel.status != LoadApiStatus.LOADING ? View.VISIBLE:View.GONE}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -269,10 +307,20 @@
             android:textSize="16dp"
             android:fontFamily="@font/noto_sans"
             android:layout_marginTop="16dp"
-            android:visibility="@{viewModel.orderLists.order == null  ? View.VISIBLE:View.GONE}"
+            android:visibility="@{viewModel.orderLists.order == null &amp; viewModel.status != LoadApiStatus.LOADING  ? View.VISIBLE:View.GONE}"
             app:layout_constraintEnd_toEndOf="@+id/image_add_order"
             app:layout_constraintStart_toStartOf="@+id/image_add_order"
             app:layout_constraintTop_toBottomOf="@+id/image_add_order" />
+
+        <ProgressBar
+            android:theme="@style/ProgressTheme"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:setupApiStatus="@{viewModel.status}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

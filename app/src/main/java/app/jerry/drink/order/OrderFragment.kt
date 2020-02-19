@@ -1,5 +1,8 @@
 package app.jerry.drink.order
 
+import android.content.ComponentName
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -87,6 +90,33 @@ class OrderFragment : Fragment() {
                 orderListAdapter.submitList(it)
             })
         })
+
+
+        binding.imageShare.setOnClickListener {
+            val cn = ComponentName(
+                "jp.naver.line.android",
+                "jp.naver.line.android.activity.selectchat.SelectChatActivityLaunchActivity"
+            )
+            val shareIntent = Intent()
+
+                val orderId = viewModel.orderLists.value?.order?.id
+                val content = "http://drink.jerry1014.com/order?id=$orderId"
+                shareIntent.action = Intent.ACTION_SEND
+                shareIntent.putExtra(Intent.EXTRA_TEXT, content)
+                shareIntent.type = "text/plain"
+//            shareIntent.component = cn
+//            startActivity(shareIntent)
+                startActivity(Intent.createChooser(shareIntent, "分享訂單"))
+
+
+
+//            val content = "http://drink.jerry1014.com/order?id=1582002591055"
+//            val scheme = "line://msg/text/$content"
+//            val uri = Uri.parse(scheme)
+////            startActivity(Intent (Intent.ACTION_VIEW, uri))
+//            startActivity(Intent.createChooser(Intent(Intent.ACTION_VIEW, uri),""))
+        }
+
 
         return binding.root
     }
