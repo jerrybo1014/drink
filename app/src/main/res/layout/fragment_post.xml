@@ -8,8 +8,10 @@
         <variable
             name="viewModel"
             type="app.jerry.drink.post.PostViewModel" />
-        <import type="app.jerry.drink.network.LoadApiStatus"/>
-        <import type="android.view.View"/>
+
+        <import type="app.jerry.drink.network.LoadApiStatus" />
+
+        <import type="android.view.View" />
 
     </data>
 
@@ -288,13 +290,13 @@
                 android:layout_height="0dp"
                 android:layout_margin="16dp"
                 android:background="@drawable/background_post_button"
+                android:clickable="@{viewModel.postStatus == LoadApiStatus.LOADING ? false:true}"
                 android:enabled="@{viewModel.editComment.trim() == null || viewModel.commentStar==0 || viewModel.selectedIce==null || viewModel.selectedSugar==null ? false:true}"
                 android:letterSpacing="1.2"
                 android:onClick="@{() -> viewModel.postCommentResult()}"
                 android:text='@{viewModel.postStatus == LoadApiStatus.LOADING ? "": @string/post_button}'
                 android:textColor="#ffffff"
                 android:textSize="16dp"
-
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

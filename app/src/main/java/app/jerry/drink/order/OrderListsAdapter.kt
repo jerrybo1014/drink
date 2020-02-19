@@ -36,7 +36,6 @@ class OrderListsAdapter(private val viewModel: OrderVIewModel) :
 //
 //            }
 
-
             val userCurrent = orderList.user?.id == viewModel.userCurrent.value?.id
             Log.d("jerryTest","OrderListsHolder = $userCurrent")
             binding.userCurrent = userCurrent

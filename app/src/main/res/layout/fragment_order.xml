@@ -69,11 +69,12 @@
                         android:id="@+id/text_status_add_order"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                       android:layout_marginEnd="2dp"
+                        android:layout_marginBottom="12dp"
+                        android:visibility="invisible"
                         android:text='@{viewModel.orderLists.order.status == true ? @string/order_status_active:@string/order_status_inactive}'
-                        android:layout_marginTop="8dp"
-                        app:layout_constraintHorizontal_bias="1.0"
-                        app:layout_constraintEnd_toStartOf="@+id/switch1"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintBottom_toTopOf="@+id/line_add_order"
+                        app:layout_constraintEnd_toStartOf="@+id/switch1" />
 
 
                     <TextView
@@ -257,17 +258,16 @@
 
                     <Switch
                         android:id="@+id/switch1"
-                        android:checked="@{viewModel.orderLists.order.status==true ? true:false}"
-                        android:onClick="@{() -> viewModel.editOrderStatusResult()}"
-                        android:visibility="@{viewModel.userStatus==true ? View.VISIBLE:View.INVISIBLE}"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
                         android:backgroundTint="@color/myColorPrimaryDark"
-                        android:layout_marginTop="8dp"
+                        android:checked="@{viewModel.orderLists.order.status==true ? true:false}"
+                        android:onClick="@{() -> viewModel.editOrderStatusResult()}"
                         android:theme="@style/MySwitch"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
+                        android:visibility="@{viewModel.userStatus==true ? View.VISIBLE:View.INVISIBLE}"
+                        app:layout_constraintBottom_toTopOf="@+id/line_add_order"
+                        app:layout_constraintEnd_toEndOf="parent" />
 
                     <ImageView
                         android:id="@+id/image_share"
@@ -275,6 +275,7 @@
                         android:layout_height="wrap_content"
                         android:src="@drawable/ic_share_black_24dp"
                         android:tint="#B3FFFFFF"
+                        android:layout_marginStart="8dp"
                         app:layout_constraintBottom_toBottomOf="@+id/text_order_id"
                         app:layout_constraintStart_toEndOf="@+id/text_order_id"
                         app:layout_constraintTop_toTopOf="@+id/text_order_id" />

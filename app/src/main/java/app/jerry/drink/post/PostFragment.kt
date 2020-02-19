@@ -186,8 +186,7 @@ class PostFragment : Fragment() {
                 AlertDialog.Builder(context!!)
                     .setMessage("需要開啟相機，再不給試試看")
                     .setPositiveButton("前往設定") { _, _ ->
-                        ActivityCompat.requestPermissions(
-                            (activity as MainActivity),
+                        requestPermissions(
                             arrayOf(
                                 Manifest.permission.CAMERA
                             ),
@@ -198,9 +197,7 @@ class PostFragment : Fragment() {
                     .show()
 
             } else {
-
-                ActivityCompat.requestPermissions(
-                    (activity as MainActivity),
+                requestPermissions(
                     arrayOf(
                         Manifest.permission.CAMERA
                     ),

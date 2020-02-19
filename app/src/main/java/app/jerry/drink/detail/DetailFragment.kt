@@ -10,7 +10,9 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import app.jerry.drink.MainActivity
+import app.jerry.drink.NavigationDirections
 import app.jerry.drink.R
 import app.jerry.drink.databinding.FragmentDetailBinding
 import app.jerry.drink.ext.getVmFactory
@@ -44,14 +46,21 @@ class DetailFragment : Fragment() {
 
         binding.layoutNavigationToInternet.setOnClickListener {
 
-            viewModel.drinkInformation.observe(this, Observer { drinkInformation ->
-                val uri = Uri.parse(drinkInformation.store?.uri)
+//            viewModel.drinkInformation.observe(this, Observer { drinkInformation ->
+                val uri = Uri.parse(viewModel.drinkInformation.value?.store?.uri)
                 val intent = Intent(Intent.ACTION_VIEW, uri)
 //            if (intent.resolveActivity(getPackageManager()) != null) {
 //                final ComponentName componentName = intent.resolveActivity(getPackageManager())
                 startActivity(Intent.createChooser(intent, "即將開啟官網，請選擇瀏覽器"))
-            })
+//            })
         }
+
+        viewModel.navigationToRadar.observe(this, Observer {
+            it?.let {
+                findNavController().navigate(NavigationDirections.actionGlobalRadarFragment(it))
+                viewModel.navigationToRadarfinished()
+            }
+        })
 
         return binding.root
     }

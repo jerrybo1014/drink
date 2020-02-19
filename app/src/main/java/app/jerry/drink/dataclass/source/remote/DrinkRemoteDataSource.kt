@@ -561,6 +561,10 @@ object DrinkRemoteDataSource : DrinkDataSource {
                 .set(orderList)
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
+
+
+
+
 //                    continuation.resume(Result.Success(list))
                         continuation.resume(Result.Success(true))
                     } else {
@@ -829,6 +833,37 @@ object DrinkRemoteDataSource : DrinkDataSource {
                             list.add(order)
                         }
                         list.sortByDescending { it.createdTime }
+                        continuation.resume(Result.Success(list))
+                    } else {
+                        task.exception?.let {
+
+                            Log.w(
+                                "",
+                                "[${this::class.simpleName}] Error getting documents. ${it.message}"
+                            )
+                            continuation.resume(Result.Error(it))
+                            return@addOnCompleteListener
+                        }
+                        continuation.resume(Result.Fail(DrinkApplication.instance.getString(R.string.you_know_nothing)))
+                    }
+                }
+
+        }
+
+    override suspend fun getStoreLocation(): Result<List<StoreLocation>> =
+        suspendCoroutine { continuation ->
+
+            FirebaseFirestore.getInstance()
+                .collectionGroup("branch")
+                .get()
+                .addOnCompleteListener { task ->
+                    val list = mutableListOf<StoreLocation>()
+                    if (task.isSuccessful) {
+                        for (document in task.result!!) {
+                            val branch = document.toObject(StoreLocation::class.java)
+                            Log.d("jerryTest", "getStoreLocationResult = $branch")
+                            list.add(branch)
+                        }
                         continuation.resume(Result.Success(list))
                     } else {
                         task.exception?.let {

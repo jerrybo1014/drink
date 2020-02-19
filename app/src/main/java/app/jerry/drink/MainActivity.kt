@@ -23,6 +23,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import app.jerry.drink.dataclass.Store
 import app.jerry.drink.ext.getVmFactory
 import app.jerry.drink.signin.SignInFragment
 import com.firebase.ui.auth.AuthUI
@@ -176,7 +177,7 @@ class MainActivity : AppCompatActivity() {
                         }
                     } else {
                         // Permission has already been granted
-                        navController.navigate(R.id.action_global_radarFragment)
+                        navController.navigate(NavigationDirections.actionGlobalRadarFragment(Store("","","")))
                     }
                 }
                 R.id.orderFragment -> {
@@ -203,7 +204,7 @@ class MainActivity : AppCompatActivity() {
                     for (permissionsItem in permissions) {
                         Log.d(TAG, "permissions allow : $permissions")
                     }
-                    findNavController(R.id.myNavHostFragment).navigate(R.id.action_global_radarFragment)
+                    findNavController(R.id.myNavHostFragment).navigate(NavigationDirections.actionGlobalRadarFragment(Store("","","")))
                 } else {
                     for (permissionsItem in permissions) {
                         Log.d(TAG, "permissions reject : $permissionsItem")

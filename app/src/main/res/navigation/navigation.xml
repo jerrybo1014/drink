@@ -26,7 +26,11 @@
     <fragment
         android:id="@+id/radarFragment"
         android:name="app.jerry.drink.radar.RadarFragment"
-        android:label="RadarFragment" />
+        android:label="RadarFragment" >
+        <argument
+            android:name="store"
+            app:argType="app.jerry.drink.dataclass.Store" />
+    </fragment>
     <action
         android:id="@+id/action_global_homeFragment"
         app:destination="@id/homeFragment"

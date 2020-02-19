@@ -5,6 +5,11 @@
 
     <data>
 
+        <variable
+            name="viewModel"
+            type="app.jerry.drink.radar.RadarViewModel" />
+
+        <import type="android.view.View"/>
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -73,5 +78,17 @@
             android:layout_marginTop="16dp"
             map:layout_constraintStart_toStartOf="parent"
             map:layout_constraintTop_toTopOf="parent" />
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="300dp"
+            android:layout_height="300dp"
+            android:elevation="10dp"
+            android:visibility="@{viewModel.markerStatus == true ? View.VISIBLE:View.GONE}"
+            android:background="@color/myColorPrimaryDark"
+            map:layout_constraintBottom_toBottomOf="@+id/radar_map"
+            map:layout_constraintEnd_toEndOf="parent"
+            map:layout_constraintStart_toStartOf="parent" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -3,14 +3,10 @@ package app.jerry.drink.detail
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import app.jerry.drink.DrinkApplication
 import app.jerry.drink.R
-import app.jerry.drink.dataclass.Comment
-import app.jerry.drink.dataclass.DrinkDetail
-import app.jerry.drink.dataclass.Result
-import app.jerry.drink.dataclass.Star
+import app.jerry.drink.dataclass.*
 import app.jerry.drink.dataclass.source.DrinkRepository
 import app.jerry.drink.network.LoadApiStatus
 import kotlinx.coroutines.CoroutineScope
@@ -19,12 +15,17 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import java.text.NumberFormat
 
-class DetailViewModel(private val repository: DrinkRepository, private val drinkDetail: DrinkDetail) : ViewModel() {
+class DetailViewModel(private val repository: DrinkRepository, val drinkDetail: DrinkDetail) : ViewModel() {
 
     private val _detailComment = MutableLiveData<List<Comment>>()
 
     val detailComment: LiveData<List<Comment>>
         get() = _detailComment
+
+    private val _navigationToRadar = MutableLiveData<Store>()
+
+    val navigationToRadar: LiveData<Store>
+        get() = _navigationToRadar
 
     val drinkInformation = MutableLiveData<DrinkDetail>().apply {
         value = drinkDetail
@@ -131,6 +132,14 @@ class DetailViewModel(private val repository: DrinkRepository, private val drink
             detailComment.size)
 
         Log.d("jerryTest","displayAvgStar = ${numberFormat.format(avg)}")
+    }
+
+    fun navigationToRadar(store: Store){
+        _navigationToRadar.value = store
+    }
+
+    fun navigationToRadarfinished(){
+        _navigationToRadar.value = null
     }
 
 }

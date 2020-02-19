@@ -87,7 +87,7 @@
                 android:layout_marginBottom="8dp"
                 android:layout_marginStart="8dp"
                 android:fontFamily="@font/noto_sans"
-                android:text="@{orderList.note}"
+                android:text="@{orderList.user.name}"
                 android:textSize="14dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -99,7 +99,7 @@
                 android:layout_height="wrap_content"
                 android:textSize="14dp"
                 android:fontFamily="@font/noto_sans"
-                android:text="@{orderList.user.name}"
+                android:text="@{orderList.note}"
                 app:layout_constraintStart_toStartOf="@+id/guide_1"
                 app:layout_constraintTop_toTopOf="@+id/text_add_order_name" />
 

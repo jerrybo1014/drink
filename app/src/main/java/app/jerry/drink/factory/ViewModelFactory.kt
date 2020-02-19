@@ -9,6 +9,7 @@ import app.jerry.drink.order.CreateOrderViewModel
 import app.jerry.drink.order.OrderVIewModel
 import app.jerry.drink.post.PostViewModel
 import app.jerry.drink.profile.ProfileViewModel
+import app.jerry.drink.radar.RadarViewModel
 
 @Suppress("UNCHECKED_CAST")
 class ViewModelFactory constructor(

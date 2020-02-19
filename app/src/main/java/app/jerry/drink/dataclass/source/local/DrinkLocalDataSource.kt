@@ -72,4 +72,8 @@ class DrinkLocalDataSource(val context: Context) : DrinkDataSource {
     override suspend fun getUserOrder(): Result<List<Order>> {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
+
+    override suspend fun getStoreLocation(): Result<List<StoreLocation>> {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
 }
