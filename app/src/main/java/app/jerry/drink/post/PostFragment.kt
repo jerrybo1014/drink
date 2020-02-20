@@ -167,6 +167,7 @@ class PostFragment : Fragment() {
         startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST)
     }
 
+
     private fun loadCamera() {
 
         val loadCameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
@@ -179,7 +180,7 @@ class PostFragment : Fragment() {
         ) {
 
             if (ActivityCompat.shouldShowRequestPermissionRationale(
-                    (activity as MainActivity) ,
+                    (activity as MainActivity),
                     Manifest.permission.CAMERA
                 )
             ) {

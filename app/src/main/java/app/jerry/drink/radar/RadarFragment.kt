@@ -1,13 +1,13 @@
 package app.jerry.drink.radar
 
-import android.graphics.Bitmap
+import android.content.Intent
 import android.graphics.Color
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.graphics.drawable.toBitmap
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -17,17 +17,24 @@ import app.jerry.drink.MainActivity
 import app.jerry.drink.R
 import app.jerry.drink.databinding.FragmentRadarBinding
 import app.jerry.drink.ext.getVmFactory
-import app.jerry.drink.home.HomeViewModel
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.*
 import com.google.android.gms.maps.model.*
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.GeoPoint
 import kotlin.math.cos
 
 
-class RadarFragment : Fragment(), OnMapReadyCallback {
+class RadarFragment : Fragment(), GoogleMap.OnMarkerClickListener, OnMapReadyCallback {
+
+    override fun onMarkerClick(marker: Marker?): Boolean {
+
+        marker?.let {
+            viewModel.storeCardOpen()
+            Log.d("jerryTest", it.snippet)
+            Log.d("jerryTest", "${it.tag}")
+        }
+        return false
+    }
 
     val MAPVIEW_BUNDLE_KEY: String? = "MapViewBundleKey"
     lateinit var binding: FragmentRadarBinding
@@ -45,7 +52,6 @@ class RadarFragment : Fragment(), OnMapReadyCallback {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
     }
 
     override fun onCreateView(
@@ -73,6 +79,19 @@ class RadarFragment : Fragment(), OnMapReadyCallback {
 //        val myLocation = (activity as MainActivity).getMyLocation()
 //        val location = LatLng(myLocation!!.latitude,myLocation.longitude)
 
+
+        binding.textCallPhone.setOnClickListener {
+
+            //            viewModel.drinkInformation.observe(this, Observer { drinkInformation ->
+            val uri = Uri.parse("http://www.kebuke.com/")
+            val intent = Intent(Intent.ACTION_VIEW, uri)
+//            if (intent.resolveActivity(getPackageManager()) != null) {
+//                final ComponentName componentName = intent.resolveActivity(getPackageManager())
+            startActivity(Intent.createChooser(intent, "即將開啟官網，請選擇瀏覽器"))
+//            })
+        }
+
+
         return binding.root
     }
 
@@ -95,7 +114,7 @@ class RadarFragment : Fragment(), OnMapReadyCallback {
             mapViewBundle = Bundle()
             outState.putBundle(MAPVIEW_BUNDLE_KEY, mapViewBundle)
         }
-        mMap!!.onSaveInstanceState(mapViewBundle)
+        mMap.onSaveInstanceState(mapViewBundle)
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
@@ -108,9 +127,9 @@ class RadarFragment : Fragment(), OnMapReadyCallback {
 //        val mmm = this.getSystemService(Context.LOCATION_SERVICE) as LocationManager
 //        mmm.getLastKnownLocation(LocationManager.GPS_PROVIDER)
 
-        myGoogleMap.uiSettings.isZoomControlsEnabled = true
+//        myGoogleMap.uiSettings.isZoomControlsEnabled = true
         myGoogleMap.uiSettings.isMyLocationButtonEnabled = true
-        myGoogleMap.uiSettings.isIndoorLevelPickerEnabled = true
+//        myGoogleMap.uiSettings.isIndoorLevelPickerEnabled = true
         myGoogleMap.isMyLocationEnabled = true
         myGoogleMap.uiSettings.isMapToolbarEnabled = true
 
@@ -138,7 +157,7 @@ class RadarFragment : Fragment(), OnMapReadyCallback {
 //        }
 
         googleMap.setOnMapClickListener {
-            viewModel.markerStatus()
+            viewModel.storeCardClose()
         }
 
         viewModel.storeLocation.observe(this, Observer {
@@ -148,19 +167,36 @@ class RadarFragment : Fragment(), OnMapReadyCallback {
                     LocationServices.getFusedLocationProviderClient((DrinkApplication.context))
                 fusedLocationProviderClient.lastLocation.addOnSuccessListener { myLocation ->
 
+                    val queryRadius = 1
                     val newLocation = LatLng(myLocation.latitude, myLocation.longitude)
+                    val lat = 0.009043717
+                    val lon = 0.008983112 / cos(newLocation.latitude)
+
+                    val lowerLat = myLocation.latitude - (lat * queryRadius)
+                    val lowerLon = myLocation.longitude - (lon * queryRadius)
+
+                    val greaterLat = myLocation.latitude + (lat * queryRadius)
+                    val greaterLon = myLocation.longitude + (lon * queryRadius)
+
                     for (storeLocation in it) {
+
                         val queryResult = LatLng(
                             storeLocation.latitude
                             , storeLocation.longitude
                         )
-                        googleMap.addMarker(
-                            MarkerOptions().position(queryResult)
-                                .title(storeLocation.branchName)
-                                .snippet(storeLocation.store.storeName)
+
+                        if (queryResult.latitude in lowerLat..greaterLat
+                            && queryResult.longitude in lowerLon..greaterLon
+                        ) {
+                            val addMarker = googleMap.addMarker(
+                                MarkerOptions().position(queryResult)
+                                    .snippet(storeLocation.branchName)
+                                    .title(storeLocation.store.storeName)
 //                                .icon(BitmapDescriptorFactory.fromResource(R.drawable.bottom_navigation_home_1))
 //                                .icon(iconDraw)
-                        )
+                            )
+                            addMarker.tag = storeLocation.store.storeId
+                        }
 
                     }
                     googleMap.animateCamera(
@@ -170,11 +206,19 @@ class RadarFragment : Fragment(), OnMapReadyCallback {
                         )
                     )
 
+                    val circleOptions = CircleOptions()
+                    circleOptions.center(newLocation)
+                        .radius(queryRadius.toDouble() * 1000)
+                        .fillColor(Color.argb(70, 150, 50, 50))
+                        .strokeWidth(3F)
+                        .strokeColor(Color.RED)
+                    googleMap.addCircle(circleOptions)
+
                 }
 
             }
         })
-
+        googleMap.setOnMarkerClickListener(this)
 
 //        myGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location,15F))
 //        queryMapNear(location, 1, myGoogleMap)

@@ -1,6 +1,5 @@
 package app.jerry.drink.radar
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -23,7 +22,7 @@ class RadarViewModel(private val repository: DrinkRepository, private val store:
     val storeLocation: LiveData<List<StoreLocation>>
         get() = _storeLocation
 
-    val markerStatus = MutableLiveData<Boolean>().apply {
+    val storeCardStatus = MutableLiveData<Boolean>().apply {
         value = false
     }
 
@@ -101,9 +100,15 @@ init {
 
 
 
-    fun markerStatus(){
-        markerStatus.value?.let {
-            markerStatus.value = !it
+    fun storeCardClose(){
+        storeCardStatus.value?.let {
+            storeCardStatus.value = false
+        }
+    }
+
+    fun storeCardOpen(){
+        storeCardStatus.value?.let {
+            storeCardStatus.value = true
         }
     }
 
