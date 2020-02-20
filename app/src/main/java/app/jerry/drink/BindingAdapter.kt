@@ -23,6 +23,7 @@ import app.jerry.drink.post.IceAdapter
 import app.jerry.drink.post.SugarAdapter
 import app.jerry.drink.profile.UserCommentAdapter
 import app.jerry.drink.profile.UserOrderAdapter
+import app.jerry.drink.radar.StoreHighScoreAdapter
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
@@ -108,6 +109,12 @@ fun bindNewComment(recyclerView: RecyclerView, data: List<Comment>?){
 @BindingAdapter("listHighScore")
 fun bindHighScore(recyclerView: RecyclerView, data: List<DrinkRank>?){
     val adapter = recyclerView.adapter as HighScoreAdapter
+    adapter.submitList(data)
+}
+
+@BindingAdapter("listStoreHighScore")
+fun bindStoreHighScore(recyclerView: RecyclerView, data: List<DrinkRank>?){
+    val adapter = recyclerView.adapter as StoreHighScoreAdapter
     adapter.submitList(data)
 }
 

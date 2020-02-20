@@ -1,6 +1,8 @@
 package app.jerry.drink.radar
 
+import android.Manifest
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
@@ -8,15 +10,23 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import app.jerry.drink.DrinkApplication
 import app.jerry.drink.MainActivity
+import app.jerry.drink.NavigationDirections
 import app.jerry.drink.R
 import app.jerry.drink.databinding.FragmentRadarBinding
+import app.jerry.drink.dataclass.Store
+import app.jerry.drink.dataclass.StoreLocation
 import app.jerry.drink.ext.getVmFactory
+import app.jerry.drink.home.HighScoreAdapter
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.*
@@ -26,21 +36,28 @@ import kotlin.math.cos
 
 class RadarFragment : Fragment(), GoogleMap.OnMarkerClickListener, OnMapReadyCallback {
 
-    override fun onMarkerClick(marker: Marker?): Boolean {
-
-        marker?.let {
-            viewModel.storeCardOpen()
-            Log.d("jerryTest", it.snippet)
-            Log.d("jerryTest", "${it.tag}")
-        }
-        return false
-    }
 
     val MAPVIEW_BUNDLE_KEY: String? = "MapViewBundleKey"
     lateinit var binding: FragmentRadarBinding
     lateinit var mMap: MapView
     private lateinit var myGoogleMap: GoogleMap
     lateinit var fusedLocationProviderClient: FusedLocationProviderClient
+    private val MY_PERMISSIONS_CALL = 20
+    private val TAG = "jerryTest"
+
+    override fun onMarkerClick(marker: Marker?): Boolean {
+
+        marker?.let {
+            val storeLocation = (it.tag as StoreLocation)
+            val store = storeLocation.store
+
+            viewModel.selectStore(storeLocation)
+            viewModel.storeCardOpen()
+            viewModel.getStoreCommentResult(store)
+        }
+
+        return false
+    }
 
     private val viewModel by viewModels<RadarViewModel> {
         getVmFactory(
@@ -67,7 +84,58 @@ class RadarFragment : Fragment(), GoogleMap.OnMarkerClickListener, OnMapReadyCal
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
 
+        viewModel.storeComment.observe(this, Observer {
+
+            Log.d("jerryTest", "storeComment = $it")
+        })
+
+
+        viewModel.selectStore.observe(this, Observer {
+
+            Log.d("jerryTest", "selectStore = $it")
+        })
+
+        binding.imageCallPhone.setOnClickListener {
+            callPhone()
+        }
+
+        binding.imageNavigationToStore.setOnClickListener{
+
+            fusedLocationProviderClient =
+                LocationServices.getFusedLocationProviderClient((activity as MainActivity))
+            fusedLocationProviderClient.lastLocation.addOnSuccessListener {
+
+                val intent = Intent(Intent.ACTION_VIEW,
+                    Uri.parse("http://maps.google.com/maps?"
+                            + "saddr="+ it.latitude+ "," + it.longitude
+                            + "&daddr=" + 25.040206+ "," + 121.565254
+                            +"&avoid=highway"
+                            +"&language=zh-CN")
+                )
+
+                intent.setClassName("com.google.android.apps.maps","com.google.android.maps.MapsActivity")
+                startActivity(intent)
+            }
+
+        }
+
+
         viewModel.getStoreLocationResult()
+
+        val storeHighScoreAdapter = StoreHighScoreAdapter(StoreHighScoreAdapter.OnClickListener {
+            viewModel.navigationToDetail(it)
+        })
+        binding.recyclerStoreHighScore.adapter = storeHighScoreAdapter
+
+        viewModel.navigationToDetail.observe(this, Observer {
+            it?.let {
+                findNavController().navigate(NavigationDirections.actionGlobalDetailFragment(it))
+                viewModel.storeCardClose()
+                viewModel.onDetailNavigated()
+            }
+        })
+
+
         mMap = binding.radarMap
         initGoogleMap(savedInstanceState)
         Log.d("myMapTest", "onCreateView")
@@ -80,16 +148,7 @@ class RadarFragment : Fragment(), GoogleMap.OnMarkerClickListener, OnMapReadyCal
 //        val location = LatLng(myLocation!!.latitude,myLocation.longitude)
 
 
-        binding.textCallPhone.setOnClickListener {
 
-            //            viewModel.drinkInformation.observe(this, Observer { drinkInformation ->
-            val uri = Uri.parse("http://www.kebuke.com/")
-            val intent = Intent(Intent.ACTION_VIEW, uri)
-//            if (intent.resolveActivity(getPackageManager()) != null) {
-//                final ComponentName componentName = intent.resolveActivity(getPackageManager())
-            startActivity(Intent.createChooser(intent, "即將開啟官網，請選擇瀏覽器"))
-//            })
-        }
 
 
         return binding.root
@@ -128,11 +187,10 @@ class RadarFragment : Fragment(), GoogleMap.OnMarkerClickListener, OnMapReadyCal
 //        mmm.getLastKnownLocation(LocationManager.GPS_PROVIDER)
 
 //        myGoogleMap.uiSettings.isZoomControlsEnabled = true
-        myGoogleMap.uiSettings.isMyLocationButtonEnabled = true
+//        myGoogleMap.uiSettings.isMyLocationButtonEnabled = true
 //        myGoogleMap.uiSettings.isIndoorLevelPickerEnabled = true
         myGoogleMap.isMyLocationEnabled = true
-        myGoogleMap.uiSettings.isMapToolbarEnabled = true
-
+        myGoogleMap.uiSettings.isMapToolbarEnabled = false
 //        val myLocation = (activity as MainActivity).getMyLocation()
 //        val location: LatLng? = LatLng(myLocation!!.latitude,myLocation.longitude)
         val location: LatLng? = LatLng(25.039321, 121.567173)
@@ -160,6 +218,9 @@ class RadarFragment : Fragment(), GoogleMap.OnMarkerClickListener, OnMapReadyCal
             viewModel.storeCardClose()
         }
 
+        googleMap.mapType = GoogleMap.MAP_TYPE_TERRAIN
+
+
         viewModel.storeLocation.observe(this, Observer {
             it?.let {
 
@@ -167,7 +228,7 @@ class RadarFragment : Fragment(), GoogleMap.OnMarkerClickListener, OnMapReadyCal
                     LocationServices.getFusedLocationProviderClient((DrinkApplication.context))
                 fusedLocationProviderClient.lastLocation.addOnSuccessListener { myLocation ->
 
-                    val queryRadius = 1
+                    val queryRadius = 3
                     val newLocation = LatLng(myLocation.latitude, myLocation.longitude)
                     val lat = 0.009043717
                     val lon = 0.008983112 / cos(newLocation.latitude)
@@ -190,12 +251,13 @@ class RadarFragment : Fragment(), GoogleMap.OnMarkerClickListener, OnMapReadyCal
                         ) {
                             val addMarker = googleMap.addMarker(
                                 MarkerOptions().position(queryResult)
-                                    .snippet(storeLocation.branchName)
-                                    .title(storeLocation.store.storeName)
+                                    .flat(true)
+//                                    .snippet(storeLocation.branchName)
+//                                    .title(storeLocation.store.storeName)
 //                                .icon(BitmapDescriptorFactory.fromResource(R.drawable.bottom_navigation_home_1))
 //                                .icon(iconDraw)
                             )
-                            addMarker.tag = storeLocation.store.storeId
+                            addMarker.tag = storeLocation
                         }
 
                     }
@@ -212,7 +274,7 @@ class RadarFragment : Fragment(), GoogleMap.OnMarkerClickListener, OnMapReadyCal
                         .fillColor(Color.argb(70, 150, 50, 50))
                         .strokeWidth(3F)
                         .strokeColor(Color.RED)
-                    googleMap.addCircle(circleOptions)
+//                    googleMap.addCircle(circleOptions)
 
                 }
 
@@ -379,6 +441,75 @@ class RadarFragment : Fragment(), GoogleMap.OnMarkerClickListener, OnMapReadyCal
     override fun onDestroy() {
         super.onDestroy()
         mMap.onDestroy()
+    }
+
+    fun callPhone(){
+        val intent = Intent()
+        intent.action = Intent.ACTION_DIAL
+        intent.data = Uri.parse("tel:"+ "123456789")
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+        startActivity(intent)
+    }
+
+    fun getCallPermission(){
+        if (ContextCompat.checkSelfPermission(
+                DrinkApplication.instance,
+                Manifest.permission.CALL_PHONE
+            )
+            != PackageManager.PERMISSION_GRANTED
+        ) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(
+                    (activity as MainActivity),
+                    Manifest.permission.CALL_PHONE
+                )
+            ) {
+                AlertDialog.Builder(context!!)
+                    .setMessage("需要開啟電話，再不給試試看")
+                    .setPositiveButton("前往設定") { _, _ ->
+                        requestPermissions(
+                            arrayOf(
+                                Manifest.permission.CALL_PHONE
+                            ),
+                            MY_PERMISSIONS_CALL
+                        )
+                    }
+                    .setNegativeButton("NO") { _, _ -> }
+                    .show()
+
+            } else {
+                requestPermissions(
+                    arrayOf(
+                        Manifest.permission.CALL_PHONE
+                    ),
+                    MY_PERMISSIONS_CALL
+                )
+            }
+        } else {
+            callPhone()
+        }
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        when (requestCode) {
+            MY_PERMISSIONS_CALL -> {
+                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    for (permissionsItem in permissions) {
+                        Log.d(TAG, "permissions allow : $permissions")
+                    }
+                    callPhone()
+                } else {
+                    for (permissionsItem in permissions) {
+                        Log.d(TAG, "permissions reject : $permissionsItem")
+                    }
+                }
+                return
+            }
+        }
+
     }
 
 

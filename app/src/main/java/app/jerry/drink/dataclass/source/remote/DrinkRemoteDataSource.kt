@@ -563,8 +563,6 @@ object DrinkRemoteDataSource : DrinkDataSource {
                     if (task.isSuccessful) {
 
 
-
-
 //                    continuation.resume(Result.Success(list))
                         continuation.resume(Result.Success(true))
                     } else {
@@ -817,9 +815,9 @@ object DrinkRemoteDataSource : DrinkDataSource {
         suspendCoroutine { continuation ->
             val orders = FirebaseFirestore.getInstance().collection(PATH_Orders)
             val userCurrent = FirebaseAuth.getInstance().currentUser
-            var user = User("","","","")
+            var user = User("", "", "", "")
             userCurrent?.let {
-                user = User(userCurrent.uid, userCurrent.displayName, userCurrent.email,"")
+                user = User(userCurrent.uid, userCurrent.displayName, userCurrent.email, "")
             }
 
             orders
@@ -879,6 +877,38 @@ object DrinkRemoteDataSource : DrinkDataSource {
                     }
                 }
 
+        }
+
+    override suspend fun getStoreComment(store: Store): Result<List<Comment>> =
+        suspendCoroutine { continuation ->
+            FirebaseFirestore.getInstance()
+                .collection(PATH_Comments)
+                .whereEqualTo("store", store)
+                .get()
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        val list = mutableListOf<Comment>()
+                        for (document in task.result!!) {
+//                        Logger.d(document.id + " => " + document.data)
+                            Log.d(TAG, "${document.id} => ${document.data}")
+                            val comment = document.toObject(Comment::class.java)
+                            list.add(comment)
+                        }
+                        Log.d(TAG, "$list")
+                        continuation.resume(Result.Success(list))
+                    } else {
+                        task.exception?.let {
+
+                            Log.w(
+                                "",
+                                "[${this::class.simpleName}] Error getting documents. ${it.message}"
+                            )
+                            continuation.resume(Result.Error(it))
+                            return@addOnCompleteListener
+                        }
+                        continuation.resume(Result.Fail(DrinkApplication.instance.getString(R.string.you_know_nothing)))
+                    }
+                }
         }
 
 }

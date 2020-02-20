@@ -83,10 +83,10 @@
 
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
-                android:layout_height="150dp"
-                map:cardCornerRadius="10dp"
+                android:layout_height="180dp"
+                map:cardCornerRadius="15dp"
                 map:cardElevation="10dp"
-                android:layout_marginBottom="72dp"
+                android:layout_marginBottom="32dp"
                 android:layout_marginHorizontal="16dp"
                 android:clickable="true"
                 android:visibility="@{viewModel.storeCardStatus == true ? View.VISIBLE:View.INVISIBLE}"
@@ -101,15 +101,55 @@
                     map:layout_constraintEnd_toEndOf="parent"
                     map:layout_constraintStart_toStartOf="parent">
 
-                    <TextView
-                        android:id="@+id/text_call_phone"
+                    <ImageView
+                    android:id="@+id/image_call_phone"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_marginEnd="16dp"
+                    android:background="@drawable/shape_circle"
+                    android:padding="6dp"
+                    android:src="@drawable/ic_phone_black_24dp"
+                    android:tint="#37A0C8"
+                    map:layout_constraintBottom_toBottomOf="parent"
+                    map:layout_constraintEnd_toEndOf="parent"
+                    map:layout_constraintTop_toBottomOf="@+id/recycler_store_high_score" />
+
+                    <ImageView
+                        android:id="@+id/image_navigation_to_store"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:background="@drawable/shape_circle"
+                        android:padding="6dp"
+                        android:src="@drawable/ic_navigation_black_24dp"
+                        android:tint="#37A0C8"
+                        android:layout_marginEnd="20dp"
+                        map:layout_constraintBottom_toBottomOf="parent"
+                        map:layout_constraintEnd_toStartOf="@+id/image_call_phone"
+                        map:layout_constraintTop_toBottomOf="@+id/recycler_store_high_score" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recycler_store_high_score"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="123456789"
-                        android:textSize="32dp"
+                        android:layout_height="130dp"
+                        android:orientation="horizontal"
+                        android:layout_marginBottom="8dp"
+                        map:listStoreHighScore="@{viewModel.newDrinkRank}"
+                        map:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        map:layout_constraintEnd_toEndOf="parent"
                         map:layout_constraintStart_toStartOf="parent"
                         map:layout_constraintTop_toTopOf="parent" />
 
+                    <TextView
+                        android:id="@+id/text_store_information"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:fontFamily="@font/noto_sans"
+                        android:text="@{viewModel.displayStoreLocation}"
+                        android:textSize="16dp"
+                        android:layout_marginTop="8dp"
+                        map:layout_constraintStart_toStartOf="parent"
+                        map:layout_constraintTop_toBottomOf="@+id/recycler_store_high_score" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -40,4 +40,6 @@ interface DrinkDataSource {
     suspend fun getUserOrder(): Result<List<Order>>
 
     suspend fun getStoreLocation(): Result<List<StoreLocation>>
+
+    suspend fun getStoreComment(store: Store): Result<List<Comment>>
 }
