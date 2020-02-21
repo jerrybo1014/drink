@@ -1,5 +1,6 @@
 package app.jerry.drink.dataclass.source
 
+import android.graphics.Bitmap
 import android.net.Uri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -15,7 +16,7 @@ interface DrinkDataSource {
 
     suspend fun getStoreMenu(store: Store): Result<List<Drink>>
 
-    suspend fun postComment(comment: Comment, uri: Uri): Result<Boolean>
+    suspend fun postComment(comment: Comment, bitmap: Bitmap): Result<Boolean>
 
     suspend fun createOrder(order: Order): Result<Boolean>
 

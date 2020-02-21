@@ -1,6 +1,7 @@
 package app.jerry.drink.dataclass.source.local
 
 import android.content.Context
+import android.graphics.Bitmap
 import android.net.Uri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -25,7 +26,7 @@ class DrinkLocalDataSource(val context: Context) : DrinkDataSource {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override suspend fun postComment(comment: Comment, uri: Uri): Result<Boolean> {
+    override suspend fun postComment(comment: Comment, bitmap: Bitmap): Result<Boolean> {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 

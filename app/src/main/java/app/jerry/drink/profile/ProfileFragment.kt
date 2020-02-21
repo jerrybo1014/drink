@@ -6,6 +6,8 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.Animation
+import android.view.animation.TranslateAnimation
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -82,6 +84,38 @@ class ProfileFragment : Fragment() {
                 viewModel.onOrderNavigated()
             }
         })
+
+
+        val mShowAction = TranslateAnimation(
+            Animation.RELATIVE_TO_SELF, 0.0f,
+            Animation.RELATIVE_TO_SELF, 0.0f, Animation.RELATIVE_TO_SELF,
+            -1.0f, Animation.RELATIVE_TO_SELF, 0.0f
+        )
+        mShowAction.duration = 500
+
+        val mHiddenAction = TranslateAnimation(
+            Animation.RELATIVE_TO_SELF,
+            0.0f, Animation.RELATIVE_TO_SELF, 0.0f,
+            Animation.RELATIVE_TO_SELF, 0.0f, Animation.RELATIVE_TO_SELF,
+            -1.0f
+        )
+        mHiddenAction.duration = 500
+
+//        viewModel.allCommentStatus.observe(this, Observer {
+//            if (it) {
+//                binding.recyclerProfileAllComments.startAnimation(mShowAction)
+//                binding.recyclerProfileAllComments.visibility = View.VISIBLE
+//            } else {
+//                binding.recyclerProfileAllComments.startAnimation(mHiddenAction)
+//                binding.recyclerProfileAllComments.visibility = View.GONE
+//            }
+//        })
+
+        viewModel.allOrderStatus.observe(this, Observer {
+
+        })
+
+
 
         return binding.root
     }

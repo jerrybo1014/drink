@@ -83,7 +83,7 @@
 
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
-                android:layout_height="180dp"
+                android:layout_height="200dp"
                 map:cardCornerRadius="15dp"
                 map:cardElevation="10dp"
                 android:layout_marginBottom="32dp"
@@ -118,11 +118,11 @@
                         android:id="@+id/image_navigation_to_store"
                         android:layout_width="30dp"
                         android:layout_height="30dp"
+                        android:layout_marginEnd="20dp"
                         android:background="@drawable/shape_circle"
                         android:padding="6dp"
                         android:src="@drawable/ic_navigation_black_24dp"
                         android:tint="#37A0C8"
-                        android:layout_marginEnd="20dp"
                         map:layout_constraintBottom_toBottomOf="parent"
                         map:layout_constraintEnd_toStartOf="@+id/image_call_phone"
                         map:layout_constraintTop_toBottomOf="@+id/recycler_store_high_score" />
@@ -146,10 +146,45 @@
                         android:layout_marginStart="8dp"
                         android:fontFamily="@font/noto_sans"
                         android:text="@{viewModel.displayStoreLocation}"
-                        android:textSize="16dp"
+                        android:textSize="20dp"
                         android:layout_marginTop="8dp"
                         map:layout_constraintStart_toStartOf="parent"
                         map:layout_constraintTop_toBottomOf="@+id/recycler_store_high_score" />
+
+                    <TextView
+                        android:id="@+id/text_star_store"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:text="@{Float.toString(viewModel.displayStoreStore)}"
+                        map:layout_constraintStart_toStartOf="@+id/text_store_information"
+                        map:layout_constraintTop_toBottomOf="@+id/text_store_information" />
+
+                    <RatingBar
+                        android:id="@+id/rating_bar_comment"
+                        style="@style/Widget.AppCompat.RatingBar.Small"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="2dp"
+                        android:layout_marginTop="2dp"
+                        android:isIndicator="true"
+                        android:progressTint="@color/star"
+                        android:rating="@{viewModel.storeComment.size()}"
+                        android:stepSize="1"
+                        map:layout_constraintBottom_toBottomOf="@+id/text_star_store"
+                        map:layout_constraintStart_toEndOf="@+id/text_star_store"
+                        map:layout_constraintTop_toTopOf="@+id/text_star_store" />
+
+
+                    <TextView
+                        android:id="@+id/text_comment_qty_store"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="2dp"
+                        android:text='@{"("+Long.toString(viewModel.storeComment.size())+")"}'
+                        map:layout_constraintBottom_toBottomOf="@+id/rating_bar_comment"
+                        map:layout_constraintStart_toEndOf="@+id/rating_bar_comment"
+                        map:layout_constraintTop_toTopOf="@+id/rating_bar_comment" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 

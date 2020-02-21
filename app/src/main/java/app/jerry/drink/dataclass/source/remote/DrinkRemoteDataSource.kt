@@ -1,5 +1,6 @@
 package app.jerry.drink.dataclass.source.remote
 
+import android.graphics.Bitmap
 import android.icu.util.Calendar
 import android.net.Uri
 import android.util.Log
@@ -17,6 +18,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.UploadTask
+import java.io.ByteArrayOutputStream
 import java.io.File
 import java.text.NumberFormat
 import java.util.*
@@ -342,7 +344,7 @@ object DrinkRemoteDataSource : DrinkDataSource {
 //        }
 
 
-    override suspend fun postComment(comment: Comment, uri: Uri): Result<Boolean> =
+    override suspend fun postComment(comment: Comment, bitmap: Bitmap): Result<Boolean> =
         suspendCoroutine { continuation ->
             val comments = FirebaseFirestore.getInstance().collection(PATH_Comments)
             val userCurrent = FirebaseAuth.getInstance().currentUser
@@ -352,8 +354,13 @@ object DrinkRemoteDataSource : DrinkDataSource {
             comment.id = document.id
             comment.userId = userCurrent!!.uid
 
+
+            val byteArrayOutput = ByteArrayOutputStream()
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 50, byteArrayOutput)
+            val bytes = byteArrayOutput.toByteArray()
+
             val riversRef = storageReference.child("uploads/" + UUID.randomUUID().toString())
-            val uploadTask = riversRef.putFile(uri)
+            val uploadTask = riversRef.putBytes(bytes)
 
             uploadTask.continueWithTask(Continuation<UploadTask.TaskSnapshot, Task<Uri>> { taskImage ->
                 if (!taskImage.isSuccessful) {
@@ -365,9 +372,7 @@ object DrinkRemoteDataSource : DrinkDataSource {
             }).addOnCompleteListener { taskImage ->
                 if (taskImage.isSuccessful) {
 
-//                    addUploadRecordToDb(downloadUri.toString())
                     comment.drinkImage = taskImage.result.toString()
-
                     document
                         .set(comment)
                         .addOnCompleteListener { task ->
@@ -393,8 +398,6 @@ object DrinkRemoteDataSource : DrinkDataSource {
                                 )
                             }
                         }
-
-
                 }
 
             }.addOnFailureListener {

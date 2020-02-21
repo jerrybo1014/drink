@@ -1,5 +1,6 @@
 package app.jerry.drink.post
 
+import android.graphics.Bitmap
 import android.net.Uri
 import android.util.Log
 import android.view.View
@@ -53,6 +54,7 @@ class PostViewModel(private val repository: DrinkRepository) : ViewModel() {
     var postFinished = MutableLiveData<Boolean>()
 
     var imageUri = MutableLiveData<Uri>()
+    var imageBitmap = MutableLiveData<Bitmap>()
 
     var selectedIcePosition = MutableLiveData<Int>()
 
@@ -178,7 +180,7 @@ init {
                 "",
                 System.currentTimeMillis())
 
-            val result = repository.postComment(comment, imageUri.value!!)
+            val result = repository.postComment(comment, imageBitmap.value!!)
 
             when (result) {
                 is Result.Success -> {

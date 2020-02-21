@@ -218,8 +218,11 @@ class RadarFragment : Fragment(), GoogleMap.OnMarkerClickListener, OnMapReadyCal
             viewModel.storeCardClose()
         }
 
-        googleMap.mapType = GoogleMap.MAP_TYPE_TERRAIN
+        googleMap.mapType = GoogleMap.MAP_TYPE_NORMAL
 
+        googleMap.setMapStyle(
+            MapStyleOptions.loadRawResourceStyle(
+                context, R.raw.style_json))
 
         viewModel.storeLocation.observe(this, Observer {
             it?.let {
@@ -252,6 +255,7 @@ class RadarFragment : Fragment(), GoogleMap.OnMarkerClickListener, OnMapReadyCal
                             val addMarker = googleMap.addMarker(
                                 MarkerOptions().position(queryResult)
                                     .flat(true)
+                                    .alpha(0.7f)
 //                                    .snippet(storeLocation.branchName)
 //                                    .title(storeLocation.store.storeName)
 //                                .icon(BitmapDescriptorFactory.fromResource(R.drawable.bottom_navigation_home_1))
