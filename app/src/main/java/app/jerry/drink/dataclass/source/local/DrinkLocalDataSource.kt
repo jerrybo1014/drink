@@ -58,7 +58,7 @@ class DrinkLocalDataSource(val context: Context) : DrinkDataSource {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override suspend fun uploadAvatar(uri: Uri): Result<Boolean> {
+    override suspend fun uploadAvatar(bitmap: Bitmap): Result<Boolean> {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 

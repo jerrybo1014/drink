@@ -665,14 +665,18 @@ object DrinkRemoteDataSource : DrinkDataSource {
     }
 
 
-    override suspend fun uploadAvatar(uri: Uri): Result<Boolean> =
+    override suspend fun uploadAvatar(bitmap: Bitmap): Result<Boolean> =
         suspendCoroutine { continuation ->
             val users = FirebaseFirestore.getInstance().collection(PATH_Users)
             val userCurrent = FirebaseAuth.getInstance().currentUser
             val storageReference = FirebaseStorage.getInstance().reference
 
+            val byteArrayOutput = ByteArrayOutputStream()
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 50, byteArrayOutput)
+            val bytes = byteArrayOutput.toByteArray()
+
             val riversRef = storageReference.child("usersAvatar/" + UUID.randomUUID().toString())
-            val uploadTask = riversRef.putFile(uri)
+            val uploadTask = riversRef.putBytes(bytes)
 
             uploadTask.continueWithTask(Continuation<UploadTask.TaskSnapshot, Task<Uri>> { taskImage ->
                 if (!taskImage.isSuccessful) {

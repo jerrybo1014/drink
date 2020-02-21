@@ -35,6 +35,7 @@ import app.jerry.drink.MainActivity
 import app.jerry.drink.R
 import app.jerry.drink.databinding.FragmentPostBinding
 import app.jerry.drink.ext.PhotoBitmapUtils
+import app.jerry.drink.ext.getBitmap
 import app.jerry.drink.ext.getVmFactory
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -58,6 +59,7 @@ class PostFragment : Fragment() {
     private val PICK_IMAGE_REQUEST = 3
     private val TAKE_PHOTO_REQUEST = 6
     private val MY_PERMISSIONS_CAMERA = 10
+    private val MY_PERMISSIONS_READ_EXTERNAL_STORAGE = 12
     private var filePath: Uri? = null
 //    private val REQUEST_IMAGE_CAPTURE = 1
     private val REQUEST_TAKE_PHOTO = 1
@@ -146,26 +148,30 @@ class PostFragment : Fragment() {
 
         (activity as MainActivity).binding.bottomNavigationView.visibility = View.GONE
 
-
-
         viewModel.imageUri.observe(this, Observer {
             Log.d("jerryTest", "imageUri.observe = $it")
         })
 
 
         binding.buttonImageUpdate.setOnClickListener {
-            launchGallery()
+            loadGallery()
         }
 
         binding.buttonTakePhoto.setOnClickListener {
-//            loadCamera()
-            dispatchTakePictureIntent()
+            loadCamera()
         }
 
         return binding.root
     }
 
+
+
+
+
+
     private var photoURI: Uri? = null
+
+
     private fun dispatchTakePictureIntent() {
         Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
             // Ensure that there's a camera activity to handle the intent
@@ -223,9 +229,48 @@ class PostFragment : Fragment() {
     }
 
 
-    private fun loadCamera() {
+    private fun loadGallery() {
 
-        val loadCameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        if (ContextCompat.checkSelfPermission(
+                DrinkApplication.instance,
+                Manifest.permission.READ_EXTERNAL_STORAGE
+            )
+            != PackageManager.PERMISSION_GRANTED
+        ) {
+
+            if (ActivityCompat.shouldShowRequestPermissionRationale(
+                    (activity as MainActivity),
+                    Manifest.permission.READ_EXTERNAL_STORAGE
+                )
+            ) {
+                AlertDialog.Builder(context!!)
+                    .setMessage("需要開啟相機，再不給試試看")
+                    .setPositiveButton("前往設定") { _, _ ->
+                        requestPermissions(
+                            arrayOf(
+                                Manifest.permission.READ_EXTERNAL_STORAGE
+                            ),
+                            MY_PERMISSIONS_READ_EXTERNAL_STORAGE
+                        )
+                    }
+                    .setNegativeButton("NO") { _, _ -> }
+                    .show()
+
+            } else {
+                requestPermissions(
+                    arrayOf(
+                        Manifest.permission.READ_EXTERNAL_STORAGE
+                    ),
+                    MY_PERMISSIONS_READ_EXTERNAL_STORAGE
+                )
+            }
+        } else {
+            launchGallery()
+        }
+    }
+
+
+    private fun loadCamera() {
 
         if (ContextCompat.checkSelfPermission(
                 DrinkApplication.instance,
@@ -261,7 +306,7 @@ class PostFragment : Fragment() {
                 )
             }
         } else {
-            startActivityForResult(loadCameraIntent, TAKE_PHOTO_REQUEST)
+            dispatchTakePictureIntent()
         }
     }
 
@@ -279,6 +324,20 @@ class PostFragment : Fragment() {
                         Log.d(TAG, "permissions allow : $permissions")
                     }
                     loadCamera()
+                } else {
+                    for (permissionsItem in permissions) {
+                        Log.d(TAG, "permissions reject : $permissionsItem")
+                    }
+                }
+                return
+            }
+
+            MY_PERMISSIONS_READ_EXTERNAL_STORAGE ->{
+                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    for (permissionsItem in permissions) {
+                        Log.d(TAG, "permissions allow : $permissions")
+                    }
+                    launchGallery()
                 } else {
                     for (permissionsItem in permissions) {
                         Log.d(TAG, "permissions reject : $permissionsItem")
@@ -331,90 +390,90 @@ class PostFragment : Fragment() {
         (activity as MainActivity).binding.bottomNavigationView.visibility = View.VISIBLE
     }
 
-
-    /**/
-    fun Uri.getBitmap(width: Int, height: Int): Bitmap? {
-        var rotatedDegree = 0
-        var stream = DrinkApplication.context.contentResolver.openInputStream(this)
-        /** GET IMAGE ORIENTATION */
-        if (stream != null) {
-            val exif = ExifInterface(stream)
-            rotatedDegree = exif.getAttributeInt(
-                ExifInterface.TAG_ORIENTATION,
-                ExifInterface.ORIENTATION_NORMAL
-            ).fromExifInterfaceOrientationToDegree()
-            stream.close()
-        }
-        /** GET IMAGE SIZE */
-        stream = DrinkApplication.context.contentResolver.openInputStream(this)
-        val options = BitmapFactory.Options()
-        options.inJustDecodeBounds = true
-        BitmapFactory.decodeStream(stream, null, options)
-        try {
-            stream?.close()
-        } catch (e: NullPointerException) {
-            e.printStackTrace()
-            return null
-        }
-        // The resulting width and height of the bitmap
-        if (options.outWidth == -1 || options.outHeight == -1) return null
-        var bitmapWidth = options.outWidth.toFloat()
-        var bitmapHeight = options.outHeight.toFloat()
-        if (rotatedDegree == 90) {
-            // Side way -> options.outWidth is actually HEIGHT
-            //          -> options.outHeight is actually WIDTH
-            bitmapWidth = options.outHeight.toFloat()
-            bitmapHeight = options.outWidth.toFloat()
-        }
-        var scale = 1
-        while (true) {
-            if (bitmapWidth / 2 < width || bitmapHeight / 2 < height)
-                break;
-            bitmapWidth /= 2
-            bitmapHeight /= 2
-            scale *= 2
-        }
-        val finalOptions = BitmapFactory.Options()
-        finalOptions.inSampleSize = scale
-        stream = DrinkApplication.context.contentResolver.openInputStream(this)
-        val bitmap = BitmapFactory.decodeStream(stream, null, finalOptions)
-        try {
-            stream?.close()
-        } catch (e: NullPointerException) {
-            e.printStackTrace()
-            return null
-        }
-        val matrix = Matrix()
-        if (rotatedDegree != 0) {
-            matrix.preRotate(rotatedDegree.toFloat())
-        }
-        var bmpWidth = 0
-        try {
-            if (bitmap == null) {
-                return null
-            }
-            bmpWidth = bitmap.width
-        } catch (e: Exception) {
-            return null
-        }
-        var adjustedBitmap = bitmap
-        if (bmpWidth > 0) {
-            adjustedBitmap =
-                Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, matrix, true)
-        }
-        return adjustedBitmap
-    }
-
-
-    fun Int.fromExifInterfaceOrientationToDegree(): Int {
-        return when (this) {
-            ExifInterface.ORIENTATION_ROTATE_90 -> 90
-            ExifInterface.ORIENTATION_ROTATE_180 -> 180
-            ExifInterface.ORIENTATION_ROTATE_270 -> 270
-            else -> 0
-        }
-    }
-    /**/
+//
+//    /**/
+//    fun Uri.getBitmap(width: Int, height: Int): Bitmap? {
+//        var rotatedDegree = 0
+//        var stream = DrinkApplication.context.contentResolver.openInputStream(this)
+//        /** GET IMAGE ORIENTATION */
+//        if (stream != null) {
+//            val exif = ExifInterface(stream)
+//            rotatedDegree = exif.getAttributeInt(
+//                ExifInterface.TAG_ORIENTATION,
+//                ExifInterface.ORIENTATION_NORMAL
+//            ).fromExifInterfaceOrientationToDegree()
+//            stream.close()
+//        }
+//        /** GET IMAGE SIZE */
+//        stream = DrinkApplication.context.contentResolver.openInputStream(this)
+//        val options = BitmapFactory.Options()
+//        options.inJustDecodeBounds = true
+//        BitmapFactory.decodeStream(stream, null, options)
+//        try {
+//            stream?.close()
+//        } catch (e: NullPointerException) {
+//            e.printStackTrace()
+//            return null
+//        }
+//        // The resulting width and height of the bitmap
+//        if (options.outWidth == -1 || options.outHeight == -1) return null
+//        var bitmapWidth = options.outWidth.toFloat()
+//        var bitmapHeight = options.outHeight.toFloat()
+//        if (rotatedDegree == 90) {
+//            // Side way -> options.outWidth is actually HEIGHT
+//            //          -> options.outHeight is actually WIDTH
+//            bitmapWidth = options.outHeight.toFloat()
+//            bitmapHeight = options.outWidth.toFloat()
+//        }
+//        var scale = 1
+//        while (true) {
+//            if (bitmapWidth / 2 < width || bitmapHeight / 2 < height)
+//                break;
+//            bitmapWidth /= 2
+//            bitmapHeight /= 2
+//            scale *= 2
+//        }
+//        val finalOptions = BitmapFactory.Options()
+//        finalOptions.inSampleSize = scale
+//        stream = DrinkApplication.context.contentResolver.openInputStream(this)
+//        val bitmap = BitmapFactory.decodeStream(stream, null, finalOptions)
+//        try {
+//            stream?.close()
+//        } catch (e: NullPointerException) {
+//            e.printStackTrace()
+//            return null
+//        }
+//        val matrix = Matrix()
+//        if (rotatedDegree != 0) {
+//            matrix.preRotate(rotatedDegree.toFloat())
+//        }
+//        var bmpWidth = 0
+//        try {
+//            if (bitmap == null) {
+//                return null
+//            }
+//            bmpWidth = bitmap.width
+//        } catch (e: Exception) {
+//            return null
+//        }
+//        var adjustedBitmap = bitmap
+//        if (bmpWidth > 0) {
+//            adjustedBitmap =
+//                Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, matrix, true)
+//        }
+//        return adjustedBitmap
+//    }
+//
+//
+//    fun Int.fromExifInterfaceOrientationToDegree(): Int {
+//        return when (this) {
+//            ExifInterface.ORIENTATION_ROTATE_90 -> 90
+//            ExifInterface.ORIENTATION_ROTATE_180 -> 180
+//            ExifInterface.ORIENTATION_ROTATE_270 -> 270
+//            else -> 0
+//        }
+//    }
+//    /**/
 
 
 }

@@ -18,6 +18,7 @@ import app.jerry.drink.NavigationDirections
 import app.jerry.drink.R
 import app.jerry.drink.databinding.FragmentOrderBinding
 import app.jerry.drink.databinding.FragmentProfileBinding
+import app.jerry.drink.ext.getBitmap
 import app.jerry.drink.ext.getVmFactory
 import app.jerry.drink.home.HomeViewModel
 import app.jerry.drink.home.NewCommentAdapter
@@ -127,6 +128,11 @@ class ProfileFragment : Fragment() {
         startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_AVATAR_REQUEST)
     }
 
+
+
+
+
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == PICK_AVATAR_REQUEST && resultCode == Activity.RESULT_OK) {
@@ -135,9 +141,9 @@ class ProfileFragment : Fragment() {
             }
 
             filePath = data.data
+            val bitmap = filePath?.getBitmap(binding.profileAvatar.width, binding.profileAvatar.height)
+            viewModel.imageBitmap.value = bitmap
             try {
-//                val bitmap = MediaStore.Images.Media.getBitmap(context!!.contentResolver, filePath)
-//                uploadImage.setImageBitmap(bitmap)
                 Glide.with(this).load(filePath).apply(
                     RequestOptions().circleCrop()
                 ).into(profile_avatar)

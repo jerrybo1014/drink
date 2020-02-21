@@ -32,7 +32,7 @@ interface DrinkRepository {
 
     suspend fun getUserCurrent():  Result<User>
 
-    suspend fun uploadAvatar(uri: Uri): Result<Boolean>
+    suspend fun uploadAvatar(bitmap: Bitmap): Result<Boolean>
 
     suspend fun getDetailComment(drinkDetail: DrinkDetail): Result<List<Comment>>
 

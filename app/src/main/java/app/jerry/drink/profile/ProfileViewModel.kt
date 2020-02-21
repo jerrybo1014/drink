@@ -1,6 +1,7 @@
 package app.jerry.drink.profile
 
 import ProfileFragment
+import android.graphics.Bitmap
 import android.net.Uri
 import android.util.Log
 import android.widget.Toast
@@ -35,6 +36,7 @@ class ProfileViewModel(private val repository: DrinkRepository) : ViewModel() {
         get() = _userOrder
 
     var imageUri = MutableLiveData<Uri>()
+    var imageBitmap = MutableLiveData<Bitmap>()
 
     var allCommentStatus = MutableLiveData<Boolean>().apply {
         value = false
@@ -119,7 +121,7 @@ class ProfileViewModel(private val repository: DrinkRepository) : ViewModel() {
 
             _status.value = LoadApiStatus.LOADING
 
-            val result = repository.uploadAvatar(imageUri.value!!)
+            val result = repository.uploadAvatar(imageBitmap.value!!)
 
             when (result) {
                 is Result.Success -> {
