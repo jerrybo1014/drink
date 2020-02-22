@@ -29,7 +29,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|end"
             android:layout_margin="@dimen/fab_margin"
-            app:backgroundTint="#008581"
+            app:backgroundTint="#64acb7"
             app:borderWidth="0dp"
             android:tint="@color/White"
             app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView"

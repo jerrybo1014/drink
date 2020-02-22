@@ -1,5 +1,7 @@
+import android.Manifest
 import android.app.Activity
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -8,11 +10,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.TranslateAnimation
+import androidx.appcompat.app.AlertDialog
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
+import app.jerry.drink.DrinkApplication
 import app.jerry.drink.MainActivity
 import app.jerry.drink.NavigationDirections
 import app.jerry.drink.R
@@ -40,6 +46,8 @@ class ProfileFragment : Fragment() {
     private val PICK_AVATAR_REQUEST = 5
     private val viewModel by viewModels<ProfileViewModel> { getVmFactory() }
     private var filePath: Uri? = null
+    private var TAG = "jerryTest"
+    private var MY_PERMISSIONS_READ_EXTERNAL_STORAGE = 15
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -65,7 +73,7 @@ class ProfileFragment : Fragment() {
         binding.recyclerProfileAllOrders.adapter = userOrderAdapter
 
         binding.profileAvatarChoose.setOnClickListener {
-            launchGallery()
+            loadGallery()
         }
 
         viewModel.userCurrent.observe(this, Observer {
@@ -129,12 +137,77 @@ class ProfileFragment : Fragment() {
     }
 
 
+    private fun loadGallery() {
+
+        if (ContextCompat.checkSelfPermission(
+                DrinkApplication.instance,
+                Manifest.permission.READ_EXTERNAL_STORAGE
+            )
+            != PackageManager.PERMISSION_GRANTED
+        ) {
+
+            if (ActivityCompat.shouldShowRequestPermissionRationale(
+                    (activity as MainActivity),
+                    Manifest.permission.READ_EXTERNAL_STORAGE
+                )
+            ) {
+                AlertDialog.Builder(context!!)
+                    .setMessage("需要開啟相機，再不給試試看")
+                    .setPositiveButton("前往設定") { _, _ ->
+                        requestPermissions(
+                            arrayOf(
+                                Manifest.permission.READ_EXTERNAL_STORAGE
+                            ),
+                            MY_PERMISSIONS_READ_EXTERNAL_STORAGE
+                        )
+                    }
+                    .setNegativeButton("NO") { _, _ -> }
+                    .show()
+
+            } else {
+                requestPermissions(
+                    arrayOf(
+                        Manifest.permission.READ_EXTERNAL_STORAGE
+                    ),
+                    MY_PERMISSIONS_READ_EXTERNAL_STORAGE
+                )
+            }
+        } else {
+            launchGallery()
+        }
+    }
 
 
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+
+        when (requestCode) {
+            MY_PERMISSIONS_READ_EXTERNAL_STORAGE ->{
+                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    for (permissionsItem in permissions) {
+                        Log.d(TAG, "permissions allow : $permissions")
+                    }
+                    launchGallery()
+                } else {
+                    for (permissionsItem in permissions) {
+                        Log.d(TAG, "permissions reject : $permissionsItem")
+                    }
+                }
+                return
+            }
+        }
+
+    }
 
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
+
+
         if (requestCode == PICK_AVATAR_REQUEST && resultCode == Activity.RESULT_OK) {
             if (data == null || data.data == null) {
                 return

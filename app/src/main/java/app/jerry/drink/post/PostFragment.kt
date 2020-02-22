@@ -55,7 +55,6 @@ import java.util.*
 class PostFragment : Fragment() {
 
     lateinit var binding: FragmentPostBinding
-    private val viewModel by viewModels<PostViewModel> { getVmFactory() }
     private val PICK_IMAGE_REQUEST = 3
     private val TAKE_PHOTO_REQUEST = 6
     private val MY_PERMISSIONS_CAMERA = 10
@@ -64,12 +63,11 @@ class PostFragment : Fragment() {
 //    private val REQUEST_IMAGE_CAPTURE = 1
     private val REQUEST_TAKE_PHOTO = 1
     lateinit var currentPhotoPath: String
-
     private var fileName = ""
     private var TAG = "jerryTest"
+    private var photoURI: Uri? = null
 
-    private var photoPath: String = ""
-
+    private val viewModel by viewModels<PostViewModel> { getVmFactory() }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -163,14 +161,6 @@ class PostFragment : Fragment() {
 
         return binding.root
     }
-
-
-
-
-
-
-    private var photoURI: Uri? = null
-
 
     private fun dispatchTakePictureIntent() {
         Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
@@ -384,96 +374,9 @@ class PostFragment : Fragment() {
 
     }
 
-
     override fun onDestroy() {
         super.onDestroy()
         (activity as MainActivity).binding.bottomNavigationView.visibility = View.VISIBLE
     }
-
-//
-//    /**/
-//    fun Uri.getBitmap(width: Int, height: Int): Bitmap? {
-//        var rotatedDegree = 0
-//        var stream = DrinkApplication.context.contentResolver.openInputStream(this)
-//        /** GET IMAGE ORIENTATION */
-//        if (stream != null) {
-//            val exif = ExifInterface(stream)
-//            rotatedDegree = exif.getAttributeInt(
-//                ExifInterface.TAG_ORIENTATION,
-//                ExifInterface.ORIENTATION_NORMAL
-//            ).fromExifInterfaceOrientationToDegree()
-//            stream.close()
-//        }
-//        /** GET IMAGE SIZE */
-//        stream = DrinkApplication.context.contentResolver.openInputStream(this)
-//        val options = BitmapFactory.Options()
-//        options.inJustDecodeBounds = true
-//        BitmapFactory.decodeStream(stream, null, options)
-//        try {
-//            stream?.close()
-//        } catch (e: NullPointerException) {
-//            e.printStackTrace()
-//            return null
-//        }
-//        // The resulting width and height of the bitmap
-//        if (options.outWidth == -1 || options.outHeight == -1) return null
-//        var bitmapWidth = options.outWidth.toFloat()
-//        var bitmapHeight = options.outHeight.toFloat()
-//        if (rotatedDegree == 90) {
-//            // Side way -> options.outWidth is actually HEIGHT
-//            //          -> options.outHeight is actually WIDTH
-//            bitmapWidth = options.outHeight.toFloat()
-//            bitmapHeight = options.outWidth.toFloat()
-//        }
-//        var scale = 1
-//        while (true) {
-//            if (bitmapWidth / 2 < width || bitmapHeight / 2 < height)
-//                break;
-//            bitmapWidth /= 2
-//            bitmapHeight /= 2
-//            scale *= 2
-//        }
-//        val finalOptions = BitmapFactory.Options()
-//        finalOptions.inSampleSize = scale
-//        stream = DrinkApplication.context.contentResolver.openInputStream(this)
-//        val bitmap = BitmapFactory.decodeStream(stream, null, finalOptions)
-//        try {
-//            stream?.close()
-//        } catch (e: NullPointerException) {
-//            e.printStackTrace()
-//            return null
-//        }
-//        val matrix = Matrix()
-//        if (rotatedDegree != 0) {
-//            matrix.preRotate(rotatedDegree.toFloat())
-//        }
-//        var bmpWidth = 0
-//        try {
-//            if (bitmap == null) {
-//                return null
-//            }
-//            bmpWidth = bitmap.width
-//        } catch (e: Exception) {
-//            return null
-//        }
-//        var adjustedBitmap = bitmap
-//        if (bmpWidth > 0) {
-//            adjustedBitmap =
-//                Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, matrix, true)
-//        }
-//        return adjustedBitmap
-//    }
-//
-//
-//    fun Int.fromExifInterfaceOrientationToDegree(): Int {
-//        return when (this) {
-//            ExifInterface.ORIENTATION_ROTATE_90 -> 90
-//            ExifInterface.ORIENTATION_ROTATE_180 -> 180
-//            ExifInterface.ORIENTATION_ROTATE_270 -> 270
-//            else -> 0
-//        }
-//    }
-//    /**/
-
 
 }
