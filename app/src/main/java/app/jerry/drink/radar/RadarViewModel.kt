@@ -43,6 +43,10 @@ class RadarViewModel(private val repository: DrinkRepository, private val store:
         value = false
     }
 
+    val storeDrinkStatus = MutableLiveData<Boolean>().apply {
+        value = false
+    }
+
     val navigationToDetail = MutableLiveData<DrinkDetail>()
 
     // status: The internal MutableLiveData that stores the status of the most recent request
@@ -220,6 +224,8 @@ init {
         return@map avgStar
     }
 
+
+
     fun selectStore(storeLocation: StoreLocation){
             _selectStore.value = storeLocation
     }
@@ -229,11 +235,20 @@ init {
         storeCardStatus.value?.let {
             storeCardStatus.value = false
         }
+        storeDrinkStatus.value?.let {
+            storeDrinkStatus.value = !it
+        }
     }
 
     fun storeCardOpen(){
         storeCardStatus.value?.let {
             storeCardStatus.value = true
+        }
+    }
+
+    fun storeDrinkStatus(){
+        storeDrinkStatus.value?.let {
+            storeDrinkStatus.value = !it
         }
     }
 

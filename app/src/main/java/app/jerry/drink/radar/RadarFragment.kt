@@ -99,21 +99,27 @@ class RadarFragment : Fragment(), GoogleMap.OnMarkerClickListener, OnMapReadyCal
             callPhone()
         }
 
-        binding.imageNavigationToStore.setOnClickListener{
+        binding.imageNavigationToStore.setOnClickListener {
 
             fusedLocationProviderClient =
                 LocationServices.getFusedLocationProviderClient((activity as MainActivity))
             fusedLocationProviderClient.lastLocation.addOnSuccessListener {
 
-                val intent = Intent(Intent.ACTION_VIEW,
-                    Uri.parse("http://maps.google.com/maps?"
-                            + "saddr="+ it.latitude+ "," + it.longitude
-                            + "&daddr=" + 25.040206+ "," + 121.565254
-                            +"&avoid=highway"
-                            +"&language=zh-CN")
+                val intent = Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse(
+                        "http://maps.google.com/maps?"
+                                + "saddr=" + it.latitude + "," + it.longitude
+                                + "&daddr=" + 25.040206 + "," + 121.565254
+                                + "&avoid=highway"
+                                + "&language=zh-CN"
+                    )
                 )
 
-                intent.setClassName("com.google.android.apps.maps","com.google.android.maps.MapsActivity")
+                intent.setClassName(
+                    "com.google.android.apps.maps",
+                    "com.google.android.maps.MapsActivity"
+                )
                 startActivity(intent)
             }
 
@@ -125,7 +131,11 @@ class RadarFragment : Fragment(), GoogleMap.OnMarkerClickListener, OnMapReadyCal
         val storeHighScoreAdapter = StoreHighScoreAdapter(StoreHighScoreAdapter.OnClickListener {
             viewModel.navigationToDetail(it)
         })
+
+        val radarStoreDrinkAdapter = RadarStoreDrinkAdapter()
+
         binding.recyclerStoreHighScore.adapter = storeHighScoreAdapter
+        binding.recyclerMapDrinkRank.adapter=radarStoreDrinkAdapter
 
         viewModel.navigationToDetail.observe(this, Observer {
             it?.let {
@@ -146,9 +156,6 @@ class RadarFragment : Fragment(), GoogleMap.OnMarkerClickListener, OnMapReadyCal
 //        val googleMap = mMap.getMapAsync(MapsActivity())
 //        val myLocation = (activity as MainActivity).getMyLocation()
 //        val location = LatLng(myLocation!!.latitude,myLocation.longitude)
-
-
-
 
 
         return binding.root
@@ -222,7 +229,9 @@ class RadarFragment : Fragment(), GoogleMap.OnMarkerClickListener, OnMapReadyCal
 
         googleMap.setMapStyle(
             MapStyleOptions.loadRawResourceStyle(
-                context, R.raw.style_json))
+                context, R.raw.style_json
+            )
+        )
 
         viewModel.storeLocation.observe(this, Observer {
             it?.let {
@@ -249,9 +258,9 @@ class RadarFragment : Fragment(), GoogleMap.OnMarkerClickListener, OnMapReadyCal
                             , storeLocation.longitude
                         )
 
-                        if (queryResult.latitude in lowerLat..greaterLat
-                            && queryResult.longitude in lowerLon..greaterLon
-                        ) {
+//                        if (queryResult.latitude in lowerLat..greaterLat
+//                            && queryResult.longitude in lowerLon..greaterLon
+//                        ) {
                             val addMarker = googleMap.addMarker(
                                 MarkerOptions().position(queryResult)
                                     .flat(true)
@@ -262,7 +271,7 @@ class RadarFragment : Fragment(), GoogleMap.OnMarkerClickListener, OnMapReadyCal
 //                                .icon(iconDraw)
                             )
                             addMarker.tag = storeLocation
-                        }
+//                        }
 
                     }
                     googleMap.animateCamera(
@@ -447,15 +456,15 @@ class RadarFragment : Fragment(), GoogleMap.OnMarkerClickListener, OnMapReadyCal
         mMap.onDestroy()
     }
 
-    fun callPhone(){
+    fun callPhone() {
         val intent = Intent()
         intent.action = Intent.ACTION_DIAL
-        intent.data = Uri.parse("tel:"+ "123456789")
+        intent.data = Uri.parse("tel:" + "123456789")
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
         startActivity(intent)
     }
 
-    fun getCallPermission(){
+    fun getCallPermission() {
         if (ContextCompat.checkSelfPermission(
                 DrinkApplication.instance,
                 Manifest.permission.CALL_PHONE
