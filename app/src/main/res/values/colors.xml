@@ -2,7 +2,7 @@
 <resources>
     <color name="colorPrimary">#000000</color>
 <!--    <color name="colorPrimaryDark">#cbba83</color>-->
-    <color name="colorPrimaryDark">#9dd8c8</color>
+    <color name="colorPrimaryDark">#96DEE9</color>
     <color name="colorAccent">#D81B60</color>
     <color name="White">#FFFFFF</color>
 
@@ -14,19 +14,24 @@
     <color name="black_3f3a3a">#3f3a3a</color>
 
 <!--    <color name="myColorPrimaryDark">#cbba83</color>-->
-    <color name="myColorPrimaryDark">#cbba83</color>
+    <color name="myColorPrimaryDark">#C49A6C</color>
     <color name="myColorPrimaryLight">#ffffe5</color>
 <!--    <color name="myColorPrimary">#ffecb3</color>-->
     <color name="myColorPrimary">#9dd8c8</color>
     <color name="bottom_navigation_light">#AAAAAA</color>
-    <color name="bottom_navigation_dark">#5f6caf</color>
+    <color name="bottom_navigation_dark">#64acb7</color>
 
     <color name="item_selected">#cbba83</color>
     <color name="transparent">#66000000</color>
     <color name="all_transparent">#00000000</color>
     <color name="transparent_icon">#33000000</color>
     <color name="star">#FFAA33</color>
-    <color name="home_background">#EAE7E7</color>
+<!--    <color name="home_background">#EAE7E7</color>-->
+    <color name="home_background">#eceff1</color>
+    eceff1
+    <color name="app_button">#64acb7</color>
 
+    <color name="text_color">#3f3a3a</color>
+    <color name="text_color_hint">#646464</color>
 
 </resources>

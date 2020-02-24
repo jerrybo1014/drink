@@ -78,7 +78,7 @@ class SignInFragment : DialogFragment() {
             signInGoogle()
         }
 
-        binding.buttonFbLogin.setOnClickListener {
+        binding.buttonSigninFb.setOnClickListener {
             signInFb()
         }
 

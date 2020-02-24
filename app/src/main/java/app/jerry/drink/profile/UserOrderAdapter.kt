@@ -48,7 +48,7 @@ class UserOrderAdapter(private val onClickListener: UserOrderAdapter.OnClickList
 
 
 
-            binding.textNavigationToOrder.setOnClickListener { onClickListener.onClick(order.id) }
+            binding.layoutNavigationToOrder.setOnClickListener { onClickListener.onClick(order.id) }
             binding.order = order
 
 

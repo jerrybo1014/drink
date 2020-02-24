@@ -94,6 +94,14 @@ class ProfileFragment : Fragment() {
             }
         })
 
+        viewModel.allCommentStatus.observe(this, Observer {
+            binding.foldCommentArrow.isSelected = it
+        })
+
+        viewModel.allOrderStatus.observe(this, Observer {
+            binding.foldOrderArrow.isSelected = it
+        })
+
 
         val mShowAction = TranslateAnimation(
             Animation.RELATIVE_TO_SELF, 0.0f,

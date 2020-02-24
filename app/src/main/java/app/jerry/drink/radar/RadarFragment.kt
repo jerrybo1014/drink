@@ -50,7 +50,6 @@ class RadarFragment : Fragment(), GoogleMap.OnMarkerClickListener, OnMapReadyCal
         marker?.let {
             val storeLocation = (it.tag as StoreLocation)
             val store = storeLocation.store
-
             viewModel.selectStore(storeLocation)
             viewModel.storeCardOpen()
             viewModel.getStoreCommentResult(store)
@@ -93,6 +92,10 @@ class RadarFragment : Fragment(), GoogleMap.OnMarkerClickListener, OnMapReadyCal
         viewModel.selectStore.observe(this, Observer {
 
             Log.d("jerryTest", "selectStore = $it")
+        })
+
+        viewModel.storeDrinkStatus.observe(this, Observer {
+            binding.imageFoldArrow.isSelected = it
         })
 
         binding.imageCallPhone.setOnClickListener {

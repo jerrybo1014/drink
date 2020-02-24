@@ -234,7 +234,7 @@ class PostFragment : Fragment() {
                 )
             ) {
                 AlertDialog.Builder(context!!)
-                    .setMessage("需要開啟相機，再不給試試看")
+                    .setMessage("需要開啟內部存取權限，再不給試試看")
                     .setPositiveButton("前往設定") { _, _ ->
                         requestPermissions(
                             arrayOf(

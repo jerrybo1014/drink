@@ -236,13 +236,16 @@ init {
             storeCardStatus.value = false
         }
         storeDrinkStatus.value?.let {
-            storeDrinkStatus.value = !it
+            storeDrinkStatus.value = false
         }
     }
 
     fun storeCardOpen(){
         storeCardStatus.value?.let {
             storeCardStatus.value = true
+        }
+        storeDrinkStatus.value?.let {
+            storeDrinkStatus.value = false
         }
     }
 

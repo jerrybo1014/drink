@@ -103,10 +103,11 @@
                         android:id="@+id/text_store_information"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="8dp"
+                        android:layout_marginStart="16dp"
                         android:fontFamily="@font/noto_sans"
                         android:text="@{viewModel.displayStoreLocation}"
                         android:textSize="20dp"
+                        android:textColor="@color/text_color"
                         android:layout_marginTop="8dp"
                         map:layout_constraintStart_toStartOf="parent"
                         map:layout_constraintTop_toBottomOf="@+id/recycler_store_high_score" />
@@ -152,16 +153,38 @@
                         map:layout_constraintStart_toEndOf="@+id/rating_bar_comment"
                         map:layout_constraintTop_toTopOf="@+id/rating_bar_comment" />
 
-
-                    <TextView
-                        android:id="@+id/text_map_all_store_drink"
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/layout_map_all_store_drink"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="8dp"
-                        android:text="查看飲品 >"
                         android:onClick="@{() -> viewModel.storeDrinkStatus()}"
                         map:layout_constraintBottom_toBottomOf="@+id/image_call_phone"
-                        map:layout_constraintEnd_toEndOf="parent" />
+                        map:layout_constraintEnd_toEndOf="parent"
+                        android:layout_marginEnd="16dp">
+
+                        <TextView
+                            android:id="@+id/text_map_all_store_drink"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="查看飲品"
+                            android:textColor="@color/text_color_hint"
+                            map:layout_constraintStart_toStartOf="parent"
+                            map:layout_constraintTop_toTopOf="parent" />
+
+                        <ImageView
+                            android:id="@+id/image_fold_arrow"
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:src="@drawable/fold_store_drink"
+                            android:background="@color/White"
+                            android:tint="@color/text_color_hint"
+                            map:layout_constraintBottom_toBottomOf="@+id/text_map_all_store_drink"
+                            map:layout_constraintDimensionRatio="1"
+                            map:layout_constraintStart_toEndOf="@+id/text_map_all_store_drink"
+                            map:layout_constraintTop_toTopOf="@+id/text_map_all_store_drink" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/layout_map_drink_rank"
@@ -187,6 +210,7 @@
                         android:id="@+id/recycler_map_drink_rank"
                         android:layout_width="0dp"
                         android:layout_height="0dp"
+                        android:layout_marginTop="2dp"
                         map:listRadarStoreDrink="@{viewModel.newDrinkRank}"
                         map:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                         map:layout_constraintEnd_toEndOf="parent"

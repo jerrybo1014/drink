@@ -78,8 +78,9 @@
                     android:layout_marginStart="6dp"
                     android:text="@{comment.store.storeName}"
                     style="@style/new_comment"
+                    android:textColor="@color/text_color"
                     android:textSize="14dp"
-                    android:fontFamily="@font/noto_sans_bold"
+                    android:fontFamily="@font/noto_sans"
                     app:layout_constraintBottom_toBottomOf="@+id/image_store_item"
                     app:layout_constraintStart_toEndOf="@+id/image_store_item"
                     app:layout_constraintTop_toTopOf="@+id/image_store_item" />
@@ -103,7 +104,8 @@
                     android:text="@{comment.iceAndSugar()}"
                     style="@style/new_comment"
                     android:textSize="14dp"
-                    android:fontFamily="@font/noto_sans_bold"
+                    android:textColor="@color/text_color"
+                    android:fontFamily="@font/noto_sans"
                     android:layout_marginStart="6dp"
                     app:layout_constraintStart_toEndOf="@+id/view_drink_item"
                     app:layout_constraintTop_toTopOf="@+id/text_ice_sugar" />
@@ -125,7 +127,8 @@
                     android:layout_height="wrap_content"
                     android:text="@{comment.drink.drinkName}"
                     android:textSize="14dp"
-                    android:fontFamily="@font/noto_sans_bold"
+                    android:textColor="@color/text_color"
+                    android:fontFamily="@font/noto_sans"
                     style="@style/new_comment"
                     app:layout_constraintStart_toStartOf="@+id/text_store"
                     app:layout_constraintTop_toTopOf="@+id/text_drink_item"
@@ -133,16 +136,36 @@
 
                     />
 
-                <TextView
-                    android:id="@+id/text_navigation_to_detail"
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/layout_navigation_to_detail"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="查看全部 >"
-                    android:textSize="14dp"
-                    android:fontFamily="@font/noto_sans"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    android:layout_marginEnd="8dp"/>
+                    android:layout_marginEnd="8dp">
+
+                    <TextView
+                        android:id="@+id/text_display_drink_detail"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/noto_sans"
+                        android:text="查看全部"
+                        android:textSize="12dp"
+                        android:textColor="@color/text_color_hint"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <ImageView
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:src="@drawable/ic_keyboard_arrow_right_black_24dp"
+                        app:layout_constraintBottom_toBottomOf="@+id/text_display_drink_detail"
+                        app:layout_constraintDimensionRatio="1"
+                        android:tint="@color/text_color_hint"
+                        app:layout_constraintStart_toEndOf="@+id/text_display_drink_detail"
+                        app:layout_constraintTop_toTopOf="@+id/text_display_drink_detail" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -151,6 +174,7 @@
                     android:layout_marginTop="35dp"
                     android:layout_marginStart="3dp"
                     android:textSize="12dp"
+                    android:textColor="@color/text_color_hint"
                     android:fontFamily="@font/noto_sans"
                     app:layout_constraintStart_toStartOf="@+id/rating_bar_comment"
                     app:layout_constraintTop_toBottomOf="@+id/text_drink_item" />

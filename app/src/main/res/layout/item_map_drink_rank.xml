@@ -18,14 +18,30 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingHorizontal="8dp"
+        android:paddingHorizontal="16dp"
         android:paddingVertical="4dp">
+
+        <ImageView
+            android:id="@+id/image_rank"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@drawable/shape_circle_rank"
+            android:backgroundTint="#64acb7"
+            app:layout_constraintBottom_toBottomOf="@+id/text_map_drink_rank"
+            app:layout_constraintDimensionRatio="1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/text_map_drink_rank" />
 
         <TextView
             android:id="@+id/text_map_drink_rank"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/noto_sans_bold"
+            android:paddingVertical="1dp"
             android:text="@{Long.toString(adapterPosition)}"
+            android:textColor="#FFFFFF"
+            android:textSize="12dp"
+            app:layout_constraintEnd_toEndOf="@+id/image_rank"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -35,17 +51,46 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
             android:text="@{drinkRank.drink.drinkName}"
-            app:layout_constraintStart_toEndOf="@+id/text_map_drink_rank"
+            android:fontFamily="@font/noto_sans"
+            android:textColor="@color/text_color"
+            app:layout_constraintBottom_toBottomOf="@+id/text_map_drink_rank"
+            app:layout_constraintStart_toEndOf="@+id/image_rank"
             app:layout_constraintTop_toTopOf="@+id/text_map_drink_rank" />
+
+        <TextView
+            android:id="@+id/text_drink_score"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:fontFamily="@font/noto_sans"
+            android:text='@{"("+Float.toString(drinkRank.score)}'
+            android:textSize="12dp"
+            android:textColor="@color/text_color_hint"
+            app:layout_constraintBottom_toBottomOf="@+id/text_map_drink_name"
+            app:layout_constraintStart_toEndOf="@+id/text_map_drink_name"
+            app:layout_constraintTop_toTopOf="@+id/text_map_drink_name" />
 
         <ImageView
             android:id="@+id/image_map_star"
-            android:layout_width="16dp"
-            android:layout_height="16dp"
+            android:layout_width="14dp"
+            android:layout_height="14dp"
             android:src="@drawable/ic_star_black_24dp"
             android:tint="@color/star"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintBottom_toBottomOf="@+id/text_drink_score"
+            app:layout_constraintStart_toEndOf="@+id/text_drink_score"
+            app:layout_constraintTop_toTopOf="@+id/text_drink_score" />
+
+        <TextView
+            android:id="@+id/text_drink_score_brackets"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/noto_sans"
+            android:text=')'
+            android:textSize="12dp"
+            android:textColor="@color/text_color_hint"
+            app:layout_constraintBottom_toBottomOf="@+id/text_drink_score"
+            app:layout_constraintStart_toEndOf="@+id/image_map_star"
+            app:layout_constraintTop_toTopOf="@+id/text_drink_score" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

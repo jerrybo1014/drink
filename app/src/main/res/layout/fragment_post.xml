@@ -37,9 +37,9 @@
                     android:id="@+id/image_update"
                     android:layout_width="wrap_content"
                     android:layout_height="200dp"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/placeholder"
-
+                    android:tint="#66999999"
+                    android:backgroundTint="#99FFFFFF"
+                    android:src="@drawable/drink_icon_app"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -117,7 +117,7 @@
                         android:id="@+id/image_drink_post_icon"
                         android:layout_width="18dp"
                         android:layout_height="18dp"
-                        android:src="@drawable/drink_icon"
+                        android:src="@drawable/cocktail"
                         android:tint="@color/myColorPrimaryDark"
                         app:layout_constraintBottom_toBottomOf="@+id/text_drink"
                         app:layout_constraintStart_toStartOf="parent"

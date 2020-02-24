@@ -213,6 +213,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="送出品項"
+                android:letterSpacing="1.0"
                 android:clickable="@{viewModel.status == LoadApiStatus.LOADING ? false:true}"
                 android:textColor='@{viewModel.selectedIce == null || viewModel.selectedSugar == null ? Color.parseColor("#FFFFFF"):Color.parseColor("#000000")}'
                 android:background="@drawable/background_post_button"

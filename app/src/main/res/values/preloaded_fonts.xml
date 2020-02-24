@@ -3,5 +3,6 @@
     <array name="preloaded_fonts" translatable="false">
         <item>@font/noto_sans</item>
         <item>@font/noto_sans_bold</item>
+        <item>@font/roboto_bold_italic</item>
     </array>
 </resources>
