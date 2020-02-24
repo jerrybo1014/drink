@@ -9,15 +9,13 @@ import android.widget.TextView
 import androidx.core.net.toUri
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
-import app.jerry.drink.dataclass.Comment
-import app.jerry.drink.dataclass.DrinkRank
-import app.jerry.drink.dataclass.Order
-import app.jerry.drink.dataclass.OrderList
+import app.jerry.drink.dataclass.*
 import app.jerry.drink.detail.DetailAdapter
 import app.jerry.drink.ext.toDisplayFormat
 import app.jerry.drink.ext.toDisplayTimePass
 import app.jerry.drink.home.HighScoreAdapter
 import app.jerry.drink.home.NewCommentAdapter
+import app.jerry.drink.homesearch.HomeSearchDrinkAdapter
 import app.jerry.drink.network.LoadApiStatus
 import app.jerry.drink.order.OrderListsAdapter
 import app.jerry.drink.post.IceAdapter
@@ -160,6 +158,12 @@ fun bindIce(recyclerView: RecyclerView, data: List<String>?){
 @BindingAdapter("listSugar")
 fun bindSugar(recyclerView: RecyclerView, data: List<String>?){
     val adapter = recyclerView.adapter as SugarAdapter
+    adapter.submitList(data)
+}
+
+@BindingAdapter("listSearchDrink")
+fun bindSearchDrink(recyclerView: RecyclerView, data: List<Drink>?){
+    val adapter = recyclerView.adapter as HomeSearchDrinkAdapter
     adapter.submitList(data)
 }
 

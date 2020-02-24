@@ -1,39 +1,28 @@
-package app.jerry.drink.detail
+package app.jerry.drink.homesearch
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import app.jerry.drink.DrinkApplication
 import app.jerry.drink.R
-import app.jerry.drink.dataclass.*
+import app.jerry.drink.dataclass.Drink
+import app.jerry.drink.dataclass.DrinkDetail
+import app.jerry.drink.dataclass.Result
 import app.jerry.drink.dataclass.source.DrinkRepository
 import app.jerry.drink.network.LoadApiStatus
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
-import java.text.NumberFormat
 
-class DetailViewModel(private val repository: DrinkRepository, val drinkDetail: DrinkDetail) : ViewModel() {
+class HomeSearchViewModel(private val repository: DrinkRepository) : ViewModel() {
 
-    private val _detailComment = MutableLiveData<List<Comment>>()
+    private val _drinkList = MutableLiveData<List<Drink>>()
 
-    val detailComment: LiveData<List<Comment>>
-        get() = _detailComment
+    val drinkList: LiveData<List<Drink>>
+        get() = _drinkList
 
-    private val _navigationToRadar = MutableLiveData<Store>()
-
-    val navigationToRadar: LiveData<Store>
-        get() = _navigationToRadar
-
-    val drinkInformation = MutableLiveData<DrinkDetail>().apply {
-        value = drinkDetail
-    }
-
-    val avgStar = MutableLiveData<String>()
-
-    val star = MutableLiveData<Star>()
+    val navigationToDetail = MutableLiveData<DrinkDetail>()
 
     // status: The internal MutableLiveData that stores the status of the most recent request
     private val _status = MutableLiveData<LoadApiStatus>()
@@ -59,25 +48,22 @@ class DetailViewModel(private val repository: DrinkRepository, val drinkDetail: 
     // the Coroutine runs using the Main (UI) dispatcher
     private val coroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
 
+
     init {
-        getDetailCommentResult()
+        getSearchDrinkResult()
     }
 
-    fun getDetailCommentResult() {
-
+    private fun getSearchDrinkResult(){
         coroutineScope.launch {
 
             _status.value = LoadApiStatus.LOADING
 
-            val result = repository.getDetailComment(drinkDetail)
+            val result = repository.getSearchDrink()
 
-            _detailComment.value = when (result) {
+            _drinkList.value = when (result) {
                 is Result.Success -> {
                     _error.value = null
                     _status.value = LoadApiStatus.DONE
-                    if (result.data.isNotEmpty()){
-                        calculateStar(result.data)
-                    }
                     result.data
                 }
                 is Result.Fail -> {
@@ -101,47 +87,14 @@ class DetailViewModel(private val repository: DrinkRepository, val drinkDetail: 
 
     }
 
-    fun calculateStar (detailComment: List<Comment>) {
-        var totalStar: Float = 0F
-        var oneStar = 0
-        var twoStar = 0
-        var threeStar = 0
-        var fourStar = 0
-        var fiveStar = 0
 
-        for (star in detailComment){
-            val starNow = star.star.toFloat()
-            totalStar += starNow
-            when (star.star){
-                1 -> oneStar +=1
-                2 -> twoStar +=1
-                3 -> threeStar +=1
-                4 -> fourStar +=1
-                5 -> fiveStar +=1
-            }
-        }
-        val avg: Float = totalStar / detailComment.size
-        val numberFormat = NumberFormat.getNumberInstance()
-        numberFormat.maximumFractionDigits = 1
-        numberFormat.minimumFractionDigits = 1
-        val avgStar = numberFormat.format(avg).toFloat()
-        star.value = Star(oneStar,
-            twoStar,
-            threeStar,
-            fourStar,
-            fiveStar,
-            avgStar,
-            detailComment.size)
 
-        Log.d("jerryTest","displayAvgStar = ${numberFormat.format(avg)}")
+    fun navigationToDetail(drinkDetail: DrinkDetail) {
+        navigationToDetail.value = drinkDetail
     }
 
-    fun navigationToRadar(store: Store){
-        _navigationToRadar.value = store
-    }
-
-    fun navigationToRadarfinished(){
-        _navigationToRadar.value = null
+    fun onDetailNavigated() {
+        navigationToDetail.value = null
     }
 
 }

@@ -9,6 +9,8 @@
             name="viewModel"
             type="app.jerry.drink.detail.DetailViewModel" />
 
+        <import type="android.view.View"/>
+
     </data>
 
 
@@ -327,6 +329,19 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/text_all_comment"
             app:listDetailComment="@{viewModel.detailComment}" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="此飲品目前尚無評論..."
+            android:textSize="16dp"
+            android:fontFamily="@font/noto_sans_bold"
+            android:textColor="@color/text_color"
+            android:visibility="@{viewModel.detailComment.size() == 0 ? View.VISIBLE:View.GONE}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/constraintLayout2" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

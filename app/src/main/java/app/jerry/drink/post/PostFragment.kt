@@ -133,8 +133,8 @@ class PostFragment : Fragment() {
 
         viewModel.selectedStore.observe(this, Observer {
             viewModel.getStoreMenuResult(it)
+//            viewModel.addStoreToDrinkResult(it)
         })
-
 
         viewModel.allStoreMenu.observe(this, Observer {
             binding.spinnerDrink.adapter = PostDrinkSpinnerAdater(it)

@@ -40,7 +40,6 @@ object DrinkRemoteDataSource : DrinkDataSource {
     override suspend fun addStoreToDrink(store: Store): Result<Boolean> = suspendCoroutine { continuation ->
         val stores = FirebaseFirestore.getInstance().collection(PATH_Stores)
 
-
         stores
             .document(store.storeId)
             .collection("menu")
@@ -50,13 +49,17 @@ object DrinkRemoteDataSource : DrinkDataSource {
 
                     for (drink in task.result!!){
 
-
+                        val newDrink = drink.toObject(Drink::class.java)
+                        newDrink.store = store
 
                         stores
                             .document(store.storeId)
                             .collection("menu")
                             .document(drink.id)
-
+                            .set(newDrink)
+                            .addOnSuccessListener {
+                                Log.d(TAG,"addOnSuccessListener , newDrink = $newDrink")
+                            }
 
                     }
 
@@ -394,7 +397,6 @@ object DrinkRemoteDataSource : DrinkDataSource {
 
             comment.id = document.id
             comment.userId = userCurrent!!.uid
-
 
             val byteArrayOutput = ByteArrayOutputStream()
             bitmap.compress(Bitmap.CompressFormat.JPEG, 50, byteArrayOutput)
@@ -779,7 +781,14 @@ object DrinkRemoteDataSource : DrinkDataSource {
                 .get()
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
+                        if (task.result!!.isEmpty)
+                        Log.d(TAG, "getDetailComment addOnCompleteListener = ${task.result!!.isEmpty}")
                         val list = mutableListOf<Comment>()
+
+                        if (task.result!!.isEmpty){
+                            continuation.resume(Result.Success(list))
+                        }
+
                         for (document in task.result!!) {
 //                        Log.d(TAG, "${document.id} => ${document.data}")
                             val detailComment = document.toObject(Comment::class.java)
@@ -801,13 +810,14 @@ object DrinkRemoteDataSource : DrinkDataSource {
                                     }
 
                                 }.addOnFailureListener {
-
+                                    Log.d(TAG, "getDetailComment addOnFailureListener")
                                     Log.d(TAG, "addOnFailureListener")
                                     val detailComment = document.toObject(Comment::class.java)
                                     detailComment.user = user
                                     list.add(detailComment)
                                 }
                         }
+
 
 
                     } else {
@@ -820,6 +830,7 @@ object DrinkRemoteDataSource : DrinkDataSource {
                             continuation.resume(Result.Error(it))
                             return@addOnCompleteListener
                         }
+                        Log.d(TAG, "getDetailComment else")
                         continuation.resume(Result.Fail(DrinkApplication.instance.getString(R.string.you_know_nothing)))
                     }
                 }
@@ -941,6 +952,35 @@ object DrinkRemoteDataSource : DrinkDataSource {
                             Log.d(TAG, "${document.id} => ${document.data}")
                             val comment = document.toObject(Comment::class.java)
                             list.add(comment)
+                        }
+                        Log.d(TAG, "$list")
+                        continuation.resume(Result.Success(list))
+                    } else {
+                        task.exception?.let {
+
+                            Log.w(
+                                "",
+                                "[${this::class.simpleName}] Error getting documents. ${it.message}"
+                            )
+                            continuation.resume(Result.Error(it))
+                            return@addOnCompleteListener
+                        }
+                        continuation.resume(Result.Fail(DrinkApplication.instance.getString(R.string.you_know_nothing)))
+                    }
+                }
+        }
+
+    override suspend fun getSearchDrink(): Result<List<Drink>> =
+        suspendCoroutine { continuation ->
+            FirebaseFirestore.getInstance()
+                .collectionGroup("menu")
+                .get()
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        val list = mutableListOf<Drink>()
+                        for (document in task.result!!) {
+                            val drink = document.toObject(Drink::class.java)
+                            list.add(drink)
                         }
                         Log.d(TAG, "$list")
                         continuation.resume(Result.Success(list))

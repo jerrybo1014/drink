@@ -45,4 +45,6 @@ interface DrinkDataSource {
     suspend fun getStoreLocation(): Result<List<StoreLocation>>
 
     suspend fun getStoreComment(store: Store): Result<List<Comment>>
+
+    suspend fun getSearchDrink(): Result<List<Drink>>
 }

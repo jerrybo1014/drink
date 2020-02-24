@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+        <variable
+            name="drink"
+            type="app.jerry.drink.dataclass.Drink" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingVertical="8dp"
+        android:layout_marginStart="16dp">
+
+        <TextView
+            android:id="@+id/text_search_drink_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{drink.drinkName}"
+            android:textSize="20dp"
+            android:fontFamily="@font/noto_sans"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{drink.store.storeName}"
+            android:textSize="20dp"
+            android:layout_marginStart="16dp"
+            android:fontFamily="@font/noto_sans"
+            app:layout_constraintStart_toEndOf="@+id/text_search_drink_name"
+            app:layout_constraintTop_toTopOf="@+id/text_search_drink_name" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -62,7 +62,7 @@
 
     <fragment
         android:id="@+id/homeSearchFragment"
-        android:name="app.jerry.drink.HomeSearchFragment"
+        android:name="app.jerry.drink.homesearch.HomeSearchFragment"
         android:label="HomeSearchFragment" />
     <fragment
         android:id="@+id/postFragment"
