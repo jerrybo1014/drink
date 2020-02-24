@@ -99,7 +99,9 @@ class RadarFragment : Fragment(), GoogleMap.OnMarkerClickListener, OnMapReadyCal
         })
 
         binding.imageCallPhone.setOnClickListener {
-            callPhone()
+            viewModel.selectStore.value?.let {
+                callPhone(it.phone)
+            }
         }
 
         binding.imageNavigationToStore.setOnClickListener {
@@ -108,12 +110,17 @@ class RadarFragment : Fragment(), GoogleMap.OnMarkerClickListener, OnMapReadyCal
                 LocationServices.getFusedLocationProviderClient((activity as MainActivity))
             fusedLocationProviderClient.lastLocation.addOnSuccessListener {
 
+
+                val storeLnt = viewModel.selectStore.value?.latitude
+                val storeLon = viewModel.selectStore.value?.longitude
+
+
                 val intent = Intent(
                     Intent.ACTION_VIEW,
                     Uri.parse(
                         "http://maps.google.com/maps?"
                                 + "saddr=" + it.latitude + "," + it.longitude
-                                + "&daddr=" + 25.040206 + "," + 121.565254
+                                + "&daddr=" + storeLnt + "," + storeLon
                                 + "&avoid=highway"
                                 + "&language=zh-CN"
                     )
@@ -459,72 +466,72 @@ class RadarFragment : Fragment(), GoogleMap.OnMarkerClickListener, OnMapReadyCal
         mMap.onDestroy()
     }
 
-    fun callPhone() {
+    fun callPhone(phone: String) {
         val intent = Intent()
         intent.action = Intent.ACTION_DIAL
-        intent.data = Uri.parse("tel:" + "123456789")
+        intent.data = Uri.parse("tel:$phone")
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
         startActivity(intent)
     }
 
-    fun getCallPermission() {
-        if (ContextCompat.checkSelfPermission(
-                DrinkApplication.instance,
-                Manifest.permission.CALL_PHONE
-            )
-            != PackageManager.PERMISSION_GRANTED
-        ) {
-            if (ActivityCompat.shouldShowRequestPermissionRationale(
-                    (activity as MainActivity),
-                    Manifest.permission.CALL_PHONE
-                )
-            ) {
-                AlertDialog.Builder(context!!)
-                    .setMessage("需要開啟電話，再不給試試看")
-                    .setPositiveButton("前往設定") { _, _ ->
-                        requestPermissions(
-                            arrayOf(
-                                Manifest.permission.CALL_PHONE
-                            ),
-                            MY_PERMISSIONS_CALL
-                        )
-                    }
-                    .setNegativeButton("NO") { _, _ -> }
-                    .show()
-
-            } else {
-                requestPermissions(
-                    arrayOf(
-                        Manifest.permission.CALL_PHONE
-                    ),
-                    MY_PERMISSIONS_CALL
-                )
-            }
-        } else {
-            callPhone()
-        }
-    }
+//    fun getCallPermission() {
+//        if (ContextCompat.checkSelfPermission(
+//                DrinkApplication.instance,
+//                Manifest.permission.CALL_PHONE
+//            )
+//            != PackageManager.PERMISSION_GRANTED
+//        ) {
+//            if (ActivityCompat.shouldShowRequestPermissionRationale(
+//                    (activity as MainActivity),
+//                    Manifest.permission.CALL_PHONE
+//                )
+//            ) {
+//                AlertDialog.Builder(context!!)
+//                    .setMessage("需要開啟電話，再不給試試看")
+//                    .setPositiveButton("前往設定") { _, _ ->
+//                        requestPermissions(
+//                            arrayOf(
+//                                Manifest.permission.CALL_PHONE
+//                            ),
+//                            MY_PERMISSIONS_CALL
+//                        )
+//                    }
+//                    .setNegativeButton("NO") { _, _ -> }
+//                    .show()
+//
+//            } else {
+//                requestPermissions(
+//                    arrayOf(
+//                        Manifest.permission.CALL_PHONE
+//                    ),
+//                    MY_PERMISSIONS_CALL
+//                )
+//            }
+//        } else {
+//            callPhone()
+//        }
+//    }
 
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
         grantResults: IntArray
     ) {
-        when (requestCode) {
-            MY_PERMISSIONS_CALL -> {
-                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    for (permissionsItem in permissions) {
-                        Log.d(TAG, "permissions allow : $permissions")
-                    }
-                    callPhone()
-                } else {
-                    for (permissionsItem in permissions) {
-                        Log.d(TAG, "permissions reject : $permissionsItem")
-                    }
-                }
-                return
-            }
-        }
+//        when (requestCode) {
+//            MY_PERMISSIONS_CALL -> {
+//                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+//                    for (permissionsItem in permissions) {
+//                        Log.d(TAG, "permissions allow : $permissions")
+//                    }
+//                    callPhone()
+//                } else {
+//                    for (permissionsItem in permissions) {
+//                        Log.d(TAG, "permissions reject : $permissionsItem")
+//                    }
+//                }
+//                return
+//            }
+//        }
 
     }
 

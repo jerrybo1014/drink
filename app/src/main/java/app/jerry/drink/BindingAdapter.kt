@@ -4,6 +4,7 @@ import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.ProgressBar
+import android.widget.Spinner
 import android.widget.TextView
 import androidx.core.net.toUri
 import androidx.databinding.BindingAdapter
@@ -20,6 +21,7 @@ import app.jerry.drink.home.NewCommentAdapter
 import app.jerry.drink.network.LoadApiStatus
 import app.jerry.drink.order.OrderListsAdapter
 import app.jerry.drink.post.IceAdapter
+import app.jerry.drink.post.PostStoreSpinnerAdapter
 import app.jerry.drink.post.SugarAdapter
 import app.jerry.drink.profile.UserCommentAdapter
 import app.jerry.drink.profile.UserOrderAdapter
@@ -160,3 +162,10 @@ fun bindSugar(recyclerView: RecyclerView, data: List<String>?){
     val adapter = recyclerView.adapter as SugarAdapter
     adapter.submitList(data)
 }
+
+//@BindingAdapter("listPostStore")
+//fun bindPostStore(spinner: Spinner, data: A<String>?){
+////    val adapter = spinner.adapter as PostStoreSpinnerAdapter
+//    spinner.adapter = PostStoreSpinnerAdapter(data)
+//
+//}

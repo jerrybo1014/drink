@@ -8,6 +8,8 @@ import app.jerry.drink.dataclass.*
 
 interface DrinkDataSource {
 
+    suspend fun addStoreToDrink(store: Store): Result<Boolean>
+
     suspend fun checkUser(): Result<Boolean>
 
     suspend fun getNewComment(): Result<List<Comment>>

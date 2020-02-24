@@ -28,8 +28,13 @@
     <color name="star">#FFAA33</color>
 <!--    <color name="home_background">#EAE7E7</color>-->
     <color name="home_background">#eceff1</color>
-    eceff1
-    <color name="app_button">#64acb7</color>
+<!--    eceff1-->
+    <color name="app_button">#63abb6</color>
+
+    <!--  #c8ffff   -->
+    <!--  #95dde8   -->
+    <!--  #63abb6   -->
+    <!--  #307c86   -->
 
     <color name="text_color">#3f3a3a</color>
     <color name="text_color_hint">#646464</color>

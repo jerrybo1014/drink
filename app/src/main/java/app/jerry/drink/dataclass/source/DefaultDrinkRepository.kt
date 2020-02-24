@@ -10,6 +10,10 @@ class DefaultDrinkRepository(private val remoteDataSource: DrinkDataSource,
                                  private val localDataSource: DrinkDataSource
 ) : DrinkRepository {
 
+    override suspend fun addStoreToDrink(store: Store): Result<Boolean> {
+        return remoteDataSource.addStoreToDrink(store)
+    }
+
     override suspend fun checkUser(): Result<Boolean> {
         return remoteDataSource.checkUser()
     }

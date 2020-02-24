@@ -8,5 +8,6 @@ data class StoreLocation(
     val store: Store = Store("",""),
     val branchName: String ="",
     val latitude: Double = 0.0,
-    val longitude: Double = 0.0
+    val longitude: Double = 0.0,
+    val phone: String = "123"
 ): Parcelable

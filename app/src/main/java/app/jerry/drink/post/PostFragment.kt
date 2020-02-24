@@ -81,34 +81,34 @@ class PostFragment : Fragment() {
         viewModel.getAllStoreResult()
 
 
-        binding.spinnerStore.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onNothingSelected(parent: AdapterView<*>?) {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-            }
+//        binding.spinnerStore.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+//            override fun onNothingSelected(parent: AdapterView<*>?) {
+//                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+//            }
+//
+//            override fun onItemSelected(
+//                parent: AdapterView<*>?,
+//                view: View?,
+//                position: Int,
+//                id: Long
+//            ) {
+//                viewModel.selectedStore(position)
+//            }
+//        }
 
-            override fun onItemSelected(
-                parent: AdapterView<*>?,
-                view: View?,
-                position: Int,
-                id: Long
-            ) {
-                viewModel.selectedStore(position)
-            }
-        }
-
-        binding.spinnerDrink.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onNothingSelected(parent: AdapterView<*>?) {
-            }
-
-            override fun onItemSelected(
-                parent: AdapterView<*>?,
-                view: View?,
-                position: Int,
-                id: Long
-            ) {
-                viewModel.selectedDrink(position)
-            }
-        }
+//        binding.spinnerDrink.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+//            override fun onNothingSelected(parent: AdapterView<*>?) {
+//            }
+//
+//            override fun onItemSelected(
+//                parent: AdapterView<*>?,
+//                view: View?,
+//                position: Int,
+//                id: Long
+//            ) {
+//                viewModel.selectedDrink(position)
+//            }
+//        }
 
 
         val listIce = listOf<String>("正常冰", "去冰", "微冰", "常溫")
@@ -122,20 +122,27 @@ class PostFragment : Fragment() {
         sugarAdapter.submitList(listSugar)
         iceAdapter.submitList(listIce)
 
-
         binding.ratingBarComment.setOnRatingBarChangeListener { ratingBar, fl, b ->
             viewModel.commentStar.value = fl.toInt()
         }
 
+        viewModel.allStore.observe(this, Observer {
 
+            binding.spinnerStore.adapter = PostStoreSpinnerAdapter(it)
+        })
 
         viewModel.selectedStore.observe(this, Observer {
-            Log.d("selectedStore", it.storeName)
             viewModel.getStoreMenuResult(it)
         })
+
+
         viewModel.allStoreMenu.observe(this, Observer {
-            viewModel.selectedDrink(0)
+            binding.spinnerDrink.adapter = PostDrinkSpinnerAdater(it)
             Log.d("allStoreMenu", "$it")
+        })
+
+        viewModel.selectedDrink.observe(this, Observer {
+            Log.d("jerryTest", "selectedDrink = $it")
         })
 
         viewModel.postFinished.observe(this, Observer {
@@ -348,7 +355,10 @@ class PostFragment : Fragment() {
             filePath = data.data
 
             val bitmap = filePath?.getBitmap(binding.imageUpdate.width, binding.imageUpdate.height)
-            binding.imageUpdate.setImageBitmap(bitmap)
+//            binding.imageUpdate.setImageBitmap(bitmap)
+                            Glide.with(this).load(filePath)
+                                .apply(RequestOptions().centerCrop())
+                                .into(image_update)
             viewModel.imageBitmap.value = bitmap
 //            try {
 ////                val bitmap = MediaStore.Images.Media.getBitmap(context!!.contentResolver, filePath)
@@ -368,7 +378,10 @@ class PostFragment : Fragment() {
             }
 
             val bitmap = photoURI?.getBitmap(binding.imageUpdate.width, binding.imageUpdate.height)
-            binding.imageUpdate.setImageBitmap(bitmap)
+//            binding.imageUpdate.setImageBitmap(bitmap)
+            Glide.with(this).load(photoURI)
+                .apply(RequestOptions().centerCrop())
+                .into(image_update)
             viewModel.imageBitmap.value = bitmap
         }
 

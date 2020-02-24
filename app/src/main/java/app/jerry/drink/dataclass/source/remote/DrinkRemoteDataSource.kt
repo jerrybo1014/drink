@@ -22,6 +22,7 @@ import java.io.ByteArrayOutputStream
 import java.io.File
 import java.text.NumberFormat
 import java.util.*
+import kotlin.collections.HashMap
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
@@ -34,6 +35,46 @@ object DrinkRemoteDataSource : DrinkDataSource {
     private const val PATH_Menu = "menu"
     private const val TAG = "jerryTest"
     private const val KEY_CREATED_TIME = "createdTime"
+
+
+    override suspend fun addStoreToDrink(store: Store): Result<Boolean> = suspendCoroutine { continuation ->
+        val stores = FirebaseFirestore.getInstance().collection(PATH_Stores)
+
+
+        stores
+            .document(store.storeId)
+            .collection("menu")
+            .get()
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+
+                    for (drink in task.result!!){
+
+
+
+                        stores
+                            .document(store.storeId)
+                            .collection("menu")
+                            .document(drink.id)
+
+
+                    }
+
+                    continuation.resume(Result.Success(true))
+                } else {
+                    task.exception?.let {
+                        Log.d("checkUser", "Error")
+                        Log.w(
+                            "",
+                            "[${this::class.simpleName}] Error getting documents. ${it.message}"
+                        )
+                        continuation.resume(Result.Error(it))
+                        return@addOnCompleteListener
+                    }
+                    continuation.resume(Result.Fail(DrinkApplication.instance.getString(R.string.you_know_nothing)))
+                }
+            }
+    }
 
     override suspend fun checkUser(): Result<Boolean> = suspendCoroutine { continuation ->
         val users = FirebaseFirestore.getInstance().collection(PATH_Users)

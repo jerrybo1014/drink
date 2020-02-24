@@ -28,11 +28,27 @@ class PostViewModel(private val repository: DrinkRepository) : ViewModel() {
     val allStore: LiveData<List<Store>>
         get() = _allStore
 
-    // _selectedStore
-    private val _selectedStore = MutableLiveData<Store>()
+    val selectedStorePosition = MutableLiveData<Int>()
 
-    val selectedStore: LiveData<Store>
-        get() = _selectedStore
+    val selectedStore: LiveData<Store> = Transformations.map(selectedStorePosition) {
+        allStore.value?.let {allStore ->
+            allStore[it]
+        }
+    }
+
+    val selectedDrinkPosition = MutableLiveData<Int>()
+
+    val selectedDrink: LiveData<Drink> = Transformations.map(selectedDrinkPosition) {
+        allStoreMenu.value?.let {allStoreMenu ->
+            allStoreMenu[it]
+        }
+    }
+
+    // _selectedStore
+//    private val _selectedStore = MutableLiveData<Store>()
+//
+//    val selectedStore: LiveData<Store>
+//        get() = _selectedStore
 
     // _allStoreMenu
     private val _allStoreMenu = MutableLiveData<List<Drink>>()
@@ -41,16 +57,18 @@ class PostViewModel(private val repository: DrinkRepository) : ViewModel() {
         get() = _allStoreMenu
 
     // _selectedDrink
-    private val _selectedDrink = MutableLiveData<Drink>()
-
-    val selectedDrink: LiveData<Drink>
-        get() = _selectedDrink
+//    private val _selectedDrink = MutableLiveData<Drink>()
+//
+//    val selectedDrink: LiveData<Drink>
+//        get() = _selectedDrink
 
 
     var selectedIce = MutableLiveData<String>()
     var selectedSugar = MutableLiveData<String>()
     val editComment = MutableLiveData<String>()
-    var commentStar = MutableLiveData<Int>()
+    var commentStar = MutableLiveData<Int>().apply {
+        value = 1
+    }
     var postFinished = MutableLiveData<Boolean>()
 
     var imageUri = MutableLiveData<Uri>()
@@ -88,10 +106,10 @@ class PostViewModel(private val repository: DrinkRepository) : ViewModel() {
     // the Coroutine runs using the Main (UI) dispatcher
     private val coroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
 
-init {
-    editComment.value = ""
-    postFinished.value = false
-}
+    init {
+        editComment.value = ""
+        postFinished.value = false
+    }
 
     fun getAllStoreResult() {
 
@@ -169,7 +187,7 @@ init {
 
             val comment = Comment(
                 "",
-                User("","","",""),
+                User("", "", "", ""),
                 "",
                 selectedStore.value!!,
                 selectedDrink.value!!,
@@ -178,7 +196,8 @@ init {
                 commentStar.value!!,
                 editComment.value!!,
                 "",
-                System.currentTimeMillis())
+                System.currentTimeMillis()
+            )
 
             val result = repository.postComment(comment, imageBitmap.value!!)
 
@@ -186,7 +205,7 @@ init {
                 is Result.Success -> {
                     _error.value = null
                     _postStatus.value = LoadApiStatus.DONE
-                    Log.d("postComentResult","$result.data")
+                    Log.d("postComentResult", "$result.data")
                     postFinished.value = true
                     Toast.makeText(DrinkApplication.context, "成功送出", Toast.LENGTH_SHORT).show()
                     result.data
@@ -213,23 +232,22 @@ init {
     }
 
 
-    fun selectedStore(position: Int) {
-        _allStore.value?.let {
-            _selectedStore.value = it[position]
-        }
-    }
+//    fun selectedStore(position: Int) {
+//        _allStore.value?.let {
+//            _selectedStore.value = it[position]
+//        }
+//    }
 
-    fun selectedDrink(position: Int) {
-        _allStoreMenu.value?.let {
-            _selectedDrink.value= it[position]
-            Log.d("_selectedDrink","${_selectedDrink.value}")
-        }
-    }
-
+//    fun selectedDrink(position: Int) {
+//        _allStoreMenu.value?.let {
+//            _selectedDrink.value = it[position]
+//            Log.d("_selectedDrink", "${_selectedDrink.value}")
+//        }
+//    }
 
 
     fun selectIce(string: String, position: Int) {
-        Log.d("selectIce","$position")
+        Log.d("selectIce", "$position")
         selectedIce.value = string
         selectedIcePosition.value = position
     }
@@ -246,7 +264,7 @@ init {
         selectedIceView?.isSelected = true
         (selectedIceView as? TextView)?.setTextColor(DrinkApplication.context.resources.getColor(R.color.White))
         selectedIce.value = string
-        Log.d("selectIceStatus",string)
+        Log.d("selectIceStatus", string)
     }
 
     fun selectSugarStatus(view: View, string: String) {
@@ -256,12 +274,12 @@ init {
         selectedSugarView?.isSelected = true
         (selectedSugarView as? TextView)?.setTextColor(DrinkApplication.context.resources.getColor(R.color.White))
         selectedSugar.value = string
-        Log.d("selectIceStatus",string)
+        Log.d("selectIceStatus", string)
     }
 
     val displayAllStore = Transformations.map(allStore) {
         val storeList = mutableListOf<String>()
-        for (store in it){
+        for (store in it) {
             storeList.add(store.storeName)
         }
         storeList
@@ -269,11 +287,10 @@ init {
 
     val displayStoreDrink = Transformations.map(allStoreMenu) {
         val drinkList = mutableListOf<String>()
-        for (drink in it){
+        for (drink in it) {
             drinkList.add(drink.drinkName)
         }
         drinkList
     }
-
 
 }
