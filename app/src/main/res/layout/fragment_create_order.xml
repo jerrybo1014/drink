@@ -150,9 +150,8 @@
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
             android:textSize="16dp"
+            android:textColor="#FFFFFF"
             android:fontFamily="@font/noto_sans"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
             android:layout_marginTop="25dp"
             android:enabled='@{viewModel.selectTime == "" ? false:true}'
             android:onClick="@{() -> viewModel.createOrderResult()}"

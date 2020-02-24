@@ -88,4 +88,10 @@
         <item name="android:textSize">12dp</item>
     </style>
 
+    <style name="Widget.AppCompat.SearchView_Order" parent="Widget.AppCompat.SearchView">
+        <item name="fontFamily">@font/noto_sans</item>
+        <item name="android:textSize">16dp</item>
+        <item name="android:background">#00FFFFFF</item>
+    </style>
+
 </resources>

@@ -23,9 +23,13 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.Observer
+import androidx.navigation.NavController
+import androidx.navigation.NavDestination
 import app.jerry.drink.dataclass.Store
 import app.jerry.drink.ext.getVmFactory
 import app.jerry.drink.signin.SignInFragment
+import app.jerry.drink.util.CurrentFragmentType
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.IdpResponse
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -58,6 +62,9 @@ class MainActivity : AppCompatActivity() {
             binding.fab.hide()
         }
 
+        binding.viewModel = viewModel
+        binding.lifecycleOwner = this
+
 
         val intent = intent
         if (null != intent.extras) {
@@ -70,6 +77,9 @@ class MainActivity : AppCompatActivity() {
 
             }
         }
+
+        setupNavController()
+
 
 //        val authProvider: List<AuthUI.IdpConfig> = listOf(
 //            AuthUI.IdpConfig.FacebookBuilder().build(),
@@ -101,12 +111,12 @@ class MainActivity : AppCompatActivity() {
                 }
         }
 
-        binding.toolbar.setOnMenuItemClickListener {
-            when (it.itemId) {
-                R.id.action_log_out -> signOut()
-            }
-            false
-        }
+//        binding.toolbar.setOnMenuItemClickListener {
+//            when (it.itemId) {
+//                R.id.action_log_out -> signOut()
+//            }
+//            false
+//        }
 
         val authListener: FirebaseAuth.AuthStateListener =
             FirebaseAuth.AuthStateListener { auth: FirebaseAuth ->
@@ -189,6 +199,21 @@ class MainActivity : AppCompatActivity() {
             };false
         }
 
+    }
+
+    private fun setupNavController() {
+        findNavController(R.id.myNavHostFragment).addOnDestinationChangedListener { navController: NavController, _: NavDestination, _: Bundle? ->
+            viewModel.currentFragmentType.value = when (navController.currentDestination?.id) {
+                R.id.homeFragment -> CurrentFragmentType.HOME
+                R.id.radarFragment -> CurrentFragmentType.RADAR
+                R.id.orderFragment -> CurrentFragmentType.ORDER
+                R.id.profileFragment -> CurrentFragmentType.PROFILE
+                R.id.detailFragment -> CurrentFragmentType.DETAIL
+                R.id.homeSearchFragment -> CurrentFragmentType.SEARCH
+                R.id.postFragment -> CurrentFragmentType.POST
+                else -> viewModel.currentFragmentType.value
+            }
+        }
     }
 
     override fun onRequestPermissionsResult(

@@ -2,7 +2,7 @@
 <resources>
     <color name="colorPrimary">#000000</color>
 <!--    <color name="colorPrimaryDark">#cbba83</color>-->
-    <color name="colorPrimaryDark">#96DEE9</color>
+    <color name="colorPrimaryDark">#53B8CF</color>
     <color name="colorAccent">#D81B60</color>
     <color name="White">#FFFFFF</color>
 
@@ -12,14 +12,15 @@
     <!-- Black Series -->
     <color name="black">#000000</color>
     <color name="black_3f3a3a">#3f3a3a</color>
-
 <!--    <color name="myColorPrimaryDark">#cbba83</color>-->
-    <color name="myColorPrimaryDark">#C49A6C</color>
+<!--    <color name="myColorPrimaryDark">#C49A6C</color>-->
+    <color name="myColorPrimaryDark">#387C9F</color>
     <color name="myColorPrimaryLight">#ffffe5</color>
 <!--    <color name="myColorPrimary">#ffecb3</color>-->
     <color name="myColorPrimary">#9dd8c8</color>
     <color name="bottom_navigation_light">#AAAAAA</color>
-    <color name="bottom_navigation_dark">#64acb7</color>
+<!--    <color name="bottom_navigation_dark">#64acb7</color>-->
+    <color name="bottom_navigation_dark">#53B8CF</color>
 
     <color name="item_selected">#cbba83</color>
     <color name="transparent">#66000000</color>
@@ -30,7 +31,8 @@
     <color name="home_background">#eceff1</color>
 <!--    eceff1-->
     <color name="app_button">#63abb6</color>
-
+    <color name="app_title">#603913</color>
+    #603913
     <!--  #c8ffff   -->
     <!--  #95dde8   -->
     <!--  #63abb6   -->

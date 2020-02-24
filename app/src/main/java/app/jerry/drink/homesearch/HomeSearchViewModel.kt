@@ -23,6 +23,7 @@ class HomeSearchViewModel(private val repository: DrinkRepository) : ViewModel()
         get() = _drinkList
 
     val navigationToDetail = MutableLiveData<DrinkDetail>()
+    val searchEditText = MutableLiveData<String>()
 
     // status: The internal MutableLiveData that stores the status of the most recent request
     private val _status = MutableLiveData<LoadApiStatus>()

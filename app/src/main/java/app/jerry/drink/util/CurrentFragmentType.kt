@@ -8,4 +8,7 @@ enum class CurrentFragmentType(val value: String) {
     RADAR(getString(R.string.label_radar)),
     ORDER(getString(R.string.label_order)),
     PROFILE(getString(R.string.label_profile)),
+    DETAIL(getString(R.string.label_detail)),
+    SEARCH(getString(R.string.label_home_search)),
+    POST(getString(R.string.label_post))
 }

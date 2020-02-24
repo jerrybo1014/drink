@@ -120,7 +120,6 @@
                         map:layout_constraintVertical_bias="0"
                         android:layout_marginBottom="8dp"
                         android:visibility="invisible"
-                        android:text="@{Float.toString(viewModel.displayStoreStore)}"
                         map:layout_constraintBottom_toBottomOf="parent"
                         map:layout_constraintStart_toStartOf="@+id/text_store_information"
                         map:layout_constraintTop_toBottomOf="@+id/text_store_information" />
@@ -134,7 +133,6 @@
                         android:layout_marginTop="2dp"
                         android:isIndicator="true"
                         android:progressTint="@color/star"
-                        android:rating="@{viewModel.displayStoreStore}"
                         android:stepSize="1"
                         android:visibility="invisible"
                         map:layout_constraintBottom_toBottomOf="@+id/text_star_store"
@@ -148,7 +146,6 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="2dp"
                         android:visibility="invisible"
-                        android:text='@{"("+Long.toString(viewModel.storeComment.size())+")"}'
                         map:layout_constraintBottom_toBottomOf="@+id/rating_bar_comment"
                         map:layout_constraintStart_toEndOf="@+id/rating_bar_comment"
                         map:layout_constraintTop_toTopOf="@+id/rating_bar_comment" />

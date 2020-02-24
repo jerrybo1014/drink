@@ -32,13 +32,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-
                 <ImageView
                     android:id="@+id/image_update"
                     android:layout_width="wrap_content"
                     android:layout_height="200dp"
                     android:background="#99DDDDDD"
-                    android:src="@drawable/drink_icon_app"
+                    android:src="@drawable/drink_gray"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -50,7 +49,7 @@
                     android:layout_marginEnd="8dp"
                     android:layout_marginBottom="8dp"
                     android:src="@drawable/photo"
-                    android:tint="#D9FFFFFF"
+                    android:tint="#BEBEBE"
                     app:layout_constraintBottom_toBottomOf="@+id/image_update"
                     app:layout_constraintEnd_toEndOf="parent" />
 
@@ -61,7 +60,7 @@
                     android:layout_marginEnd="16dp"
                     android:layout_marginBottom="8dp"
                     android:src="@drawable/ic_camera_alt_black_24dp"
-                    android:tint="#D9FFFFFF"
+                    android:tint="#BEBEBE"
                     app:layout_constraintBottom_toBottomOf="@+id/image_update"
                     app:layout_constraintEnd_toStartOf="@+id/button_image_update" />
 

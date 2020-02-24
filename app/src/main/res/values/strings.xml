@@ -13,6 +13,9 @@
     <string name="label_radar">附近店家</string>
     <string name="label_order">揪團訂購</string>
     <string name="label_profile">個人檔案</string>
+    <string name="label_detail">飲品詳情</string>
+    <string name="label_home_search">飲品搜尋</string>
+    <string name="label_post">發表評論</string>
 
     <!-- post page -->
     <string name="post_store">店家</string>

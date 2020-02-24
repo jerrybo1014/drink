@@ -151,7 +151,7 @@ class PostFragment : Fragment() {
             }
         })
 
-        (activity as MainActivity).binding.bottomNavigationView.visibility = View.GONE
+//        (activity as MainActivity).binding.bottomNavigationView.visibility = View.GONE
 
         viewModel.imageUri.observe(this, Observer {
             Log.d("jerryTest", "imageUri.observe = $it")
@@ -387,9 +387,9 @@ class PostFragment : Fragment() {
 
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        (activity as MainActivity).binding.bottomNavigationView.visibility = View.VISIBLE
-    }
+//    override fun onDestroy() {
+//        super.onDestroy()
+//        (activity as MainActivity).binding.bottomNavigationView.visibility = View.VISIBLE
+//    }
 
 }

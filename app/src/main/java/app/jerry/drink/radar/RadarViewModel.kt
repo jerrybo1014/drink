@@ -1,5 +1,6 @@
 package app.jerry.drink.radar
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
@@ -130,7 +131,10 @@ init {
                 is Result.Success -> {
                     _error.value = null
                     _status.value = LoadApiStatus.DONE
-                    getDrinkRank(result.data)
+                    Log.d("jerryTest","getStoreCommentResult = ${result.data}")
+                    if (!result.data.isNullOrEmpty()){
+                        getDrinkRank(result.data)
+                    }
                     result.data
                 }
                 is Result.Fail -> {
@@ -211,18 +215,18 @@ init {
         return@map "${it.store.storeName} - ${it.branchName}"
     }
 
-    val displayStoreStore = Transformations.map(_storeComment){
-        var total = 0F
-        for (store in it){
-            total += store.star
-        }
-        val avg: Float = total / it.size
-        val numberFormat = NumberFormat.getNumberInstance()
-        numberFormat.maximumFractionDigits = 1
-        numberFormat.minimumFractionDigits = 1
-        val avgStar = numberFormat.format(avg).toFloat()
-        return@map avgStar
-    }
+//    val displayStoreStore = Transformations.map(_storeComment){
+//        var total = 0F
+//        for (store in it){
+//            total += store.star
+//        }
+//        val avg: Float = total / it.size
+//        val numberFormat = NumberFormat.getNumberInstance()
+//        numberFormat.maximumFractionDigits = 1
+//        numberFormat.minimumFractionDigits = 1
+//        val avgStar = numberFormat.format(avg).toFloat()
+//        return@map avgStar
+//    }
 
 
 

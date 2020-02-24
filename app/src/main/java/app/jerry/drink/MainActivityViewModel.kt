@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import app.jerry.drink.dataclass.Result
 import app.jerry.drink.dataclass.source.DrinkRepository
 import app.jerry.drink.network.LoadApiStatus
+import app.jerry.drink.util.CurrentFragmentType
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -13,7 +14,7 @@ import kotlinx.coroutines.launch
 
 class MainActivityViewModel(private val repository: DrinkRepository) : ViewModel() {
 
-
+    val currentFragmentType = MutableLiveData<CurrentFragmentType>()
     var checkUser = MutableLiveData<Boolean>()
 
     // status: The internal MutableLiveData that stores the status of the most recent request

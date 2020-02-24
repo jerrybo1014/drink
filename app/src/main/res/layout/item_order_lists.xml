@@ -109,7 +109,7 @@
                 android:layout_height="18dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
-                android:tint="@color/myColorPrimaryDark"
+                android:tint="#939598"
                 android:src="@drawable/trash"
                 android:onClick="@{() -> viewModel.removeOrderResult(orderList.id)}"
                 android:visibility="@{userCurrent == true ? View.VISIBLE:View.GONE}"
