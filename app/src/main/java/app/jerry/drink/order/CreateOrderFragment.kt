@@ -69,11 +69,9 @@ class CreateOrderFragment : DialogFragment() {
         viewModel.getAllStoreResult()
 
         viewModel.createOrderFinished.observe(this, Observer {
-
             if (it != null && it == true){
                 dismiss()
             }
-
         })
 
         return binding.root

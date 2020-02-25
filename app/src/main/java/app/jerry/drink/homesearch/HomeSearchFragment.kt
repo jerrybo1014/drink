@@ -37,13 +37,13 @@ class HomeSearchFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
         binding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_home_search, container, false
         )
 
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
-
 //        binding.editTextSearch.requestFocus()
         binding.editTextSearch.showSoftInputOnFocus= true
 //        binding.editTextSearch.hasWindowFocus()

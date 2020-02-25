@@ -149,6 +149,7 @@
             android:textAlignment="center"
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
+            android:clickable="@{viewModel.postStatus == LoadApiStatus.LOADING ? false:true}"
             android:textSize="16dp"
             android:textColor="#FFFFFF"
             android:fontFamily="@font/noto_sans"

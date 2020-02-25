@@ -26,7 +26,7 @@ class StoreHighScoreAdapter(private val onClickListener: StoreHighScoreAdapter.O
 
             val drinkDetail = DrinkDetail(drinkRank.drink
                 , drinkRank.store)
-            binding.root.setOnClickListener { onClickListener.onClick(drinkDetail) }
+//            binding.root.setOnClickListener { onClickListener.onClick(drinkDetail) }
             val imageRandom = (Math.random() * drinkRank.commentList.size).toInt()
             binding.image = drinkRank.commentList[imageRandom].drinkImage
             binding.drinkRank = drinkRank
