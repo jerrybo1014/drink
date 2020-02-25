@@ -271,24 +271,24 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-
-        if (requestCode == 101) {
-            if (resultCode != Activity.RESULT_OK) {
-                val response = IdpResponse.fromResultIntent(data)
-                Toast.makeText(
-                    applicationContext,
-                    response?.error?.errorCode.toString(),
-                    Toast.LENGTH_SHORT
-                ).show()
-                Log.d(TAG, "onActivityResult=no")
-            }
-            val task = GoogleSignIn.getSignedInAccountFromIntent(data)
-            Log.d(TAG, "onActivityResult=success and ${task.result!!.email}")
-        }
-
-    }
+//    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+//        super.onActivityResult(requestCode, resultCode, data)
+//
+//        if (requestCode == 101) {
+//            if (resultCode != Activity.RESULT_OK) {
+//                val response = IdpResponse.fromResultIntent(data)
+//                Toast.makeText(
+//                    applicationContext,
+//                    response?.error?.errorCode.toString(),
+//                    Toast.LENGTH_SHORT
+//                ).show()
+//                Log.d(TAG, "onActivityResult=no")
+//            }
+//            val task = GoogleSignIn.getSignedInAccountFromIntent(data)
+//            Log.d(TAG, "onActivityResult=success and ${task.result!!.email}")
+//        }
+//
+//    }
 
 
     private val locationListener = object : LocationListener {
