@@ -49,8 +49,10 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler_high_score"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="120dp"
                 android:layout_marginTop="4dp"
+                android:focusableInTouchMode="true"
+                android:focusable="true"
                 android:orientation="horizontal"
                 android:paddingHorizontal="8dp"
                 listHighScore="@{viewModel.newDrinkRank}"

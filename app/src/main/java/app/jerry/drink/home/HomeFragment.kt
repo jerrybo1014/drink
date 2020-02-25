@@ -19,6 +19,7 @@ import app.jerry.drink.dataclass.Drink
 import app.jerry.drink.dataclass.Store
 import app.jerry.drink.dataclass.User
 import app.jerry.drink.ext.getVmFactory
+import com.crashlytics.android.Crashlytics
 
 class HomeFragment : Fragment() {
 
@@ -74,8 +75,6 @@ class HomeFragment : Fragment() {
         viewModel.newComment.observe(this, Observer {
             Log.d("newComment", "$it")
         })
-
-
 
         return binding.root
     }

@@ -1,6 +1,7 @@
 package app.jerry.drink.homesearch
 
 import android.content.Context
+import android.hardware.input.InputManager
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -22,6 +23,9 @@ import app.jerry.drink.databinding.FragmentHomeSearchBinding
 import app.jerry.drink.dataclass.Drink
 import app.jerry.drink.ext.getVmFactory
 import com.google.android.gms.maps.model.Marker
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class HomeSearchFragment : Fragment() {
 
@@ -46,7 +50,10 @@ class HomeSearchFragment : Fragment() {
 //        binding.editTextSearch.requestFocusFromTouch()
 //        (activity as MainActivity).window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE)
 
-
+        CoroutineScope(Dispatchers.Main).launch {
+            binding.editTextSearch.requestFocus()
+            (activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager)?.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY)
+        }
 
         val searchDrinkAdapter = HomeSearchDrinkAdapter(HomeSearchDrinkAdapter.OnClickListener {
             viewModel.navigationToDetail(it)
