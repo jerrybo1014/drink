@@ -83,6 +83,8 @@ init {
             getStoreLocationResult()
         }
 
+
+
     }
 
 
@@ -204,36 +206,14 @@ init {
     }
 
 
-
-
-
-
-
-
     val displayStoreLocation = Transformations.map(_selectStore){
 
         return@map "${it.store.storeName} - ${it.branchName}"
     }
 
-//    val displayStoreStore = Transformations.map(_storeComment){
-//        var total = 0F
-//        for (store in it){
-//            total += store.star
-//        }
-//        val avg: Float = total / it.size
-//        val numberFormat = NumberFormat.getNumberInstance()
-//        numberFormat.maximumFractionDigits = 1
-//        numberFormat.minimumFractionDigits = 1
-//        val avgStar = numberFormat.format(avg).toFloat()
-//        return@map avgStar
-//    }
-
-
-
     fun selectStore(storeLocation: StoreLocation){
             _selectStore.value = storeLocation
     }
-
 
     fun storeCardClose(){
         storeCardStatus.value?.let {

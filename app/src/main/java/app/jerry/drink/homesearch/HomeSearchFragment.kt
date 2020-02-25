@@ -21,6 +21,7 @@ import app.jerry.drink.R
 import app.jerry.drink.databinding.FragmentHomeSearchBinding
 import app.jerry.drink.dataclass.Drink
 import app.jerry.drink.ext.getVmFactory
+import com.google.android.gms.maps.model.Marker
 
 class HomeSearchFragment : Fragment() {
 
@@ -39,11 +40,11 @@ class HomeSearchFragment : Fragment() {
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
 
-        binding.editTextSearch.requestFocus()
+//        binding.editTextSearch.requestFocus()
         binding.editTextSearch.showSoftInputOnFocus= true
 //        binding.editTextSearch.hasWindowFocus()
 //        binding.editTextSearch.requestFocusFromTouch()
-        (activity as MainActivity).window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE)
+//        (activity as MainActivity).window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE)
 
 
 
@@ -102,6 +103,10 @@ class HomeSearchFragment : Fragment() {
                 searchDrinkAdapter.submitList(resultList)
             }
         })
+
+        binding.imageBack.setOnClickListener {
+            findNavController().navigateUp()
+        }
 
 
 

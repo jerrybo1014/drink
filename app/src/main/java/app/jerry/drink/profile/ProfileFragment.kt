@@ -76,6 +76,8 @@ class ProfileFragment : Fragment() {
             loadGallery()
         }
 
+
+
         viewModel.userCurrent.observe(this, Observer {
             Log.d("userCurrent.observe", "userCurrent = $it")
         })

@@ -36,7 +36,6 @@ import kotlin.math.cos
 
 class RadarFragment : Fragment(), GoogleMap.OnMarkerClickListener, OnMapReadyCallback {
 
-
     val MAPVIEW_BUNDLE_KEY: String? = "MapViewBundleKey"
     lateinit var binding: FragmentRadarBinding
     lateinit var mMap: MapView
@@ -44,10 +43,17 @@ class RadarFragment : Fragment(), GoogleMap.OnMarkerClickListener, OnMapReadyCal
     lateinit var fusedLocationProviderClient: FusedLocationProviderClient
     private val MY_PERMISSIONS_CALL = 20
     private val TAG = "jerryTest"
+    private var markerOld: Marker? = null
 
     override fun onMarkerClick(marker: Marker?): Boolean {
 
+        markerOld?.let {
+            it.alpha = 0.5F
+        }
+
         marker?.let {
+            markerOld = it
+            it.alpha = 1F
             val storeLocation = (it.tag as StoreLocation)
             val store = storeLocation.store
             viewModel.selectStore(storeLocation)
@@ -83,11 +89,15 @@ class RadarFragment : Fragment(), GoogleMap.OnMarkerClickListener, OnMapReadyCal
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
 
+        (activity as MainActivity).binding.layoutHomeSearch.setOnClickListener {
+            findNavController().navigate(R.id.action_global_homeSearchFragment)
+            Log.d("jerryTest", "layoutHomeSearch")
+        }
+
         viewModel.storeComment.observe(this, Observer {
 
             Log.d("jerryTest", "storeComment = $it")
         })
-
 
         viewModel.selectStore.observe(this, Observer {
 
@@ -233,6 +243,9 @@ class RadarFragment : Fragment(), GoogleMap.OnMarkerClickListener, OnMapReadyCal
 
         googleMap.setOnMapClickListener {
             viewModel.storeCardClose()
+            markerOld?.let {
+                it.alpha = 0.5F
+            }
         }
 
         googleMap.mapType = GoogleMap.MAP_TYPE_NORMAL
@@ -274,7 +287,7 @@ class RadarFragment : Fragment(), GoogleMap.OnMarkerClickListener, OnMapReadyCal
                             val addMarker = googleMap.addMarker(
                                 MarkerOptions().position(queryResult)
                                     .flat(true)
-                                    .alpha(0.7f)
+                                    .alpha(0.5F)
 //                                    .snippet(storeLocation.branchName)
 //                                    .title(storeLocation.store.storeName)
 //                                .icon(BitmapDescriptorFactory.fromResource(R.drawable.bottom_navigation_home_1))

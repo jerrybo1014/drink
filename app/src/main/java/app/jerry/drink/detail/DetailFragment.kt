@@ -36,7 +36,6 @@ class DetailFragment : Fragment() {
         binding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_detail, container, false
         )
-        (activity as MainActivity).binding.fab.hide()
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
 

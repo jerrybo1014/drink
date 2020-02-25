@@ -29,6 +29,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 @BindingAdapter("imageUrl")
 fun bindImage(imgView: ImageView, imgUrl: String?) {
@@ -165,6 +166,17 @@ fun bindSugar(recyclerView: RecyclerView, data: List<String>?){
 fun bindSearchDrink(recyclerView: RecyclerView, data: List<Drink>?){
     val adapter = recyclerView.adapter as HomeSearchDrinkAdapter
     adapter.submitList(data)
+}
+
+@BindingAdapter("fabHideStauts")
+fun bindFabHideStauts(floatingActionButton: FloatingActionButton, data: Boolean){
+
+    if (data){
+        floatingActionButton.show()
+    }else{
+        floatingActionButton.hide()
+    }
+
 }
 
 //@BindingAdapter("listPostStore")

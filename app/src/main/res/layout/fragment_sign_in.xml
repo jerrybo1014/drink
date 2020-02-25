@@ -24,8 +24,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-
-
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/button_signin_fb"
             android:layout_width="0dp"
@@ -41,7 +39,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="FACEBOOK登入"
+                android:text="FACEBOOK 登入"
                 android:textColor="#603913"
                 android:textSize="16dp"
                 android:letterSpacing="0.1"
@@ -63,10 +61,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-
-
         </androidx.constraintlayout.widget.ConstraintLayout>
-
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/button_signin_google"
@@ -84,7 +79,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/noto_sans_bold"
-                android:text="GOOGLE登入"
+                android:text="GOOGLE 登入"
                 android:textColor="#603913"
                 android:textSize="16dp"
                 android:letterSpacing="0.1"
@@ -105,7 +100,6 @@
                 app:layout_constraintDimensionRatio="1"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
-
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
