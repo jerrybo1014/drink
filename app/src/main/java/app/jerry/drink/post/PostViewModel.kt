@@ -38,6 +38,10 @@ class PostViewModel(private val repository: DrinkRepository) : ViewModel() {
 
     val selectedDrinkPosition = MutableLiveData<Int>()
 
+    val chooesCameraGallery = MutableLiveData<Boolean>().apply {
+        value = false
+    }
+
     val selectedDrink: LiveData<Drink> = Transformations.map(selectedDrinkPosition) {
         allStoreMenu.value?.let {allStoreMenu ->
             allStoreMenu[it]
@@ -286,6 +290,15 @@ class PostViewModel(private val repository: DrinkRepository) : ViewModel() {
         selectedIce.value = string
         selectedIcePosition.value = position
     }
+
+    fun openCameraGallery() {
+        chooesCameraGallery.value = true
+    }
+
+    fun closeCameraGallery() {
+        chooesCameraGallery.value = false
+    }
+
 
     private var selectedIceView: View? = null
 

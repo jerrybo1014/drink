@@ -37,6 +37,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="200dp"
                     android:background="#99DDDDDD"
+                    android:onClick="@{() -> viewModel.openCameraGallery()}"
                     android:src="@drawable/drink_gray"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -50,6 +51,7 @@
                     android:layout_marginBottom="8dp"
                     android:src="@drawable/photo"
                     android:tint="#BEBEBE"
+                    android:visibility="gone"
                     app:layout_constraintBottom_toBottomOf="@+id/image_update"
                     app:layout_constraintEnd_toEndOf="parent" />
 
@@ -61,6 +63,7 @@
                     android:layout_marginBottom="8dp"
                     android:src="@drawable/ic_camera_alt_black_24dp"
                     android:tint="#BEBEBE"
+                    android:visibility="gone"
                     app:layout_constraintBottom_toBottomOf="@+id/image_update"
                     app:layout_constraintEnd_toStartOf="@+id/button_image_update" />
 
@@ -310,6 +313,117 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layout_choose_camera_gallery"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/transparent"
+            android:visibility="@{viewModel.chooesCameraGallery == true ? View.VISIBLE:View.GONE}"
+            android:elevation="20dp"
+            android:onClick="@{() -> viewModel.closeCameraGallery()}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="20dp"
+                android:clickable="true"
+                android:background="@drawable/shape_corner_r"
+                android:backgroundTint="#FFFFFF"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:id="@+id/textView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/noto_sans"
+                    android:text="請選擇上傳方式"
+                    android:textColor="@color/text_color"
+                    android:textSize="16dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/layout_camera"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView">
+
+                    <ImageView
+                        android:id="@+id/image_camera"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:src="@drawable/ic_camera_alt_black_24dp"
+                        android:tint="@color/myColorPrimaryDark"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="相機"
+                        android:textSize="14dp"
+                        android:fontFamily="@font/noto_sans"
+                        android:textColor="@color/text_color"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/image_camera" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/layout_gallery"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginTop="16dp"
+                    app:layout_constraintStart_toEndOf="@+id/layout_camera"
+                    app:layout_constraintTop_toBottomOf="@+id/textView">
+
+                    <ImageView
+                        android:id="@+id/image_gallery"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:src="@drawable/ic_image_black_24dp"
+                        android:tint="@color/myColorPrimaryDark"
+
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/noto_sans"
+                        android:text="圖庫"
+                        android:textSize="14dp"
+                        android:textColor="@color/text_color"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/image_gallery" />
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

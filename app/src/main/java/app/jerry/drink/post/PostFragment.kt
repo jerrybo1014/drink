@@ -109,10 +109,8 @@ class PostFragment : Fragment() {
 //                viewModel.selectedDrink(position)
 //            }
 //        }
-
-
-        val listIce = listOf<String>("正常冰", "去冰", "微冰", "常溫")
-        val listSugar = listOf<String>("正常糖", "半糖", "微糖", "無糖")
+        val listIce = listOf("正常冰", "去冰", "微冰", "常溫")
+        val listSugar = listOf("正常糖", "半糖", "微糖", "無糖")
         val sugarAdapter = SugarAdapter(viewModel)
         val iceAdapter = IceAdapter(viewModel)
 
@@ -158,12 +156,14 @@ class PostFragment : Fragment() {
         })
 
 
-        binding.buttonImageUpdate.setOnClickListener {
+        binding.layoutGallery.setOnClickListener {
             loadGallery()
+            viewModel.closeCameraGallery()
         }
 
-        binding.buttonTakePhoto.setOnClickListener {
+        binding.layoutCamera.setOnClickListener {
             loadCamera()
+            viewModel.closeCameraGallery()
         }
 
         return binding.root

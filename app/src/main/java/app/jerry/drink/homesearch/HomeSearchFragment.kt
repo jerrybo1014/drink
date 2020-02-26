@@ -52,7 +52,7 @@ class HomeSearchFragment : Fragment() {
 
         CoroutineScope(Dispatchers.Main).launch {
             binding.editTextSearch.requestFocus()
-            (activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager)?.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY)
+            (activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager)?.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_NOT_ALWAYS)
         }
 
         val searchDrinkAdapter = HomeSearchDrinkAdapter(HomeSearchDrinkAdapter.OnClickListener {
@@ -120,16 +120,5 @@ class HomeSearchFragment : Fragment() {
         return binding.root
     }
 
-//    private fun search(keyword: String?){
-//        val resultList = mutableListOf<Drink>()
-//        for(song in songsList){
-//            if(song.songTitle.toLowerCase().contains(keyword.toString())){
-//                resultList.add(song)
-//            }
-//            val adapter = SearchMusicAdapter(viewModel)
-//            binding.recyclerViewSearchMusicPage.adapter = adapter
-//            adapter.submitList(resultList)
-//        }
-//    }
 
 }
