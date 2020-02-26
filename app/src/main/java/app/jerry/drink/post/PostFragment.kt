@@ -183,7 +183,7 @@ class PostFragment : Fragment() {
                 photoFile?.also {
                     val photoURI: Uri = FileProvider.getUriForFile(
                         context!!,
-                        "com.example.android.fileprovider",
+                        "app.jerry.drink.fileprovider",
                         it
                     )
 
