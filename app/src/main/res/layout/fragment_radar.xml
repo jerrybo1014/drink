@@ -103,7 +103,6 @@
                             android:layout_height="130dp"
                             android:layout_marginBottom="8dp"
                             android:orientation="horizontal"
-
                             map:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                             map:layout_constraintEnd_toEndOf="parent"
                             map:layout_constraintStart_toStartOf="parent"

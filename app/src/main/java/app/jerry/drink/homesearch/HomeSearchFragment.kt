@@ -1,5 +1,6 @@
 package app.jerry.drink.homesearch
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.hardware.input.InputManager
 import android.os.Bundle
@@ -26,6 +27,7 @@ import com.google.android.gms.maps.model.Marker
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.util.*
 
 class HomeSearchFragment : Fragment() {
 
@@ -102,7 +104,8 @@ class HomeSearchFragment : Fragment() {
             viewModel.drinkList.value?.let {
                 for (drink in it) {
                     if (!searchEditText.isNullOrEmpty()) {
-                        if (drink.drinkName.contains(searchEditText.toString())) {
+                        if (drink.drinkName.toLowerCase(Locale.getDefault()).contains(searchEditText.toString())
+                            || drink.store.storeName.toLowerCase(Locale.getDefault()).contains(searchEditText.toString())) {
                             resultList.add(drink)
                         }
                     }

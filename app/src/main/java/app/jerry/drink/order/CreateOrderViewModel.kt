@@ -32,9 +32,14 @@ class CreateOrderViewModel(private val repository: DrinkRepository) : ViewModel(
     val selectedStore: LiveData<Store>
         get() = _selectedStore
 
+    private val _leave = MutableLiveData<Boolean>()
+
+    val leave: LiveData<Boolean>
+        get() = _leave
+
     val selectTime = MutableLiveData<String>()
     val enterNote = MutableLiveData<String>()
-    val createOrderFinished = MutableLiveData<Boolean?>()
+    val createOrderFinished = MutableLiveData<String?>()
 
     // status: The internal MutableLiveData that stores the status of the most recent request
     private val _status = MutableLiveData<LoadApiStatus>()
@@ -70,7 +75,7 @@ class CreateOrderViewModel(private val repository: DrinkRepository) : ViewModel(
     init {
         selectTime.value = ""
         enterNote.value = ""
-        createOrderFinished.value =false
+        createOrderFinished.value =null
     }
 
     fun getAllStoreResult() {
@@ -159,6 +164,10 @@ class CreateOrderViewModel(private val repository: DrinkRepository) : ViewModel(
         _allStore.value?.let {
             _selectedStore.value = it[position]
         }
+    }
+
+    fun leave(needRefresh: Boolean = false) {
+        _leave.value = needRefresh
     }
 
     val displayAllStore = Transformations.map(allStore) {

@@ -26,7 +26,6 @@ class OrderListsAdapter(private val viewModel: OrderVIewModel) :
     ) :
         RecyclerView.ViewHolder(binding.root), LifecycleOwner {
 
-
         fun bind(orderList: OrderList) {
             binding.orderList = orderList
             binding.lifecycleOwner = this

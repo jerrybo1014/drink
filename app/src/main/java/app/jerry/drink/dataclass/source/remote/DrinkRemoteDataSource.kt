@@ -450,7 +450,7 @@ object DrinkRemoteDataSource : DrinkDataSource {
         }
 
 
-    override suspend fun createOrder(order: Order): Result<Boolean> =
+    override suspend fun createOrder(order: Order): Result<String> =
         suspendCoroutine { continuation ->
             val orders = FirebaseFirestore.getInstance().collection(PATH_Orders)
             val userCurrent = FirebaseAuth.getInstance().currentUser
@@ -467,7 +467,7 @@ object DrinkRemoteDataSource : DrinkDataSource {
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
 //                    continuation.resume(Result.Success(list))
-                        continuation.resume(Result.Success(true))
+                        continuation.resume(Result.Success(order.id))
                     } else {
                         task.exception?.let {
 

@@ -27,7 +27,7 @@ class NewCommentAdapter(private val onClickListener: OnClickListener ) :
             val drinkDetail = DrinkDetail(comment.drink
                 ,comment.store)
             binding.comment = comment
-            binding.layoutNavigationToDetail.setOnClickListener { onClickListener.onClick(drinkDetail) }
+            binding.root.setOnClickListener { onClickListener.onClick(drinkDetail) }
             binding.executePendingBindings()
         }
     }

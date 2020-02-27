@@ -10,6 +10,8 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
+import app.jerry.drink.NavigationDirections
 import app.jerry.drink.R
 import app.jerry.drink.databinding.FragmentCreateOrderBinding
 import app.jerry.drink.ext.getVmFactory
@@ -25,7 +27,7 @@ class CreateOrderFragment : DialogFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-//        setStyle(STYLE_NO_FRAME, R.style.SignInDialog)
+        setStyle(STYLE_NORMAL, R.style.AddOrderDialog)
     }
 
     override fun onCreateView(
@@ -65,13 +67,17 @@ class CreateOrderFragment : DialogFragment() {
             }
         }
 
-
         viewModel.getAllStoreResult()
 
         viewModel.createOrderFinished.observe(this, Observer {
-            if (it != null && it == true){
-                dismiss()
+            it?.let {
+                findNavController().navigate(NavigationDirections.actionGlobalOrderFragment(it))
             }
+        })
+
+        viewModel.leave.observe(this, Observer {
+            if (!it){
+                dismiss() }
         })
 
         return binding.root
