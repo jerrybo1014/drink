@@ -533,40 +533,25 @@ object DrinkRemoteDataSource : DrinkDataSource {
                 }
         }
 
-    /*LiveDataTest*/
-//    override suspend fun getOrder(orderId: Long): Result<OrderLists> =
-//        suspendCoroutine { continuation ->
-//            val orders = FirebaseFirestore.getInstance().collection(PATH_Orders)
-//            val liveData = MutableLiveData<List<OrderList>>().apply {
-//                value = mutableListOf()
-//            }
-//
-//            orders
-//                .document("$orderId")
-//                .get()
-//                .addOnCompleteListener { task ->
-//                    if (task.isSuccessful) {
-////                    continuation.resume(Result.Success(list))
-//                        val order = task.result!!.toObject(Order::class.java)
-//
-//                    val orderLists = OrderLists(order, listOf())
-//                    Log.d(TAG,"getOrder = $orderLists")
-//                    continuation.resume(Result.Success(orderLists))
-//
-//                    } else {
-//                        task.exception?.let {
-//
-//                            Log.w(
-//                                "",
-//                                "[${this::class.simpleName}] Error getting documents. ${it.message}"
-//                            )
-//                            continuation.resume(Result.Error(it))
-//                            return@addOnCompleteListener
-//                        }
-//                        continuation.resume(Result.Fail(DrinkApplication.instance.getString(R.string.you_know_nothing)))
-//                    }
-//                }
-//        }
+    override fun getOrderIdLive(orderId: Long): LiveData<OrderLists> {
+        val liveData = MutableLiveData<OrderLists>()
+
+        FirebaseFirestore.getInstance()
+            .collection(PATH_Orders)
+            .document("$orderId")
+            .addSnapshotListener { snapshot, exception ->
+                exception?.let {
+                    Log.w(TAG, "Listen failed.", it)
+                }
+                val order = snapshot?.toObject(Order::class.java)
+                val orderLists = OrderLists(order, listOf())
+                liveData.value = orderLists
+                Log.d("jerryTest","DrinkDataSource = $orderLists")
+            }
+
+        return liveData
+    }
+
 
     override fun getOrderLive(orderId: Long): LiveData<List<OrderList>> {
         val liveData = MutableLiveData<List<OrderList>>().apply {

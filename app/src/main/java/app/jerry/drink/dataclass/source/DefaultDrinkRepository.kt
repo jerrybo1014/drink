@@ -42,6 +42,10 @@ class DefaultDrinkRepository(private val remoteDataSource: DrinkDataSource,
         return remoteDataSource.getOrder(orderId)
     }
 
+    override fun getOrderIdLive(orderId: Long): LiveData<OrderLists> {
+        return remoteDataSource.getOrderIdLive(orderId)
+    }
+
     override fun getOrderLive(orderId: Long): LiveData<List<OrderList>> {
         return remoteDataSource.getOrderLive(orderId)
     }

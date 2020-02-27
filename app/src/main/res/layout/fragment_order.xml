@@ -8,6 +8,10 @@
             name="viewModel"
             type="app.jerry.drink.order.OrderVIewModel" />
 
+        <variable
+            name="orderLists"
+            type="app.jerry.drink.dataclass.OrderLists" />
+
         <import type="android.view.View"/>
         <import type="app.jerry.drink.network.LoadApiStatus"/>
     </data>
@@ -64,7 +68,7 @@
                     android:background="@drawable/shape_corner_r"
                     android:backgroundTint="@color/White"
                     android:paddingHorizontal="8dp"
-                    android:visibility="@{viewModel.orderLists.order == null  ? View.GONE:View.VISIBLE}">
+                    android:visibility="@{orderLists.order == null  ? View.GONE:View.VISIBLE}">
 
                     <TextView
                         android:id="@+id/text_status_add_order"
@@ -73,7 +77,7 @@
                        android:layout_marginEnd="2dp"
                         android:layout_marginBottom="12dp"
                         android:visibility="invisible"
-                        android:text='@{viewModel.orderLists.order.status == true ? @string/order_status_active:@string/order_status_inactive}'
+                        android:text='@{orderLists.order.status == true ? @string/order_status_active:@string/order_status_inactive}'
                         app:layout_constraintBottom_toTopOf="@+id/line_add_order"
                         app:layout_constraintEnd_toStartOf="@+id/switch1" />
 
@@ -83,7 +87,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="@color/text_color"
-                        android:text="@{viewModel.orderLists.order.id}"
+                        android:text="@{orderLists.order.id}"
                         android:layout_marginStart="16dp"
                         app:layout_constraintStart_toEndOf="@+id/textView_order_id"
                         app:layout_constraintBaseline_toBaselineOf="@+id/textView_order_id"
@@ -103,7 +107,7 @@
                         android:letterSpacing="1.0"
                         android:textAlignment="center"
                         android:textSize="16dp"
-                        android:visibility="@{viewModel.orderLists.order.status == true ? View.VISIBLE:View.GONE}"
+                        android:visibility="@{orderLists.order.status == true ? View.VISIBLE:View.GONE}"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -157,7 +161,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
                         android:textColor="@color/text_color"
-                        android:text="@{viewModel.orderLists.order.user.name}"
+                        android:text="@{orderLists.order.user.name}"
                         app:layout_constraintBaseline_toBaselineOf="@+id/text_host_order"
                         app:layout_constraintStart_toEndOf="@+id/text_host_order" />
 
@@ -186,7 +190,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
                         android:textColor="@color/text_color"
-                        android:text="@{viewModel.orderLists.order.store.storeName}"
+                        android:text="@{orderLists.order.store.storeName}"
                         app:layout_constraintBaseline_toBaselineOf="@+id/text_store_create_order"
                         app:layout_constraintStart_toEndOf="@+id/text_host_order" />
 
@@ -216,7 +220,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
                         android:textColor="@color/text_color"
-                        android:text="@{viewModel.orderLists.order.timeLimit}"
+                        android:text="@{orderLists.order.timeLimit}"
                         app:layout_constraintBaseline_toBaselineOf="@+id/text_time_order"
                         app:layout_constraintStart_toEndOf="@+id/text_host_order" />
 
@@ -246,7 +250,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
                         android:textColor="@color/text_color"
-                        android:text="@{viewModel.orderLists.order.note}"
+                        android:text="@{orderLists.order.note}"
                         app:layout_constraintBaseline_toBaselineOf="@+id/text_note"
                         app:layout_constraintStart_toEndOf="@+id/text_host_order" />
 
@@ -275,7 +279,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="8dp"
                         android:backgroundTint="@color/myColorPrimaryDark"
-                        android:checked="@{viewModel.orderLists.order.status==true ? true:false}"
+                        android:checked="@{orderLists.order.status==true ? true:false}"
                         android:onClick="@{() -> viewModel.editOrderStatusResult()}"
                         android:theme="@style/MySwitch"
                         android:visibility="@{viewModel.userStatus==true ? View.VISIBLE:View.INVISIBLE}"
@@ -307,7 +311,7 @@
             android:clickable="true"
             android:tint="#B3FFFFFF"
             android:src="@drawable/add_order"
-            android:visibility="@{viewModel.orderLists.order == null  &amp; viewModel.status != LoadApiStatus.LOADING ? View.VISIBLE:View.GONE}"
+            android:visibility="@{orderLists.order == null  &amp; viewModel.status != LoadApiStatus.LOADING ? View.VISIBLE:View.GONE}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -321,7 +325,7 @@
             android:textSize="16dp"
             android:fontFamily="@font/noto_sans"
             android:layout_marginTop="16dp"
-            android:visibility="@{viewModel.orderLists.order == null &amp; viewModel.status != LoadApiStatus.LOADING  ? View.VISIBLE:View.GONE}"
+            android:visibility="@{orderLists.order == null &amp; viewModel.status != LoadApiStatus.LOADING  ? View.VISIBLE:View.GONE}"
             app:layout_constraintEnd_toEndOf="@+id/image_add_order"
             app:layout_constraintStart_toStartOf="@+id/image_add_order"
             app:layout_constraintTop_toBottomOf="@+id/image_add_order" />

@@ -68,13 +68,31 @@ class OrderFragment : Fragment() {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 query?.let {
                     viewModel.getOrderResult(it.toLong())
+                    findNavController().navigate(NavigationDirections.actionGlobalOrderFragment(it))
+                    Log.d("jerryTest","onQueryTextSubmit = $it")
                 }
+
+
+//                viewModel.orderLists.observe(this@OrderFragment, Observer {
+//                    binding.orderLists = it
+//                    viewModel.orderLive.observe(this@OrderFragment, Observer {orderLive->
+//                        Log.d("viewModel.orderLive", "$orderLive")
+//                        orderListAdapter.submitList(orderLive)
+//                    })
+//                })
 //                viewModel.getOrderLiveResult(query.toLong())
 
-//                viewModel.orderLive.observe(this@OrderFragment, Observer {
-//                    Log.d("viewModel.orderLive", "$it")
-//                    orderListAdapter.submitList(it)
+//                viewModel.orderLists.observe(this@OrderFragment, Observer {
+//                    binding.orderLists = it
+//                    Log.d("viewModel.orderLists", "$it")
+//
+//                    viewModel.orderLive.observe(this@OrderFragment, Observer {orderLive->
+//                        Log.d("viewModel.orderLive", "$orderLive")
+//                        orderListAdapter.submitList(orderLive)
+//                    })
+//
 //                })
+
                 return true
             }
 
@@ -85,10 +103,14 @@ class OrderFragment : Fragment() {
         )
 
         viewModel.orderLists.observe(this, Observer {
-            viewModel.orderLive.observe(this@OrderFragment, Observer {
-                Log.d("viewModel.orderLive", "$it")
-                orderListAdapter.submitList(it)
+            binding.orderLists = it
+            Log.d("viewModel.orderLists", "$it")
+
+            viewModel.orderLive.observe(this@OrderFragment, Observer {orderLive->
+                Log.d("viewModel.orderLive", "$orderLive")
+                orderListAdapter.submitList(orderLive)
             })
+
         })
 
 

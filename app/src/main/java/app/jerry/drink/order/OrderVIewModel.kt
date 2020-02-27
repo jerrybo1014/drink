@@ -26,7 +26,7 @@ class OrderVIewModel(private val repository: DrinkRepository, private val orderI
     val enterOrderId: LiveData<Long>
         get() = _enterOrderId
 
-    private val _orderLists = MutableLiveData<OrderLists>()
+    private var _orderLists = MutableLiveData<OrderLists>()
 
     val orderLists: LiveData<OrderLists>
         get() = _orderLists
@@ -115,50 +115,57 @@ class OrderVIewModel(private val repository: DrinkRepository, private val orderI
 
     fun getOrderResult(orderId: Long) {
 
+
         _orderLive = repository.getOrderLive(orderId) as MutableLiveData<List<OrderList>>
-        Log.d("getOrderLiveResult","_orderLive = ${repository.getOrderLive(orderId).value}")
+
+        /**/
+        _orderLists = repository.getOrderIdLive(orderId) as MutableLiveData<OrderLists>
+        /**/
+
+
+        Log.d("jerryTest", "getOrderResult")
         /**/
 //        _orderLists.value?.orderLists = repository.getOrderLive(orderId).value
         /**/
-
-        coroutineScope.launch {
-
-            _orderLive = repository.getOrderLive(orderId) as MutableLiveData<List<OrderList>>
-
-            _status.value = LoadApiStatus.LOADING
-
-            val result = repository.getOrder(orderId)
-
-            /**/
-            _orderLists.value = when (result) {
-                is Result.Success -> {
-                    _error.value = null
-                    _status.value = LoadApiStatus.DONE
-                    if (result.data.order == null){
-                        Toast.makeText(DrinkApplication.context,"查無訂單!",Toast.LENGTH_SHORT).show()
-                    }
-                    /**/
-                    result.data
-                    /**/
-                }
-                is Result.Fail -> {
-                    _error.value = result.error
-                    _status.value = LoadApiStatus.ERROR
-                    null
-                }
-                is Result.Error -> {
-                    _error.value = result.exception.toString()
-                    _status.value = LoadApiStatus.ERROR
-                    null
-                }
-                else -> {
-                    _error.value = DrinkApplication.instance.getString(R.string.you_know_nothing)
-                    _status.value = LoadApiStatus.ERROR
-                    null
-                }
-            }
-            _refreshStatus.value = false
-        }
+//
+//        coroutineScope.launch {
+//
+//            _orderLive = repository.getOrderLive(orderId) as MutableLiveData<List<OrderList>>
+//
+//            _status.value = LoadApiStatus.LOADING
+//
+//            val result = repository.getOrder(orderId)
+//
+//            /**/
+//            _orderLists.value = when (result) {
+//                is Result.Success -> {
+//                    _error.value = null
+//                    _status.value = LoadApiStatus.DONE
+//                    if (result.data.order == null){
+//                        Toast.makeText(DrinkApplication.context,"查無訂單!",Toast.LENGTH_SHORT).show()
+//                    }
+//                    /**/
+//                    result.data
+//                    /**/
+//                }
+//                is Result.Fail -> {
+//                    _error.value = result.error
+//                    _status.value = LoadApiStatus.ERROR
+//                    null
+//                }
+//                is Result.Error -> {
+//                    _error.value = result.exception.toString()
+//                    _status.value = LoadApiStatus.ERROR
+//                    null
+//                }
+//                else -> {
+//                    _error.value = DrinkApplication.instance.getString(R.string.you_know_nothing)
+//                    _status.value = LoadApiStatus.ERROR
+//                    null
+//                }
+//            }
+//            _refreshStatus.value = false
+//        }
 
     }
 
