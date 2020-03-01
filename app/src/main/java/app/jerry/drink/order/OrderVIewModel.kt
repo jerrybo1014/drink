@@ -37,6 +37,11 @@ class OrderVIewModel(private val repository: DrinkRepository, private val orderI
     val orderLive: LiveData<List<OrderList>>
         get() = _orderLive
 
+    private val _navigationToRadar = MutableLiveData<Store>()
+
+    val navigationToRadar: LiveData<Store>
+        get() = _navigationToRadar
+
     val userCurrent = MutableLiveData<User>()
 
     // status: The internal MutableLiveData that stores the status of the most recent request
@@ -264,5 +269,11 @@ class OrderVIewModel(private val repository: DrinkRepository, private val orderI
         }
     }
 
+    fun navigationToRadar(store: Store){
+        _navigationToRadar.value = store
+    }
 
+    fun navigationToRadarfinished(){
+        _navigationToRadar.value = null
+    }
 }

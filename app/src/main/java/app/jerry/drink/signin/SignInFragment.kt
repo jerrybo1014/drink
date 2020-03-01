@@ -108,9 +108,10 @@ class SignInFragment : DialogFragment() {
         callbackManager.onActivityResult(requestCode, resultCode, data)
 
         if (requestCode == 102){
-            val task = GoogleSignIn.getSignedInAccountFromIntent(data)
+//            val task = GoogleSignIn.getSignedInAccountFromIntent(data)
             try {
                 // Google Sign In was successful, authenticate with Firebase
+                val task = GoogleSignIn.getSignedInAccountFromIntent(data)
                 val account = task.getResult(ApiException::class.java)
                 firebaseAuthWithGoogle(account!!)
             } catch (e: ApiException) {

@@ -75,17 +75,17 @@ class RadarViewModel(private val repository: DrinkRepository, private val store:
     private val coroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
 
 init {
-    locationInit()
+    getStoreLocationResult()
 }
 
-    private fun locationInit() {
-        if (store.storeId == ""){
-            getStoreLocationResult()
-        }
-
-
-
-    }
+//    private fun locationInit() {
+//        if (store.storeId == ""){
+//            getStoreLocationResult()
+//        }
+//
+//
+//
+//    }
 
 
     fun getStoreLocationResult(){
@@ -99,7 +99,13 @@ init {
                 is Result.Success -> {
                     _error.value = null
                     _status.value = LoadApiStatus.DONE
-                    result.data
+
+                    if (store.storeId == ""){
+                        result.data
+                    }else{
+                        result.data.filter { it.store.storeId == store.storeId }
+                    }
+
                 }
                 is Result.Fail -> {
                     _error.value = result.error
@@ -160,10 +166,20 @@ init {
 
     }
 
+//    private fun storeFilter(listStoreLocation: List<StoreLocation>){
+//
+//        if (store.storeId == ""){
+//
+//        }else{
+//            listStoreLocation.filter { it.store.storeId == store.storeId }
+//        }
+//
+//    }
 
 
 
-    fun getDrinkRank(commnetList: List<Comment>) {
+
+    private fun getDrinkRank(commnetList: List<Comment>) {
 
         val scoreRank = mutableListOf<DrinkRank>()
         for (commentUnit in commnetList) {
