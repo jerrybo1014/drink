@@ -5,7 +5,7 @@ import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 data class Drink(
-    val drinkId: String = "",
+    var drinkId: String = "",
     val drinkName: String = "",
     var store: Store = Store("","","")
 ) : Parcelable

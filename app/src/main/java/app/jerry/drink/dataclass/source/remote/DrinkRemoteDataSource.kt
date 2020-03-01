@@ -37,47 +37,48 @@ object DrinkRemoteDataSource : DrinkDataSource {
     private const val KEY_CREATED_TIME = "createdTime"
 
 
-    override suspend fun addStoreToDrink(store: Store): Result<Boolean> = suspendCoroutine { continuation ->
-        val stores = FirebaseFirestore.getInstance().collection(PATH_Stores)
+    override suspend fun addStoreToDrink(store: Store): Result<Boolean> =
+        suspendCoroutine { continuation ->
+            val stores = FirebaseFirestore.getInstance().collection(PATH_Stores)
 
-        stores
-            .document(store.storeId)
-            .collection("menu")
-            .get()
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
+            stores
+                .document(store.storeId)
+                .collection("menu")
+                .get()
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
 
-                    for (drink in task.result!!){
+                        for (drink in task.result!!) {
 
-                        val newDrink = drink.toObject(Drink::class.java)
-                        newDrink.store = store
+                            val newDrink = drink.toObject(Drink::class.java)
+                            newDrink.store = store
 
-                        stores
-                            .document(store.storeId)
-                            .collection("menu")
-                            .document(drink.id)
-                            .set(newDrink)
-                            .addOnSuccessListener {
-                                Log.d(TAG,"addOnSuccessListener , newDrink = $newDrink")
-                            }
+                            stores
+                                .document(store.storeId)
+                                .collection("menu")
+                                .document(drink.id)
+                                .set(newDrink)
+                                .addOnSuccessListener {
+                                    Log.d(TAG, "addOnSuccessListener , newDrink = $newDrink")
+                                }
 
+                        }
+
+                        continuation.resume(Result.Success(true))
+                    } else {
+                        task.exception?.let {
+                            Log.d("checkUser", "Error")
+                            Log.w(
+                                "",
+                                "[${this::class.simpleName}] Error getting documents. ${it.message}"
+                            )
+                            continuation.resume(Result.Error(it))
+                            return@addOnCompleteListener
+                        }
+                        continuation.resume(Result.Fail(DrinkApplication.instance.getString(R.string.you_know_nothing)))
                     }
-
-                    continuation.resume(Result.Success(true))
-                } else {
-                    task.exception?.let {
-                        Log.d("checkUser", "Error")
-                        Log.w(
-                            "",
-                            "[${this::class.simpleName}] Error getting documents. ${it.message}"
-                        )
-                        continuation.resume(Result.Error(it))
-                        return@addOnCompleteListener
-                    }
-                    continuation.resume(Result.Fail(DrinkApplication.instance.getString(R.string.you_know_nothing)))
                 }
-            }
-    }
+        }
 
     override suspend fun checkUser(): Result<Boolean> = suspendCoroutine { continuation ->
         val users = FirebaseFirestore.getInstance().collection(PATH_Users)
@@ -212,25 +213,32 @@ object DrinkRemoteDataSource : DrinkDataSource {
         suspendCoroutine { continuation ->
             val comments = FirebaseFirestore.getInstance().collection(PATH_Comments)
             val document = comments.document(comment.id)
+            val userCurrent = FirebaseAuth.getInstance().currentUser
 
-            document
-                .delete()
-                .addOnCompleteListener { task ->
-                    if (task.isSuccessful) {
+            if (userCurrent?.uid != "2ydu21IsBPSuZ5fb8znsxPhy7rv2") {
+                Log.d("jerryTest", "you are not boss!")
+                continuation.resume(Result.Success(false))
+            } else {
+                document
+                    .delete()
+                    .addOnCompleteListener { task ->
+                        if (task.isSuccessful) {
 //                    continuation.resume(Result.Success(list))
-                        continuation.resume(Result.Success(true))
-                    } else {
-                        task.exception?.let {
-                            Log.w(
-                                "",
-                                "[${this::class.simpleName}] Error getting documents. ${it.message}"
-                            )
-                            continuation.resume(Result.Error(it))
-                            return@addOnCompleteListener
+                            continuation.resume(Result.Success(true))
+                        } else {
+                            task.exception?.let {
+                                Log.w(
+                                    "",
+                                    "[${this::class.simpleName}] Error getting documents. ${it.message}"
+                                )
+                                continuation.resume(Result.Error(it))
+                                return@addOnCompleteListener
+                            }
+                            continuation.resume(Result.Fail(DrinkApplication.instance.getString(R.string.you_know_nothing)))
                         }
-                        continuation.resume(Result.Fail(DrinkApplication.instance.getString(R.string.you_know_nothing)))
                     }
-                }
+            }
+
         }
 
 //    override suspend fun getNewComment(): Result<List<Comment>> = suspendCoroutine { continuation ->
@@ -571,7 +579,7 @@ object DrinkRemoteDataSource : DrinkDataSource {
                 val order = snapshot?.toObject(Order::class.java)
                 val orderLists = OrderLists(order, listOf())
                 liveData.value = orderLists
-                Log.d("jerryTest","DrinkDataSource = $orderLists")
+                Log.d("jerryTest", "DrinkDataSource = $orderLists")
             }
 
         return liveData
@@ -792,10 +800,13 @@ object DrinkRemoteDataSource : DrinkDataSource {
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
                         if (task.result!!.isEmpty)
-                        Log.d(TAG, "getDetailComment addOnCompleteListener = ${task.result!!.isEmpty}")
+                            Log.d(
+                                TAG,
+                                "getDetailComment addOnCompleteListener = ${task.result!!.isEmpty}"
+                            )
                         val list = mutableListOf<Comment>()
 
-                        if (task.result!!.isEmpty){
+                        if (task.result!!.isEmpty) {
                             continuation.resume(Result.Success(list))
                         }
 
@@ -827,7 +838,6 @@ object DrinkRemoteDataSource : DrinkDataSource {
                                     list.add(detailComment)
                                 }
                         }
-
 
 
                     } else {
@@ -994,6 +1004,103 @@ object DrinkRemoteDataSource : DrinkDataSource {
                         }
                         Log.d(TAG, "$list")
                         continuation.resume(Result.Success(list))
+                    } else {
+                        task.exception?.let {
+
+                            Log.w(
+                                "",
+                                "[${this::class.simpleName}] Error getting documents. ${it.message}"
+                            )
+                            continuation.resume(Result.Error(it))
+                            return@addOnCompleteListener
+                        }
+                        continuation.resume(Result.Fail(DrinkApplication.instance.getString(R.string.you_know_nothing)))
+                    }
+                }
+        }
+
+    override suspend fun addNewDrink(comment: Comment, bitmap: Bitmap): Result<Boolean> =
+        suspendCoroutine { continuation ->
+
+            val stores = FirebaseFirestore.getInstance()
+                .collection(PATH_Stores)
+                .document(comment.store.storeId)
+                .collection("menu")
+                .document()
+
+            val documentId = comment.store.storeId + stores.id
+            comment.drink.drinkId = documentId
+
+            FirebaseFirestore.getInstance()
+                .collection(PATH_Stores)
+                .document(comment.store.storeId)
+                .collection("menu")
+                .document()
+                .set(comment.drink)
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+
+/*================================================*/
+                        val comments = FirebaseFirestore.getInstance().collection(PATH_Comments)
+                        val userCurrent = FirebaseAuth.getInstance().currentUser
+                        val document = comments.document()
+                        val storageReference = FirebaseStorage.getInstance().reference
+
+                        comment.id = document.id
+                        comment.userId = userCurrent!!.uid
+
+                        val byteArrayOutput = ByteArrayOutputStream()
+                        bitmap.compress(Bitmap.CompressFormat.JPEG, 50, byteArrayOutput)
+                        val bytes = byteArrayOutput.toByteArray()
+
+                        val riversRef =
+                            storageReference.child("uploads/" + UUID.randomUUID().toString())
+                        val uploadTask = riversRef.putBytes(bytes)
+
+                        uploadTask.continueWithTask(Continuation<UploadTask.TaskSnapshot, Task<Uri>> { taskImage ->
+                            if (!taskImage.isSuccessful) {
+                                taskImage.exception?.let {
+                                    throw it
+                                }
+                            }
+                            return@Continuation riversRef.downloadUrl
+                        }).addOnCompleteListener { taskImage ->
+                            if (taskImage.isSuccessful) {
+
+                                comment.drinkImage = taskImage.result.toString()
+                                document
+                                    .set(comment)
+                                    .addOnCompleteListener { task ->
+                                        if (task.isSuccessful) {
+//                    continuation.resume(Result.Success(list))
+                                            continuation.resume(Result.Success(true))
+                                        } else {
+                                            task.exception?.let {
+
+                                                Log.w(
+                                                    "",
+                                                    "[${this::class.simpleName}] Error getting documents. ${it.message}"
+                                                )
+                                                continuation.resume(Result.Error(it))
+                                                return@addOnCompleteListener
+                                            }
+                                            continuation.resume(
+                                                Result.Fail(
+                                                    DrinkApplication.instance.getString(
+                                                        R.string.you_know_nothing
+                                                    )
+                                                )
+                                            )
+                                        }
+                                    }
+                            }
+
+                        }.addOnFailureListener {
+
+                        }
+/*================================================*/
+
+//                        continuation.resume(Result.Success(true))
                     } else {
                         task.exception?.let {
 

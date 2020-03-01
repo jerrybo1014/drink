@@ -36,16 +36,33 @@ class PostViewModel(private val repository: DrinkRepository) : ViewModel() {
         }
     }
 
+
+
     val selectedDrinkPosition = MutableLiveData<Int>()
+
 
     val chooesCameraGallery = MutableLiveData<Boolean>().apply {
         value = false
     }
 
-    val selectedDrink: LiveData<Drink> = Transformations.map(selectedDrinkPosition) {
+    val selectedDrink: LiveData<Drink?> = Transformations.map(selectedDrinkPosition) {
+
         allStoreMenu.value?.let {allStoreMenu ->
-            allStoreMenu[it]
+            if (it < allStoreMenu.size){
+                allStoreMenu[it]
+            }else{
+                null
+            }
+
         }
+    }
+
+    var addNewDrink: LiveData<Boolean> = Transformations.map(selectedDrink) {
+        it == null
+    }
+
+    val newDrinkName = MutableLiveData<String>().apply {
+        value = ""
     }
 
     // _selectedStore
@@ -235,6 +252,59 @@ class PostViewModel(private val repository: DrinkRepository) : ViewModel() {
 
     }
 
+    fun addNewDrinkResult() {
+        coroutineScope.launch {
+
+            _postStatus.value = LoadApiStatus.LOADING
+
+            val newDrink = Drink("",newDrinkName.value!!,selectedStore.value!!)
+
+            val comment = Comment(
+                "",
+                User("", "", "", ""),
+                "",
+                selectedStore.value!!,
+                newDrink,
+                selectedIce.value!!,
+                selectedSugar.value!!,
+                commentStar.value!!,
+                editComment.value!!,
+                "",
+                System.currentTimeMillis()
+            )
+
+            val result = repository.addNewDrink(comment, imageBitmap.value!!)
+
+            when (result) {
+                is Result.Success -> {
+                    _error.value = null
+                    _postStatus.value = LoadApiStatus.DONE
+                    Log.d("postComentResult", "$result.data")
+                    postFinished.value = true
+                    Toast.makeText(DrinkApplication.context, "成功送出", Toast.LENGTH_SHORT).show()
+                    result.data
+                }
+                is Result.Fail -> {
+                    _error.value = result.error
+                    _postStatus.value = LoadApiStatus.ERROR
+                    null
+                }
+                is Result.Error -> {
+                    _error.value = result.exception.toString()
+                    _postStatus.value = LoadApiStatus.ERROR
+                    null
+                }
+                else -> {
+                    _error.value = DrinkApplication.instance.getString(R.string.you_know_nothing)
+                    _postStatus.value = LoadApiStatus.ERROR
+                    null
+                }
+            }
+            _refreshStatus.value = false
+        }
+
+    }
+
 
     fun addStoreToDrinkResult(store: Store) {
         coroutineScope.launch {
@@ -340,5 +410,23 @@ class PostViewModel(private val repository: DrinkRepository) : ViewModel() {
         }
         drinkList
     }
+
+
+    fun cancelAddNewDrink(){
+        selectedDrinkPosition.value = 0
+    }
+
+    fun postComment(){
+        if (!addNewDrink.value!!){
+            postCommentResult()
+        }else{
+            if (allStoreMenu.value!!.none { it.drinkName == newDrinkName.value!!.trim() }){
+                addNewDrinkResult()
+            }else{
+                Toast.makeText(DrinkApplication.context, "新增飲品已存在!", Toast.LENGTH_SHORT).show()
+            }
+    }
+    }
+
 
 }

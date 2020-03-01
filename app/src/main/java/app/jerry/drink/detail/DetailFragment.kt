@@ -48,7 +48,7 @@ class DetailFragment : Fragment() {
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
 
-        binding.recyclerAllComments.adapter = DetailAdapter()
+        binding.recyclerAllComments.adapter = DetailAdapter(viewModel)
 
         (activity as MainActivity).binding.bottomNavigationView.visibility = View.GONE
 

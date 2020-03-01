@@ -141,12 +141,39 @@
                         android:paddingBottom="16dp"
                         android:prompt="@string/spinner_drink"
                         android:spinnerMode="dialog"
+                        android:visibility="@{viewModel.addNewDrink == true ? View.GONE:View.VISIBLE}"
                         android:textSize="16dp"
                         android:selectedItemPosition = "@={viewModel.selectedDrinkPosition}"
                         app:layout_constraintBottom_toBottomOf="@+id/text_drink"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/text_drink"
                         app:layout_constraintTop_toTopOf="@+id/text_drink" />
+
+                    <EditText
+                        android:id="@+id/edit_new_drink"
+                        android:layout_width="150dp"
+                        android:layout_height="wrap_content"
+                        android:maxLength="10"
+                        android:textSize="16dp"
+                        android:text="@={viewModel.newDrinkName}"
+                        android:visibility="@{viewModel.addNewDrink == true ? View.VISIBLE:View.GONE}"
+                        android:layout_marginStart="8dp"
+                        app:layout_constraintBaseline_toBaselineOf="@+id/text_drink"
+                        app:layout_constraintStart_toEndOf="@+id/text_drink" />
+
+                    <TextView
+                        android:id="@+id/text_cancel_new_drink"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="取消"
+                        android:textSize="16dp"
+                        android:visibility="@{viewModel.addNewDrink == true ? View.VISIBLE:View.GONE}"
+                        android:fontFamily="@font/noto_sans"
+                        android:layout_marginStart="8dp"
+                        android:padding="4dp"
+                        android:onClick="@{() -> viewModel.cancelAddNewDrink()}"
+                        app:layout_constraintBaseline_toBaselineOf="@+id/edit_new_drink"
+                        app:layout_constraintStart_toEndOf="@+id/edit_new_drink" />
 
                     <ImageView
                         android:id="@+id/image_ice_post_icon"
@@ -290,7 +317,7 @@
                 android:clickable="@{viewModel.postStatus == LoadApiStatus.LOADING ? false:true}"
                 android:enabled="@{viewModel.editComment.trim() == null || viewModel.commentStar==0 || viewModel.selectedIce==null || viewModel.selectedSugar==null || viewModel.imageBitmap==null ? false:true}"
                 android:letterSpacing="1.2"
-                android:onClick="@{() -> viewModel.postCommentResult()}"
+                android:onClick="@{() -> viewModel.postComment()}"
                 android:text='@{viewModel.postStatus == LoadApiStatus.LOADING ? "": @string/post_button}'
                 android:textColor="#ffffff"
                 android:textSize="16dp"

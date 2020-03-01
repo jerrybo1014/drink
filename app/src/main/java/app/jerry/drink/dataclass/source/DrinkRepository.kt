@@ -51,4 +51,6 @@ interface DrinkRepository {
     suspend fun getStoreComment(store: Store): Result<List<Comment>>
 
     suspend fun getSearchDrink(): Result<List<Drink>>
+
+    suspend fun addNewDrink(comment: Comment, bitmap: Bitmap): Result<Boolean>
 }

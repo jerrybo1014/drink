@@ -15,12 +15,22 @@ class PostDrinkSpinnerAdater(private val strings: List<Drink>) : BaseAdapter() {
     @SuppressLint("ViewHolder")
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
         val binding = ItemPostDrinkSpinnerBinding.inflate(LayoutInflater.from(parent?.context), parent, false)
-        binding.title = strings[position].drinkName
+
+        if(position < strings.size){
+            binding.title = strings[position].drinkName
+        }else{
+            binding.title = "新增飲品+"
+        }
+
         return binding.root
     }
 
     override fun getItem(position: Int): Any {
-        return strings[position]
+        return if(position <= strings.size){
+            strings[position]
+        }else{
+            "新增飲品"
+        }
     }
 
     override fun getItemId(position: Int): Long {
@@ -28,6 +38,6 @@ class PostDrinkSpinnerAdater(private val strings: List<Drink>) : BaseAdapter() {
     }
 
     override fun getCount(): Int {
-        return strings.size
+        return strings.size + 1
     }
 }

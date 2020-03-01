@@ -291,14 +291,14 @@
                         android:id="@+id/switch1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="8dp"
                         android:backgroundTint="@color/myColorPrimaryDark"
                         android:checked="@{orderLists.order.status==true ? true:false}"
                         android:onClick="@{() -> viewModel.editOrderStatusResult()}"
                         android:theme="@style/MySwitch"
                         android:visibility="@{viewModel.userStatus==true ? View.VISIBLE:View.INVISIBLE}"
-                        app:layout_constraintBottom_toTopOf="@+id/line_add_order"
-                        app:layout_constraintEnd_toEndOf="parent" />
+                        android:layout_marginTop="8dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
                     <ImageView
                         android:id="@+id/image_share"

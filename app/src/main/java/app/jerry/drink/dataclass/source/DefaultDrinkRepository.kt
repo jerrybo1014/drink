@@ -97,4 +97,8 @@ class DefaultDrinkRepository(private val remoteDataSource: DrinkDataSource,
     override suspend fun getSearchDrink(): Result<List<Drink>> {
         return remoteDataSource.getSearchDrink()
     }
+
+    override suspend fun addNewDrink(comment: Comment, bitmap: Bitmap): Result<Boolean> {
+        return remoteDataSource.addNewDrink(comment, bitmap)
+    }
 }
