@@ -208,6 +208,31 @@ object DrinkRemoteDataSource : DrinkDataSource {
 
     }
 
+    override suspend fun deleteComment(comment: Comment): Result<Boolean> =
+        suspendCoroutine { continuation ->
+            val comments = FirebaseFirestore.getInstance().collection(PATH_Comments)
+            val document = comments.document(comment.id)
+
+            document
+                .delete()
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+//                    continuation.resume(Result.Success(list))
+                        continuation.resume(Result.Success(true))
+                    } else {
+                        task.exception?.let {
+                            Log.w(
+                                "",
+                                "[${this::class.simpleName}] Error getting documents. ${it.message}"
+                            )
+                            continuation.resume(Result.Error(it))
+                            return@addOnCompleteListener
+                        }
+                        continuation.resume(Result.Fail(DrinkApplication.instance.getString(R.string.you_know_nothing)))
+                    }
+                }
+        }
+
 //    override suspend fun getNewComment(): Result<List<Comment>> = suspendCoroutine { continuation ->
 //
 //        val comments = FirebaseFirestore.getInstance().collection(PATH_Comments)

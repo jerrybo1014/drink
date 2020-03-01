@@ -142,7 +142,6 @@ class MainActivity : AppCompatActivity() {
                 }
                 R.id.radarFragment -> {
 
-
                     if (ContextCompat.checkSelfPermission(
                             this,
                             permission.ACCESS_FINE_LOCATION

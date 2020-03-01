@@ -34,6 +34,10 @@ class DefaultDrinkRepository(private val remoteDataSource: DrinkDataSource,
         return remoteDataSource.postComment(comment, bitmap)
     }
 
+    override suspend fun deleteComment(comment: Comment): Result<Boolean> {
+        return remoteDataSource.deleteComment(comment)
+    }
+
     override suspend fun createOrder(order: Order): Result<String> {
         return remoteDataSource.createOrder(order)
     }

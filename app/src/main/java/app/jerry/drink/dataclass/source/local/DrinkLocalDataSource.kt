@@ -34,6 +34,10 @@ class DrinkLocalDataSource(val context: Context) : DrinkDataSource {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
+    override suspend fun deleteComment(comment: Comment): Result<Boolean> {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
     override suspend fun createOrder(order: Order): Result<String> {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }

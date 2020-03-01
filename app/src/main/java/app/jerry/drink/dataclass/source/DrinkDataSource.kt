@@ -20,6 +20,8 @@ interface DrinkDataSource {
 
     suspend fun postComment(comment: Comment, bitmap: Bitmap): Result<Boolean>
 
+    suspend fun deleteComment(comment: Comment): Result<Boolean>
+
     suspend fun createOrder(order: Order): Result<String>
 
     suspend fun getOrder(orderId: Long): Result<OrderLists>
