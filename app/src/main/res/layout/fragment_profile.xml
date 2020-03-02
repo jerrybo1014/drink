@@ -121,6 +121,15 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/line_add_order">
 
+                    <View
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:onClick="@{() -> viewModel.allCommentStatus()}"
+                        app:layout_constraintBottom_toBottomOf="@+id/image_profile_all_comment"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/image_profile_all_comment" />
+
+
                     <ImageView
                         android:id="@+id/image_profile_all_comment"
                         android:layout_width="26dp"
@@ -132,6 +141,7 @@
                         android:tint="@color/White"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
+
 
                     <TextView
                         android:id="@+id/textView_all_comments"
@@ -170,7 +180,6 @@
                         android:layout_width="0dp"
                         android:layout_height="0dp"
                         android:layout_marginEnd="8dp"
-                        android:onClick="@{() -> viewModel.allCommentStatus()}"
                         android:src="@drawable/profile_fold_arrow"
                         android:tint="@color/text_color_hint"
                         app:layout_constraintBottom_toBottomOf="@+id/textView_all_comments"
@@ -204,6 +213,14 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     app:layout_constraintTop_toBottomOf="@+id/constraintLayout4">
+
+                    <View
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:onClick="@{() -> viewModel.allOrderStatus()}"
+                        app:layout_constraintBottom_toBottomOf="@+id/image_profile_all_otder"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/image_profile_all_otder" />
 
                     <ImageView
                         android:id="@+id/image_profile_all_otder"
@@ -255,7 +272,6 @@
                         android:layout_width="0dp"
                         android:layout_height="0dp"
                         android:layout_marginEnd="8dp"
-                        android:onClick="@{() -> viewModel.allOrderStatus()}"
                         android:tint="@color/text_color_hint"
                         android:src="@drawable/profile_fold_arrow"
                         app:layout_constraintBottom_toBottomOf="@+id/textView_all_orders"

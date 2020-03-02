@@ -155,25 +155,30 @@
                         android:layout_height="wrap_content"
                         android:maxLength="10"
                         android:textSize="16dp"
+                        android:hint="請輸入飲品名稱"
                         android:text="@={viewModel.newDrinkName}"
                         android:visibility="@{viewModel.addNewDrink == true ? View.VISIBLE:View.GONE}"
                         android:layout_marginStart="8dp"
                         app:layout_constraintBaseline_toBaselineOf="@+id/text_drink"
                         app:layout_constraintStart_toEndOf="@+id/text_drink" />
 
-                    <TextView
+                    <ImageView
                         android:id="@+id/text_cancel_new_drink"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="取消"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        app:layout_constraintDimensionRatio="1"
+                        android:layout_marginStart="8dp"
+                        android:fontFamily="@font/noto_sans"
+                        android:tint="#CC0000"
+                        android:onClick="@{() -> viewModel.cancelAddNewDrink()}"
+                        android:padding="4dp"
+                        android:src="@drawable/close_1"
                         android:textSize="16dp"
                         android:visibility="@{viewModel.addNewDrink == true ? View.VISIBLE:View.GONE}"
-                        android:fontFamily="@font/noto_sans"
-                        android:layout_marginStart="8dp"
-                        android:padding="4dp"
-                        android:onClick="@{() -> viewModel.cancelAddNewDrink()}"
-                        app:layout_constraintBaseline_toBaselineOf="@+id/edit_new_drink"
-                        app:layout_constraintStart_toEndOf="@+id/edit_new_drink" />
+
+                        app:layout_constraintBottom_toBottomOf="@+id/image_drink_post_icon"
+                        app:layout_constraintStart_toEndOf="@+id/edit_new_drink"
+                        app:layout_constraintTop_toTopOf="@+id/image_drink_post_icon" />
 
                     <ImageView
                         android:id="@+id/image_ice_post_icon"
