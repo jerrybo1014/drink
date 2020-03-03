@@ -102,11 +102,6 @@ class SignInFragment : Fragment() {
         return binding.root
     }
 
-
-    private fun leaveSignIn(){
-//            findNavController().navigate(R.id.action_global_homeFragment)
-    }
-
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         // Pass the activity result back to the Facebook SDK
@@ -135,8 +130,7 @@ class SignInFragment : Fragment() {
         auth.signInWithCredential(credential)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
-                    leaveSignIn()
-//                    this.dismiss()
+
                     // Sign in success, update UI with the signed-in user's information
                     Log.d(TAG, "signInWithCredential:success")
                 } else {
@@ -157,8 +151,7 @@ class SignInFragment : Fragment() {
         auth.signInWithCredential(credential)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
-                    leaveSignIn()
-//                    this.dismiss()
+
                     // Sign in success, update UI with the signed-in user's information
                     Log.d(TAG, "signInWithCredential:success")
                     val user = auth.currentUser
