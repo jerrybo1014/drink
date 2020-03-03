@@ -32,7 +32,6 @@
 <!--    eceff1-->
     <color name="app_button">#63abb6</color>
     <color name="app_title">#603913</color>
-    #603913
     <!--  #c8ffff   -->
     <!--  #95dde8   -->
     <!--  #63abb6   -->
@@ -40,5 +39,8 @@
 
     <color name="text_color">#3f3a3a</color>
     <color name="text_color_hint">#646464</color>
+
+
+    <color name="app_color_theme">#96DEE9</color>
 
 </resources>

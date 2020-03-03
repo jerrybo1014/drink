@@ -46,7 +46,7 @@ class AddOrderFragment : DialogFragment() {
 
         viewModel.getStoreMenuResult()
 
-        binding.spinnerDrink.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
+        binding.addOrderSpinnerDrink.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
             override fun onNothingSelected(parent: AdapterView<*>?) {
             }
             override fun onItemSelected(
@@ -67,7 +67,7 @@ class AddOrderFragment : DialogFragment() {
         val sugarAdapter = SugarAddOrderAdapter(viewModel)
         val iceAdapter = IceAddOrderAdapter(viewModel)
 
-        binding.recyclerIce.adapter = iceAdapter
+        binding.addOrderRecyclerIce.adapter = iceAdapter
         binding.recyclerSugar.adapter = sugarAdapter
 
         sugarAdapter.submitList(listSugar)

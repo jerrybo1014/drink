@@ -55,14 +55,11 @@ class PostFragment : Fragment() {
 
     lateinit var binding: FragmentPostBinding
     private val PICK_IMAGE_REQUEST = 3
-    private val TAKE_PHOTO_REQUEST = 6
     private val MY_PERMISSIONS_CAMERA = 10
     private val MY_PERMISSIONS_READ_EXTERNAL_STORAGE = 12
     private var filePath: Uri? = null
-//    private val REQUEST_IMAGE_CAPTURE = 1
     private val REQUEST_TAKE_PHOTO = 1
     lateinit var currentPhotoPath: String
-    private var fileName = ""
     private var TAG = "jerryTest"
     private var photoURI: Uri? = null
 

@@ -24,7 +24,7 @@
             android:padding="16dp"
             android:clickable="true"
             android:background="@drawable/shape_corner_r"
-            android:backgroundTint="#FFFFFF"
+            android:backgroundTint="@color/White"
             android:layout_marginHorizontal="16dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -35,102 +35,88 @@
                 android:id="@+id/add_order_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="新增品項"
-                android:textSize="20dp"
+                android:text="@string/add_order_dialog_title"
+                android:textSize="@dimen/text_title"
                 android:fontFamily="@font/noto_sans"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
-                android:id="@+id/image_drink"
-                android:layout_width="18dp"
-                android:layout_height="18dp"
-                android:src="@drawable/drink_icon"
-                android:tint="@color/myColorPrimaryDark"
-                app:layout_constraintBottom_toBottomOf="@+id/text_drink"
+                android:id="@+id/add_order_image_drink"
+                android:src="@drawable/cocktail"
+                app:layout_constraintBottom_toBottomOf="@+id/add_order_text_drink"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/text_drink" />
+                app:layout_constraintTop_toTopOf="@+id/add_order_text_drink"
+                style="@style/app_icon_mid" />
 
             <TextView
-                android:id="@+id/text_drink"
+                android:id="@+id/add_order_text_drink"
                 style="@style/post_text_title"
                 android:text="@string/post_drink"
-                android:textSize="16dp"
+                android:textSize="@dimen/text_max"
                 android:fontFamily="@font/noto_sans"
-                app:layout_constraintStart_toEndOf="@+id/image_drink"
+                app:layout_constraintStart_toEndOf="@+id/add_order_image_drink"
                 app:layout_constraintTop_toBottomOf="@+id/add_order_title" />
 
             <Spinner
-                android:id="@+id/spinner_drink"
+                android:id="@+id/add_order_spinner_drink"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:entries="@{viewModel.displayStoreDrink}"
-                android:paddingStart="12dp"
-                android:paddingTop="16dp"
-                android:paddingEnd="12dp"
-                android:paddingBottom="16dp"
-                android:prompt="@string/spinner_store"
-                android:textSize="16dp"
-                android:fontFamily="@font/noto_sans"
-                android:spinnerMode="dropdown"
-
-                app:layout_constraintBottom_toBottomOf="@+id/text_drink"
+                app:layout_constraintBottom_toBottomOf="@+id/add_order_text_drink"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/text_drink"
-                app:layout_constraintTop_toTopOf="@+id/text_drink" />
+                app:layout_constraintStart_toEndOf="@+id/add_order_text_drink"
+                app:layout_constraintTop_toTopOf="@+id/add_order_text_drink"
+                style="@style/add_order_drink_spinner" />
 
             <ImageView
-                android:id="@+id/image_ice"
-                android:layout_width="18dp"
-                android:layout_height="18dp"
+                android:id="@+id/add_order_image_ice"
+                style="@style/app_icon_mid"
                 android:src="@drawable/ice_cube"
-                android:tint="@color/myColorPrimaryDark"
-                app:layout_constraintBottom_toBottomOf="@+id/text_ice"
+                app:layout_constraintBottom_toBottomOf="@+id/add_order_text_ice"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/text_ice" />
+                app:layout_constraintTop_toTopOf="@+id/add_order_text_ice" />
 
             <TextView
-                android:id="@+id/text_ice"
+                android:id="@+id/add_order_text_ice"
                 style="@style/post_text_title"
                 android:text="@string/post_ice"
                 android:textSize="16dp"
                 android:fontFamily="@font/noto_sans"
-                app:layout_constraintStart_toEndOf="@id/image_ice"
-                app:layout_constraintTop_toBottomOf="@+id/text_drink" />
+                app:layout_constraintStart_toEndOf="@id/add_order_image_ice"
+                app:layout_constraintTop_toBottomOf="@+id/add_order_text_drink" />
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recycler_ice"
+                android:id="@+id/add_order_recycler_ice"
                 android:layout_width="0dp"
                 android:layout_height="30dp"
                 android:layout_marginStart="6dp"
                 android:orientation="horizontal"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                app:layout_constraintBottom_toBottomOf="@+id/text_ice"
+                app:layout_constraintBottom_toBottomOf="@+id/add_order_text_ice"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/text_ice"
-                app:layout_constraintTop_toTopOf="@+id/text_ice" />
+                app:layout_constraintStart_toEndOf="@+id/add_order_text_ice"
+                app:layout_constraintTop_toTopOf="@+id/add_order_text_ice" />
 
             <ImageView
-                android:id="@+id/image_sugar"
-                android:layout_width="18dp"
-                android:layout_height="18dp"
+                android:id="@+id/add_order_image_sugar"
+                style="@style/app_icon_mid"
                 android:src="@drawable/sugar"
-                android:tint="@color/myColorPrimaryDark"
-                app:layout_constraintBottom_toBottomOf="@+id/text_sugar"
+                app:layout_constraintBottom_toBottomOf="@+id/add_order_text_sugar"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/text_sugar" />
+                app:layout_constraintTop_toTopOf="@+id/add_order_text_sugar" />
 
             <TextView
-                android:id="@+id/text_sugar"
+                android:id="@+id/add_order_text_sugar"
                 style="@style/post_text_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/post_sugar"
                 android:textSize="16dp"
                 android:fontFamily="@font/noto_sans"
-                app:layout_constraintStart_toEndOf="@id/image_ice"
-                app:layout_constraintTop_toBottomOf="@+id/text_ice" />
+                app:layout_constraintStart_toEndOf="@id/add_order_image_ice"
+                app:layout_constraintTop_toBottomOf="@+id/add_order_text_ice" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler_sugar"
@@ -139,10 +125,10 @@
                 android:layout_marginStart="6dp"
                 android:orientation="horizontal"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                app:layout_constraintBottom_toBottomOf="@+id/text_sugar"
+                app:layout_constraintBottom_toBottomOf="@+id/add_order_text_sugar"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/text_sugar"
-                app:layout_constraintTop_toTopOf="@+id/text_sugar" />
+                app:layout_constraintStart_toEndOf="@+id/add_order_text_sugar"
+                app:layout_constraintTop_toTopOf="@+id/add_order_text_sugar" />
 
             <ImageView
                 android:id="@+id/image_qyt_add_order"
@@ -161,7 +147,7 @@
                 android:layout_height="wrap_content"
                 android:text="數量"
                 app:layout_constraintStart_toEndOf="@+id/image_qyt_add_order"
-                app:layout_constraintTop_toBottomOf="@+id/text_sugar" />
+                app:layout_constraintTop_toBottomOf="@+id/add_order_text_sugar" />
 
             <ImageView
                 android:id="@+id/image_note_add_order"

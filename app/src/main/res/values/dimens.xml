@@ -1,3 +1,13 @@
 <resources>
     <dimen name="fab_margin">16dp</dimen>
+
+    <dimen name="text_min">12dp</dimen>
+    <dimen name="text_mid">14dp</dimen>
+    <dimen name="text_max">16dp</dimen>
+    <dimen name="text_title">20dp</dimen>
+
+    <dimen name="margin_min">4dp</dimen>
+    <dimen name="margin_mid">8dp</dimen>
+    <dimen name="margin_max">16dp</dimen>
+
 </resources>
