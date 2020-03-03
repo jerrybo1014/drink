@@ -231,6 +231,8 @@ class ProfileFragment : Fragment() {
                     RequestOptions().circleCrop()
                 ).into(profile_avatar)
                 viewModel.imageUri.value = filePath
+
+
             } catch (e: IOException) {
                 e.printStackTrace()
             }

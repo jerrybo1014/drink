@@ -1,8 +1,8 @@
 package app.jerry.drink.radar
 
-import android.Manifest
 import android.content.Intent
-import android.content.pm.PackageManager
+import android.content.res.Resources
+import android.graphics.Bitmap
 import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
@@ -10,9 +10,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AlertDialog
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
+import androidx.core.graphics.drawable.toBitmap
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -23,10 +21,8 @@ import app.jerry.drink.MainActivity
 import app.jerry.drink.NavigationDirections
 import app.jerry.drink.R
 import app.jerry.drink.databinding.FragmentRadarBinding
-import app.jerry.drink.dataclass.Store
 import app.jerry.drink.dataclass.StoreLocation
 import app.jerry.drink.ext.getVmFactory
-import app.jerry.drink.home.HighScoreAdapter
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.*
@@ -155,7 +151,7 @@ class RadarFragment : Fragment(), GoogleMap.OnMarkerClickListener, OnMapReadyCal
         val radarStoreDrinkAdapter = RadarStoreDrinkAdapter()
 
         binding.recyclerStoreHighScore.adapter = storeHighScoreAdapter
-        binding.recyclerMapDrinkRank.adapter=radarStoreDrinkAdapter
+        binding.recyclerMapDrinkRank.adapter = radarStoreDrinkAdapter
 
         viewModel.navigationToDetail.observe(this, Observer {
             it?.let {
@@ -225,7 +221,7 @@ class RadarFragment : Fragment(), GoogleMap.OnMarkerClickListener, OnMapReadyCal
         fusedLocationProviderClient =
             LocationServices.getFusedLocationProviderClient((activity as MainActivity))
         fusedLocationProviderClient.lastLocation.addOnSuccessListener {
-            Log.d("fusedLocationProviderClient", "${it.latitude}")
+
         }
 
 //        val myLocation = myLocationService.
@@ -281,19 +277,36 @@ class RadarFragment : Fragment(), GoogleMap.OnMarkerClickListener, OnMapReadyCal
                             , storeLocation.longitude
                         )
 
+                        // if (isAdded) to avoid fragment not attach context
+//                            val iconDraw =
+//                                if (isAdded){
+
+                        val widthIcon = Resources.getSystem().displayMetrics.widthPixels / 10
+                        val bitmapDraw =
+                            DrinkApplication.instance.getDrawable(R.drawable.drink_map_icon_1)
+                        val b = bitmapDraw?.toBitmap()
+                        val smallMarker = Bitmap.createScaledBitmap(b!!, widthIcon, widthIcon, false)
+                        val iconDraw = BitmapDescriptorFactory.fromBitmap(smallMarker)
+//                            }else{
+
+//                            }
+
 //                        if (queryResult.latitude in lowerLat..greaterLat
 //                            && queryResult.longitude in lowerLon..greaterLon
 //                        ) {
-                            val addMarker = googleMap.addMarker(
-                                MarkerOptions().position(queryResult)
-                                    .flat(true)
-                                    .alpha(0.5F)
+
+
+                        val addMarker = googleMap.addMarker(
+                            MarkerOptions().position(queryResult)
+                                .flat(true)
+                                .alpha(0.5F)
+//                                .icon(iconDraw)
 //                                    .snippet(storeLocation.branchName)
 //                                    .title(storeLocation.store.storeName)
-//                                .icon(BitmapDescriptorFactory.fromResource(R.drawable.bottom_navigation_home_1))
+//                                .icon(BitmapDescriptorFactory.fromResource(R.drawable.bottom_navigation_home_1).)
 //                                .icon(iconDraw)
-                            )
-                            addMarker.tag = storeLocation
+                        )
+                        addMarker.tag = storeLocation
 //                        }
 
                     }

@@ -34,7 +34,6 @@ import app.jerry.drink.DrinkApplication
 import app.jerry.drink.MainActivity
 import app.jerry.drink.R
 import app.jerry.drink.databinding.FragmentPostBinding
-import app.jerry.drink.ext.PhotoBitmapUtils
 import app.jerry.drink.ext.getBitmap
 import app.jerry.drink.ext.getVmFactory
 import com.bumptech.glide.Glide

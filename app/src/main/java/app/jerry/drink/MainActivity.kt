@@ -44,18 +44,18 @@ class MainActivity : AppCompatActivity() {
     private val MY_PERMISSIONS_LOCATION = 100
     private val auth = FirebaseAuth.getInstance()
     lateinit var loctionGps: Location
+    lateinit var intentOrder: Intent
     val viewModel by viewModels<MainActivityViewModel> { getVmFactory() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
 
 //        setSupportActionBar(toolbar)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
         val navController = findNavController(R.id.myNavHostFragment)
         binding.bottomNavigationView.setupWithNavController(navController)
-        fab.setOnClickListener { view ->
+        fab.setOnClickListener {
             //            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
 //                .setAction("Action", null).show()
             navController.navigate(R.id.action_global_postFragment)
@@ -64,18 +64,6 @@ class MainActivity : AppCompatActivity() {
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
 
-
-        val intent = intent
-        if (null != intent.extras) {
-            if (null != intent.data) {
-                val uri = intent.data
-                val orderId = uri!!.getQueryParameter("id")
-                orderId?.let {
-                    navController.navigate(NavigationDirections.actionGlobalOrderFragment(orderId))
-                }
-
-            }
-        }
 
         setupNavController()
 
@@ -116,20 +104,17 @@ class MainActivity : AppCompatActivity() {
 //            }
 //            false
 //        }
-
+        intentOrder = intent
         val authListener: FirebaseAuth.AuthStateListener =
             FirebaseAuth.AuthStateListener { auth: FirebaseAuth ->
                 val user: FirebaseUser? = auth.currentUser
-
                 if (user == null) {
-                    supportFragmentManager.let {
-                        SignInFragment().show(it, "")
-                    }
+                    navController.navigate(R.id.action_global_signInFragment)
                     Log.d(TAG, "signInWithCredential:no")
                 } else {
                     viewModel.checkUserResult()
+                    intentReceiver()
                 }
-
             }
 
         FirebaseAuth.getInstance().addAuthStateListener(authListener)
@@ -199,6 +184,20 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    private fun intentReceiver(){
+        if (null != intentOrder.extras) {
+            if (null != intentOrder.data) {
+                val uri = intentOrder.data
+                val orderId = uri?.getQueryParameter("id")
+                orderId?.let {
+                    findNavController(R.id.myNavHostFragment).navigate(NavigationDirections.actionGlobalOrderFragment(orderId))
+                }
+            }
+        }else{
+            findNavController(R.id.myNavHostFragment).navigate(R.id.action_global_homeFragment)
+        }
+    }
+
     private fun setupNavController() {
         findNavController(R.id.myNavHostFragment).addOnDestinationChangedListener { navController: NavController, _: NavDestination, _: Bundle? ->
             viewModel.currentFragmentType.value = when (navController.currentDestination?.id) {
@@ -209,6 +208,7 @@ class MainActivity : AppCompatActivity() {
                 R.id.detailFragment -> CurrentFragmentType.DETAIL
                 R.id.homeSearchFragment -> CurrentFragmentType.SEARCH
                 R.id.postFragment -> CurrentFragmentType.POST
+                R.id.signInFragment -> CurrentFragmentType.SIGNIN
                 else -> viewModel.currentFragmentType.value
             }
         }
@@ -348,6 +348,8 @@ class MainActivity : AppCompatActivity() {
             null
         }
     }
+
+
 
 
 }

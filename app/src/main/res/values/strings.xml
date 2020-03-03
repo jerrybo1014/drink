@@ -16,6 +16,7 @@
     <string name="label_detail">飲品詳情</string>
     <string name="label_home_search">飲品搜尋</string>
     <string name="label_post">發表評論</string>
+    <string name="label_sign_in">登入</string>
 
     <!-- post page -->
     <string name="post_store">店家</string>

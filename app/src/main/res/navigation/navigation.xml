@@ -51,6 +51,8 @@
         app:destination="@id/radarFragment"
         app:popUpTo="@id/navigation"
         app:popUpToInclusive="true"/>
+
+
     <fragment
         android:id="@+id/detailFragment"
         android:name="app.jerry.drink.detail.DetailFragment"
@@ -89,4 +91,14 @@
     <action
         android:id="@+id/action_global_addOrderFragement"
         app:destination="@id/addOrderFragement" />
+    <fragment
+        android:id="@+id/signInFragment"
+        android:name="app.jerry.drink.signin.SignInFragment"
+        android:label="SignInFragment" />
+    <action
+        android:id="@+id/action_global_signInFragment"
+        app:destination="@id/signInFragment"
+        app:popUpTo="@id/navigation"
+        app:popUpToInclusive="true"/>
+
 </navigation>

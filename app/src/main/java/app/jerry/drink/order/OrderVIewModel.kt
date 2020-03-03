@@ -43,7 +43,7 @@ class OrderVIewModel(private val repository: DrinkRepository, private val orderI
         get() = _navigationToRadar
 
     val userCurrent = MutableLiveData<User>()
-
+    var checkUser = MutableLiveData<Boolean>()
     // status: The internal MutableLiveData that stores the status of the most recent request
     private val _status = MutableLiveData<LoadApiStatus>()
 
@@ -171,6 +171,40 @@ class OrderVIewModel(private val repository: DrinkRepository, private val orderI
 //            }
 //            _refreshStatus.value = false
 //        }
+
+    }
+
+    fun checkUserResult() {
+        coroutineScope.launch {
+
+            _status.value = LoadApiStatus.LOADING
+
+            val result = repository.checkUser()
+
+            checkUser.value = when (result) {
+                is Result.Success -> {
+                    _error.value = null
+                    _status.value = LoadApiStatus.DONE
+                    result.data
+                }
+                is Result.Fail -> {
+                    _error.value = result.error
+                    _status.value = LoadApiStatus.ERROR
+                    null
+                }
+                is Result.Error -> {
+                    _error.value = result.exception.toString()
+                    _status.value = LoadApiStatus.ERROR
+                    null
+                }
+                else -> {
+                    _error.value = DrinkApplication.instance.getString(R.string.you_know_nothing)
+                    _status.value = LoadApiStatus.ERROR
+                    null
+                }
+            }
+            _refreshStatus.value = false
+        }
 
     }
 

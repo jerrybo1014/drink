@@ -113,7 +113,6 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/recycler_order_list" />
 
-
                     <ImageView
                         android:id="@+id/image_order_id"
                         style="@style/add_order_icon_style"

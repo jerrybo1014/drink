@@ -26,6 +26,10 @@ import app.jerry.drink.NavigationDirections
 import app.jerry.drink.R
 import app.jerry.drink.databinding.FragmentOrderBinding
 import app.jerry.drink.ext.getVmFactory
+import app.jerry.drink.signin.SignInFragment
+import app.jerry.drink.util.Logger
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 
 
 class OrderFragment : Fragment() {
@@ -51,6 +55,26 @@ class OrderFragment : Fragment() {
 
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
+
+
+//        val authListener: FirebaseAuth.AuthStateListener =
+//            FirebaseAuth.AuthStateListener { auth: FirebaseAuth ->
+//                val user: FirebaseUser? = auth.currentUser
+//
+//                if (user == null) {
+//                    childFragmentManager.let {
+//                        SignInFragment().show(it, "")
+//                    }
+//                    Logger.d("signInWithCredential:no")
+//                } else {
+//                    viewModel.checkUserResult()
+//                }
+//            }
+//        FirebaseAuth.getInstance().addAuthStateListener(authListener)
+
+
+
+
 
         binding.imageAddOrder.setOnClickListener {
             childFragmentManager.let {
