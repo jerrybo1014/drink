@@ -39,7 +39,9 @@ class SignInFragment : Fragment() {
     lateinit var binding: FragmentSignInBinding
     val TAG = "jerryTest"
     private val auth = FirebaseAuth.getInstance()
+    private val GOOGLE_SIGN_IN = 102
     lateinit var callbackManager: CallbackManager
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -48,7 +50,6 @@ class SignInFragment : Fragment() {
         binding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_sign_in, container, false
         )
-
 
 //        this.dialog?.setOnKeyListener(DialogInterface.OnKeyListener { _, keyCode, _ ->
 //            if (keyCode == KeyEvent.KEYCODE_BACK){
@@ -66,7 +67,7 @@ class SignInFragment : Fragment() {
 
         fun signInGoogle() {
             val signInIntent = mGoogleSignInClient.signInIntent
-            startActivityForResult(signInIntent, 102)
+            startActivityForResult(signInIntent, GOOGLE_SIGN_IN)
         }
 
         fun signInFb() {
@@ -107,11 +108,10 @@ class SignInFragment : Fragment() {
         // Pass the activity result back to the Facebook SDK
         callbackManager.onActivityResult(requestCode, resultCode, data)
 
-        if (requestCode == 102){
+        if (requestCode == GOOGLE_SIGN_IN){
             val task = GoogleSignIn.getSignedInAccountFromIntent(data)
             try {
                 // Google Sign In was successful, authenticate with Firebase
-//                val task = GoogleSignIn.getSignedInAccountFromIntent(data)
                 val account = task.getResult(ApiException::class.java)
                 firebaseAuthWithGoogle(account!!)
             } catch (e: ApiException) {
@@ -130,7 +130,6 @@ class SignInFragment : Fragment() {
         auth.signInWithCredential(credential)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
-
                     // Sign in success, update UI with the signed-in user's information
                     Log.d(TAG, "signInWithCredential:success")
                 } else {
@@ -151,11 +150,10 @@ class SignInFragment : Fragment() {
         auth.signInWithCredential(credential)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
-
+                    Toast.makeText(DrinkApplication.context, "成功登入", Toast.LENGTH_SHORT).show()
                     // Sign in success, update UI with the signed-in user's information
                     Log.d(TAG, "signInWithCredential:success")
                     val user = auth.currentUser
-                    Toast.makeText(DrinkApplication.context, "成功登入", Toast.LENGTH_SHORT).show()
                     Log.d(TAG, "signInWithCredential:success ${user!!.email}")
                     Log.d(TAG, "signInWithCredential:success ${user.displayName}")
                     Log.d(TAG, "signInWithCredential:success ${user.uid}")
