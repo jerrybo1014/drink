@@ -14,8 +14,8 @@ class HomeSearchDrinkAdapter(private val onClickListener: OnClickListener ) :
         DiffCallback
     ) {
 
-    class OnClickListener(val clickListener: (drinkDetail: DrinkDetail) -> Unit) {
-        fun onClick(drinkDetail: DrinkDetail) = clickListener(drinkDetail)
+    class OnClickListener(val clickListener: (drink: Drink) -> Unit) {
+        fun onClick(drink: Drink) = clickListener(drink)
     }
 
     class SearchDrinkViewHolder(private var binding: ItemSearchDrinkBinding) :
@@ -23,9 +23,8 @@ class HomeSearchDrinkAdapter(private val onClickListener: OnClickListener ) :
         fun bind(drink: Drink, onClickListener: OnClickListener) {
 
 
-            val drinkDetail = DrinkDetail(drink, drink.store)
             binding.drink = drink
-            binding.root.setOnClickListener { onClickListener.onClick(drinkDetail) }
+            binding.root.setOnClickListener { onClickListener.onClick(drink) }
             binding.executePendingBindings()
         }
     }

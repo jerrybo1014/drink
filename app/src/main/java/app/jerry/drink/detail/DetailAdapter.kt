@@ -23,9 +23,6 @@ class DetailAdapter(val viewModel: DetailViewModel) :
                 viewModel.deleteComment(comment)
                 true
             }
-//            binding.detailImage = string
-            // This is important, because it forces the data binding to execute immediately,
-            // which allows the RecyclerView to make the correct view size measurements
             binding.executePendingBindings()
         }
     }
@@ -46,10 +43,6 @@ class DetailAdapter(val viewModel: DetailViewModel) :
         }
     }
 
-    /**
-     * Create new [RecyclerView] item views (invoked by the layout manager)
-     */
-
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
@@ -58,10 +51,6 @@ class DetailAdapter(val viewModel: DetailViewModel) :
             ItemDetailCommentBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         , viewModel)
     }
-
-    /**
-     * Replaces the contents of a view (invoked by the layout manager)
-     */
 
     override fun onBindViewHolder(holder: DetailViewHolder, position: Int) {
         val comment = getItem(position)

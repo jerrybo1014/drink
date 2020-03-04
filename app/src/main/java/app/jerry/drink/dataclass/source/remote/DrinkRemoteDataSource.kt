@@ -788,14 +788,13 @@ object DrinkRemoteDataSource : DrinkDataSource {
 
         }
 
-    override suspend fun getDetailComment(drinkDetail: DrinkDetail): Result<List<Comment>> =
+    override suspend fun getDetailComment(drink: Drink): Result<List<Comment>> =
         suspendCoroutine { continuation ->
             val comments = FirebaseFirestore.getInstance().collection(PATH_Comments)
             val users = FirebaseFirestore.getInstance().collection(PATH_Users)
 
-
             comments
-                .whereEqualTo("drink", drinkDetail.drink)
+                .whereEqualTo("drink", drink)
                 .get()
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {

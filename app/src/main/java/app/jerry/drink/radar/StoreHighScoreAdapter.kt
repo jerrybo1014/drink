@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import app.jerry.drink.databinding.ItemHighScoreBinding
 import app.jerry.drink.databinding.ItemStoreHighScoreBinding
+import app.jerry.drink.dataclass.Drink
 import app.jerry.drink.dataclass.DrinkDetail
 import app.jerry.drink.dataclass.DrinkRank
 
@@ -16,16 +17,14 @@ class StoreHighScoreAdapter(private val onClickListener: StoreHighScoreAdapter.O
         DiffCallback
     ) {
 
-    class OnClickListener(val clickListener: (drinkDetail: DrinkDetail) -> Unit) {
-        fun onClick(drinkDetail: DrinkDetail) = clickListener(drinkDetail)
+    class OnClickListener(val clickListener: (drink: Drink) -> Unit) {
+        fun onClick(drink: Drink) = clickListener(drink)
     }
 
     class StoreHighScoreViewHolder(private var binding: ItemStoreHighScoreBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(drinkRank: DrinkRank, onClickListener: StoreHighScoreAdapter.OnClickListener) {
 
-            val drinkDetail = DrinkDetail(drinkRank.drink
-                , drinkRank.store)
 //            binding.root.setOnClickListener { onClickListener.onClick(drinkDetail) }
             val imageRandom = (Math.random() * drinkRank.commentList.size).toInt()
             binding.image = drinkRank.commentList[imageRandom].drinkImage

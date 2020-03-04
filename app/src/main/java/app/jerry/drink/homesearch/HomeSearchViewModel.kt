@@ -22,7 +22,7 @@ class HomeSearchViewModel(private val repository: DrinkRepository) : ViewModel()
     val drinkList: LiveData<List<Drink>>
         get() = _drinkList
 
-    val navigationToDetail = MutableLiveData<DrinkDetail>()
+    val navigationToDetail = MutableLiveData<Drink>()
     val searchEditText = MutableLiveData<String>()
 
     // status: The internal MutableLiveData that stores the status of the most recent request
@@ -90,8 +90,8 @@ class HomeSearchViewModel(private val repository: DrinkRepository) : ViewModel()
 
 
 
-    fun navigationToDetail(drinkDetail: DrinkDetail) {
-        navigationToDetail.value = drinkDetail
+    fun navigationToDetail(drink: Drink) {
+        navigationToDetail.value = drink
     }
 
     fun onDetailNavigated() {

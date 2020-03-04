@@ -6,10 +6,7 @@ import androidx.lifecycle.ViewModel
 import app.jerry.drink.DrinkApplication
 import app.jerry.drink.network.LoadApiStatus
 import app.jerry.drink.R
-import app.jerry.drink.dataclass.Comment
-import app.jerry.drink.dataclass.DrinkDetail
-import app.jerry.drink.dataclass.DrinkRank
-import app.jerry.drink.dataclass.Result
+import app.jerry.drink.dataclass.*
 import app.jerry.drink.dataclass.source.DrinkRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -30,7 +27,7 @@ class HomeViewModel(private val repository: DrinkRepository) : ViewModel() {
         get() = _newDrinkRank
 
 
-    val navigationToDetail = MutableLiveData<DrinkDetail>()
+    val navigationToDetail = MutableLiveData<Drink>()
 
     // status: The internal MutableLiveData that stores the status of the most recent request
     private val _status = MutableLiveData<LoadApiStatus>()
@@ -146,8 +143,8 @@ class HomeViewModel(private val repository: DrinkRepository) : ViewModel() {
     }
 
 
-    fun navigationToDetail(drinkDetail: DrinkDetail) {
-        navigationToDetail.value = drinkDetail
+    fun navigationToDetail(drink: Drink) {
+        navigationToDetail.value = drink
     }
 
     fun onDetailNavigated() {

@@ -58,8 +58,8 @@
         android:name="app.jerry.drink.detail.DetailFragment"
         android:label="DetailFragment" >
         <argument
-            android:name="drinkDetail"
-            app:argType="app.jerry.drink.dataclass.DrinkDetail" />
+            android:name="Drink"
+            app:argType="app.jerry.drink.dataclass.Drink" />
     </fragment>
 
     <fragment

@@ -48,7 +48,7 @@ class RadarViewModel(private val repository: DrinkRepository, private val store:
         value = false
     }
 
-    val navigationToDetail = MutableLiveData<DrinkDetail>()
+    val navigationToDetail = MutableLiveData<Drink>()
 
     // status: The internal MutableLiveData that stores the status of the most recent request
     private val _status = MutableLiveData<LoadApiStatus>()
@@ -255,8 +255,8 @@ init {
         }
     }
 
-    fun navigationToDetail(drinkDetail: DrinkDetail) {
-        navigationToDetail.value = drinkDetail
+    fun navigationToDetail(drink: Drink) {
+        navigationToDetail.value = drink
     }
 
     fun onDetailNavigated() {

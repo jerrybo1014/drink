@@ -74,8 +74,8 @@ class DefaultDrinkRepository(private val remoteDataSource: DrinkDataSource,
         return remoteDataSource.uploadAvatar(bitmap)
     }
 
-    override suspend fun getDetailComment(drinkDetail: DrinkDetail): Result<List<Comment>> {
-        return remoteDataSource.getDetailComment(drinkDetail)
+    override suspend fun getDetailComment(drink: Drink): Result<List<Comment>> {
+        return remoteDataSource.getDetailComment(drink)
     }
 
     override suspend fun getUserComment(): Result<List<Comment>> {

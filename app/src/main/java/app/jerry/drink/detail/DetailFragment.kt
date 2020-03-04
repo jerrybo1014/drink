@@ -31,12 +31,12 @@ class DetailFragment : Fragment() {
         getVmFactory(
             DetailFragmentArgs.fromBundle(
                 arguments!!
-            ).drinkDetail
+            ).Drink
         )
     }
 
     lateinit var binding: FragmentDetailBinding
-    val MY_PERMISSIONS_LOCATION = 300
+    private val MY_PERMISSIONS_LOCATION = 300
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -55,7 +55,7 @@ class DetailFragment : Fragment() {
         binding.detailLayoutNavigationToInternet.setOnClickListener {
 
 //            viewModel.drinkInformation.observe(this, Observer { drinkInformation ->
-                val uri = Uri.parse(viewModel.drinkInformation.value?.store?.uri)
+                val uri = Uri.parse(viewModel.drink.store.uri)
                 val intent = Intent(Intent.ACTION_VIEW, uri)
 //            if (intent.resolveActivity(getPackageManager()) != null) {
 //                final ComponentName componentName = intent.resolveActivity(getPackageManager())
@@ -146,9 +146,6 @@ class DetailFragment : Fragment() {
         }
 
     }
-
-
-
 
     override fun onDestroy() {
         super.onDestroy()

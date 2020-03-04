@@ -16,18 +16,17 @@ class NewCommentAdapter(private val onClickListener: OnClickListener ) :
         DiffCallback
     ) {
 
-    class OnClickListener(val clickListener: (drinkDetail: DrinkDetail) -> Unit) {
-        fun onClick(drinkDetail: DrinkDetail) = clickListener(drinkDetail)
+    class OnClickListener(val clickListener: (drink: Drink) -> Unit) {
+        fun onClick(drink: Drink) = clickListener(drink)
     }
 
     class NewCommentViewHolder(private var binding: ItemNewCommentBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(comment: Comment, onClickListener: OnClickListener) {
 
-            val drinkDetail = DrinkDetail(comment.drink
-                ,comment.store)
+            val drink = comment.drink
             binding.comment = comment
-            binding.root.setOnClickListener { onClickListener.onClick(drinkDetail) }
+            binding.root.setOnClickListener { onClickListener.onClick(drink) }
             binding.executePendingBindings()
         }
     }

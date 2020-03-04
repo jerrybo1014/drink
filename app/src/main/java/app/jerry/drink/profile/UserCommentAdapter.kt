@@ -16,20 +16,17 @@ class UserCommentAdapter(private val onClickListener: OnClickListener ) :
         DiffCallback
     ) {
 
-    class OnClickListener(val clickListener: (drinkDetail: DrinkDetail) -> Unit) {
-        fun onClick(drinkDetail: DrinkDetail) = clickListener(drinkDetail)
+    class OnClickListener(val clickListener: (drink: Drink) -> Unit) {
+        fun onClick(drink: Drink) = clickListener(drink)
     }
 
     class UserCommentViewHolder(private var binding: ItemUserCommentBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(comment: Comment, onClickListener: OnClickListener) {
 
-            val drinkDetail = DrinkDetail(
-                comment.drink
-                , comment.store
-            )
+            val drink = comment.drink
             binding.comment = comment
-            binding.root.setOnClickListener { onClickListener.onClick(drinkDetail) }
+            binding.root.setOnClickListener { onClickListener.onClick(drink) }
 //            binding.detailImage = string
             // This is important, because it forces the data binding to execute immediately,
             // which allows the RecyclerView to make the correct view size measurements
