@@ -18,8 +18,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
-class AddOrderViewModel(private val repository: DrinkRepository, private val orderLists: OrderLists) : ViewModel() {
-
+class AddOrderViewModel(private val repository: DrinkRepository, private val order: Order) : ViewModel() {
 
     // _allStoreMenu
     private val _allStoreMenu = MutableLiveData<List<Drink>>()
@@ -34,10 +33,10 @@ class AddOrderViewModel(private val repository: DrinkRepository, private val ord
         get() = _selectedDrink
 
     // _selectedDrink
-    private val _orderList = MutableLiveData<OrderList>()
+    private val _orderItem = MutableLiveData<OrderItem>()
 
-    val orderList: LiveData<OrderList>
-        get() = _orderList
+    val orderItem: LiveData<OrderItem>
+        get() = _orderItem
 
     private val _leave = MutableLiveData<Boolean>()
 
@@ -79,7 +78,7 @@ class AddOrderViewModel(private val repository: DrinkRepository, private val ord
 init {
     selectedQty.value = 1
     enterNote.value = ""
-    _orderList.value = OrderList("",null,null,null, null,1,"")
+    _orderItem.value = OrderItem("",null,null,null, null,1,"")
     addOrderfinished.value = false
 }
 
@@ -89,7 +88,7 @@ init {
 
             _status.value = LoadApiStatus.LOADING
 
-            val result = repository.getStoreMenu(orderLists.order!!.store!!)
+            val result = repository.getStoreMenu(order.store!!)
 
             _allStoreMenu.value = when (result) {
                 is Result.Success -> {
@@ -124,7 +123,7 @@ init {
 
             _status.value = LoadApiStatus.LOADING
 
-            val result = repository.addOrder(orderList.value!!, orderLists.order!!.id.toLong())
+            val result = repository.addOrder(_orderItem.value!!, order.id.toLong())
 
             addOrderfinished.value = when (result) {
                 is Result.Success -> {
@@ -155,8 +154,8 @@ init {
 
     fun selectedDrink(position: Int) {
         _allStoreMenu.value?.let {
-            _orderList.value!!.drink= it[position]
-            Log.d("_orderList","${orderList.value!!.drink}")
+            _orderItem.value!!.drink= it[position]
+            Log.d("_orderList","${_orderItem.value!!.drink}")
         }
     }
 
@@ -169,9 +168,9 @@ init {
         selectedIceView = view
         selectedIceView?.isSelected = true
         (selectedIceView as? TextView)?.setTextColor(DrinkApplication.context.resources.getColor(R.color.White))
-        _orderList.value?.ice = string
+        _orderItem.value?.ice = string
         selectedIce.value = string
-        Log.d("selectIceStatus","${_orderList.value}")
+        Log.d("selectIceStatus","${_orderItem.value}")
     }
 
     fun selectSugarStatus(view: View, string: String) {
@@ -180,9 +179,9 @@ init {
         selectedSugarView = view
         selectedSugarView?.isSelected = true
         (selectedSugarView as? TextView)?.setTextColor(DrinkApplication.context.resources.getColor(R.color.White))
-        _orderList.value?.sugar = string
+        _orderItem.value?.sugar = string
         selectedSugar.value = string
-        Log.d("selectIceStatus","${_orderList.value}")
+        Log.d("selectIceStatus","${_orderItem.value}")
     }
 
     val displayStoreDrink = Transformations.map(allStoreMenu) {

@@ -11,11 +11,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import app.jerry.drink.DrinkApplication
 import app.jerry.drink.databinding.ItemUserOrderBinding
-import app.jerry.drink.dataclass.DrinkDetail
 import app.jerry.drink.dataclass.Order
-import app.jerry.drink.home.NewCommentAdapter
-import androidx.core.content.ContextCompat.startActivity
-import android.content.Intent
 
 
 

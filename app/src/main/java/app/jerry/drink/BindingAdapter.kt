@@ -1,10 +1,8 @@
 package app.jerry.drink
 
-import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.ProgressBar
-import android.widget.Spinner
 import android.widget.TextView
 import androidx.core.net.toUri
 import androidx.databinding.BindingAdapter
@@ -19,7 +17,6 @@ import app.jerry.drink.homesearch.HomeSearchDrinkAdapter
 import app.jerry.drink.network.LoadApiStatus
 import app.jerry.drink.order.OrderListsAdapter
 import app.jerry.drink.post.IceAdapter
-import app.jerry.drink.post.PostStoreSpinnerAdapter
 import app.jerry.drink.post.SugarAdapter
 import app.jerry.drink.profile.UserCommentAdapter
 import app.jerry.drink.profile.UserOrderAdapter
@@ -145,7 +142,7 @@ fun bindUserOrder(recyclerView: RecyclerView, data: List<Order>?){
 }
 
 @BindingAdapter("listOrder")
-fun bindOrderLists(recyclerView: RecyclerView, data: List<OrderList>?){
+fun bindOrderLists(recyclerView: RecyclerView, data: List<OrderItem>?){
     val adapter = recyclerView.adapter as OrderListsAdapter
     adapter.submitList(data)
 }

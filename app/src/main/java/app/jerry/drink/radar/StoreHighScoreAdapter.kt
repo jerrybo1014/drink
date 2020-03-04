@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.RecyclerView
 import app.jerry.drink.databinding.ItemHighScoreBinding
 import app.jerry.drink.databinding.ItemStoreHighScoreBinding
 import app.jerry.drink.dataclass.Drink
-import app.jerry.drink.dataclass.DrinkDetail
 import app.jerry.drink.dataclass.DrinkRank
 
 class StoreHighScoreAdapter(private val onClickListener: StoreHighScoreAdapter.OnClickListener) :

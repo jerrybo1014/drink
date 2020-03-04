@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModel
 import app.jerry.drink.DrinkApplication
 import app.jerry.drink.R
 import app.jerry.drink.dataclass.Drink
-import app.jerry.drink.dataclass.DrinkDetail
 import app.jerry.drink.dataclass.Result
 import app.jerry.drink.dataclass.source.DrinkRepository
 import app.jerry.drink.network.LoadApiStatus

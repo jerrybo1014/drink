@@ -174,7 +174,7 @@
                 android:paddingBottom="4dp"
                 android:textSize="@dimen/text_max"
                 android:fontFamily="@font/noto_sans"
-                android:text="@={viewModel.convertLongToString(viewModel.orderList.qty)}"
+                android:text="@={viewModel.convertLongToString(viewModel.orderItem.qty)}"
                 android:textAlignment="center"
                 app:layout_constraintBaseline_toBaselineOf="@+id/add_order_text_qyt"
                 app:layout_constraintStart_toEndOf="@+id/add_order_text_qyt" />
@@ -188,7 +188,7 @@
                 android:textSize="@dimen/text_max"
                 android:maxLength="20"
                 android:fontFamily="@font/noto_sans"
-                android:text="@={viewModel.orderList.note}"
+                android:text="@={viewModel.orderItem.note}"
                 app:layout_constraintBaseline_toBaselineOf="@+id/add_order_text_note"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/add_order_text_note" />

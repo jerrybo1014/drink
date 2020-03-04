@@ -1,9 +1,7 @@
 package app.jerry.drink.dataclass.source
 
 import android.graphics.Bitmap
-import android.net.Uri
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import app.jerry.drink.dataclass.*
 
 interface DrinkDataSource {
@@ -26,11 +24,11 @@ interface DrinkDataSource {
 
     suspend fun getOrder(orderId: Long): Result<OrderLists>
 
-    fun getOrderIdLive(orderId: Long): LiveData<OrderLists>
+    fun getOrderLive(orderId: Long): LiveData<Order>
 
-    fun getOrderLive(orderId: Long): LiveData<List<OrderList>>
+    fun getOrderItemLive(orderId: Long): LiveData<List<OrderItem>>
 
-    suspend fun addOrder(orderList: OrderList, orderId: Long): Result<Boolean>
+    suspend fun addOrder(orderList: OrderItem, orderId: Long): Result<Boolean>
 
     suspend fun removeOrder(orderId: Long ,id: String): Result<Boolean>
 

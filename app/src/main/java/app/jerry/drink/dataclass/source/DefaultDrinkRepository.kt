@@ -1,9 +1,7 @@
 package app.jerry.drink.dataclass.source
 
 import android.graphics.Bitmap
-import android.net.Uri
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import app.jerry.drink.dataclass.*
 
 class DefaultDrinkRepository(private val remoteDataSource: DrinkDataSource,
@@ -46,15 +44,15 @@ class DefaultDrinkRepository(private val remoteDataSource: DrinkDataSource,
         return remoteDataSource.getOrder(orderId)
     }
 
-    override fun getOrderIdLive(orderId: Long): LiveData<OrderLists> {
-        return remoteDataSource.getOrderIdLive(orderId)
-    }
-
-    override fun getOrderLive(orderId: Long): LiveData<List<OrderList>> {
+    override fun getOrderLive(orderId: Long): LiveData<Order> {
         return remoteDataSource.getOrderLive(orderId)
     }
 
-    override suspend fun addOrder(orderList: OrderList, orderId: Long): Result<Boolean> {
+    override fun getOrderItemLive(orderId: Long): LiveData<List<OrderItem>> {
+        return remoteDataSource.getOrderItemLive(orderId)
+    }
+
+    override suspend fun addOrder(orderList: OrderItem, orderId: Long): Result<Boolean> {
         return remoteDataSource.addOrder(orderList, orderId)
     }
 

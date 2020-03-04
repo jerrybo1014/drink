@@ -58,7 +58,7 @@
         android:name="app.jerry.drink.detail.DetailFragment"
         android:label="DetailFragment" >
         <argument
-            android:name="Drink"
+            android:name="drink"
             app:argType="app.jerry.drink.dataclass.Drink" />
     </fragment>
 
@@ -84,8 +84,8 @@
         android:name="app.jerry.drink.order.addorder.AddOrderFragment"
         android:label="AddOrderFragement" >
         <argument
-            android:name="orderLists"
-            app:argType="app.jerry.drink.dataclass.OrderLists" />
+            android:name="order"
+            app:argType="app.jerry.drink.dataclass.Order" />
     </dialog>
 
     <action

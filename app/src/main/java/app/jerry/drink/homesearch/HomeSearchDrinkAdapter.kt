@@ -7,7 +7,6 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import app.jerry.drink.databinding.ItemSearchDrinkBinding
 import app.jerry.drink.dataclass.Drink
-import app.jerry.drink.dataclass.DrinkDetail
 
 class HomeSearchDrinkAdapter(private val onClickListener: OnClickListener ) :
     ListAdapter<Drink, HomeSearchDrinkAdapter.SearchDrinkViewHolder>(

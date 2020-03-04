@@ -4,7 +4,6 @@ import android.graphics.Bitmap
 import android.icu.util.Calendar
 import android.net.Uri
 import android.util.Log
-import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import app.jerry.drink.DrinkApplication
@@ -15,14 +14,10 @@ import com.google.android.gms.tasks.Continuation
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.Query
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.UploadTask
 import java.io.ByteArrayOutputStream
-import java.io.File
-import java.text.NumberFormat
 import java.util.*
-import kotlin.collections.HashMap
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
@@ -527,14 +522,13 @@ object DrinkRemoteDataSource : DrinkDataSource {
                     if (task.isSuccessful) {
 //                    continuation.resume(Result.Success(list))
                         val order = task.result!!.toObject(Order::class.java)
-                        val allOrderList = mutableListOf<OrderList>()
 
 //                    orders
 //                        .document("$orderId").collection("lists").get().addOnSuccessListener {orderListTask->
 //                            for (document in orderListTask) {
 ////                        Logger.d(document.id + " => " + document.data)
 //                                Log.d(TAG, "${document.id} => ${document.data}")
-//                                val orderList = document.toObject(OrderList::class.java)
+//                                val orderList = document.toObject(OrderItem::class.java)
 //                                allOrderList.add(orderList)
 //
 //                                if (allOrderList.size == orderListTask.size()){
@@ -566,28 +560,24 @@ object DrinkRemoteDataSource : DrinkDataSource {
                 }
         }
 
-    override fun getOrderIdLive(orderId: Long): LiveData<OrderLists> {
-        val liveData = MutableLiveData<OrderLists>()
+    override fun getOrderLive(orderId: Long): LiveData<Order> {
+        val liveData = MutableLiveData<Order>()
 
         FirebaseFirestore.getInstance()
             .collection(PATH_Orders)
             .document("$orderId")
             .addSnapshotListener { snapshot, exception ->
                 exception?.let {
-                    Log.w(TAG, "Listen failed.", it)
                 }
                 val order = snapshot?.toObject(Order::class.java)
-                val orderLists = OrderLists(order, listOf())
-                liveData.value = orderLists
-                Log.d("jerryTest", "DrinkDataSource = $orderLists")
+                liveData.value = order
             }
 
         return liveData
     }
 
-
-    override fun getOrderLive(orderId: Long): LiveData<List<OrderList>> {
-        val liveData = MutableLiveData<List<OrderList>>().apply {
+    override fun getOrderItemLive(orderId: Long): LiveData<List<OrderItem>> {
+        val liveData = MutableLiveData<List<OrderItem>>().apply {
             value = mutableListOf()
         }
 
@@ -597,14 +587,12 @@ object DrinkRemoteDataSource : DrinkDataSource {
             .collection("lists")
             .addSnapshotListener { snapshot, exception ->
                 exception?.let {
-                    Log.w(TAG, "Listen failed.", it)
                 }
-                val list = mutableListOf<OrderList>()
+                val list = mutableListOf<OrderItem>()
 
                 for (document in snapshot!!) {
-                    val orderList = document.toObject(OrderList::class.java)
-                    list.add(orderList)
-                    Log.d(TAG, "getOrderLive = $orderList")
+                    val orderItem = document.toObject(OrderItem::class.java)
+                    list.add(orderItem)
                 }
                 liveData.value = list
             }
@@ -612,7 +600,7 @@ object DrinkRemoteDataSource : DrinkDataSource {
         return liveData
     }
 
-    override suspend fun addOrder(orderList: OrderList, orderId: Long): Result<Boolean> =
+    override suspend fun addOrder(orderList: OrderItem, orderId: Long): Result<Boolean> =
         suspendCoroutine { continuation ->
             val orders = FirebaseFirestore.getInstance().collection(PATH_Orders)
             val document = orders.document(orderId.toString()).collection("lists").document()

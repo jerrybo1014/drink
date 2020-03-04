@@ -1,8 +1,5 @@
 package app.jerry.drink.order
 
-import android.content.ClipData
-import android.content.ClipboardManager
-import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -12,26 +9,25 @@ import androidx.lifecycle.LifecycleRegistry
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import app.jerry.drink.DrinkApplication
 import app.jerry.drink.databinding.ItemOrderListsBinding
-import app.jerry.drink.dataclass.OrderList
+import app.jerry.drink.dataclass.OrderItem
 
-class OrderListsAdapter(private val viewModel: OrderVIewModel) :
-    ListAdapter<OrderList, OrderListsAdapter.OrderListsHolder>(
+class OrderListsAdapter(private val viewModel: OrderViewModel) :
+    ListAdapter<OrderItem, OrderListsAdapter.OrderListsHolder>(
         DiffCallback
     ) {
 
     class OrderListsHolder(private var binding: ItemOrderListsBinding,
-                        private var viewModel: OrderVIewModel
+                        private var viewModel: OrderViewModel
     ) :
         RecyclerView.ViewHolder(binding.root), LifecycleOwner {
 
-        fun bind(orderList: OrderList) {
-            binding.orderList = orderList
+        fun bind(orderItem: OrderItem) {
+            binding.orderItem = orderItem
             binding.lifecycleOwner = this
             binding.viewModel = viewModel
 
-            val userCurrent = orderList.user?.id == viewModel.userCurrent.value?.id
+            val userCurrent = orderItem.user?.id == viewModel.userCurrent.value?.id
             Log.d("jerryTest","userCurrent = $userCurrent")
             Log.d("jerryTest","viewModel.userCurrent = ${viewModel.userCurrent.value?.id}")
             binding.userCurrent = userCurrent
@@ -78,17 +74,17 @@ class OrderListsAdapter(private val viewModel: OrderVIewModel) :
         }
     }
 
-    companion object DiffCallback : DiffUtil.ItemCallback<OrderList>() {
+    companion object DiffCallback : DiffUtil.ItemCallback<OrderItem>() {
         override fun areItemsTheSame(
-            oldItem: OrderList,
-            newItem: OrderList
+            oldItem: OrderItem,
+            newItem: OrderItem
         ): Boolean {
             return oldItem.id == newItem.id
         }
 
         override fun areContentsTheSame(
-            oldItem: OrderList,
-            newItem: OrderList
+            oldItem: OrderItem,
+            newItem: OrderItem
         ): Boolean {
             return oldItem == newItem
         }
@@ -112,7 +108,7 @@ class OrderListsAdapter(private val viewModel: OrderVIewModel) :
      */
 
     override fun onBindViewHolder(holder: OrderListsHolder, position: Int) {
-        val orderList = getItem(position)
-        holder.bind(orderList)
+        val orderItem = getItem(position)
+        holder.bind(orderItem)
     }
 }

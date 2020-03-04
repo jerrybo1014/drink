@@ -6,11 +6,11 @@
     <data>
         <variable
             name="viewModel"
-            type="app.jerry.drink.order.OrderVIewModel" />
+            type="app.jerry.drink.order.OrderViewModel" />
 
         <variable
-            name="orderLists"
-            type="app.jerry.drink.dataclass.OrderLists" />
+            name="order"
+            type="app.jerry.drink.dataclass.Order" />
 
         <import type="android.view.View"/>
         <import type="app.jerry.drink.network.LoadApiStatus"/>
@@ -63,7 +63,7 @@
                     android:background="@drawable/shape_corner_r"
                     android:backgroundTint="@color/White"
                     android:paddingHorizontal="8dp"
-                    android:visibility="@{orderLists.order == null  ? View.GONE:View.VISIBLE}">
+                    android:visibility="@{order == null  ? View.GONE:View.VISIBLE}">
 
                     <TextView
                         android:id="@+id/order_text_status"
@@ -72,7 +72,7 @@
                        android:layout_marginEnd="2dp"
                         android:layout_marginBottom="12dp"
                         android:visibility="invisible"
-                        android:text='@{orderLists.order.status == true ? @string/order_status_active:@string/order_status_inactive}'
+                        android:text='@{order.status == true ? @string/order_status_active:@string/order_status_inactive}'
                         app:layout_constraintBottom_toTopOf="@+id/line_add_order"
                         app:layout_constraintEnd_toStartOf="@+id/switch1" />
 
@@ -81,7 +81,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="@color/text_color"
-                        android:text="@{orderLists.order.id}"
+                        android:text="@{order.id}"
                         android:layout_marginStart="16dp"
                         app:layout_constraintStart_toEndOf="@+id/order_textView_id"
                         app:layout_constraintBaseline_toBaselineOf="@+id/order_textView_id"
@@ -100,7 +100,7 @@
                         android:letterSpacing="1.0"
                         android:textAlignment="center"
                         android:textSize="@dimen/text_max"
-                        android:visibility="@{orderLists.order.status == true ? View.VISIBLE:View.GONE}"
+                        android:visibility="@{order.status == true ? View.VISIBLE:View.GONE}"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -144,7 +144,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
                         android:textColor="@color/text_color"
-                        android:text="@{orderLists.order.user.name}"
+                        android:text="@{order.user.name}"
                         app:layout_constraintBaseline_toBaselineOf="@+id/order_textView_host"
                         app:layout_constraintStart_toEndOf="@+id/order_textView_host" />
 
@@ -170,7 +170,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
                         android:textColor="@color/text_color"
-                        android:text="@{orderLists.order.store.storeName}"
+                        android:text="@{order.store.storeName}"
                         app:layout_constraintBaseline_toBaselineOf="@+id/order_text_store_create"
                         app:layout_constraintStart_toEndOf="@+id/order_textView_host" />
 
@@ -181,7 +181,7 @@
                         android:tint="@color/app_color_link"
                         android:src="@drawable/bottom_navigation_radar"
                         app:layout_constraintBottom_toBottomOf="@+id/order_host_store"
-                        android:onClick="@{() -> viewModel.navigationToRadar(orderLists.order.store)}"
+                        android:onClick="@{() -> viewModel.navigationToRadar(order.store)}"
                         app:layout_constraintDimensionRatio="1"
                         android:layout_marginStart="8dp"
                         app:layout_constraintStart_toEndOf="@+id/order_host_store"
@@ -209,7 +209,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
                         android:textColor="@color/text_color"
-                        android:text="@{orderLists.order.timeLimit}"
+                        android:text="@{order.timeLimit}"
                         app:layout_constraintBaseline_toBaselineOf="@+id/order_text_time"
                         app:layout_constraintStart_toEndOf="@+id/order_text_time" />
 
@@ -236,7 +236,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
                         android:textColor="@color/text_color"
-                        android:text="@{orderLists.order.note}"
+                        android:text="@{order.note}"
                         app:layout_constraintBaseline_toBaselineOf="@+id/text_note"
                         app:layout_constraintStart_toEndOf="@+id/order_text_time" />
 
@@ -264,7 +264,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:backgroundTint="@color/myColorPrimaryDark"
-                        android:checked="@{orderLists.order.status==true ? true:false}"
+                        android:checked="@{order.status==true ? true:false}"
                         android:onClick="@{() -> viewModel.editOrderStatusResult()}"
                         android:theme="@style/MySwitch"
                         android:visibility="@{viewModel.userStatus==true ? View.VISIBLE:View.INVISIBLE}"
@@ -297,7 +297,7 @@
             android:clickable="true"
             android:tint="#B3FFFFFF"
             android:src="@drawable/add_order"
-            android:visibility="@{orderLists.order == null  &amp; viewModel.status != LoadApiStatus.LOADING ? View.VISIBLE:View.GONE}"
+            android:visibility="@{order == null  &amp; viewModel.status != LoadApiStatus.LOADING ? View.VISIBLE:View.GONE}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -311,7 +311,7 @@
             android:textSize="16dp"
             android:fontFamily="@font/noto_sans"
             android:layout_marginTop="16dp"
-            android:visibility="@{orderLists.order == null &amp; viewModel.status != LoadApiStatus.LOADING  ? View.VISIBLE:View.GONE}"
+            android:visibility="@{order == null &amp; viewModel.status != LoadApiStatus.LOADING  ? View.VISIBLE:View.GONE}"
             app:layout_constraintEnd_toEndOf="@+id/order_image_create_order"
             app:layout_constraintStart_toStartOf="@+id/order_image_create_order"
             app:layout_constraintTop_toBottomOf="@+id/order_image_create_order" />

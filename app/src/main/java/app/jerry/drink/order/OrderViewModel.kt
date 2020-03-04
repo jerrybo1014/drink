@@ -1,7 +1,5 @@
 package app.jerry.drink.order
 
-import android.util.Log
-import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
@@ -10,15 +8,13 @@ import app.jerry.drink.DrinkApplication
 import app.jerry.drink.R
 import app.jerry.drink.dataclass.*
 import app.jerry.drink.dataclass.source.DrinkRepository
-import app.jerry.drink.dataclass.source.remote.DrinkRemoteDataSource
 import app.jerry.drink.network.LoadApiStatus
-import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
-class OrderVIewModel(private val repository: DrinkRepository, private val orderId: String) : ViewModel() {
+class OrderViewModel(private val repository: DrinkRepository, private val orderId: String) : ViewModel() {
 
 
     private val _enterOrderId = MutableLiveData<Long>()
@@ -26,15 +22,15 @@ class OrderVIewModel(private val repository: DrinkRepository, private val orderI
     val enterOrderId: LiveData<Long>
         get() = _enterOrderId
 
-    private var _orderLists = MutableLiveData<OrderLists>()
+    private var _orderItemsLive = MutableLiveData<List<OrderItem>>()
 
-    val orderLists: LiveData<OrderLists>
-        get() = _orderLists
+    val orderItemsLive: LiveData<List<OrderItem>>
+        get() = _orderItemsLive
 
 
-    private var _orderLive = MutableLiveData<List<OrderList>>()
+    private var _orderLive = MutableLiveData<Order>()
 
-    val orderLive: LiveData<List<OrderList>>
+    val orderLive: LiveData<Order>
         get() = _orderLive
 
     private val _navigationToRadar = MutableLiveData<Store>()
@@ -113,29 +109,21 @@ class OrderVIewModel(private val repository: DrinkRepository, private val orderI
 
     }
 
-    fun test(id: Long) {
-        _orderLive = repository.getOrderLive(id) as MutableLiveData<List<OrderList>>
-    }
-
 
     fun getOrderResult(orderId: Long) {
 
-
-        _orderLive = repository.getOrderLive(orderId) as MutableLiveData<List<OrderList>>
-
+        _orderLive = repository.getOrderLive(orderId) as MutableLiveData<Order>
         /**/
-        _orderLists = repository.getOrderIdLive(orderId) as MutableLiveData<OrderLists>
+        _orderItemsLive = repository.getOrderItemLive(orderId) as MutableLiveData<List<OrderItem>>
         /**/
 
-
-        Log.d("jerryTest", "getOrderResult")
         /**/
-//        _orderLists.value?.orderLists = repository.getOrderLive(orderId).value
+//        _orderLists.value?.orderLists = repository.getOrderItemLive(orderId).value
         /**/
 //
 //        coroutineScope.launch {
 //
-//            _orderLive = repository.getOrderLive(orderId) as MutableLiveData<List<OrderList>>
+//            _orderLive = repository.getOrderItemLive(orderId) as MutableLiveData<List<OrderItem>>
 //
 //            _status.value = LoadApiStatus.LOADING
 //
@@ -214,37 +202,38 @@ class OrderVIewModel(private val repository: DrinkRepository, private val orderI
 
             _status.value = LoadApiStatus.LOADING
 
-            val editStatus = !orderLists.value?.order!!.status
+            orderLive.value?.let {
+                val editStatus = !it.status
+                val result = repository.editOrderStatus(it.id.toLong(), editStatus)
 
-            val result = repository.editOrderStatus(orderLists.value?.order?.id!!.toLong(), editStatus)
+                /**/
+                when (result) {
+                    is Result.Success -> {
+                        _error.value = null
+                        _status.value = LoadApiStatus.DONE
 
-            /**/
-            when (result) {
-                is Result.Success -> {
-                    _error.value = null
-                    _status.value = LoadApiStatus.DONE
-
-                    getOrderResult(orderLists.value?.order?.id!!.toLong())
-                    /**/
-                    result.data
-                    /**/
-                }
-                is Result.Fail -> {
-                    _error.value = result.error
-                    _status.value = LoadApiStatus.ERROR
-                    null
-                }
-                is Result.Error -> {
-                    _error.value = result.exception.toString()
-                    _status.value = LoadApiStatus.ERROR
-                    null
-                }
-                else -> {
-                    _error.value = DrinkApplication.instance.getString(R.string.you_know_nothing)
-                    _status.value = LoadApiStatus.ERROR
-                    null
+                        getOrderResult(it.orderId)
+                        /**/
+                        result.data
+                        /**/
+                    }
+                    is Result.Fail -> {
+                        _error.value = result.error
+                        _status.value = LoadApiStatus.ERROR
+                    }
+                    is Result.Error -> {
+                        _error.value = result.exception.toString()
+                        _status.value = LoadApiStatus.ERROR
+                    }
+                    else -> {
+                        _error.value = DrinkApplication.instance.getString(R.string.you_know_nothing)
+                        _status.value = LoadApiStatus.ERROR
+                    }
                 }
             }
+
+
+
             _refreshStatus.value = false
         }
 
@@ -257,36 +246,38 @@ class OrderVIewModel(private val repository: DrinkRepository, private val orderI
 
             _status.value = LoadApiStatus.LOADING
 
+            orderLive.value?.let {
 
-            val result = repository.removeOrder(orderLists.value?.order?.id!!.toLong(), id)
+                /**/
+                when (val result = repository.removeOrder(it.id.toLong(), id)) {
+                    is Result.Success -> {
+                        _error.value = null
+                        _status.value = LoadApiStatus.DONE
 
-            /**/
-            when (result) {
-                is Result.Success -> {
-                    _error.value = null
-                    _status.value = LoadApiStatus.DONE
-
-                    getOrderResult(orderLists.value?.order?.id!!.toLong())
-                    /**/
-                    result.data
-                    /**/
-                }
-                is Result.Fail -> {
-                    _error.value = result.error
-                    _status.value = LoadApiStatus.ERROR
-                    null
-                }
-                is Result.Error -> {
-                    _error.value = result.exception.toString()
-                    _status.value = LoadApiStatus.ERROR
-                    null
-                }
-                else -> {
-                    _error.value = DrinkApplication.instance.getString(R.string.you_know_nothing)
-                    _status.value = LoadApiStatus.ERROR
-                    null
+                        getOrderResult(it.id.toLong())
+                        /**/
+                        result.data
+                        /**/
+                    }
+                    is Result.Fail -> {
+                        _error.value = result.error
+                        _status.value = LoadApiStatus.ERROR
+                        null
+                    }
+                    is Result.Error -> {
+                        _error.value = result.exception.toString()
+                        _status.value = LoadApiStatus.ERROR
+                        null
+                    }
+                    else -> {
+                        _error.value = DrinkApplication.instance.getString(R.string.you_know_nothing)
+                        _status.value = LoadApiStatus.ERROR
+                        null
+                    }
                 }
             }
+
+
             _refreshStatus.value = false
         }
 
@@ -294,12 +285,12 @@ class OrderVIewModel(private val repository: DrinkRepository, private val orderI
 
     val userStatus = MediatorLiveData<Boolean>().apply {
         addSource(userCurrent){checkIfUsersAreTheSame()}
-        addSource(orderLists){checkIfUsersAreTheSame()}
+        addSource(orderLive){checkIfUsersAreTheSame()}
     }
 
     private fun checkIfUsersAreTheSame() {
-        if(userCurrent.value != null && orderLists.value != null) {
-            userStatus.value = userCurrent.value!!.id == orderLists.value!!.order?.user?.id
+        if(userCurrent.value != null && orderLive.value != null) {
+            userStatus.value = userCurrent.value!!.id == orderLive.value!!.user?.id
         }
     }
 
@@ -307,7 +298,8 @@ class OrderVIewModel(private val repository: DrinkRepository, private val orderI
         _navigationToRadar.value = store
     }
 
-    fun navigationToRadarfinished(){
+    fun navigationToRadarFinished(){
         _navigationToRadar.value = null
     }
+
 }

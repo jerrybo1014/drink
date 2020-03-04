@@ -6,8 +6,6 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import app.jerry.drink.databinding.ItemMapDrinkRankBinding
-import app.jerry.drink.databinding.ItemStoreHighScoreBinding
-import app.jerry.drink.dataclass.DrinkDetail
 import app.jerry.drink.dataclass.DrinkRank
 
 class RadarStoreDrinkAdapter:

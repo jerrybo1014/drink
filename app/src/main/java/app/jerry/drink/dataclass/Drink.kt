@@ -9,17 +9,3 @@ data class Drink(
     val drinkName: String = "",
     var store: Store = Store("","","")
 ) : Parcelable
-
-@Parcelize
-data class DrinkDetail(
-    val drink: Drink? = null,
-    val store: Store? = null
-) : Parcelable
-
-@Parcelize
-data class DrinkRank(
-    val commentList: MutableList<Comment> = mutableListOf(),
-    var drink: Drink = Drink("", "",Store("","","")),
-    var store: Store = Store("", "",""),
-    var score: Float = 0F
-) : Parcelable

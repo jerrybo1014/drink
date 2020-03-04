@@ -8,8 +8,6 @@ import androidx.recyclerview.widget.RecyclerView
 import app.jerry.drink.databinding.ItemNewCommentBinding
 import app.jerry.drink.dataclass.Comment
 import app.jerry.drink.dataclass.Drink
-import app.jerry.drink.dataclass.DrinkDetail
-import app.jerry.drink.dataclass.Store
 
 class NewCommentAdapter(private val onClickListener: OnClickListener ) :
     ListAdapter<Comment, NewCommentAdapter.NewCommentViewHolder>(

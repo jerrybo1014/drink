@@ -22,7 +22,7 @@ class AddOrderFragment : DialogFragment() {
     private val viewModel by viewModels<AddOrderViewModel> { getVmFactory(
         AddOrderFragmentArgs.fromBundle(
             arguments!!
-        ).orderLists) }
+        ).order) }
 
 
     lateinit var binding: FragmentAddOrderBinding

@@ -31,7 +31,7 @@ class DetailFragment : Fragment() {
         getVmFactory(
             DetailFragmentArgs.fromBundle(
                 arguments!!
-            ).Drink
+            ).drink
         )
     }
 

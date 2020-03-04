@@ -7,9 +7,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import app.jerry.drink.databinding.ItemHighScoreBinding
-import app.jerry.drink.dataclass.Comment
 import app.jerry.drink.dataclass.Drink
-import app.jerry.drink.dataclass.DrinkDetail
 import app.jerry.drink.dataclass.DrinkRank
 
 class HighScoreAdapter(private val onClickListener: HighScoreAdapter.OnClickListener) :

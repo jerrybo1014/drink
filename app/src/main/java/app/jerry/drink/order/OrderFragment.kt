@@ -4,13 +4,11 @@ import android.Manifest
 import android.content.ComponentName
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.SearchView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.SearchView.OnQueryTextListener
 import androidx.core.app.ActivityCompat
@@ -26,16 +24,13 @@ import app.jerry.drink.NavigationDirections
 import app.jerry.drink.R
 import app.jerry.drink.databinding.FragmentOrderBinding
 import app.jerry.drink.ext.getVmFactory
-import app.jerry.drink.signin.SignInFragment
 import app.jerry.drink.util.Logger
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 
 
 class OrderFragment : Fragment() {
 
 
-    private val viewModel by viewModels<OrderVIewModel> {
+    private val viewModel by viewModels<OrderViewModel> {
         getVmFactory(
             OrderFragmentArgs
                 .fromBundle(arguments!!).orderId
@@ -56,26 +51,6 @@ class OrderFragment : Fragment() {
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
 
-
-//        val authListener: FirebaseAuth.AuthStateListener =
-//            FirebaseAuth.AuthStateListener { auth: FirebaseAuth ->
-//                val user: FirebaseUser? = auth.currentUser
-//
-//                if (user == null) {
-//                    childFragmentManager.let {
-//                        SignInFragment().show(it, "")
-//                    }
-//                    Logger.d("signInWithCredential:no")
-//                } else {
-//                    viewModel.checkUserResult()
-//                }
-//            }
-//        FirebaseAuth.getInstance().addAuthStateListener(authListener)
-
-
-
-
-
         binding.orderImageCreateOrder.setOnClickListener {
             childFragmentManager.let {
                 CreateOrderFragment().show(it, "")
@@ -88,12 +63,9 @@ class OrderFragment : Fragment() {
         binding.orderButtonAddOrder.setOnClickListener {
             findNavController().navigate(
                 NavigationDirections.actionGlobalAddOrderFragement(
-                    viewModel.orderLists.value!!
-                )
+                    viewModel.orderLive.value!!)
             )
         }
-
-
 
         binding.orderSearchView.setOnQueryTextListener(object : OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
@@ -133,13 +105,12 @@ class OrderFragment : Fragment() {
         }
         )
 
-        viewModel.orderLists.observe(this, Observer {
-            binding.orderLists = it
-            Log.d("viewModel.orderLists", "$it")
-
-            viewModel.orderLive.observe(this@OrderFragment, Observer {orderLive->
-                Log.d("viewModel.orderLive", "$orderLive")
-                orderListAdapter.submitList(orderLive)
+        viewModel.orderLive.observe(this, Observer {
+            binding.order = it
+            Logger.d("orderLive = $it")
+            viewModel.orderItemsLive.observe(this@OrderFragment, Observer {orderItemsLive->
+                Logger.d("orderItemsLive = $orderItemsLive")
+                orderListAdapter.submitList(orderItemsLive)
             })
 
         })
@@ -152,7 +123,7 @@ class OrderFragment : Fragment() {
             )
             val shareIntent = Intent()
 
-                val orderId = viewModel.orderLists.value?.order?.id
+                val orderId = viewModel.orderLive.value?.id
                 val content = "http://drink.jerry1014.com/order?id=$orderId"
                 shareIntent.action = Intent.ACTION_SEND
                 shareIntent.putExtra(Intent.EXTRA_TEXT, content)
@@ -160,16 +131,12 @@ class OrderFragment : Fragment() {
 //            shareIntent.component = cn
 //            startActivity(shareIntent)
                 startActivity(Intent.createChooser(shareIntent, "分享訂單"))
-
-
-
 //            val content = "http://drink.jerry1014.com/order?id=1582002591055"
 //            val scheme = "line://msg/text/$content"
 //            val uri = Uri.parse(scheme)
 ////            startActivity(Intent (Intent.ACTION_VIEW, uri))
 //            startActivity(Intent.createChooser(Intent(Intent.ACTION_VIEW, uri),""))
         }
-
 
         viewModel.navigationToRadar.observe(this, Observer {
             it?.let {
@@ -216,7 +183,7 @@ class OrderFragment : Fragment() {
                 } else {
                     // Permission has already been granted
                     findNavController().navigate(NavigationDirections.actionGlobalRadarFragment(it))
-                    viewModel.navigationToRadarfinished()
+                    viewModel.navigationToRadarFinished()
                 }
 
             }
@@ -239,7 +206,7 @@ class OrderFragment : Fragment() {
                         Log.d("jerryTest", "permissions allow : $permissions")
                     }
                     findNavController().navigate(NavigationDirections.actionGlobalRadarFragment(viewModel.navigationToRadar.value!!))
-                    viewModel.navigationToRadarfinished()
+                    viewModel.navigationToRadarFinished()
                 } else {
                     for (permissionsItem in permissions) {
                         Log.d("jerryTest", "permissions reject : $permissionsItem")
