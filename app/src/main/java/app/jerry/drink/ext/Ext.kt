@@ -1,18 +1,25 @@
 package app.jerry.drink.ext
 
-import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Matrix
 import android.icu.text.SimpleDateFormat
 import android.media.ExifInterface
 import android.net.Uri
+import android.widget.ImageView
+import android.widget.Toast
 import app.jerry.drink.DrinkApplication
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
+import kotlinx.android.synthetic.main.fragment_post.*
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
 import java.lang.Exception
 import java.util.*
+
+
+
 
 fun Long.toDisplayFormat(): String {
     return SimpleDateFormat("yyyy/MM/dd HH:mm", Locale.TAIWAN).format(this)
@@ -117,4 +124,11 @@ fun Int.fromExifInterfaceOrientationToDegree(): Int {
         ExifInterface.ORIENTATION_ROTATE_270 -> 270
         else -> 0
     }
+}
+
+fun setImage(imgView: ImageView, imgUrl: Uri){
+    Glide.with(imgView.context)
+        .load(imgUrl)
+        .apply(RequestOptions().centerCrop())
+        .into(imgView)
 }

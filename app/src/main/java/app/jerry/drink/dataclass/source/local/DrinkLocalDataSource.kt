@@ -40,10 +40,6 @@ class DrinkLocalDataSource(val context: Context) : DrinkDataSource {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override suspend fun getOrder(orderId: Long): Result<OrderLists> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
     override fun getOrderLive(orderId: Long): LiveData<Order> {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }

@@ -48,10 +48,6 @@ class RadarStoreDrinkAdapter:
         }
     }
 
-    /**
-     * Create new [RecyclerView] item views (invoked by the layout manager)
-     */
-
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
@@ -60,10 +56,6 @@ class RadarStoreDrinkAdapter:
             ItemMapDrinkRankBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         )
     }
-
-    /**
-     * Replaces the contents of a view (invoked by the layout manager)
-     */
 
     override fun onBindViewHolder(holder: RadarStoreDrinkViewHolder, position: Int) {
         val drinkRank = getItem(position)

@@ -41,16 +41,10 @@ class MainActivityViewModel(private val repository: DrinkRepository) : ViewModel
     // the Coroutine runs using the Main (UI) dispatcher
     private val coroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
 
-
-
-
     fun checkUserResult() {
         coroutineScope.launch {
-
             _status.value = LoadApiStatus.LOADING
-
             val result = repository.checkUser()
-
             checkUser.value = when (result) {
                 is Result.Success -> {
                     _error.value = null
@@ -75,7 +69,6 @@ class MainActivityViewModel(private val repository: DrinkRepository) : ViewModel
             }
             _refreshStatus.value = false
         }
-
     }
 
 }

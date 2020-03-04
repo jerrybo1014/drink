@@ -175,10 +175,3 @@ fun bindFabHideStauts(floatingActionButton: FloatingActionButton, data: Boolean)
     }
 
 }
-
-//@BindingAdapter("listPostStore")
-//fun bindPostStore(spinner: Spinner, data: A<String>?){
-////    val adapter = spinner.adapter as PostStoreSpinnerAdapter
-//    spinner.adapter = PostStoreSpinnerAdapter(data)
-//
-//}

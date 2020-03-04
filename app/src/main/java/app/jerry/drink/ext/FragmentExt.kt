@@ -4,7 +4,6 @@ import androidx.fragment.app.Fragment
 import app.jerry.drink.DrinkApplication
 import app.jerry.drink.dataclass.Drink
 import app.jerry.drink.dataclass.Order
-import app.jerry.drink.dataclass.OrderLists
 import app.jerry.drink.dataclass.Store
 import app.jerry.drink.factory.*
 

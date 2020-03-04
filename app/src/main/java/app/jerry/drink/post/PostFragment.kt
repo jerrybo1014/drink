@@ -2,14 +2,9 @@ package app.jerry.drink.post
 
 import android.Manifest
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.graphics.Matrix
 import android.icu.text.SimpleDateFormat
-import android.media.ExifInterface
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
@@ -18,8 +13,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -28,7 +21,6 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import app.jerry.drink.DrinkApplication
 import app.jerry.drink.MainActivity
@@ -36,19 +28,13 @@ import app.jerry.drink.R
 import app.jerry.drink.databinding.FragmentPostBinding
 import app.jerry.drink.ext.getBitmap
 import app.jerry.drink.ext.getVmFactory
+import app.jerry.drink.ext.setImage
+import app.jerry.drink.util.Logger
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
-import com.google.android.gms.tasks.Continuation
-import com.google.android.gms.tasks.Task
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.storage.FirebaseStorage
-import com.google.firebase.storage.StorageReference
-import com.google.firebase.storage.UploadTask
 import kotlinx.android.synthetic.main.fragment_post.*
 import java.io.File
-import java.io.FileOutputStream
 import java.io.IOException
-import java.lang.Exception
 import java.util.*
 
 class PostFragment : Fragment() {
@@ -60,7 +46,6 @@ class PostFragment : Fragment() {
     private var filePath: Uri? = null
     private val REQUEST_TAKE_PHOTO = 1
     lateinit var currentPhotoPath: String
-    private var TAG = "jerryTest"
     private var photoURI: Uri? = null
 
     private val viewModel by viewModels<PostViewModel> { getVmFactory() }
@@ -76,35 +61,6 @@ class PostFragment : Fragment() {
         binding.lifecycleOwner = this
         viewModel.getAllStoreResult()
 
-
-//        binding.spinnerStore.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-//            override fun onNothingSelected(parent: AdapterView<*>?) {
-//                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-//            }
-//
-//            override fun onItemSelected(
-//                parent: AdapterView<*>?,
-//                view: View?,
-//                position: Int,
-//                id: Long
-//            ) {
-//                viewModel.selectedStore(position)
-//            }
-//        }
-
-//        binding.spinnerDrink.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-//            override fun onNothingSelected(parent: AdapterView<*>?) {
-//            }
-//
-//            override fun onItemSelected(
-//                parent: AdapterView<*>?,
-//                view: View?,
-//                position: Int,
-//                id: Long
-//            ) {
-//                viewModel.selectedDrink(position)
-//            }
-//        }
         val listIce = listOf("正常冰", "去冰", "微冰", "常溫")
         val listSugar = listOf("正常糖", "半糖", "微糖", "無糖")
         val sugarAdapter = SugarAdapter(viewModel)
@@ -121,22 +77,15 @@ class PostFragment : Fragment() {
         }
 
         viewModel.allStore.observe(this, Observer {
-
             binding.postSpinnerStore.adapter = PostStoreSpinnerAdapter(it)
         })
 
         viewModel.selectedStore.observe(this, Observer {
             viewModel.getStoreMenuResult(it)
-//            viewModel.addStoreToDrinkResult(it)
         })
 
         viewModel.allStoreMenu.observe(this, Observer {
-            binding.postSpinnerDrink.adapter = PostDrinkSpinnerAdater(it)
-            Log.d("allStoreMenu", "$it")
-        })
-
-        viewModel.selectedDrink.observe(this, Observer {
-            Log.d("jerryTest", "selectedDrink = $it")
+            binding.postSpinnerDrink.adapter = PostDrinkSpinnerAdapter(it)
         })
 
         viewModel.postFinished.observe(this, Observer {
@@ -144,13 +93,6 @@ class PostFragment : Fragment() {
                 findNavController().navigateUp()
             }
         })
-
-//        (activity as MainActivity).binding.bottomNavigationView.visibility = View.GONE
-
-        viewModel.imageUri.observe(this, Observer {
-            Log.d("jerryTest", "imageUri.observe = $it")
-        })
-
 
         binding.layoutGallery.setOnClickListener {
             loadGallery()
@@ -182,7 +124,6 @@ class PostFragment : Fragment() {
                         "app.jerry.drink.fileprovider",
                         it
                     )
-
                     this.photoURI = photoURI
                     takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
                     startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO)
@@ -206,21 +147,12 @@ class PostFragment : Fragment() {
         }
     }
 
-//    private fun galleryAddPic() {
-//        Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE).also { mediaScanIntent ->
-//            val f = File(currentPhotoPath)
-//            mediaScanIntent.data = Uri.fromFile(f)
-//            sendBroadcast(mediaScanIntent)
-//        }
-//    }
-
     private fun launchGallery() {
         val intent = Intent()
         intent.type = "image/*"
         intent.action = Intent.ACTION_GET_CONTENT
         startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST)
     }
-
 
     private fun loadGallery() {
 
@@ -314,12 +246,12 @@ class PostFragment : Fragment() {
             MY_PERMISSIONS_CAMERA -> {
                 if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     for (permissionsItem in permissions) {
-                        Log.d(TAG, "permissions allow : $permissions")
+                        Logger.d("permissions allow : $permissions")
                     }
                     loadCamera()
                 } else {
                     for (permissionsItem in permissions) {
-                        Log.d(TAG, "permissions reject : $permissionsItem")
+                        Logger.d("permissions reject : $permissions")
                     }
                 }
                 return
@@ -328,18 +260,17 @@ class PostFragment : Fragment() {
             MY_PERMISSIONS_READ_EXTERNAL_STORAGE ->{
                 if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     for (permissionsItem in permissions) {
-                        Log.d(TAG, "permissions allow : $permissions")
+                        Logger.d("permissions allow : $permissions")
                     }
                     launchGallery()
                 } else {
                     for (permissionsItem in permissions) {
-                        Log.d(TAG, "permissions reject : $permissionsItem")
+                        Logger.d("permissions reject : $permissions")
                     }
                 }
                 return
             }
         }
-
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -348,37 +279,25 @@ class PostFragment : Fragment() {
             if (data == null || data.data == null) {
                 return
             }
-            filePath = data.data
 
-            val bitmap = filePath?.getBitmap(binding.postImageUpdate.width, binding.postImageUpdate.height)
-//            binding.imageUpdate.setImageBitmap(bitmap)
-                            Glide.with(this).load(filePath)
-                                .apply(RequestOptions().centerCrop())
-                                .into(post_image_update)
-            viewModel.imageBitmap.value = bitmap
-//            try {
-////                val bitmap = MediaStore.Images.Media.getBitmap(context!!.contentResolver, filePath)
-////                uploadImage.setImageBitmap(bitmap)
-//                Glide.with(this).load(filePath)
-//                    .apply(RequestOptions().centerCrop())
-//                    .into(image_update)
-//                viewModel.imageUri.value = filePath
-//            } catch (e: IOException) {
-//                e.printStackTrace()
-//            }
+            data.data?.let {
+                filePath = it
+                setImage(binding.postImageUpdate, it)
+                val bitmap = filePath?.getBitmap(binding.postImageUpdate.width, binding.postImageUpdate.height)
+                viewModel.imageBitmap.value = bitmap
+            }
         }
 
         if (requestCode == REQUEST_TAKE_PHOTO && resultCode == Activity.RESULT_OK) {
             if (data == null) {
                 return
             }
-
-            val bitmap = photoURI?.getBitmap(binding.postImageUpdate.width, binding.postImageUpdate.height)
-//            binding.imageUpdate.setImageBitmap(bitmap)
-            Glide.with(this).load(photoURI)
-                .apply(RequestOptions().centerCrop())
-                .into(post_image_update)
-            viewModel.imageBitmap.value = bitmap
+            data.data?.let {
+                photoURI = it
+                setImage(binding.postImageUpdate, it)
+                val bitmap = photoURI?.getBitmap(binding.postImageUpdate.width, binding.postImageUpdate.height)
+                viewModel.imageBitmap.value = bitmap
+            }
         }
 
     }

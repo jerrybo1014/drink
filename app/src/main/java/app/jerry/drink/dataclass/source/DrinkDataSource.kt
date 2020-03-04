@@ -22,8 +22,6 @@ interface DrinkDataSource {
 
     suspend fun createOrder(order: Order): Result<String>
 
-    suspend fun getOrder(orderId: Long): Result<OrderLists>
-
     fun getOrderLive(orderId: Long): LiveData<Order>
 
     fun getOrderItemLive(orderId: Long): LiveData<List<OrderItem>>

@@ -1,7 +1,6 @@
 package app.jerry.drink.post
 
 import android.graphics.Bitmap
-import android.net.Uri
 import android.util.Log
 import android.view.View
 import android.widget.TextView
@@ -36,24 +35,19 @@ class PostViewModel(private val repository: DrinkRepository) : ViewModel() {
         }
     }
 
-
-
     val selectedDrinkPosition = MutableLiveData<Int>()
 
-
-    val chooesCameraGallery = MutableLiveData<Boolean>().apply {
+    val chooseCameraGallery = MutableLiveData<Boolean>().apply {
         value = false
     }
 
     val selectedDrink: LiveData<Drink?> = Transformations.map(selectedDrinkPosition) {
-
         allStoreMenu.value?.let {allStoreMenu ->
             if (it < allStoreMenu.size){
                 allStoreMenu[it]
             }else{
                 null
             }
-
         }
     }
 
@@ -65,24 +59,11 @@ class PostViewModel(private val repository: DrinkRepository) : ViewModel() {
         value = ""
     }
 
-    // _selectedStore
-//    private val _selectedStore = MutableLiveData<Store>()
-//
-//    val selectedStore: LiveData<Store>
-//        get() = _selectedStore
-
     // _allStoreMenu
     private val _allStoreMenu = MutableLiveData<List<Drink>>()
 
     val allStoreMenu: LiveData<List<Drink>>
         get() = _allStoreMenu
-
-    // _selectedDrink
-//    private val _selectedDrink = MutableLiveData<Drink>()
-//
-//    val selectedDrink: LiveData<Drink>
-//        get() = _selectedDrink
-
 
     var selectedIce = MutableLiveData<String>()
     var selectedSugar = MutableLiveData<String>()
@@ -91,10 +72,7 @@ class PostViewModel(private val repository: DrinkRepository) : ViewModel() {
         value = 1
     }
     var postFinished = MutableLiveData<Boolean>()
-
-    var imageUri = MutableLiveData<Uri>()
     var imageBitmap = MutableLiveData<Bitmap>()
-
     var selectedIcePosition = MutableLiveData<Int>()
 
     // status: The internal MutableLiveData that stores the status of the most recent request
@@ -137,7 +115,6 @@ class PostViewModel(private val repository: DrinkRepository) : ViewModel() {
         coroutineScope.launch {
 
             _status.value = LoadApiStatus.LOADING
-
             val result = repository.getAllStore()
 
             _allStore.value = when (result) {
@@ -164,7 +141,6 @@ class PostViewModel(private val repository: DrinkRepository) : ViewModel() {
             }
             _refreshStatus.value = false
         }
-
     }
 
     fun getStoreMenuResult(store: Store) {
@@ -173,7 +149,6 @@ class PostViewModel(private val repository: DrinkRepository) : ViewModel() {
             _status.value = LoadApiStatus.LOADING
 
             val result = repository.getStoreMenu(store)
-
             _allStoreMenu.value = when (result) {
                 is Result.Success -> {
                     _error.value = null
@@ -198,7 +173,6 @@ class PostViewModel(private val repository: DrinkRepository) : ViewModel() {
             }
             _refreshStatus.value = false
         }
-
     }
 
     fun postCommentResult() {
@@ -234,17 +208,14 @@ class PostViewModel(private val repository: DrinkRepository) : ViewModel() {
                 is Result.Fail -> {
                     _error.value = result.error
                     _postStatus.value = LoadApiStatus.ERROR
-                    null
                 }
                 is Result.Error -> {
                     _error.value = result.exception.toString()
                     _postStatus.value = LoadApiStatus.ERROR
-                    null
                 }
                 else -> {
                     _error.value = DrinkApplication.instance.getString(R.string.you_know_nothing)
                     _postStatus.value = LoadApiStatus.ERROR
-                    null
                 }
             }
             _refreshStatus.value = false
@@ -340,21 +311,6 @@ class PostViewModel(private val repository: DrinkRepository) : ViewModel() {
 
     }
 
-
-//    fun selectedStore(position: Int) {
-//        _allStore.value?.let {
-//            _selectedStore.value = it[position]
-//        }
-//    }
-
-//    fun selectedDrink(position: Int) {
-//        _allStoreMenu.value?.let {
-//            _selectedDrink.value = it[position]
-//            Log.d("_selectedDrink", "${_selectedDrink.value}")
-//        }
-//    }
-
-
     fun selectIce(string: String, position: Int) {
         Log.d("selectIce", "$position")
         selectedIce.value = string
@@ -362,16 +318,14 @@ class PostViewModel(private val repository: DrinkRepository) : ViewModel() {
     }
 
     fun openCameraGallery() {
-        chooesCameraGallery.value = true
+        chooseCameraGallery.value = true
     }
 
     fun closeCameraGallery() {
-        chooesCameraGallery.value = false
+        chooseCameraGallery.value = false
     }
 
-
     private var selectedIceView: View? = null
-
 
     private var selectedSugarView: View? = null
 
@@ -395,23 +349,6 @@ class PostViewModel(private val repository: DrinkRepository) : ViewModel() {
         Log.d("selectIceStatus", string)
     }
 
-    val displayAllStore = Transformations.map(allStore) {
-        val storeList = mutableListOf<String>()
-        for (store in it) {
-            storeList.add(store.storeName)
-        }
-        storeList
-    }
-
-    val displayStoreDrink = Transformations.map(allStoreMenu) {
-        val drinkList = mutableListOf<String>()
-        for (drink in it) {
-            drinkList.add(drink.drinkName)
-        }
-        drinkList
-    }
-
-
     fun cancelAddNewDrink(){
         selectedDrinkPosition.value = 0
     }
@@ -427,6 +364,5 @@ class PostViewModel(private val repository: DrinkRepository) : ViewModel() {
             }
     }
     }
-
 
 }

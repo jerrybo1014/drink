@@ -511,55 +511,6 @@ object DrinkRemoteDataSource : DrinkDataSource {
                 }
         }
 
-    override suspend fun getOrder(orderId: Long): Result<OrderLists> =
-        suspendCoroutine { continuation ->
-            val orders = FirebaseFirestore.getInstance().collection(PATH_Orders)
-
-            orders
-                .document("$orderId")
-                .get()
-                .addOnCompleteListener { task ->
-                    if (task.isSuccessful) {
-//                    continuation.resume(Result.Success(list))
-                        val order = task.result!!.toObject(Order::class.java)
-
-//                    orders
-//                        .document("$orderId").collection("lists").get().addOnSuccessListener {orderListTask->
-//                            for (document in orderListTask) {
-////                        Logger.d(document.id + " => " + document.data)
-//                                Log.d(TAG, "${document.id} => ${document.data}")
-//                                val orderList = document.toObject(OrderItem::class.java)
-//                                allOrderList.add(orderList)
-//
-//                                if (allOrderList.size == orderListTask.size()){
-//                                    val orderLists = OrderLists(order, allOrderList)
-//                                    Log.d(TAG,"getOrder = $orderLists")
-//                                    continuation.resume(Result.Success(orderLists))
-//                                }
-//
-//                            }
-//
-//                        }
-
-
-                        val orderLists = OrderLists(order, listOf())
-                        Log.d(TAG, "getOrder = $orderLists")
-                        continuation.resume(Result.Success(orderLists))
-                    } else {
-                        task.exception?.let {
-
-                            Log.w(
-                                "",
-                                "[${this::class.simpleName}] Error getting documents. ${it.message}"
-                            )
-                            continuation.resume(Result.Error(it))
-                            return@addOnCompleteListener
-                        }
-                        continuation.resume(Result.Fail(DrinkApplication.instance.getString(R.string.you_know_nothing)))
-                    }
-                }
-        }
-
     override fun getOrderLive(orderId: Long): LiveData<Order> {
         val liveData = MutableLiveData<Order>()
 

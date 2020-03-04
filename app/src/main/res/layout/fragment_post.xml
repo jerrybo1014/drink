@@ -296,7 +296,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/transparent"
-            android:visibility="@{viewModel.chooesCameraGallery == true ? View.VISIBLE:View.GONE}"
+            android:visibility="@{viewModel.chooseCameraGallery == true ? View.VISIBLE:View.GONE}"
             android:elevation="20dp"
             android:onClick="@{() -> viewModel.closeCameraGallery()}"
             app:layout_constraintStart_toStartOf="parent"

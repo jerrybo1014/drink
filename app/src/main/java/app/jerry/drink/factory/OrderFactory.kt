@@ -3,7 +3,6 @@ package app.jerry.drink.factory
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import app.jerry.drink.dataclass.Order
-import app.jerry.drink.dataclass.OrderLists
 import app.jerry.drink.dataclass.source.DrinkRepository
 import app.jerry.drink.order.addorder.AddOrderViewModel
 

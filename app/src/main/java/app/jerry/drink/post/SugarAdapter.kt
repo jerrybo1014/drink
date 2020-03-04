@@ -20,9 +20,7 @@ class SugarAdapter(private val viewModel: PostViewModel) :
         fun bind(string: String) {
             binding.string = string
             binding.viewModel = viewModel
-//            binding.detailImage = string
-            // This is important, because it forces the data binding to execute immediately,
-            // which allows the RecyclerView to make the correct view size measurements
+
             binding.executePendingBindings()
         }
     }
@@ -43,10 +41,6 @@ class SugarAdapter(private val viewModel: PostViewModel) :
         }
     }
 
-    /**
-     * Create new [RecyclerView] item views (invoked by the layout manager)
-     */
-
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
@@ -55,10 +49,6 @@ class SugarAdapter(private val viewModel: PostViewModel) :
             ItemPostSugarBinding.inflate(LayoutInflater.from(parent.context), parent, false), viewModel
         )
     }
-
-    /**
-     * Replaces the contents of a view (invoked by the layout manager)
-     */
 
     override fun onBindViewHolder(holder: SugarViewHolder, position: Int) {
         val string = getItem(position)

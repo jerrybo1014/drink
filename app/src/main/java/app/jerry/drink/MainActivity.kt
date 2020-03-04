@@ -30,6 +30,8 @@ import app.jerry.drink.dataclass.Store
 import app.jerry.drink.ext.getVmFactory
 import app.jerry.drink.signin.SignInFragment
 import app.jerry.drink.util.CurrentFragmentType
+import app.jerry.drink.util.Logger
+import app.jerry.drink.util.PermissionCode
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.IdpResponse
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -39,78 +41,36 @@ import com.google.firebase.storage.FirebaseStorage
 
 
 class MainActivity : AppCompatActivity() {
-    val TAG = "jerryTest"
+
     lateinit var binding: ActivityMainBinding
-    private val MY_PERMISSIONS_LOCATION = 100
-    private val auth = FirebaseAuth.getInstance()
-    lateinit var loctionGps: Location
     lateinit var intentOrder: Intent
     val viewModel by viewModels<MainActivityViewModel> { getVmFactory() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-//        setSupportActionBar(toolbar)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
-
-        val navController = findNavController(R.id.myNavHostFragment)
-        binding.bottomNavigationView.setupWithNavController(navController)
-        fab.setOnClickListener {
-            //            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                .setAction("Action", null).show()
-            navController.navigate(R.id.action_global_postFragment)
-        }
 
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
 
+        val navController = findNavController(R.id.myNavHostFragment)
+        binding.bottomNavigationView.setupWithNavController(navController)
+
+
+        fab.setOnClickListener {
+            navController.navigate(R.id.action_global_postFragment)
+        }
 
         setupNavController()
 
-
-//        val authProvider: List<AuthUI.IdpConfig> = listOf(
-//            AuthUI.IdpConfig.FacebookBuilder().build(),
-//            AuthUI.IdpConfig.GoogleBuilder().build()
-//        )
-//        val authListener: FirebaseAuth.AuthStateListener =
-//            FirebaseAuth.AuthStateListener { auth: FirebaseAuth ->
-//                val user: FirebaseUser? = auth.currentUser
-//                if (user == null) {
-//                    val intent = AuthUI.getInstance()
-//                        .createSignInIntentBuilder()
-//                        .setAvailableProviders(authProvider)
-//                        .setAlwaysShowSignInMethodScreen(true)
-//                        .setIsSmartLockEnabled(false)
-//                        .build()
-//                    startActivityForResult(intent, 101)
-//                } else {
-////                    this.firebaseUser = user
-////                    displayInfo()
-//                }
-//            }
-//        FirebaseAuth.getInstance().addAuthStateListener(authListener)
-
-        fun signOut() {
-//            FirebaseAuth.getInstance().signOut()
-            AuthUI.getInstance().signOut(this)
-                .addOnSuccessListener {
-                    Toast.makeText(applicationContext, "已登出", Toast.LENGTH_SHORT).show()
-                }
-        }
-
-//        binding.toolbar.setOnMenuItemClickListener {
-//            when (it.itemId) {
-//                R.id.action_log_out -> signOut()
-//            }
-//            false
-//        }
         intentOrder = intent
         val authListener: FirebaseAuth.AuthStateListener =
             FirebaseAuth.AuthStateListener { auth: FirebaseAuth ->
                 val user: FirebaseUser? = auth.currentUser
                 if (user == null) {
                     navController.navigate(R.id.action_global_signInFragment)
-                    Log.d(TAG, "signInWithCredential:no")
+                    Logger.d("signInWithCredential:no")
                 } else {
                     viewModel.checkUserResult()
                     intentReceiver()
@@ -119,7 +79,6 @@ class MainActivity : AppCompatActivity() {
 
         FirebaseAuth.getInstance().addAuthStateListener(authListener)
 
-        /*Wayne write it outside*/
         binding.bottomNavigationView.setOnNavigationItemSelectedListener {
             when (it.itemId) {
                 R.id.homeFragment -> {
@@ -133,16 +92,11 @@ class MainActivity : AppCompatActivity() {
                         )
                         != PackageManager.PERMISSION_GRANTED
                     ) {
-
-                        // Permission is not granted
                         if (ActivityCompat.shouldShowRequestPermissionRationale(
                                 this,
                                 permission.ACCESS_FINE_LOCATION
                             )
                         ) {
-                            // Show an explanation to the user *asynchronously* -- don't block
-                            // this thread waiting for the user's response! After the user
-                            // sees the explanation, try again to request the permission.
                             AlertDialog.Builder(this)
                                 .setMessage("需要開啟GPS權限，再不給試試看")
                                 .setPositiveButton("前往設定") { _, _ ->
@@ -152,7 +106,7 @@ class MainActivity : AppCompatActivity() {
                                             permission.ACCESS_FINE_LOCATION,
                                             permission.ACCESS_COARSE_LOCATION
                                         ),
-                                        MY_PERMISSIONS_LOCATION
+                                        PermissionCode.LOCATION.requestCode
                                     )
                                 }
                                 .setNegativeButton("NO") { _, _ -> }
@@ -165,7 +119,7 @@ class MainActivity : AppCompatActivity() {
                                     permission.ACCESS_FINE_LOCATION,
                                     permission.ACCESS_COARSE_LOCATION
                                 ),
-                                MY_PERMISSIONS_LOCATION
+                                PermissionCode.LOCATION.requestCode
                             )
                         }
                     } else {
@@ -181,7 +135,6 @@ class MainActivity : AppCompatActivity() {
                 }
             };false
         }
-
     }
 
     private fun intentReceiver(){
@@ -222,134 +175,32 @@ class MainActivity : AppCompatActivity() {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
 
         when (requestCode) {
-            MY_PERMISSIONS_LOCATION -> {
+            PermissionCode.LOCATION.requestCode -> {
                 if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     for (permissionsItem in permissions) {
-                        Log.d(TAG, "permissions allow : $permissions")
+                        Logger.d("permissions allow : $permissions")
                     }
                     findNavController(R.id.myNavHostFragment).navigate(NavigationDirections.actionGlobalRadarFragment(Store("","","")))
                 } else {
                     for (permissionsItem in permissions) {
-                        Log.d(TAG, "permissions reject : $permissionsItem")
-                    }
-                }
-                return
-            }
-
-
-            10 -> {
-                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    for (permissionsItem in permissions) {
-                        Log.d(TAG, "permissions allow : $permissions")
-                    }
-                } else {
-                    for (permissionsItem in permissions) {
-                        Log.d(TAG, "permissions reject : $permissionsItem")
+                        Logger.d("permissions reject : $permissionsItem")
                     }
                 }
                 return
             }
         }
-
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.menu_main, menu)
         return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         return when (item.itemId) {
             R.id.action_about -> true
             R.id.action_log_out -> true
             else -> super.onOptionsItemSelected(item)
         }
     }
-
-//    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-//        super.onActivityResult(requestCode, resultCode, data)
-//
-//        if (requestCode == 101) {
-//            if (resultCode != Activity.RESULT_OK) {
-//                val response = IdpResponse.fromResultIntent(data)
-//                Toast.makeText(
-//                    applicationContext,
-//                    response?.error?.errorCode.toString(),
-//                    Toast.LENGTH_SHORT
-//                ).show()
-//                Log.d(TAG, "onActivityResult=no")
-//            }
-//            val task = GoogleSignIn.getSignedInAccountFromIntent(data)
-//            Log.d(TAG, "onActivityResult=success and ${task.result!!.email}")
-//        }
-//
-//    }
-
-
-    private val locationListener = object : LocationListener {
-        override fun onLocationChanged(location: Location?) {
-            Log.d(TAG, "onLocationChanged ${location!!.latitude}")
-        }
-
-        override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {
-        }
-
-        override fun onProviderEnabled(provider: String?) {
-        }
-
-        override fun onProviderDisabled(provider: String?) {
-        }
-
-    }
-
-    fun getMyLocation(): Location? {
-        val myLocationService = getSystemService(Context.LOCATION_SERVICE) as LocationManager
-        return if (ContextCompat.checkSelfPermission(
-                this,
-                permission.ACCESS_FINE_LOCATION
-            )
-            == PackageManager.PERMISSION_GRANTED
-        ) {
-            Log.d(TAG, "myLocationService.getLastKnownLocation(LocationManager.GPS_PROVIDER)")
-            myLocationService.requestLocationUpdates(
-                LocationManager.GPS_PROVIDER,
-                0L,
-                0F,
-                object : LocationListener {
-                    override fun onLocationChanged(location: Location?) {
-                        Log.d(TAG, "onLocationChanged ${location!!.latitude}")
-//                    loctionGps = location
-                    }
-
-                    override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {
-                    }
-
-                    override fun onProviderEnabled(provider: String?) {
-                    }
-
-                    override fun onProviderDisabled(provider: String?) {
-                    }
-
-                })
-
-//            Log.d("myLocationService","${myLocationService.getLastKnownLocation(LocationManager.GPS_PROVIDER).latitude}")
-            myLocationService.getLastKnownLocation(LocationManager.GPS_PROVIDER)
-
-//            fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
-//            fusedLocationProviderClient.requestLocationUpdates(locationRequest,locationCallback,
-//                Looper.myLooper())
-//            Log.d(TAG,"fusedLocationProviderClient.lastLocation.result ${fusedLocationProviderClient.lastLocation.result?.latitude}")
-//            fusedLocationProviderClient.lastLocation.result
-        } else {
-            null
-        }
-    }
-
-
-
-
 }

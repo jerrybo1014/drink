@@ -15,35 +15,4 @@ data class Order(
     var status: Boolean = true
 ): Parcelable
 
-@Parcelize
-data class OrderItem(
-    var id: String ="",
-    var user: User? = null,
-    var drink: Drink? = null,
-    var ice: String? = "",
-    var sugar: String? = "",
-    var qty: Long? = 1,
-    var note: String = ""
-): Parcelable{
 
-    fun displayQty(): String{
-        return "X$qty"
-    }
-
-    fun displayIceSugar(): String{
-        return "$sugar$ice"
-    }
-
-}
-
-@Parcelize
-data class OrderLists(
-    var order: Order? = null,
-    var orderLists: List<OrderItem>? = listOf()
-): Parcelable
-
-//@Parcelize
-//data class OrderUser(
-//    var order: GeoPoint? = null,
-//    var orderLists: List<OrderItem>? = listOf()
-//): Parcelable
