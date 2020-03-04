@@ -110,19 +110,19 @@ class PostFragment : Fragment() {
         val sugarAdapter = SugarAdapter(viewModel)
         val iceAdapter = IceAdapter(viewModel)
 
-        binding.recyclerIce.adapter = iceAdapter
-        binding.recyclerSugar.adapter = sugarAdapter
+        binding.postRecyclerIce.adapter = iceAdapter
+        binding.postRecyclerSugar.adapter = sugarAdapter
 
         sugarAdapter.submitList(listSugar)
         iceAdapter.submitList(listIce)
 
-        binding.ratingBarComment.setOnRatingBarChangeListener { ratingBar, fl, b ->
+        binding.postRatingBarComment.setOnRatingBarChangeListener { ratingBar, fl, b ->
             viewModel.commentStar.value = fl.toInt()
         }
 
         viewModel.allStore.observe(this, Observer {
 
-            binding.spinnerStore.adapter = PostStoreSpinnerAdapter(it)
+            binding.postSpinnerStore.adapter = PostStoreSpinnerAdapter(it)
         })
 
         viewModel.selectedStore.observe(this, Observer {
@@ -131,7 +131,7 @@ class PostFragment : Fragment() {
         })
 
         viewModel.allStoreMenu.observe(this, Observer {
-            binding.spinnerDrink.adapter = PostDrinkSpinnerAdater(it)
+            binding.postSpinnerDrink.adapter = PostDrinkSpinnerAdater(it)
             Log.d("allStoreMenu", "$it")
         })
 
@@ -350,11 +350,11 @@ class PostFragment : Fragment() {
             }
             filePath = data.data
 
-            val bitmap = filePath?.getBitmap(binding.imageUpdate.width, binding.imageUpdate.height)
+            val bitmap = filePath?.getBitmap(binding.postImageUpdate.width, binding.postImageUpdate.height)
 //            binding.imageUpdate.setImageBitmap(bitmap)
                             Glide.with(this).load(filePath)
                                 .apply(RequestOptions().centerCrop())
-                                .into(image_update)
+                                .into(post_image_update)
             viewModel.imageBitmap.value = bitmap
 //            try {
 ////                val bitmap = MediaStore.Images.Media.getBitmap(context!!.contentResolver, filePath)
@@ -373,19 +373,13 @@ class PostFragment : Fragment() {
                 return
             }
 
-            val bitmap = photoURI?.getBitmap(binding.imageUpdate.width, binding.imageUpdate.height)
+            val bitmap = photoURI?.getBitmap(binding.postImageUpdate.width, binding.postImageUpdate.height)
 //            binding.imageUpdate.setImageBitmap(bitmap)
             Glide.with(this).load(photoURI)
                 .apply(RequestOptions().centerCrop())
-                .into(image_update)
+                .into(post_image_update)
             viewModel.imageBitmap.value = bitmap
         }
 
     }
-
-//    override fun onDestroy() {
-//        super.onDestroy()
-//        (activity as MainActivity).binding.bottomNavigationView.visibility = View.VISIBLE
-//    }
-
 }

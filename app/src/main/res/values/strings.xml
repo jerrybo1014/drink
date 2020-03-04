@@ -61,6 +61,21 @@
     <string name="text_one">1</string>
     <string name="text_drink_all_comment">所有評論</string>
     <string name="text_no_comment_now">此飲品目前尚無評論...</string>
+    <string name="high_score_drink">最高分飲品</string>
+    <string name="text_new_comment">最新評論</string>
+    <string name="home_search_hint">請輸入飲品關鍵字</string>
+    <string name="order_search_view_hint">查詢訂單編號</string>
+    <string name="order_note">備註</string>
+    <string name="button_create_order">新增品項</string>
+    <string name="order_create_order">點擊我新增訂單!</string>
+    <string name="post_edit_new_drink_hint">請輸入飲品名稱</string>
+    <string name="camera">相機</string>
+    <string name="gallery">圖庫</string>
+    <string name="profile_all_comment">評論紀錄</string>
+    <string name="profile_all_order">揪團紀錄</string>
+    <string name="sign_in_fb">FACEBOOK 登入</string>
+    <string name="sign_in_google">GOOGLE 登入</string>
+    <string name="display_drink">查看飲品</string>
 
 
 </resources>

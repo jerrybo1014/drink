@@ -61,8 +61,8 @@ class HomeFragment : Fragment() {
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
 
-        binding.recyclerHighScore.adapter = highScoreAdapter
-        binding.recyclerNewComment.adapter = newCommentAdapter
+        binding.homeRecyclerHighScore.adapter = highScoreAdapter
+        binding.homeRecyclerNewComment.adapter = newCommentAdapter
 
         viewModel.navigationToDetail.observe(this, Observer {
             it?.let {

@@ -61,7 +61,7 @@ class HomeSearchFragment : Fragment() {
             viewModel.navigationToDetail(it)
         })
 
-        binding.recyclerSearchDrink.adapter = searchDrinkAdapter
+        binding.homeSearchRecyclerSearchDrink.adapter = searchDrinkAdapter
 
         viewModel.navigationToDetail.observe(this, Observer {
             it?.let {
@@ -74,29 +74,6 @@ class HomeSearchFragment : Fragment() {
             Log.d("jerryTest", "drinkList = $it")
 
         })
-
-//        binding.searchBar.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-//            override fun onQueryTextSubmit(query: String?): Boolean {
-//                return false
-//            }
-//
-//            override fun onQueryTextChange(newText: String?): Boolean {
-//                val resultList = mutableListOf<Drink>()
-//
-//                viewModel.drinkList.value?.let {
-//                    for (drink in it) {
-//                        if (!newText.isNullOrEmpty()) {
-//                            if (drink.drinkName.contains(newText.toString())) {
-//                                resultList.add(drink)
-//                            }
-//                        }
-//                    }
-//                    searchDrinkAdapter.submitList(resultList)
-//                }
-//                return true
-//            }
-//        }
-//        )
 
         viewModel.searchEditText.observe(this, Observer {searchEditText->
             Log.d("jerryTest","searchEditText = $searchEditText")
@@ -114,11 +91,9 @@ class HomeSearchFragment : Fragment() {
             }
         })
 
-        binding.imageBack.setOnClickListener {
+        binding.homeSearchImageBack.setOnClickListener {
             findNavController().navigateUp()
         }
-
-
 
         return binding.root
     }

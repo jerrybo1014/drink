@@ -76,16 +76,16 @@ class OrderFragment : Fragment() {
 
 
 
-        binding.imageAddOrder.setOnClickListener {
+        binding.orderImageCreateOrder.setOnClickListener {
             childFragmentManager.let {
                 CreateOrderFragment().show(it, "")
             }
         }
 
         val orderListAdapter = OrderListsAdapter(viewModel)
-        binding.recyclerOrderList.adapter = orderListAdapter
+        binding.orderRecyclerOrderList.adapter = orderListAdapter
 
-        binding.buttonAddOrder.setOnClickListener {
+        binding.orderButtonAddOrder.setOnClickListener {
             findNavController().navigate(
                 NavigationDirections.actionGlobalAddOrderFragement(
                     viewModel.orderLists.value!!
@@ -95,7 +95,7 @@ class OrderFragment : Fragment() {
 
 
 
-        binding.searchView.setOnQueryTextListener(object : OnQueryTextListener {
+        binding.orderSearchView.setOnQueryTextListener(object : OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 query?.let {
                     viewModel.getOrderResult(it.toLong())
@@ -145,7 +145,7 @@ class OrderFragment : Fragment() {
         })
 
 
-        binding.imageShare.setOnClickListener {
+        binding.orderImageShare.setOnClickListener {
             val cn = ComponentName(
                 "jp.naver.line.android",
                 "jp.naver.line.android.activity.selectchat.SelectChatActivityLaunchActivity"

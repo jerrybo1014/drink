@@ -75,11 +75,11 @@ class SignInFragment : Fragment() {
                 Utility.arrayList("public_profile", "email"))
         }
 
-        binding.buttonSigninGoogle.setOnClickListener {
+        binding.buttonSignInGoogle.setOnClickListener {
             signInGoogle()
         }
 
-        binding.buttonSigninFb.setOnClickListener {
+        binding.buttonSignInFb.setOnClickListener {
             signInFb()
         }
 

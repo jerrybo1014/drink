@@ -43,5 +43,10 @@
 
     <color name="app_color_theme">#96DEE9</color>
     <color name="app_color_link">#37A0C8</color>
+    <color name="color_post_image_background">#99DDDDDD</color>
+    <color name="app_profile_close">#CC0000</color>
+    <color name="app_profile_checked">#66DD00</color>
+    <color name="app_line_gary">#999999</color>
+    <color name="app_color_icon_theme">#603913</color>
 
 </resources>

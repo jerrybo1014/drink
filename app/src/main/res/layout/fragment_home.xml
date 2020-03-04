@@ -33,12 +33,12 @@
                 app:setupContentStatus="@{viewModel.status}">
 
             <TextView
-                android:id="@+id/text_home_high_score"
+                android:id="@+id/home_text_high_score"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:text="最高分飲品"
-                android:textSize="16dp"
+                android:text="@string/high_score_drink"
+                android:textSize="@dimen/text_max"
                 android:textColor="@color/text_color"
                 android:fontFamily="@font/noto_sans"
                 android:layout_marginTop="8dp"
@@ -47,7 +47,7 @@
 
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recycler_high_score"
+                android:id="@+id/home_recycler_high_score"
                 android:layout_width="match_parent"
                 android:layout_height="120dp"
                 android:layout_marginTop="4dp"
@@ -59,29 +59,29 @@
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/text_home_high_score" />
+                app:layout_constraintTop_toBottomOf="@+id/home_text_high_score" />
 
             <TextView
-                android:id="@+id/text_home_new_comment"
+                android:id="@+id/home_text_new_comment"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
-                android:text="最新評論"
-                android:textSize="16dp"
+                android:text="@string/text_new_comment"
+                android:textSize="@dimen/text_max"
                 android:textColor="@color/text_color"
                 android:fontFamily="@font/noto_sans"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/recycler_high_score" />
+                app:layout_constraintTop_toBottomOf="@+id/home_recycler_high_score" />
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recycler_new_comment"
+                android:id="@+id/home_recycler_new_comment"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_marginTop="3dp"
+                android:layout_marginTop="4dp"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/text_home_new_comment"
+                app:layout_constraintTop_toBottomOf="@+id/home_text_new_comment"
                 app:listNewComment="@{viewModel.newComment}"
                 />
 

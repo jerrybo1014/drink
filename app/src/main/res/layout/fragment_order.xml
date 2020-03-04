@@ -16,8 +16,6 @@
         <import type="app.jerry.drink.network.LoadApiStatus"/>
     </data>
 
-
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -25,9 +23,8 @@
         android:background="@color/home_background"
         >
 
-
         <androidx.appcompat.widget.SearchView
-            android:id="@+id/search_view"
+            android:id="@+id/order_search_view"
             android:layout_width="0dp"
             android:layout_height="30dp"
             android:layout_marginTop="16dp"
@@ -38,29 +35,27 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:queryHint="查詢訂單編號" />
+            app:queryHint="@string/order_search_view_hint" />
 
         <ScrollView
-            android:id="@+id/scrollView2"
+            android:id="@+id/order_scrollView"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginTop="16dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/search_view"
+            app:layout_constraintTop_toBottomOf="@+id/order_search_view"
             app:layout_constraintVertical_bias="1.0">
-
 
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_margin="2dp"
                 app:cardCornerRadius="10dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
-
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
@@ -71,7 +66,7 @@
                     android:visibility="@{orderLists.order == null  ? View.GONE:View.VISIBLE}">
 
                     <TextView
-                        android:id="@+id/text_status_add_order"
+                        android:id="@+id/order_text_status"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                        android:layout_marginEnd="2dp"
@@ -81,78 +76,67 @@
                         app:layout_constraintBottom_toTopOf="@+id/line_add_order"
                         app:layout_constraintEnd_toStartOf="@+id/switch1" />
 
-
                     <TextView
-                        android:id="@+id/text_order_id"
+                        android:id="@+id/order_text_id"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="@color/text_color"
                         android:text="@{orderLists.order.id}"
                         android:layout_marginStart="16dp"
-                        app:layout_constraintStart_toEndOf="@+id/textView_order_id"
-                        app:layout_constraintBaseline_toBaselineOf="@+id/textView_order_id"
+                        app:layout_constraintStart_toEndOf="@+id/order_textView_id"
+                        app:layout_constraintBaseline_toBaselineOf="@+id/order_textView_id"
                 />
 
-
                     <TextView
-                        android:id="@+id/button_add_order"
+                        android:id="@+id/order_button_add_order"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginVertical="8dp"
                         android:background="@drawable/background_post_button"
                         android:fontFamily="@font/noto_sans"
                         android:padding="8dp"
-                        android:text="新增品項"
+                        android:text="@string/button_create_order"
                         android:textColor="#FFFFFF"
                         android:letterSpacing="1.0"
                         android:textAlignment="center"
-                        android:textSize="16dp"
+                        android:textSize="@dimen/text_max"
                         android:visibility="@{orderLists.order.status == true ? View.VISIBLE:View.GONE}"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/recycler_order_list" />
+                        app:layout_constraintTop_toBottomOf="@+id/order_recycler_order_list" />
 
                     <ImageView
-                        android:id="@+id/image_order_id"
-                        style="@style/add_order_icon_style"
+                        android:id="@+id/order_image_id"
+                        style="@style/app_icon_mid"
+                        android:layout_marginTop="12dp"
                         android:src="@drawable/ic_featured_play_list_black_24dp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
-                        android:id="@+id/textView_order_id"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:id="@+id/order_textView_id"
                         android:text="@string/order_id"
-                        android:textSize="16dp"
-                        android:textColor="@color/text_color_hint"
-                        android:fontFamily="@font/noto_sans"
-                        android:layout_marginStart="10dp"
-                        app:layout_constraintBottom_toBottomOf="@+id/image_order_id"
-                        app:layout_constraintStart_toEndOf="@+id/image_order_id"
-                        app:layout_constraintTop_toTopOf="@+id/image_order_id" />
-
-
+                        app:layout_constraintBottom_toBottomOf="@+id/order_image_id"
+                        app:layout_constraintStart_toEndOf="@+id/order_image_id"
+                        app:layout_constraintTop_toTopOf="@+id/order_image_id"
+                        style="@style/order_text" />
 
                     <ImageView
-                        android:id="@+id/image_host_order"
-                        style="@style/add_order_icon_style"
+                        android:id="@+id/order_image_host"
+                        style="@style/app_icon_mid"
+                        android:layout_marginTop="12dp"
                         android:src="@drawable/people"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/image_order_id" />
+                        app:layout_constraintTop_toBottomOf="@+id/order_image_id" />
 
                     <TextView
-                        android:id="@+id/text_host_order"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
+                        android:id="@+id/order_textView_host"
                         android:text="@string/order_host"
-                        android:textSize="16dp"
-                        android:textColor="@color/text_color_hint"
-                        app:layout_constraintBottom_toBottomOf="@+id/image_host_order"
-                        app:layout_constraintStart_toEndOf="@+id/image_host_order"
-                        app:layout_constraintTop_toTopOf="@+id/image_host_order" />
+                        style="@style/order_text"
+                        app:layout_constraintBottom_toBottomOf="@+id/order_image_host"
+                        app:layout_constraintStart_toEndOf="@+id/order_image_host"
+                        app:layout_constraintTop_toTopOf="@+id/order_image_host" />
 
                     <TextView
                         android:id="@+id/order_host_name"
@@ -161,27 +145,24 @@
                         android:layout_marginStart="16dp"
                         android:textColor="@color/text_color"
                         android:text="@{orderLists.order.user.name}"
-                        app:layout_constraintBaseline_toBaselineOf="@+id/text_host_order"
-                        app:layout_constraintStart_toEndOf="@+id/text_host_order" />
+                        app:layout_constraintBaseline_toBaselineOf="@+id/order_textView_host"
+                        app:layout_constraintStart_toEndOf="@+id/order_textView_host" />
 
                     <ImageView
-                        android:id="@+id/image_store_order"
-                        style="@style/add_order_icon_style"
+                        android:id="@+id/order_image_store"
+                        style="@style/app_icon_mid"
+                        android:layout_marginTop="12dp"
                         android:src="@drawable/store_icon"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/image_host_order" />
+                        app:layout_constraintTop_toBottomOf="@id/order_image_host" />
 
                     <TextView
-                        android:id="@+id/text_store_create_order"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
+                        android:id="@+id/order_text_store_create"
                         android:text="@string/post_store"
-                        android:textSize="16dp"
-                        android:textColor="@color/text_color_hint"
-                        app:layout_constraintBottom_toBottomOf="@+id/image_store_order"
-                        app:layout_constraintStart_toEndOf="@+id/image_store_order"
-                        app:layout_constraintTop_toTopOf="@+id/image_store_order" />
+                        style="@style/order_text"
+                        app:layout_constraintBottom_toBottomOf="@+id/order_image_store"
+                        app:layout_constraintStart_toEndOf="@+id/order_image_store"
+                        app:layout_constraintTop_toTopOf="@+id/order_image_store" />
 
                     <TextView
                         android:id="@+id/order_host_store"
@@ -190,14 +171,14 @@
                         android:layout_marginStart="16dp"
                         android:textColor="@color/text_color"
                         android:text="@{orderLists.order.store.storeName}"
-                        app:layout_constraintBaseline_toBaselineOf="@+id/text_store_create_order"
-                        app:layout_constraintStart_toEndOf="@+id/text_host_order" />
+                        app:layout_constraintBaseline_toBaselineOf="@+id/order_text_store_create"
+                        app:layout_constraintStart_toEndOf="@+id/order_textView_host" />
 
                     <ImageView
-                        android:id="@+id/image_nav_to_radar"
+                        android:id="@+id/order_image_nav_to_radar"
                         android:layout_width="0dp"
                         android:layout_height="0dp"
-                        android:tint="#37A0C8"
+                        android:tint="@color/app_color_link"
                         android:src="@drawable/bottom_navigation_radar"
                         app:layout_constraintBottom_toBottomOf="@+id/order_host_store"
                         android:onClick="@{() -> viewModel.navigationToRadar(orderLists.order.store)}"
@@ -206,26 +187,21 @@
                         app:layout_constraintStart_toEndOf="@+id/order_host_store"
                         app:layout_constraintTop_toTopOf="@+id/order_host_store" />
 
-
-
                     <ImageView
-                        android:id="@+id/image_time_order"
-                        style="@style/add_order_icon_style"
+                        android:id="@+id/order_image_time"
+                        style="@style/app_icon_mid"
+                        android:layout_marginTop="12dp"
                         android:src="@drawable/clock_1"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/image_store_order" />
+                        app:layout_constraintTop_toBottomOf="@id/order_image_store" />
 
                     <TextView
-                        android:id="@+id/text_time_order"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
+                        android:id="@+id/order_text_time"
                         android:text="@string/post_time"
-                        android:textSize="16dp"
-                        android:textColor="@color/text_color_hint"
-                        app:layout_constraintBottom_toBottomOf="@+id/image_time_order"
-                        app:layout_constraintStart_toEndOf="@+id/image_time_order"
-                        app:layout_constraintTop_toTopOf="@+id/image_time_order" />
+                        style="@style/order_text"
+                        app:layout_constraintBottom_toBottomOf="@+id/order_image_time"
+                        app:layout_constraintStart_toEndOf="@+id/order_image_time"
+                        app:layout_constraintTop_toTopOf="@+id/order_image_time" />
 
                     <TextView
                         android:id="@+id/order_time_limit"
@@ -234,28 +210,25 @@
                         android:layout_marginStart="16dp"
                         android:textColor="@color/text_color"
                         android:text="@{orderLists.order.timeLimit}"
-                        app:layout_constraintBaseline_toBaselineOf="@+id/text_time_order"
-                        app:layout_constraintStart_toEndOf="@+id/text_host_order" />
+                        app:layout_constraintBaseline_toBaselineOf="@+id/order_text_time"
+                        app:layout_constraintStart_toEndOf="@+id/order_text_time" />
 
 
                     <ImageView
-                        android:id="@+id/image_note_create_order"
-                        style="@style/add_order_icon_style"
+                        android:id="@+id/order_image_note_create_order"
+                        style="@style/app_icon_mid"
+                        android:layout_marginTop="12dp"
                         android:src="@drawable/notes"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/image_time_order" />
+                        app:layout_constraintTop_toBottomOf="@id/order_image_time" />
 
                     <TextView
                         android:id="@+id/text_note"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
-                        android:text="備註"
-                        android:textSize="16dp"
-                        android:textColor="@color/text_color_hint"
-                        app:layout_constraintBottom_toBottomOf="@+id/image_note_create_order"
-                        app:layout_constraintStart_toEndOf="@+id/image_note_create_order"
-                        app:layout_constraintTop_toTopOf="@+id/image_note_create_order" />
+                        android:text="@string/order_note"
+                        style="@style/order_text"
+                        app:layout_constraintBottom_toBottomOf="@+id/order_image_note_create_order"
+                        app:layout_constraintStart_toEndOf="@+id/order_image_note_create_order"
+                        app:layout_constraintTop_toTopOf="@+id/order_image_note_create_order" />
 
                     <TextView
                         android:id="@+id/order_note"
@@ -265,7 +238,7 @@
                         android:textColor="@color/text_color"
                         android:text="@{orderLists.order.note}"
                         app:layout_constraintBaseline_toBaselineOf="@+id/text_note"
-                        app:layout_constraintStart_toEndOf="@+id/text_host_order" />
+                        app:layout_constraintStart_toEndOf="@+id/order_text_time" />
 
                     <View
                         android:id="@+id/line_add_order"
@@ -277,14 +250,14 @@
                         app:layout_constraintTop_toBottomOf="@+id/text_note" />
 
                     <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/recycler_order_list"
+                        android:id="@+id/order_recycler_order_list"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/image_note_create_order" />
+                        app:layout_constraintTop_toBottomOf="@+id/order_image_note_create_order" />
 
                     <Switch
                         android:id="@+id/switch1"
@@ -300,17 +273,16 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <ImageView
-                        android:id="@+id/image_share"
+                        android:id="@+id/order_image_share"
                         android:layout_width="0dp"
                         android:layout_height="0dp"
                         app:layout_constraintDimensionRatio="1"
                         android:src="@drawable/ic_share_black_24dp"
-                        android:tint="#37A0C8"
+                        android:tint="@color/app_color_link"
                         android:layout_marginStart="8dp"
-                        app:layout_constraintBottom_toBottomOf="@+id/text_order_id"
-                        app:layout_constraintStart_toEndOf="@+id/text_order_id"
-                        app:layout_constraintTop_toTopOf="@+id/text_order_id" />
-
+                        app:layout_constraintBottom_toBottomOf="@+id/order_text_id"
+                        app:layout_constraintStart_toEndOf="@+id/order_text_id"
+                        app:layout_constraintTop_toTopOf="@+id/order_text_id" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.cardview.widget.CardView>
@@ -319,7 +291,7 @@
         </ScrollView>
 
         <ImageView
-            android:id="@+id/image_add_order"
+            android:id="@+id/order_image_create_order"
             android:layout_width="200dp"
             android:layout_height="200dp"
             android:clickable="true"
@@ -332,17 +304,17 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/text_add_order"
+            android:id="@+id/order_text_create_order"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="點擊我新增訂單!"
+            android:text="@string/order_create_order"
             android:textSize="16dp"
             android:fontFamily="@font/noto_sans"
             android:layout_marginTop="16dp"
             android:visibility="@{orderLists.order == null &amp; viewModel.status != LoadApiStatus.LOADING  ? View.VISIBLE:View.GONE}"
-            app:layout_constraintEnd_toEndOf="@+id/image_add_order"
-            app:layout_constraintStart_toStartOf="@+id/image_add_order"
-            app:layout_constraintTop_toBottomOf="@+id/image_add_order" />
+            app:layout_constraintEnd_toEndOf="@+id/order_image_create_order"
+            app:layout_constraintStart_toStartOf="@+id/order_image_create_order"
+            app:layout_constraintTop_toBottomOf="@+id/order_image_create_order" />
 
         <ProgressBar
             android:theme="@style/ProgressTheme"

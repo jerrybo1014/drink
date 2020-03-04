@@ -101,7 +101,7 @@ class RadarFragment : Fragment(), GoogleMap.OnMarkerClickListener, OnMapReadyCal
         })
 
         viewModel.storeDrinkStatus.observe(this, Observer {
-            binding.imageFoldArrow.isSelected = it
+            binding.radarImageFoldArrow.isSelected = it
         })
 
         binding.imageCallPhone.setOnClickListener {
@@ -150,8 +150,8 @@ class RadarFragment : Fragment(), GoogleMap.OnMarkerClickListener, OnMapReadyCal
 
         val radarStoreDrinkAdapter = RadarStoreDrinkAdapter()
 
-        binding.recyclerStoreHighScore.adapter = storeHighScoreAdapter
-        binding.recyclerMapDrinkRank.adapter = radarStoreDrinkAdapter
+        binding.radarRecyclerStoreHighScore.adapter = storeHighScoreAdapter
+        binding.radarRecyclerMapDrinkRank.adapter = radarStoreDrinkAdapter
 
         viewModel.navigationToDetail.observe(this, Observer {
             it?.let {

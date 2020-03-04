@@ -69,14 +69,12 @@ class ProfileFragment : Fragment() {
             viewModel.navigationToOrder(it)
         })
 
-        binding.recyclerProfileAllComments.adapter = userCommentAdapter
-        binding.recyclerProfileAllOrders.adapter = userOrderAdapter
+        binding.profileRecyclerAllComments.adapter = userCommentAdapter
+        binding.profileRecyclerAllOrders.adapter = userOrderAdapter
 
         binding.profileAvatarChoose.setOnClickListener {
             loadGallery()
         }
-
-
 
         viewModel.userCurrent.observe(this, Observer {
             Log.d("userCurrent.observe", "userCurrent = $it")
@@ -97,13 +95,12 @@ class ProfileFragment : Fragment() {
         })
 
         viewModel.allCommentStatus.observe(this, Observer {
-            binding.foldCommentArrow.isSelected = it
+            binding.profileFoldCommentArrow.isSelected = it
         })
 
         viewModel.allOrderStatus.observe(this, Observer {
-            binding.foldOrderArrow.isSelected = it
+            binding.profileFoldOrderArrow.isSelected = it
         })
-
 
         val mShowAction = TranslateAnimation(
             Animation.RELATIVE_TO_SELF, 0.0f,
@@ -231,7 +228,6 @@ class ProfileFragment : Fragment() {
                     RequestOptions().circleCrop()
                 ).into(profile_avatar)
                 viewModel.imageUri.value = filePath
-
 
             } catch (e: IOException) {
                 e.printStackTrace()
