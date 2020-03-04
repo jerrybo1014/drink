@@ -28,6 +28,17 @@
         <item name="android:fontFamily">@font/noto_sans</item>
     </style>
 
+    <style name="add_order_text">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">20dp</item>
+        <item name="android:layout_marginStart">8dp</item>
+        <item name="android:textSize">16dp</item>
+        <item name="android:fontFamily">@font/noto_sans</item>
+    </style>
+
+
+
     <style name="MySwitch" parent="Theme.AppCompat.Light">
         <!-- Active thumb color & Active track color(30% transparency) switch 打开时的拇指按钮的颜色 轨迹颜色默认为30%这个颜色 -->
         <item name="colorControlActivated">#00AA00</item>

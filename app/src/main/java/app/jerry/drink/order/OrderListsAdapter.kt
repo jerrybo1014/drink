@@ -31,12 +31,9 @@ class OrderListsAdapter(private val viewModel: OrderVIewModel) :
             binding.lifecycleOwner = this
             binding.viewModel = viewModel
 
-//            val clipboardManager = ClipboardManager.OnPrimaryClipChangedListener {
-//
-//            }
-
             val userCurrent = orderList.user?.id == viewModel.userCurrent.value?.id
-            Log.d("jerryTest","OrderListsHolder = $userCurrent")
+            Log.d("jerryTest","userCurrent = $userCurrent")
+            Log.d("jerryTest","viewModel.userCurrent = ${viewModel.userCurrent.value?.id}")
             binding.userCurrent = userCurrent
 
             binding.executePendingBindings()

@@ -39,8 +39,8 @@ fun bindImage(imgView: ImageView, imgUrl: String?) {
             .load(imgUri)
             .apply(
                 RequestOptions()
-                    .placeholder(R.drawable.drink_shadow_placeholder)
-                    .error(R.drawable.drink_shadow_placeholder)
+                    .placeholder(R.drawable.draw_holder)
+                    .error(R.drawable.draw_holder)
             )
             .into(imgView)
     }
@@ -69,8 +69,8 @@ fun bindImageCorner(imgView: ImageView, imgUrl: String?) {
             .load(imgUri)
             .apply(
                 RequestOptions().transform(CenterCrop(),RoundedCorners(15))
-                    .placeholder(R.drawable.drink_shadow_placeholder)
-                    .error(R.drawable.drink_shadow_placeholder)
+                    .placeholder(R.drawable.draw_holder)
+                    .error(R.drawable.draw_holder)
             )
             .into(imgView)
     }

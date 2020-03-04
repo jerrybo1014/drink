@@ -68,7 +68,7 @@ class AddOrderFragment : DialogFragment() {
         val iceAdapter = IceAddOrderAdapter(viewModel)
 
         binding.addOrderRecyclerIce.adapter = iceAdapter
-        binding.recyclerSugar.adapter = sugarAdapter
+        binding.addOrderRecyclerSugar.adapter = sugarAdapter
 
         sugarAdapter.submitList(listSugar)
         iceAdapter.submitList(listIce)

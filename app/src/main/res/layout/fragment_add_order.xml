@@ -52,7 +52,7 @@
 
             <TextView
                 android:id="@+id/add_order_text_drink"
-                style="@style/post_text_title"
+                style="@style/add_order_text"
                 android:text="@string/post_drink"
                 android:textSize="@dimen/text_max"
                 android:fontFamily="@font/noto_sans"
@@ -80,7 +80,7 @@
 
             <TextView
                 android:id="@+id/add_order_text_ice"
-                style="@style/post_text_title"
+                style="@style/add_order_text"
                 android:text="@string/post_ice"
                 android:textSize="16dp"
                 android:fontFamily="@font/noto_sans"
@@ -109,7 +109,7 @@
 
             <TextView
                 android:id="@+id/add_order_text_sugar"
-                style="@style/post_text_title"
+                style="@style/add_order_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/post_sugar"
@@ -119,7 +119,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/add_order_text_ice" />
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recycler_sugar"
+                android:id="@+id/add_order_recycler_sugar"
                 android:layout_width="0dp"
                 android:layout_height="30dp"
                 android:layout_marginStart="6dp"
@@ -131,76 +131,72 @@
                 app:layout_constraintTop_toTopOf="@+id/add_order_text_sugar" />
 
             <ImageView
-                android:id="@+id/image_qyt_add_order"
-                android:layout_width="18dp"
-                android:layout_height="18dp"
+                android:id="@+id/_add_order_image_qyt"
+                style="@style/app_icon_mid"
                 android:src="@drawable/calculator"
-                android:tint="@color/myColorPrimaryDark"
-                app:layout_constraintBottom_toBottomOf="@+id/text_qyt"
+                app:layout_constraintBottom_toBottomOf="@+id/add_order_text_qyt"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/text_qyt" />
+                app:layout_constraintTop_toTopOf="@+id/add_order_text_qyt" />
 
             <TextView
-                android:id="@+id/text_qyt"
-                style="@style/post_text_title"
+                android:id="@+id/add_order_text_qyt"
+                style="@style/add_order_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="數量"
-                app:layout_constraintStart_toEndOf="@+id/image_qyt_add_order"
+                android:text="@string/add_order_qty"
+                app:layout_constraintStart_toEndOf="@+id/_add_order_image_qyt"
                 app:layout_constraintTop_toBottomOf="@+id/add_order_text_sugar" />
 
             <ImageView
-                android:id="@+id/image_note_add_order"
-                android:layout_width="18dp"
-                android:layout_height="18dp"
+                android:id="@+id/add_order_image_note"
                 android:src="@drawable/notes"
-                android:tint="@color/myColorPrimaryDark"
-                app:layout_constraintBottom_toBottomOf="@+id/text_note"
+                style="@style/app_icon_mid"
+                app:layout_constraintBottom_toBottomOf="@+id/add_order_text_note"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/text_note" />
+                app:layout_constraintTop_toTopOf="@+id/add_order_text_note" />
 
             <TextView
-                android:id="@+id/text_note"
+                android:id="@+id/add_order_text_note"
                 style="@style/post_text_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="備註"
-                app:layout_constraintStart_toEndOf="@+id/image_qyt_add_order"
-                app:layout_constraintTop_toBottomOf="@+id/text_qyt" />
+                android:text="@string/add_order_note"
+                app:layout_constraintStart_toEndOf="@+id/_add_order_image_qyt"
+                app:layout_constraintTop_toBottomOf="@+id/add_order_text_qyt" />
 
             <EditText
-                android:id="@+id/edit_text_qty"
+                android:id="@+id/add_order_edit_text_qty"
                 android:layout_width="60dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="6dp"
                 android:inputType="number"
                 android:paddingBottom="4dp"
-                android:textSize="16dp"
+                android:textSize="@dimen/text_max"
                 android:fontFamily="@font/noto_sans"
                 android:text="@={viewModel.convertLongToString(viewModel.orderList.qty)}"
                 android:textAlignment="center"
-                app:layout_constraintBaseline_toBaselineOf="@+id/text_qyt"
-                app:layout_constraintStart_toEndOf="@+id/text_qyt" />
+                app:layout_constraintBaseline_toBaselineOf="@+id/add_order_text_qyt"
+                app:layout_constraintStart_toEndOf="@+id/add_order_text_qyt" />
 
             <EditText
-                android:id="@+id/edit_text_note"
+                android:id="@+id/add_order_edit_text_note"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="6dp"
                 android:gravity="start"
-                android:textSize="16dp"
+                android:textSize="@dimen/text_max"
                 android:maxLength="20"
                 android:fontFamily="@font/noto_sans"
                 android:text="@={viewModel.orderList.note}"
-                app:layout_constraintBaseline_toBaselineOf="@+id/text_note"
+                app:layout_constraintBaseline_toBaselineOf="@+id/add_order_text_note"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/text_note" />
+                app:layout_constraintStart_toEndOf="@+id/add_order_text_note" />
 
             <TextView
-                android:id="@+id/button_create_order"
+                android:id="@+id/button_add_order"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="送出品項"
+                android:text="@string/add_order_button_text"
                 android:letterSpacing="1.0"
                 android:clickable="@{viewModel.status == LoadApiStatus.LOADING ? false:true}"
                 android:textColor='@{viewModel.selectedIce == null || viewModel.selectedSugar == null ? Color.parseColor("#FFFFFF"):Color.parseColor("#FFFFFF")}'
@@ -213,7 +209,7 @@
                 android:layout_marginTop="16dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/edit_text_note" />
+                app:layout_constraintTop_toBottomOf="@+id/add_order_edit_text_note" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
