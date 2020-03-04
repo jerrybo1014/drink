@@ -37,6 +37,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/add_order_dialog_title"
                 android:textSize="@dimen/text_title"
+                android:textColor="@color/text_color"
                 android:fontFamily="@font/noto_sans"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -68,7 +69,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/add_order_text_drink"
                 app:layout_constraintTop_toTopOf="@+id/add_order_text_drink"
-                style="@style/add_order_drink_spinner" />
+                android:theme="@style/add_order_drink_spinner" />
 
             <ImageView
                 android:id="@+id/add_order_image_ice"
@@ -157,7 +158,7 @@
 
             <TextView
                 android:id="@+id/add_order_text_note"
-                style="@style/post_text_title"
+                style="@style/add_order_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/add_order_note"
@@ -202,8 +203,7 @@
                 android:textColor='@{viewModel.selectedIce == null || viewModel.selectedSugar == null ? Color.parseColor("#FFFFFF"):Color.parseColor("#FFFFFF")}'
                 android:background="@drawable/background_post_button"
                 android:textAlignment="center"
-                android:paddingTop="10dp"
-                android:paddingBottom="10dp"
+                android:paddingVertical="10dp"
                 android:onClick="@{() -> viewModel.addOrderResult()}"
                 android:enabled="@{viewModel.selectedIce == null || viewModel.selectedSugar == null ? false:true}"
                 android:layout_marginTop="16dp"

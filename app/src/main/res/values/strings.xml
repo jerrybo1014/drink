@@ -48,6 +48,19 @@
     <string name="add_order_qty">數量</string>
     <string name="add_order_note">備註</string>
     <string name="add_order_button_text">送出品項</string>
+    <string name="create_order_title">新增訂單</string>
+    <string name="create_order_select_time_hint">請選擇截止時間</string>
+    <string name="create_order_text_note">備註</string>
+    <string name="text_drink_information">飲品資訊</string>
+    <string name="near_store_branch">附近店家</string>
+    <string name="navigation_to_internet">前往官網</string>
+    <string name="text_five">5</string>
+    <string name="text_four">4</string>
+    <string name="text_three">3</string>
+    <string name="text_two">2</string>
+    <string name="text_one">1</string>
+    <string name="text_drink_all_comment">所有評論</string>
+    <string name="text_no_comment_now">此飲品目前尚無評論...</string>
 
 
 </resources>

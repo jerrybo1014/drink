@@ -4,20 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
         <variable
             name="viewModel"
             type="app.jerry.drink.detail.DetailViewModel" />
-
         <import type="android.view.View"/>
-
     </data>
-
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -26,11 +21,11 @@
         android:paddingTop="16dp">
 
         <TextView
-            android:id="@+id/text_drink_information"
+            android:id="@+id/detail_text_drink_information"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:text="飲品資訊"
+            android:text="@string/text_drink_information"
             android:textSize="16dp"
             android:textColor="@color/text_color"
             app:layout_constraintStart_toStartOf="parent"
@@ -38,68 +33,64 @@
 
 
         <ImageView
-            android:id="@+id/image_store_item_detail"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
+            android:id="@+id/detail_image_store"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:src="@drawable/store_icon"
-            android:tint="@color/myColorPrimaryDark"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/text_drink_information" />
+            app:layout_constraintTop_toBottomOf="@+id/detail_text_drink_information"
+            style="@style/app_icon_max" />
 
         <ImageView
-            android:id="@+id/image_drink_item_detail"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
+            android:id="@+id/detail_image_drink"
+            style="@style/app_icon_max"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="14dp"
             android:src="@drawable/cocktail"
-            android:tint="@color/myColorPrimaryDark"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/image_store_item_detail" />
+            app:layout_constraintTop_toBottomOf="@id/detail_image_store" />
 
         <TextView
-            android:id="@+id/detail_drink_name"
+            android:id="@+id/detail_text_drink_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/noto_sans"
             android:text="@{viewModel.drinkDetail.drink.drinkName}"
             android:textColor="@color/text_color"
-            android:textSize="16dp"
-            app:layout_constraintBottom_toBottomOf="@+id/image_drink_item_detail"
-            app:layout_constraintStart_toStartOf="@+id/detail_store_name"
-            app:layout_constraintTop_toTopOf="@+id/image_drink_item_detail" />
+            android:textSize="@dimen/text_max"
+            app:layout_constraintBottom_toBottomOf="@+id/detail_image_drink"
+            app:layout_constraintStart_toStartOf="@+id/detail_text_store_name"
+            app:layout_constraintTop_toTopOf="@+id/detail_image_drink" />
 
         <TextView
-            android:id="@+id/detail_store_name"
+            android:id="@+id/detail_text_store_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:fontFamily="@font/noto_sans"
             android:text="@{viewModel.drinkDetail.store.storeName}"
             android:textColor="@color/text_color"
-            android:textSize="16dp"
-            app:layout_constraintBottom_toBottomOf="@+id/image_store_item_detail"
-            app:layout_constraintStart_toEndOf="@id/image_store_item_detail"
-            app:layout_constraintTop_toTopOf="@+id/image_store_item_detail" />
+            android:textSize="@dimen/text_max"
+            app:layout_constraintBottom_toBottomOf="@+id/detail_image_store"
+            app:layout_constraintStart_toEndOf="@id/detail_image_store"
+            app:layout_constraintTop_toTopOf="@+id/detail_image_store" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/layout_navigation_to_map"
+            android:id="@+id/detail_layout_navigation_to_map"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="42dp"
             android:onClick="@{() -> viewModel.navigationToRadar(viewModel.drinkDetail.store)}"
-            app:layout_constraintBottom_toBottomOf="@+id/image_drink_item_detail"
-            app:layout_constraintEnd_toStartOf="@+id/layout_navigation_to_internet"
-            app:layout_constraintTop_toTopOf="@+id/detail_store_name">
+            app:layout_constraintBottom_toBottomOf="@+id/detail_image_drink"
+            app:layout_constraintEnd_toStartOf="@+id/detail_layout_navigation_to_internet"
+            app:layout_constraintTop_toTopOf="@+id/detail_text_store_name">
 
             <ImageView
-                android:id="@+id/image_navigation_to_map"
+                android:id="@+id/detail_image_navigation_to_map"
                 android:layout_width="26dp"
                 android:layout_height="26dp"
                 android:src="@drawable/bottom_navigation_radar"
-                android:tint="#37A0C8"
+                android:tint="@color/app_color_link"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -109,43 +100,43 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="6dp"
                 android:fontFamily="@font/noto_sans"
-                android:text="附近店家"
-                android:textColor="#37A0C8"
-                android:textSize="12dp"
-                app:layout_constraintEnd_toEndOf="@+id/image_navigation_to_map"
-                app:layout_constraintStart_toStartOf="@+id/image_navigation_to_map"
-                app:layout_constraintTop_toBottomOf="@+id/image_navigation_to_map" />
+                android:text="@string/near_store_branch"
+                android:textColor="@color/app_color_link"
+                android:textSize="@dimen/text_min"
+                app:layout_constraintEnd_toEndOf="@+id/detail_image_navigation_to_map"
+                app:layout_constraintStart_toStartOf="@+id/detail_image_navigation_to_map"
+                app:layout_constraintTop_toBottomOf="@+id/detail_image_navigation_to_map" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/layout_navigation_to_internet"
+            android:id="@+id/detail_layout_navigation_to_internet"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="42dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/layout_navigation_to_map">
+            app:layout_constraintTop_toTopOf="@+id/detail_layout_navigation_to_map">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="6dp"
                 android:fontFamily="@font/noto_sans"
-                android:text="前往官網"
-                android:textColor="#37A0C8"
-                android:textSize="12dp"
-                app:layout_constraintEnd_toEndOf="@+id/image_navigation_to_internet"
-                app:layout_constraintStart_toStartOf="@+id/image_navigation_to_internet"
-                app:layout_constraintTop_toBottomOf="@+id/image_navigation_to_internet" />
+                android:text="@string/navigation_to_internet"
+                android:textColor="@color/app_color_link"
+                android:textSize="@dimen/text_min"
+                app:layout_constraintEnd_toEndOf="@+id/detail_image_navigation_to_internet"
+                app:layout_constraintStart_toStartOf="@+id/detail_image_navigation_to_internet"
+                app:layout_constraintTop_toBottomOf="@+id/detail_image_navigation_to_internet" />
 
 
             <ImageView
-                android:id="@+id/image_navigation_to_internet"
+                android:id="@+id/detail_image_navigation_to_internet"
                 android:layout_width="26dp"
                 android:layout_height="26dp"
                 android:src="@drawable/ic_public_black_24dp"
-                android:tint="#37A0C8"
+                android:tint="@color/app_color_link"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -154,7 +145,7 @@
 
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/constraintLayout2"
+            android:id="@+id/detail_layout_rank"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
@@ -162,48 +153,47 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/detail_drink_name">
+            app:layout_constraintTop_toBottomOf="@+id/detail_text_drink_name">
 
             <TextView
-                android:id="@+id/text_five"
+                android:id="@+id/detail_text_five"
                 style="@style/text_detail_star"
-                android:text="5"
+                android:text="@string/text_five"
                 app:layout_constraintBottom_toBottomOf="@+id/progressBar_five"
                 app:layout_constraintEnd_toStartOf="@+id/progressBar_five"
                 app:layout_constraintTop_toTopOf="@+id/progressBar_five" />
 
             <TextView
-                android:id="@+id/text_four"
+                android:id="@+id/detail_text_four"
                 style="@style/text_detail_star"
-                android:text="4"
+                android:text="@string/text_four"
                 app:layout_constraintBottom_toBottomOf="@+id/progressBar_four"
                 app:layout_constraintEnd_toStartOf="@+id/progressBar_four"
                 app:layout_constraintTop_toTopOf="@+id/progressBar_four" />
 
             <TextView
-                android:id="@+id/text_three"
+                android:id="@+id/detail_text_three"
                 style="@style/text_detail_star"
-                android:text="3"
+                android:text="@string/text_three"
                 app:layout_constraintBottom_toBottomOf="@+id/progressBar_three"
                 app:layout_constraintEnd_toStartOf="@+id/progressBar_three"
                 app:layout_constraintTop_toTopOf="@+id/progressBar_three" />
 
             <TextView
-                android:id="@+id/text_two"
+                android:id="@+id/detail_text_two"
                 style="@style/text_detail_star"
-                android:text="2"
+                android:text="@string/text_two"
                 app:layout_constraintBottom_toBottomOf="@+id/progressBar_two"
                 app:layout_constraintEnd_toStartOf="@+id/progressBar_two"
                 app:layout_constraintTop_toTopOf="@+id/progressBar_two" />
 
             <TextView
-                android:id="@+id/text_one"
+                android:id="@+id/detail_text_one"
                 style="@style/text_detail_star"
-                android:text="1"
+                android:text="@string/text_one"
                 app:layout_constraintBottom_toBottomOf="@+id/progressBar_one"
                 app:layout_constraintEnd_toStartOf="@+id/progressBar_one"
                 app:layout_constraintTop_toTopOf="@+id/progressBar_one" />
-
 
             <ProgressBar
                 android:id="@+id/progressBar_five"
@@ -269,57 +259,55 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/progressBar_two" />
 
-
             <TextView
-                android:id="@+id/text_star_avg"
+                android:id="@+id/detail_text_star_avg"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:includeFontPadding="false"
                 android:text="@{Float.toString(viewModel.star.avgStar)}"
-                android:textColor="#000000"
+                android:textColor="@color/black"
                 android:textSize="56dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <RatingBar
-                android:id="@+id/rating_bar_comment"
+                android:id="@+id/detail_rating_bar_comment"
                 style="@style/Widget.AppCompat.RatingBar.Small"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:isIndicator="true"
-
                 android:progressTint="@color/star"
                 android:rating="@{viewModel.star.avgStar}"
-                app:layout_constraintEnd_toEndOf="@+id/text_star_avg"
-                app:layout_constraintStart_toStartOf="@+id/text_star_avg"
-                app:layout_constraintTop_toBottomOf="@+id/text_star_avg" />
+                app:layout_constraintEnd_toEndOf="@+id/detail_text_star_avg"
+                app:layout_constraintStart_toStartOf="@+id/detail_text_star_avg"
+                app:layout_constraintTop_toBottomOf="@+id/detail_text_star_avg" />
 
             <TextView
-                android:id="@+id/text_comment_qty"
+                android:id="@+id/detail_text_comment_qty"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text='@{"("+Long.toString(viewModel.star.qty)+")"}'
-                android:textSize="12dp"
-                app:layout_constraintEnd_toEndOf="@+id/text_star_avg"
-                app:layout_constraintStart_toStartOf="@+id/text_star_avg"
-                app:layout_constraintTop_toBottomOf="@+id/rating_bar_comment" />
+                android:textSize="@dimen/text_min"
+                app:layout_constraintEnd_toEndOf="@+id/detail_text_star_avg"
+                app:layout_constraintStart_toStartOf="@+id/detail_text_star_avg"
+                app:layout_constraintTop_toBottomOf="@+id/detail_rating_bar_comment" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <TextView
-            android:id="@+id/text_all_comment"
+            android:id="@+id/detail_text_all_comment"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
-            android:text="所有評論"
+            android:text="@string/text_drink_all_comment"
             android:textColor="@color/text_color"
-            android:textSize="16dp"
+            android:textSize="@dimen/text_max"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/constraintLayout2" />
+            app:layout_constraintTop_toBottomOf="@+id/detail_layout_rank" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler_all_comments"
+            android:id="@+id/detail_recycler_all_comments"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginTop="8dp"
@@ -327,21 +315,21 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/text_all_comment"
+            app:layout_constraintTop_toBottomOf="@+id/detail_text_all_comment"
             app:listDetailComment="@{viewModel.detailComment}" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="此飲品目前尚無評論..."
-            android:textSize="16dp"
+            android:text="@string/text_no_comment_now"
+            android:textSize="@dimen/text_max"
             android:fontFamily="@font/noto_sans_bold"
             android:textColor="@color/text_color"
             android:visibility="@{viewModel.detailComment.size() == 0 ? View.VISIBLE:View.GONE}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/constraintLayout2" />
+            app:layout_constraintTop_toBottomOf="@+id/detail_layout_rank" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -356,4 +344,5 @@
             app:layout_constraintBottom_toBottomOf="parent"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 </layout>

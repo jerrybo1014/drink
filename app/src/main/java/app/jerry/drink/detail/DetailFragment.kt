@@ -48,11 +48,11 @@ class DetailFragment : Fragment() {
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
 
-        binding.recyclerAllComments.adapter = DetailAdapter(viewModel)
+        binding.detailRecyclerAllComments.adapter = DetailAdapter(viewModel)
 
         (activity as MainActivity).binding.bottomNavigationView.visibility = View.GONE
 
-        binding.layoutNavigationToInternet.setOnClickListener {
+        binding.detailLayoutNavigationToInternet.setOnClickListener {
 
 //            viewModel.drinkInformation.observe(this, Observer { drinkInformation ->
                 val uri = Uri.parse(viewModel.drinkInformation.value?.store?.uri)

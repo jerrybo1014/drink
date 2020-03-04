@@ -37,106 +37,105 @@
                 android:id="@+id/text_create_order_title"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="新增訂單"
+                android:text="@string/create_order_title"
                 android:textAlignment="center"
-                android:textSize="20dp"
+                android:textSize="@dimen/text_title"
                 android:textColor="@color/text_color"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
-                android:id="@+id/image_store_create_order"
-                style="@style/add_order_icon_style"
+                android:id="@+id/create_order_image_store"
+                style="@style/app_icon_mid"
+                android:layout_marginTop="12dp"
                 android:src="@drawable/store_icon"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/text_create_order_title" />
 
             <TextView
-                android:id="@+id/text_store_create_order"
+                android:id="@+id/create_order_text_store"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:fontFamily="@font/noto_sans"
                 android:text="@string/post_store"
-                android:textSize="16dp"
+                android:textSize="@dimen/text_max"
                 android:textColor="@color/text_color_hint"
-                app:layout_constraintBottom_toBottomOf="@+id/image_store_create_order"
-                app:layout_constraintStart_toEndOf="@+id/image_store_create_order"
-                app:layout_constraintTop_toTopOf="@+id/image_store_create_order" />
+                app:layout_constraintBottom_toBottomOf="@+id/create_order_image_store"
+                app:layout_constraintStart_toEndOf="@+id/create_order_image_store"
+                app:layout_constraintTop_toTopOf="@+id/create_order_image_store" />
 
             <Spinner
                 android:id="@+id/spinner_store"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:entries="@{viewModel.displayAllStore}"
-                android:fontFamily="@font/noto_sans"
-                android:paddingStart="12dp"
-                android:paddingTop="16dp"
-                android:paddingEnd="12dp"
-                android:paddingBottom="16dp"
                 android:prompt="@string/spinner_store"
-                android:spinnerMode="dropdown"
+                android:theme="@style/add_order_drink_spinner"
                 android:textSize="16dp"
-                app:layout_constraintBottom_toBottomOf="@+id/text_store_create_order"
+                android:layout_marginStart="8dp"
+                app:layout_constraintBottom_toBottomOf="@+id/create_order_text_store"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/text_store_create_order"
-                app:layout_constraintTop_toTopOf="@+id/text_store_create_order" />
+                app:layout_constraintStart_toEndOf="@+id/create_order_text_store"
+                app:layout_constraintTop_toTopOf="@+id/create_order_text_store" />
 
             <ImageView
-                android:id="@+id/image_time_create_order"
-                style="@style/add_order_icon_style"
+                android:id="@+id/create_order_image_time"
+                style="@style/app_icon_mid"
+                android:layout_marginTop="12dp"
                 android:src="@drawable/clock_1"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/image_store_create_order" />
+                app:layout_constraintTop_toBottomOf="@id/create_order_image_store" />
 
             <TextView
-                android:id="@+id/text_time_create_order"
+                android:id="@+id/create_order_text_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:fontFamily="@font/noto_sans"
                 android:text="@string/post_time"
                 android:textColor="@color/text_color_hint"
-                android:textSize="16dp"
-                app:layout_constraintBottom_toBottomOf="@+id/image_time_create_order"
-                app:layout_constraintStart_toEndOf="@+id/image_time_create_order"
-                app:layout_constraintTop_toTopOf="@+id/image_time_create_order" />
+                android:textSize="@dimen/text_max"
+                app:layout_constraintBottom_toBottomOf="@+id/create_order_image_time"
+                app:layout_constraintStart_toEndOf="@+id/create_order_image_time"
+                app:layout_constraintTop_toTopOf="@+id/create_order_image_time" />
 
             <TextView
-                android:id="@+id/text_select_time"
+                android:id="@+id/create_order_text_select_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:hint="請選擇截止時間"
+                android:hint="@string/create_order_select_time_hint"
                 android:text="@={viewModel.selectTime}"
                 android:textSize="16dp"
-                app:layout_constraintBottom_toBottomOf="@+id/text_time_create_order"
-                app:layout_constraintStart_toEndOf="@+id/text_time_create_order"
-                app:layout_constraintTop_toTopOf="@+id/text_time_create_order" />
+                app:layout_constraintBottom_toBottomOf="@+id/create_order_text_time"
+                app:layout_constraintStart_toEndOf="@+id/create_order_text_time"
+                app:layout_constraintTop_toTopOf="@+id/create_order_text_time" />
 
             <ImageView
-                android:id="@+id/image_note_create_order"
-                style="@style/add_order_icon_style"
+                android:id="@+id/create_order_image_note"
+                style="@style/app_icon_mid"
+                android:layout_marginTop="12dp"
                 android:src="@drawable/notes"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/image_time_create_order" />
+                app:layout_constraintTop_toBottomOf="@id/create_order_image_time" />
 
             <TextView
-                android:id="@+id/text_note"
+                android:id="@+id/create_order_text_note"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:fontFamily="@font/noto_sans"
-                android:text="備註"
+                android:text="@string/create_order_text_note"
                 android:textSize="16dp"
                 android:textColor="@color/text_color_hint"
-                app:layout_constraintBottom_toBottomOf="@+id/image_note_create_order"
-                app:layout_constraintStart_toEndOf="@+id/image_note_create_order"
-                app:layout_constraintTop_toTopOf="@+id/image_note_create_order" />
+                app:layout_constraintBottom_toBottomOf="@+id/create_order_image_note"
+                app:layout_constraintStart_toEndOf="@+id/create_order_image_note"
+                app:layout_constraintTop_toTopOf="@+id/create_order_image_note" />
 
             <EditText
-                android:id="@+id/edit_text_note"
+                android:id="@+id/create_order_edit_text_note"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
@@ -146,15 +145,15 @@
                 android:paddingBottom="8dp"
                 android:text="@={viewModel.enterNote}"
                 android:textSize="16dp"
-                app:layout_constraintBaseline_toBaselineOf="@+id/text_note"
+                app:layout_constraintBaseline_toBaselineOf="@+id/create_order_text_note"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/text_note" />
+                app:layout_constraintStart_toEndOf="@+id/create_order_text_note" />
 
             <TextView
                 android:id="@+id/button_create_order"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="25dp"
+                android:layout_marginTop="12dp"
                 android:background="@drawable/background_post_button"
                 android:clickable="@{viewModel.postStatus == LoadApiStatus.LOADING ? false:true}"
                 android:enabled='@{viewModel.selectTime == "" ? false:true}'
@@ -164,11 +163,11 @@
                 android:paddingBottom="10dp"
                 android:text='@{viewModel.postStatus == LoadApiStatus.LOADING ? "": @string/create_order}'
                 android:textAlignment="center"
-                android:textColor="#FFFFFF"
+                android:textColor="@color/White"
                 android:textSize="16dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/edit_text_note" />
+                app:layout_constraintTop_toBottomOf="@+id/create_order_edit_text_note" />
 
             <ProgressBar
                 android:layout_width="26dp"

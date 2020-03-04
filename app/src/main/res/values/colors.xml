@@ -42,5 +42,6 @@
 
 
     <color name="app_color_theme">#96DEE9</color>
+    <color name="app_color_link">#37A0C8</color>
 
 </resources>

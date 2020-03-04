@@ -44,12 +44,12 @@ class CreateOrderFragment : DialogFragment() {
 
         val cal = Calendar.getInstance()
 
-        binding.textSelectTime.setOnClickListener {
+        binding.createOrderTextSelectTime.setOnClickListener {
             val hour = cal.get(Calendar.HOUR_OF_DAY)
             val minute = cal.get(Calendar.MINUTE)
             TimePickerDialog(context!!, 3,{
                     _, hour, minute->
-                binding.textSelectTime.text = String.format("%02d:%02d", hour, minute)
+                binding.createOrderTextSelectTime.text = String.format("%02d:%02d", hour, minute)
             }, hour, minute, true).show()
         }
 
