@@ -32,7 +32,6 @@ import java.util.*
 class HomeSearchFragment : Fragment() {
 
     lateinit var binding: FragmentHomeSearchBinding
-
     private val viewModel by viewModels<HomeSearchViewModel> { getVmFactory() }
 
     override fun onCreateView(
@@ -46,15 +45,13 @@ class HomeSearchFragment : Fragment() {
 
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
-//        binding.editTextSearch.requestFocus()
-        binding.editTextSearch.showSoftInputOnFocus= true
-//        binding.editTextSearch.hasWindowFocus()
-//        binding.editTextSearch.requestFocusFromTouch()
-//        (activity as MainActivity).window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE)
 
+        /*CallSoftInputFromWindow*/
+        binding.editTextSearch.showSoftInputOnFocus= true
         CoroutineScope(Dispatchers.Main).launch {
             binding.editTextSearch.requestFocus()
-            (activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager)?.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_NOT_ALWAYS)
+            (activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager)
+                .toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_NOT_ALWAYS)
         }
 
         val searchDrinkAdapter = HomeSearchDrinkAdapter(HomeSearchDrinkAdapter.OnClickListener {
@@ -70,13 +67,7 @@ class HomeSearchFragment : Fragment() {
             }
         })
 
-        viewModel.drinkList.observe(this, Observer {
-            Log.d("jerryTest", "drinkList = $it")
-
-        })
-
         viewModel.searchEditText.observe(this, Observer {searchEditText->
-            Log.d("jerryTest","searchEditText = $searchEditText")
             val resultList = mutableListOf<Drink>()
             viewModel.drinkList.value?.let {
                 for (drink in it) {
@@ -97,6 +88,4 @@ class HomeSearchFragment : Fragment() {
 
         return binding.root
     }
-
-
 }

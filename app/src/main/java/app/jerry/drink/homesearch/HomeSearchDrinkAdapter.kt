@@ -20,8 +20,6 @@ class HomeSearchDrinkAdapter(private val onClickListener: OnClickListener ) :
     class SearchDrinkViewHolder(private var binding: ItemSearchDrinkBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(drink: Drink, onClickListener: OnClickListener) {
-
-
             binding.drink = drink
             binding.root.setOnClickListener { onClickListener.onClick(drink) }
             binding.executePendingBindings()
@@ -44,10 +42,6 @@ class HomeSearchDrinkAdapter(private val onClickListener: OnClickListener ) :
         }
     }
 
-    /**
-     * Create new [RecyclerView] item views (invoked by the layout manager)
-     */
-
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
@@ -56,10 +50,6 @@ class HomeSearchDrinkAdapter(private val onClickListener: OnClickListener ) :
             ItemSearchDrinkBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         )
     }
-
-    /**
-     * Replaces the contents of a view (invoked by the layout manager)
-     */
 
     override fun onBindViewHolder(holder: SearchDrinkViewHolder, position: Int) {
         val drink = getItem(position)

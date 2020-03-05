@@ -21,6 +21,7 @@ import app.jerry.drink.dataclass.Drink
 import app.jerry.drink.dataclass.Store
 import app.jerry.drink.dataclass.User
 import app.jerry.drink.ext.getVmFactory
+import app.jerry.drink.util.Logger
 import com.crashlytics.android.Crashlytics
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -39,6 +40,8 @@ class HomeFragment : Fragment() {
             inflater, R.layout.fragment_home, container, false
         )
 
+        binding.viewModel = viewModel
+        binding.lifecycleOwner = this
 
         /*hideSoftInputFromWindow*/
         CoroutineScope(Dispatchers.Main).launch {
@@ -47,7 +50,6 @@ class HomeFragment : Fragment() {
 
         (activity as MainActivity).binding.layoutHomeSearch.setOnClickListener {
             findNavController().navigate(R.id.action_global_homeSearchFragment)
-            Log.d("jerryTest", "layoutHomeSearch")
         }
 
         val highScoreAdapter = HighScoreAdapter(HighScoreAdapter.OnClickListener {
@@ -57,9 +59,6 @@ class HomeFragment : Fragment() {
         val newCommentAdapter = NewCommentAdapter(NewCommentAdapter.OnClickListener {
             viewModel.navigationToDetail(it)
         })
-
-        binding.viewModel = viewModel
-        binding.lifecycleOwner = this
 
         binding.homeRecyclerHighScore.adapter = highScoreAdapter
         binding.homeRecyclerNewComment.adapter = newCommentAdapter
@@ -81,11 +80,6 @@ class HomeFragment : Fragment() {
             }
         })
 
-        viewModel.newComment.observe(this, Observer {
-            Log.d("newComment", "$it")
-        })
-
         return binding.root
     }
-
 }

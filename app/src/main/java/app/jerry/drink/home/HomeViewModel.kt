@@ -26,7 +26,6 @@ class HomeViewModel(private val repository: DrinkRepository) : ViewModel() {
     val newDrinkRank: LiveData<List<DrinkRank>>
         get() = _newDrinkRank
 
-
     val navigationToDetail = MutableLiveData<Drink>()
 
     // status: The internal MutableLiveData that stores the status of the most recent request
@@ -57,12 +56,10 @@ class HomeViewModel(private val repository: DrinkRepository) : ViewModel() {
         getNewCommentResult()
     }
 
-    fun getNewCommentResult() {
-
+    private fun getNewCommentResult() {
         coroutineScope.launch {
 
             _status.value = LoadApiStatus.LOADING
-
             val result = repository.getNewComment()
 
             _newComment.value = when (result) {
@@ -90,25 +87,20 @@ class HomeViewModel(private val repository: DrinkRepository) : ViewModel() {
             }
             _refreshStatus.value = false
         }
-
     }
 
-
-    fun getDrinkRank(commnetList: List<Comment>) {
-
+    private fun getDrinkRank(commentList: List<Comment>) {
         val scoreRank = mutableListOf<DrinkRank>()
-        for (commentUnit in commnetList) {
+        for (commentUnit in commentList) {
             /*-------------------------------------------------------------*/
             var haveId = false
             var position = -1
-
             for (checkId in scoreRank) {
                 if (commentUnit.drink.drinkId == checkId.drink.drinkId) {
                     haveId = true
                     position = scoreRank.indexOf(checkId)
                 }
             }
-
             if (haveId) {
                 var scoreSum = 0F
                 scoreRank[position].commentList.add(commentUnit)
@@ -142,7 +134,6 @@ class HomeViewModel(private val repository: DrinkRepository) : ViewModel() {
         }
     }
 
-
     fun navigationToDetail(drink: Drink) {
         navigationToDetail.value = drink
     }
@@ -150,7 +141,5 @@ class HomeViewModel(private val repository: DrinkRepository) : ViewModel() {
     fun onDetailNavigated() {
         navigationToDetail.value = null
     }
-
-
 }
 

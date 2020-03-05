@@ -5,6 +5,9 @@
 
     <data>
 
+        <variable
+            name="viewModel"
+            type="app.jerry.drink.signin.SignInViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -32,6 +35,7 @@
             android:backgroundTint="@color/White"
             android:layout_marginHorizontal="60dp"
             android:layout_marginBottom="16dp"
+            android:onClick="@{() -> viewModel.loginFacebook()}"
             app:layout_constraintBottom_toTopOf="@+id/button_sign_in_google"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent">
@@ -71,6 +75,7 @@
             android:background="@drawable/shape_corner_r_big"
             android:backgroundTint="@color/White"
             android:layout_marginBottom="32dp"
+            android:onClick="@{() -> viewModel.loginGoogle()}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent">

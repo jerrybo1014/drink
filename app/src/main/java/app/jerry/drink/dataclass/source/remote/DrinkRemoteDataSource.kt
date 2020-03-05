@@ -10,6 +10,7 @@ import app.jerry.drink.DrinkApplication
 import app.jerry.drink.R
 import app.jerry.drink.dataclass.*
 import app.jerry.drink.dataclass.source.DrinkDataSource
+import app.jerry.drink.signin.UserManager
 import com.google.android.gms.tasks.Continuation
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
@@ -85,17 +86,18 @@ object DrinkRemoteDataSource : DrinkDataSource {
             .get()
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
-
-                    if (task.result!!.data == null) {
-                        document
-                            .set(user).addOnSuccessListener {
-                                Log.d("checkUser", "Success setting new user => $user")
-                            }
-                            .addOnFailureListener {
-                                Log.w("checkUser", "Error setting new user.", it)
-                            }
+                    task.result?.let {
+                        if (it.data.isNullOrEmpty()) {
+                            document
+                                .set(user).addOnSuccessListener {
+                                    UserManager.user = user
+                                }
+                                .addOnFailureListener {
+                                }
+                        }else{
+                            UserManager.user = it.toObject(User::class.java)
+                        }
                     }
-
                     continuation.resume(Result.Success(true))
                 } else {
                     task.exception?.let {

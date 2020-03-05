@@ -4,8 +4,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import app.jerry.drink.dataclass.Result
+import app.jerry.drink.dataclass.User
 import app.jerry.drink.dataclass.source.DrinkRepository
 import app.jerry.drink.network.LoadApiStatus
+import app.jerry.drink.signin.UserManager
 import app.jerry.drink.util.CurrentFragmentType
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -15,7 +17,13 @@ import kotlinx.coroutines.launch
 class MainActivityViewModel(private val repository: DrinkRepository) : ViewModel() {
 
     val currentFragmentType = MutableLiveData<CurrentFragmentType>()
-    var checkUser = MutableLiveData<Boolean>()
+
+//    var checkUser = MutableLiveData<Boolean>()
+
+    private val _checkUser = MutableLiveData<Boolean>()
+
+    val checkUser: LiveData<Boolean>
+        get() = _checkUser
 
     // status: The internal MutableLiveData that stores the status of the most recent request
     private val _status = MutableLiveData<LoadApiStatus>()
@@ -45,7 +53,7 @@ class MainActivityViewModel(private val repository: DrinkRepository) : ViewModel
         coroutineScope.launch {
             _status.value = LoadApiStatus.LOADING
             val result = repository.checkUser()
-            checkUser.value = when (result) {
+            _checkUser.value = when (result) {
                 is Result.Success -> {
                     _error.value = null
                     _status.value = LoadApiStatus.DONE

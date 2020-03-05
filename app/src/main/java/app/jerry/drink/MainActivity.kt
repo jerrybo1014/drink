@@ -73,9 +73,14 @@ class MainActivity : AppCompatActivity() {
                     Logger.d("signInWithCredential:no")
                 } else {
                     viewModel.checkUserResult()
-                    intentReceiver()
                 }
             }
+
+        viewModel.checkUser.observe(this, Observer {
+            it?.let {
+                intentReceiver()
+            }
+        })
 
         FirebaseAuth.getInstance().addAuthStateListener(authListener)
 
@@ -147,7 +152,9 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }else{
-            findNavController(R.id.myNavHostFragment).navigate(R.id.action_global_homeFragment)
+            if (viewModel.currentFragmentType.value == CurrentFragmentType.SIGNIN){
+                findNavController(R.id.myNavHostFragment).navigate(R.id.action_global_homeFragment)
+            }
         }
     }
 

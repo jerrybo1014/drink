@@ -48,7 +48,6 @@ class HomeSearchViewModel(private val repository: DrinkRepository) : ViewModel()
     // the Coroutine runs using the Main (UI) dispatcher
     private val coroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
 
-
     init {
         getSearchDrinkResult()
     }
@@ -57,7 +56,6 @@ class HomeSearchViewModel(private val repository: DrinkRepository) : ViewModel()
         coroutineScope.launch {
 
             _status.value = LoadApiStatus.LOADING
-
             val result = repository.getSearchDrink()
 
             _drinkList.value = when (result) {
@@ -87,8 +85,6 @@ class HomeSearchViewModel(private val repository: DrinkRepository) : ViewModel()
 
     }
 
-
-
     fun navigationToDetail(drink: Drink) {
         navigationToDetail.value = drink
     }
@@ -96,5 +92,4 @@ class HomeSearchViewModel(private val repository: DrinkRepository) : ViewModel()
     fun onDetailNavigated() {
         navigationToDetail.value = null
     }
-
 }

@@ -21,7 +21,6 @@ class NewCommentAdapter(private val onClickListener: OnClickListener ) :
     class NewCommentViewHolder(private var binding: ItemNewCommentBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(comment: Comment, onClickListener: OnClickListener) {
-
             val drink = comment.drink
             binding.comment = comment
             binding.root.setOnClickListener { onClickListener.onClick(drink) }
@@ -45,10 +44,6 @@ class NewCommentAdapter(private val onClickListener: OnClickListener ) :
         }
     }
 
-    /**
-     * Create new [RecyclerView] item views (invoked by the layout manager)
-     */
-
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
@@ -57,10 +52,6 @@ class NewCommentAdapter(private val onClickListener: OnClickListener ) :
             ItemNewCommentBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         )
     }
-
-    /**
-     * Replaces the contents of a view (invoked by the layout manager)
-     */
 
     override fun onBindViewHolder(holder: NewCommentViewHolder, position: Int) {
         val comment = getItem(position)

@@ -51,6 +51,7 @@ class RadarFragment : Fragment(), GoogleMap.OnMarkerClickListener, OnMapReadyCal
         markerOld?.let {
             it.alpha = 0.5F
         }
+
         marker?.let {
             markerOld = it
             it.alpha = 1F
@@ -291,4 +292,5 @@ class RadarFragment : Fragment(), GoogleMap.OnMarkerClickListener, OnMapReadyCal
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
         startActivity(intent)
     }
+
 }
