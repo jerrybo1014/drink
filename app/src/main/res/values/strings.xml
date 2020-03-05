@@ -95,6 +95,7 @@
     <string name="create_order_dialog">createOrderDialog</string>
     <string name="post_success">成功送出</string>
     <string name="file_provider_path">app.jerry.drink.fileprovider</string>
+    <string name="new_drink_exist">新增飲品已存在!</string>
 
     <string-array name="list_sugar">
         <item>正常糖</item>

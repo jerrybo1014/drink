@@ -20,7 +20,6 @@ class SugarAdapter(private val viewModel: PostViewModel) :
         fun bind(string: String) {
             binding.string = string
             binding.viewModel = viewModel
-
             binding.executePendingBindings()
         }
     }

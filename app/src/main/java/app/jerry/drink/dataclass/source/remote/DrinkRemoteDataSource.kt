@@ -11,6 +11,7 @@ import app.jerry.drink.R
 import app.jerry.drink.dataclass.*
 import app.jerry.drink.dataclass.source.DrinkDataSource
 import app.jerry.drink.signin.UserManager
+import app.jerry.drink.util.Logger
 import com.google.android.gms.tasks.Continuation
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
@@ -94,7 +95,7 @@ object DrinkRemoteDataSource : DrinkDataSource {
                                 }
                                 .addOnFailureListener {
                                 }
-                        }else{
+                        } else {
                             UserManager.user = it.toObject(User::class.java)
                         }
                     }
@@ -421,12 +422,11 @@ object DrinkRemoteDataSource : DrinkDataSource {
     override suspend fun postComment(comment: Comment, bitmap: Bitmap): Result<Boolean> =
         suspendCoroutine { continuation ->
             val comments = FirebaseFirestore.getInstance().collection(PATH_Comments)
-            val userCurrent = FirebaseAuth.getInstance().currentUser
             val document = comments.document()
             val storageReference = FirebaseStorage.getInstance().reference
 
             comment.id = document.id
-            comment.userId = userCurrent!!.uid
+            comment.createdTime = System.currentTimeMillis()
 
             val byteArrayOutput = ByteArrayOutputStream()
             bitmap.compress(Bitmap.CompressFormat.JPEG, 50, byteArrayOutput)
@@ -965,6 +965,7 @@ object DrinkRemoteDataSource : DrinkDataSource {
 
             val documentId = comment.store.storeId + stores.id
             comment.drink.drinkId = documentId
+            comment.createdTime = System.currentTimeMillis()
 
             FirebaseFirestore.getInstance()
                 .collection(PATH_Stores)
@@ -974,16 +975,12 @@ object DrinkRemoteDataSource : DrinkDataSource {
                 .set(comment.drink)
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
-
 /*================================================*/
                         val comments = FirebaseFirestore.getInstance().collection(PATH_Comments)
-                        val userCurrent = FirebaseAuth.getInstance().currentUser
                         val document = comments.document()
                         val storageReference = FirebaseStorage.getInstance().reference
 
                         comment.id = document.id
-                        comment.userId = userCurrent!!.uid
-
                         val byteArrayOutput = ByteArrayOutputStream()
                         bitmap.compress(Bitmap.CompressFormat.JPEG, 50, byteArrayOutput)
                         val bytes = byteArrayOutput.toByteArray()
@@ -1001,21 +998,16 @@ object DrinkRemoteDataSource : DrinkDataSource {
                             return@Continuation riversRef.downloadUrl
                         }).addOnCompleteListener { taskImage ->
                             if (taskImage.isSuccessful) {
-
+                                Logger.d("addNewDrink addOnCompleteListener")
                                 comment.drinkImage = taskImage.result.toString()
                                 document
                                     .set(comment)
                                     .addOnCompleteListener { task ->
                                         if (task.isSuccessful) {
-//                    continuation.resume(Result.Success(list))
                                             continuation.resume(Result.Success(true))
                                         } else {
                                             task.exception?.let {
 
-                                                Log.w(
-                                                    "",
-                                                    "[${this::class.simpleName}] Error getting documents. ${it.message}"
-                                                )
                                                 continuation.resume(Result.Error(it))
                                                 return@addOnCompleteListener
                                             }
@@ -1031,11 +1023,9 @@ object DrinkRemoteDataSource : DrinkDataSource {
                             }
 
                         }.addOnFailureListener {
-
                         }
 /*================================================*/
 
-//                        continuation.resume(Result.Success(true))
                     } else {
                         task.exception?.let {
 

@@ -238,7 +238,7 @@
                         android:hint="@string/post_enter_comment"
                         android:lines="5"
                         android:padding="6dp"
-                        android:text="@={viewModel.editComment}"
+                        android:text="@={viewModel.comment.comment}"
                         android:textSize="14sp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -268,7 +268,7 @@
                 android:layout_margin="16dp"
                 android:background="@drawable/background_post_button"
                 android:clickable="@{viewModel.postStatus == LoadApiStatus.LOADING ? false:true}"
-                android:enabled="@{viewModel.editComment.trim() == null || viewModel.commentStar==0 || viewModel.selectedIce==null || viewModel.selectedSugar==null || viewModel.imageBitmap==null ? false:true}"
+                android:enabled='@{viewModel.comment.sugar == "" || viewModel.comment.ice == "" || viewModel.imageBitmap == null || viewModel.newDrinkStatus == false ? false:true}'
                 android:letterSpacing="1.2"
                 android:onClick="@{() -> viewModel.postComment()}"
                 android:text='@{viewModel.postStatus == LoadApiStatus.LOADING ? "": @string/post_button}'

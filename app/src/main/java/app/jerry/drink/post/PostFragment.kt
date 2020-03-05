@@ -56,7 +56,8 @@ class PostFragment : Fragment() {
         viewModel.getAllStoreResult()
 
         val listIce = DrinkApplication.context.resources.getStringArray(R.array.list_ice).toList()
-        val listSugar = DrinkApplication.context.resources.getStringArray(R.array.list_sugar).toList()
+        val listSugar =
+            DrinkApplication.context.resources.getStringArray(R.array.list_sugar).toList()
 
         val sugarAdapter = SugarAdapter(viewModel)
         val iceAdapter = IceAdapter(viewModel)
@@ -67,20 +68,24 @@ class PostFragment : Fragment() {
         sugarAdapter.submitList(listSugar)
         iceAdapter.submitList(listIce)
 
-        binding.postRatingBarComment.setOnRatingBarChangeListener { ratingBar, fl, b ->
-            viewModel.commentStar.value = fl.toInt()
-        }
-
         viewModel.allStore.observe(this, Observer {
             binding.postSpinnerStore.adapter = PostStoreSpinnerAdapter(it)
         })
 
-        viewModel.selectStore.observe(this, Observer {
-            viewModel.getStoreMenuResult(it)
-        })
-
         viewModel.allStoreMenu.observe(this, Observer {
             binding.postSpinnerDrink.adapter = PostDrinkSpinnerAdapter(it)
+        })
+
+        binding.postRatingBarComment.setOnRatingBarChangeListener { ratingBar, fl, b ->
+            viewModel.selectStar(fl.toInt())
+        }
+
+        viewModel.selectStorePosition.observe(this, Observer {
+            viewModel.selectStore(it)
+        })
+
+        viewModel.selectDrinkPosition.observe(this, Observer {
+            viewModel.selectDrink(it)
         })
 
         viewModel.postFinished.observe(this, Observer {
@@ -146,7 +151,10 @@ class PostFragment : Fragment() {
         val intent = Intent()
         intent.type = "image/*"
         intent.action = Intent.ACTION_GET_CONTENT
-        startActivityForResult(Intent.createChooser(intent, "Select Picture"), RequestCode.PICK_IMAGE.requestCode)
+        startActivityForResult(
+            Intent.createChooser(intent, "Select Picture"),
+            RequestCode.PICK_IMAGE.requestCode
+        )
     }
 
     private fun loadGallery() {

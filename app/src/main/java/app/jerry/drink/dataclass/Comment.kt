@@ -13,12 +13,12 @@ data class Comment(
     var userId: String ="",
     var user: User? = null,
     var id: String = "",
-    val store: Store = Store("",""),
-    val drink: Drink = Drink("",""),
-    val ice: String = "",
-    val sugar: String = "",
-    val star: Int = 0,
-    val comment: String = "",
+    var store: Store = Store("",""),
+    var drink: Drink = Drink("",""),
+    var ice: String = "",
+    var sugar: String = "",
+    var star: Int = 0,
+    var comment: String = "",
     var drinkImage : String = "",
     var createdTime: Long = 0
 ): Parcelable{

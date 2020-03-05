@@ -165,8 +165,8 @@ fun bindSearchDrink(recyclerView: RecyclerView, data: List<Drink>?){
     adapter.submitList(data)
 }
 
-@BindingAdapter("fabHideStauts")
-fun bindFabHideStauts(floatingActionButton: FloatingActionButton, data: Boolean){
+@BindingAdapter("fabHideStatus")
+fun bindFabHideStatus(floatingActionButton: FloatingActionButton, data: Boolean){
 
     if (data){
         floatingActionButton.show()

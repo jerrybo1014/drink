@@ -23,7 +23,6 @@ class IceAdapter(private val viewModel: PostViewModel) :
             binding.string = string
             binding.viewHolder = this
             binding.viewModel = viewModel
-
             binding.executePendingBindings()
         }
     }
