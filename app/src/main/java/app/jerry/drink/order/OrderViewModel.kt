@@ -9,6 +9,8 @@ import app.jerry.drink.R
 import app.jerry.drink.dataclass.*
 import app.jerry.drink.dataclass.source.DrinkRepository
 import app.jerry.drink.network.LoadApiStatus
+import app.jerry.drink.signin.UserManager
+import app.jerry.drink.util.Logger
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -16,6 +18,7 @@ import kotlinx.coroutines.launch
 
 class OrderViewModel(private val repository: DrinkRepository, private val orderId: String) : ViewModel() {
 
+    val userStatus = MediatorLiveData<Boolean>()
 
     private val _enterOrderId = MutableLiveData<Long>()
 
@@ -26,7 +29,6 @@ class OrderViewModel(private val repository: DrinkRepository, private val orderI
 
     val orderItemsLive: LiveData<List<OrderItem>>
         get() = _orderItemsLive
-
 
     private var _orderLive = MutableLiveData<Order>()
 
@@ -39,7 +41,6 @@ class OrderViewModel(private val repository: DrinkRepository, private val orderI
         get() = _navigationToRadar
 
     val userCurrent = MutableLiveData<User>()
-    var checkUser = MutableLiveData<Boolean>()
     // status: The internal MutableLiveData that stores the status of the most recent request
     private val _status = MutableLiveData<LoadApiStatus>()
 
@@ -111,111 +112,23 @@ class OrderViewModel(private val repository: DrinkRepository, private val orderI
 
 
     fun getOrderResult(orderId: Long) {
-
         _orderLive = repository.getOrderLive(orderId) as MutableLiveData<Order>
         /**/
         _orderItemsLive = repository.getOrderItemLive(orderId) as MutableLiveData<List<OrderItem>>
-        /**/
-
-        /**/
-//        _orderLists.value?.orderLists = repository.getOrderItemLive(orderId).value
-        /**/
-//
-//        coroutineScope.launch {
-//
-//            _orderLive = repository.getOrderItemLive(orderId) as MutableLiveData<List<OrderItem>>
-//
-//            _status.value = LoadApiStatus.LOADING
-//
-//            val result = repository.getOrder(orderId)
-//
-//            /**/
-//            _orderLists.value = when (result) {
-//                is Result.Success -> {
-//                    _error.value = null
-//                    _status.value = LoadApiStatus.DONE
-//                    if (result.data.order == null){
-//                        Toast.makeText(DrinkApplication.context,"查無訂單!",Toast.LENGTH_SHORT).show()
-//                    }
-//                    /**/
-//                    result.data
-//                    /**/
-//                }
-//                is Result.Fail -> {
-//                    _error.value = result.error
-//                    _status.value = LoadApiStatus.ERROR
-//                    null
-//                }
-//                is Result.Error -> {
-//                    _error.value = result.exception.toString()
-//                    _status.value = LoadApiStatus.ERROR
-//                    null
-//                }
-//                else -> {
-//                    _error.value = DrinkApplication.instance.getString(R.string.you_know_nothing)
-//                    _status.value = LoadApiStatus.ERROR
-//                    null
-//                }
-//            }
-//            _refreshStatus.value = false
-//        }
-
-    }
-
-    fun checkUserResult() {
-        coroutineScope.launch {
-
-            _status.value = LoadApiStatus.LOADING
-
-            val result = repository.checkUser()
-
-            checkUser.value = when (result) {
-                is Result.Success -> {
-                    _error.value = null
-                    _status.value = LoadApiStatus.DONE
-                    result.data
-                }
-                is Result.Fail -> {
-                    _error.value = result.error
-                    _status.value = LoadApiStatus.ERROR
-                    null
-                }
-                is Result.Error -> {
-                    _error.value = result.exception.toString()
-                    _status.value = LoadApiStatus.ERROR
-                    null
-                }
-                else -> {
-                    _error.value = DrinkApplication.instance.getString(R.string.you_know_nothing)
-                    _status.value = LoadApiStatus.ERROR
-                    null
-                }
-            }
-            _refreshStatus.value = false
-        }
-
     }
 
     fun editOrderStatusResult() {
 
         coroutineScope.launch {
-
             _status.value = LoadApiStatus.LOADING
-
-            orderLive.value?.let {
+            _orderLive.value?.let {
                 val editStatus = !it.status
-                val result = repository.editOrderStatus(it.id.toLong(), editStatus)
-
                 /**/
-                when (result) {
+                when (val result = repository.editOrderStatus(it.id.toLong(), editStatus)) {
                     is Result.Success -> {
                         _error.value = null
                         _status.value = LoadApiStatus.DONE
-
-                        getOrderResult(it.orderId)
-                        /**/
                         result.data
-                        /**/
                     }
                     is Result.Fail -> {
                         _error.value = result.error
@@ -231,33 +144,20 @@ class OrderViewModel(private val repository: DrinkRepository, private val orderI
                     }
                 }
             }
-
-
-
             _refreshStatus.value = false
         }
-
     }
-
 
     fun removeOrderResult(id: String) {
 
         coroutineScope.launch {
-
             _status.value = LoadApiStatus.LOADING
-
             orderLive.value?.let {
-
-                /**/
                 when (val result = repository.removeOrder(it.id.toLong(), id)) {
                     is Result.Success -> {
                         _error.value = null
                         _status.value = LoadApiStatus.DONE
-
-                        getOrderResult(it.id.toLong())
-                        /**/
                         result.data
-                        /**/
                     }
                     is Result.Fail -> {
                         _error.value = result.error
@@ -276,21 +176,15 @@ class OrderViewModel(private val repository: DrinkRepository, private val orderI
                     }
                 }
             }
-
-
             _refreshStatus.value = false
         }
-
     }
 
-    val userStatus = MediatorLiveData<Boolean>().apply {
-        addSource(userCurrent){checkIfUsersAreTheSame()}
-        addSource(orderLive){checkIfUsersAreTheSame()}
-    }
-
-    private fun checkIfUsersAreTheSame() {
-        if(userCurrent.value != null && orderLive.value != null) {
-            userStatus.value = userCurrent.value!!.id == orderLive.value!!.user?.id
+    fun checkIfUsersAreTheSame() {
+        UserManager.user?.let { userCurrent ->
+            orderLive.value?.user?.let {
+                userStatus.value = userCurrent.id == it.id
+            }
         }
     }
 

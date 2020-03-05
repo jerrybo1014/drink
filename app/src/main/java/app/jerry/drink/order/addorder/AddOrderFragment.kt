@@ -1,7 +1,6 @@
 package app.jerry.drink.order.addorder
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,6 +14,8 @@ import app.jerry.drink.DrinkApplication
 import app.jerry.drink.R
 import app.jerry.drink.databinding.FragmentAddOrderBinding
 import app.jerry.drink.ext.getVmFactory
+import app.jerry.drink.util.Logger
+import app.jerry.drink.util.Util
 
 
 class AddOrderFragment : DialogFragment() {
@@ -23,8 +24,6 @@ class AddOrderFragment : DialogFragment() {
         AddOrderFragmentArgs.fromBundle(
             arguments!!
         ).order) }
-
-
     lateinit var binding: FragmentAddOrderBinding
     val TAG = "jerryTest"
 
@@ -44,8 +43,6 @@ class AddOrderFragment : DialogFragment() {
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
 
-        viewModel.getStoreMenuResult()
-
         binding.addOrderSpinnerDrink.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
             override fun onNothingSelected(parent: AdapterView<*>?) {
             }
@@ -59,11 +56,8 @@ class AddOrderFragment : DialogFragment() {
             }
         }
 
-
-
-
-        val listIce = listOf<String>("正常冰","去冰","微冰","常溫")
-        val listSugar = listOf<String>("正常糖","半糖","微糖","無糖")
+        val listIce = DrinkApplication.context.resources.getStringArray(R.array.list_ice).toList()
+        val listSugar = DrinkApplication.context.resources.getStringArray(R.array.list_sugar).toList()
         val sugarAdapter = SugarAddOrderAdapter(viewModel)
         val iceAdapter = IceAddOrderAdapter(viewModel)
 
@@ -73,13 +67,9 @@ class AddOrderFragment : DialogFragment() {
         sugarAdapter.submitList(listSugar)
         iceAdapter.submitList(listIce)
 
-        viewModel.selectedQty.observe(this, Observer {
-            Log.d(TAG,"selectedQty = $it")
-        })
-
-        viewModel.addOrderfinished.observe(this, Observer {
+        viewModel.addOrderFinished.observe(this, Observer {
             if (it != null && it == true){
-                Toast.makeText(DrinkApplication.context, "成功送出", Toast.LENGTH_SHORT).show()
+                Toast.makeText(DrinkApplication.context, Util.getString(R.string.post_success), Toast.LENGTH_SHORT).show()
                 dismiss() }
         })
 

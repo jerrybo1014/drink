@@ -15,7 +15,7 @@ import app.jerry.drink.home.HighScoreAdapter
 import app.jerry.drink.home.NewCommentAdapter
 import app.jerry.drink.homesearch.HomeSearchDrinkAdapter
 import app.jerry.drink.network.LoadApiStatus
-import app.jerry.drink.order.OrderListsAdapter
+import app.jerry.drink.order.OrderItemAdapter
 import app.jerry.drink.post.IceAdapter
 import app.jerry.drink.post.SugarAdapter
 import app.jerry.drink.profile.UserCommentAdapter
@@ -143,7 +143,7 @@ fun bindUserOrder(recyclerView: RecyclerView, data: List<Order>?){
 
 @BindingAdapter("listOrder")
 fun bindOrderLists(recyclerView: RecyclerView, data: List<OrderItem>?){
-    val adapter = recyclerView.adapter as OrderListsAdapter
+    val adapter = recyclerView.adapter as OrderItemAdapter
     adapter.submitList(data)
 }
 

@@ -20,10 +20,7 @@ import java.util.*
 class CreateOrderFragment : DialogFragment() {
 
     lateinit var binding: FragmentCreateOrderBinding
-
     private val viewModel by viewModels<CreateOrderViewModel> { getVmFactory() }
-
-    val TAG = "jerryTest"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,14 +45,14 @@ class CreateOrderFragment : DialogFragment() {
             val hour = cal.get(Calendar.HOUR_OF_DAY)
             val minute = cal.get(Calendar.MINUTE)
             TimePickerDialog(context!!, 3,{
-                    _, hour, minute->
-                binding.createOrderTextSelectTime.text = String.format("%02d:%02d", hour, minute)
+                    _, selectHour, selectMinute->
+                binding.createOrderTextSelectTime.text = String.format("%02d:%02d", selectHour, selectMinute)
+                viewModel.selectOrderTime()
             }, hour, minute, true).show()
         }
 
         binding.spinnerStore.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
             override fun onNothingSelected(parent: AdapterView<*>?) {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
             }
             override fun onItemSelected(
                 parent: AdapterView<*>?,
@@ -67,8 +64,6 @@ class CreateOrderFragment : DialogFragment() {
             }
         }
 
-        viewModel.getAllStoreResult()
-
         viewModel.createOrderFinished.observe(this, Observer {
             it?.let {
                 findNavController().navigate(NavigationDirections.actionGlobalOrderFragment(it))
@@ -79,8 +74,6 @@ class CreateOrderFragment : DialogFragment() {
             if (!it){
                 dismiss() }
         })
-
         return binding.root
     }
-
 }

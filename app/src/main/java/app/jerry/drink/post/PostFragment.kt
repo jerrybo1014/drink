@@ -9,7 +9,6 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -30,9 +29,9 @@ import app.jerry.drink.ext.getBitmap
 import app.jerry.drink.ext.getVmFactory
 import app.jerry.drink.ext.setImage
 import app.jerry.drink.util.Logger
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
-import kotlinx.android.synthetic.main.fragment_post.*
+import app.jerry.drink.util.PermissionCode
+import app.jerry.drink.util.RequestCode
+import app.jerry.drink.util.Util
 import java.io.File
 import java.io.IOException
 import java.util.*
@@ -40,14 +39,9 @@ import java.util.*
 class PostFragment : Fragment() {
 
     lateinit var binding: FragmentPostBinding
-    private val PICK_IMAGE_REQUEST = 3
-    private val MY_PERMISSIONS_CAMERA = 10
-    private val MY_PERMISSIONS_READ_EXTERNAL_STORAGE = 12
     private var filePath: Uri? = null
-    private val REQUEST_TAKE_PHOTO = 1
-    lateinit var currentPhotoPath: String
     private var photoURI: Uri? = null
-
+    private lateinit var currentPhotoPath: String
     private val viewModel by viewModels<PostViewModel> { getVmFactory() }
 
     override fun onCreateView(
@@ -61,8 +55,9 @@ class PostFragment : Fragment() {
         binding.lifecycleOwner = this
         viewModel.getAllStoreResult()
 
-        val listIce = listOf("正常冰", "去冰", "微冰", "常溫")
-        val listSugar = listOf("正常糖", "半糖", "微糖", "無糖")
+        val listIce = DrinkApplication.context.resources.getStringArray(R.array.list_ice).toList()
+        val listSugar = DrinkApplication.context.resources.getStringArray(R.array.list_sugar).toList()
+
         val sugarAdapter = SugarAdapter(viewModel)
         val iceAdapter = IceAdapter(viewModel)
 
@@ -80,7 +75,7 @@ class PostFragment : Fragment() {
             binding.postSpinnerStore.adapter = PostStoreSpinnerAdapter(it)
         })
 
-        viewModel.selectedStore.observe(this, Observer {
+        viewModel.selectStore.observe(this, Observer {
             viewModel.getStoreMenuResult(it)
         })
 
@@ -121,12 +116,12 @@ class PostFragment : Fragment() {
                 photoFile?.also {
                     val photoURI: Uri = FileProvider.getUriForFile(
                         context!!,
-                        "app.jerry.drink.fileprovider",
+                        Util.getString(R.string.file_provider_path),
                         it
                     )
                     this.photoURI = photoURI
                     takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
-                    startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO)
+                    startActivityForResult(takePictureIntent, RequestCode.TAKE_PHOTO.requestCode)
                 }
             }
         }
@@ -151,7 +146,7 @@ class PostFragment : Fragment() {
         val intent = Intent()
         intent.type = "image/*"
         intent.action = Intent.ACTION_GET_CONTENT
-        startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST)
+        startActivityForResult(Intent.createChooser(intent, "Select Picture"), RequestCode.PICK_IMAGE.requestCode)
     }
 
     private fun loadGallery() {
@@ -169,13 +164,13 @@ class PostFragment : Fragment() {
                 )
             ) {
                 AlertDialog.Builder(context!!)
-                    .setMessage("需要開啟內部存取權限，再不給試試看")
+                    .setMessage("需要開啟內部存取權限!")
                     .setPositiveButton("前往設定") { _, _ ->
                         requestPermissions(
                             arrayOf(
                                 Manifest.permission.READ_EXTERNAL_STORAGE
                             ),
-                            MY_PERMISSIONS_READ_EXTERNAL_STORAGE
+                            PermissionCode.READ_EXTERNAL_STORAGE.requestCode
                         )
                     }
                     .setNegativeButton("NO") { _, _ -> }
@@ -186,7 +181,7 @@ class PostFragment : Fragment() {
                     arrayOf(
                         Manifest.permission.READ_EXTERNAL_STORAGE
                     ),
-                    MY_PERMISSIONS_READ_EXTERNAL_STORAGE
+                    PermissionCode.READ_EXTERNAL_STORAGE.requestCode
                 )
             }
         } else {
@@ -210,13 +205,13 @@ class PostFragment : Fragment() {
                 )
             ) {
                 AlertDialog.Builder(context!!)
-                    .setMessage("需要開啟相機，再不給試試看")
+                    .setMessage("需要開啟相機權限!")
                     .setPositiveButton("前往設定") { _, _ ->
                         requestPermissions(
                             arrayOf(
                                 Manifest.permission.CAMERA
                             ),
-                            MY_PERMISSIONS_CAMERA
+                            PermissionCode.CAMERA.requestCode
                         )
                     }
                     .setNegativeButton("NO") { _, _ -> }
@@ -227,7 +222,7 @@ class PostFragment : Fragment() {
                     arrayOf(
                         Manifest.permission.CAMERA
                     ),
-                    MY_PERMISSIONS_CAMERA
+                    PermissionCode.CAMERA.requestCode
                 )
             }
         } else {
@@ -243,7 +238,7 @@ class PostFragment : Fragment() {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
 
         when (requestCode) {
-            MY_PERMISSIONS_CAMERA -> {
+            PermissionCode.CAMERA.requestCode -> {
                 if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     for (permissionsItem in permissions) {
                         Logger.d("permissions allow : $permissions")
@@ -257,7 +252,7 @@ class PostFragment : Fragment() {
                 return
             }
 
-            MY_PERMISSIONS_READ_EXTERNAL_STORAGE ->{
+            PermissionCode.READ_EXTERNAL_STORAGE.requestCode -> {
                 if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     for (permissionsItem in permissions) {
                         Logger.d("permissions allow : $permissions")
@@ -275,30 +270,34 @@ class PostFragment : Fragment() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK) {
+        if (requestCode == RequestCode.PICK_IMAGE.requestCode && resultCode == Activity.RESULT_OK) {
             if (data == null || data.data == null) {
                 return
             }
-
             data.data?.let {
                 filePath = it
                 setImage(binding.postImageUpdate, it)
-                val bitmap = filePath?.getBitmap(binding.postImageUpdate.width, binding.postImageUpdate.height)
+                val bitmap = filePath?.getBitmap(
+                    binding.postImageUpdate.width,
+                    binding.postImageUpdate.height
+                )
                 viewModel.imageBitmap.value = bitmap
             }
         }
 
-        if (requestCode == REQUEST_TAKE_PHOTO && resultCode == Activity.RESULT_OK) {
+        if (requestCode == RequestCode.TAKE_PHOTO.requestCode && resultCode == Activity.RESULT_OK) {
             if (data == null) {
                 return
             }
-            data.data?.let {
-                photoURI = it
+            photoURI?.let {
                 setImage(binding.postImageUpdate, it)
-                val bitmap = photoURI?.getBitmap(binding.postImageUpdate.width, binding.postImageUpdate.height)
+                val bitmap =
+                    it.getBitmap(
+                        binding.postImageUpdate.width,
+                        binding.postImageUpdate.height
+                    )
                 viewModel.imageBitmap.value = bitmap
             }
         }
-
     }
 }

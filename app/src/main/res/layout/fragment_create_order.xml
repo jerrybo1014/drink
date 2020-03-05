@@ -107,7 +107,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:hint="@string/create_order_select_time_hint"
-                android:text="@={viewModel.selectTime}"
+                android:text="@={viewModel.createOrder.timeLimit}"
                 android:textSize="16dp"
                 app:layout_constraintBottom_toBottomOf="@+id/create_order_text_time"
                 app:layout_constraintStart_toEndOf="@+id/create_order_text_time"
@@ -143,7 +143,7 @@
                 android:fontFamily="@font/noto_sans"
                 android:gravity="start"
                 android:paddingBottom="8dp"
-                android:text="@={viewModel.enterNote}"
+                android:text="@={viewModel.createOrder.note}"
                 android:textSize="16dp"
                 app:layout_constraintBaseline_toBaselineOf="@+id/create_order_text_note"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -156,7 +156,7 @@
                 android:layout_marginTop="12dp"
                 android:background="@drawable/background_post_button"
                 android:clickable="@{viewModel.postStatus == LoadApiStatus.LOADING ? false:true}"
-                android:enabled='@{viewModel.selectTime == "" ? false:true}'
+                android:enabled='@{viewModel.createOrder.timeLimit == "" ? false:true}'
                 android:fontFamily="@font/noto_sans"
                 android:onClick="@{() -> viewModel.createOrderResult()}"
                 android:paddingTop="10dp"

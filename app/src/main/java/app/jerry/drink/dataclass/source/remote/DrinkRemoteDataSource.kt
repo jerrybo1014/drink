@@ -483,15 +483,10 @@ object DrinkRemoteDataSource : DrinkDataSource {
     override suspend fun createOrder(order: Order): Result<String> =
         suspendCoroutine { continuation ->
             val orders = FirebaseFirestore.getInstance().collection(PATH_Orders)
-            val userCurrent = FirebaseAuth.getInstance().currentUser
             val document = orders.document("${Calendar.getInstance().timeInMillis}")
 
             order.id = document.id
             order.createdTime = Calendar.getInstance().timeInMillis
-            userCurrent?.let {
-                order.user = User(it.uid, it.displayName, it.email, "")
-            }
-
             document
                 .set(order)
                 .addOnCompleteListener { task ->
@@ -1055,5 +1050,4 @@ object DrinkRemoteDataSource : DrinkDataSource {
                     }
                 }
         }
-
 }

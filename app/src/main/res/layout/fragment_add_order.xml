@@ -200,12 +200,12 @@
                 android:text="@string/add_order_button_text"
                 android:letterSpacing="1.0"
                 android:clickable="@{viewModel.status == LoadApiStatus.LOADING ? false:true}"
-                android:textColor='@{viewModel.selectedIce == null || viewModel.selectedSugar == null ? Color.parseColor("#FFFFFF"):Color.parseColor("#FFFFFF")}'
+                android:textColor='@{viewModel.orderItem.sugar == null || viewModel.orderItem.ice == null ? Color.parseColor("#FFFFFF"):Color.parseColor("#FFFFFF")}'
                 android:background="@drawable/background_post_button"
                 android:textAlignment="center"
                 android:paddingVertical="10dp"
                 android:onClick="@{() -> viewModel.addOrderResult()}"
-                android:enabled="@{viewModel.selectedIce == null || viewModel.selectedSugar == null ? false:true}"
+                android:enabled="@{viewModel.orderItem.ice == null || viewModel.orderItem.sugar == null ? false:true}"
                 android:layout_marginTop="16dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

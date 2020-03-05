@@ -12,7 +12,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import app.jerry.drink.R
 import app.jerry.drink.ext.getVmFactory
-import app.jerry.drink.util.IntentCode
+import app.jerry.drink.util.RequestCode
 import app.jerry.drink.util.Logger
 import app.jerry.drink.util.Util
 import com.facebook.internal.Utility
@@ -53,7 +53,7 @@ class SignInFragment : Fragment() {
                             .build()
                         val mGoogleSignInClient = GoogleSignIn.getClient(context!!, gso)
                         val signInIntent = mGoogleSignInClient.signInIntent
-                        startActivityForResult(signInIntent, IntentCode.GOOGLE_SIGN_IN.requestCode)
+                        startActivityForResult(signInIntent, RequestCode.GOOGLE_SIGN_IN.requestCode)
                     }
                 }
             }
@@ -66,7 +66,7 @@ class SignInFragment : Fragment() {
         super.onActivityResult(requestCode, resultCode, data)
         viewModel.fbCallbackManager.onActivityResult(requestCode, resultCode, data)
 
-        if (requestCode == IntentCode.GOOGLE_SIGN_IN.requestCode){
+        if (requestCode == RequestCode.GOOGLE_SIGN_IN.requestCode){
             val task = GoogleSignIn.getSignedInAccountFromIntent(data)
             try {
                 val account = task.getResult(ApiException::class.java)

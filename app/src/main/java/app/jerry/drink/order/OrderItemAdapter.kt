@@ -11,14 +11,16 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import app.jerry.drink.databinding.ItemOrderListsBinding
 import app.jerry.drink.dataclass.OrderItem
+import app.jerry.drink.signin.UserManager
 
-class OrderListsAdapter(private val viewModel: OrderViewModel) :
-    ListAdapter<OrderItem, OrderListsAdapter.OrderListsHolder>(
+class OrderItemAdapter(private val viewModel: OrderViewModel) :
+    ListAdapter<OrderItem, OrderItemAdapter.OrderListsHolder>(
         DiffCallback
     ) {
 
-    class OrderListsHolder(private var binding: ItemOrderListsBinding,
-                        private var viewModel: OrderViewModel
+    class OrderListsHolder(
+        private var binding: ItemOrderListsBinding,
+        private var viewModel: OrderViewModel
     ) :
         RecyclerView.ViewHolder(binding.root), LifecycleOwner {
 
@@ -26,12 +28,12 @@ class OrderListsAdapter(private val viewModel: OrderViewModel) :
             binding.orderItem = orderItem
             binding.lifecycleOwner = this
             binding.viewModel = viewModel
-
-            val userCurrent = orderItem.user?.id == viewModel.userCurrent.value?.id
-            Log.d("jerryTest","userCurrent = $userCurrent")
-            Log.d("jerryTest","viewModel.userCurrent = ${viewModel.userCurrent.value?.id}")
+            val userCurrent = UserManager.user?.let { userCurrent ->
+                orderItem.user?.let {
+                    userCurrent.id == it.id
+                }
+            }
             binding.userCurrent = userCurrent
-
             binding.executePendingBindings()
         }
 
@@ -54,9 +56,6 @@ class OrderListsAdapter(private val viewModel: OrderViewModel) :
         }
     }
 
-    /**
-     * It for [LifecycleRegistry] change [onViewAttachedToWindow]
-     */
     override fun onViewAttachedToWindow(holder: OrderListsHolder) {
         super.onViewAttachedToWindow(holder)
         when (holder) {
@@ -64,9 +63,6 @@ class OrderListsAdapter(private val viewModel: OrderViewModel) :
         }
     }
 
-    /**
-     * It for [LifecycleRegistry] change [onViewDetachedFromWindow]
-     */
     override fun onViewDetachedFromWindow(holder: OrderListsHolder) {
         super.onViewDetachedFromWindow(holder)
         when (holder) {
@@ -90,22 +86,15 @@ class OrderListsAdapter(private val viewModel: OrderViewModel) :
         }
     }
 
-    /**
-     * Create new [RecyclerView] item views (invoked by the layout manager)
-     */
-
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
     ): OrderListsHolder {
         return OrderListsHolder(
-            ItemOrderListsBinding.inflate(LayoutInflater.from(parent.context), parent, false),viewModel
+            ItemOrderListsBinding.inflate(LayoutInflater.from(parent.context), parent, false),
+            viewModel
         )
     }
-
-    /**
-     * Replaces the contents of a view (invoked by the layout manager)
-     */
 
     override fun onBindViewHolder(holder: OrderListsHolder, position: Int) {
         val orderItem = getItem(position)

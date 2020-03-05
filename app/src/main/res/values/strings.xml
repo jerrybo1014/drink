@@ -91,6 +91,24 @@
     <string name="sign_in_failure">登入失敗</string>
     <string name="fb_request_profile">public_profile</string>
     <string name="fb_request_email">email</string>
+    <string name="share_order">分享訂單</string>
+    <string name="create_order_dialog">createOrderDialog</string>
+    <string name="post_success">成功送出</string>
+    <string name="file_provider_path">app.jerry.drink.fileprovider</string>
+
+    <string-array name="list_sugar">
+        <item>正常糖</item>
+        <item>半糖</item>
+        <item>微糖</item>
+        <item>無糖</item>
+    </string-array>
+
+    <string-array name="list_ice">
+        <item>正常冰</item>
+        <item>去冰</item>
+        <item>微冰</item>
+        <item>常溫</item>
+    </string-array>
 
 
 </resources>

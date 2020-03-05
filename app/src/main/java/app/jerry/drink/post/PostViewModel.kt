@@ -27,21 +27,27 @@ class PostViewModel(private val repository: DrinkRepository) : ViewModel() {
     val allStore: LiveData<List<Store>>
         get() = _allStore
 
-    val selectedStorePosition = MutableLiveData<Int>()
+    // _comment
+    private val _comment = MutableLiveData<Comment>()
 
-    val selectedStore: LiveData<Store> = Transformations.map(selectedStorePosition) {
+    val comment: LiveData<Comment>
+        get() = _comment
+
+    val selectStorePosition = MutableLiveData<Int>()
+
+    val selectStore: LiveData<Store> = Transformations.map(selectStorePosition) {
         allStore.value?.let {allStore ->
             allStore[it]
         }
     }
 
-    val selectedDrinkPosition = MutableLiveData<Int>()
+    val selectDrinkPosition = MutableLiveData<Int>()
 
     val chooseCameraGallery = MutableLiveData<Boolean>().apply {
         value = false
     }
 
-    val selectedDrink: LiveData<Drink?> = Transformations.map(selectedDrinkPosition) {
+    val selectDrink: LiveData<Drink?> = Transformations.map(selectDrinkPosition) {
         allStoreMenu.value?.let {allStoreMenu ->
             if (it < allStoreMenu.size){
                 allStoreMenu[it]
@@ -51,7 +57,7 @@ class PostViewModel(private val repository: DrinkRepository) : ViewModel() {
         }
     }
 
-    var addNewDrink: LiveData<Boolean> = Transformations.map(selectedDrink) {
+    var addNewDrink: LiveData<Boolean> = Transformations.map(selectDrink) {
         it == null
     }
 
@@ -184,8 +190,8 @@ class PostViewModel(private val repository: DrinkRepository) : ViewModel() {
                 "",
                 User("", "", "", ""),
                 "",
-                selectedStore.value!!,
-                selectedDrink.value!!,
+                selectStore.value!!,
+                selectDrink.value!!,
                 selectedIce.value!!,
                 selectedSugar.value!!,
                 commentStar.value!!,
@@ -228,13 +234,13 @@ class PostViewModel(private val repository: DrinkRepository) : ViewModel() {
 
             _postStatus.value = LoadApiStatus.LOADING
 
-            val newDrink = Drink("",newDrinkName.value!!,selectedStore.value!!)
+            val newDrink = Drink("",newDrinkName.value!!,selectStore.value!!)
 
             val comment = Comment(
                 "",
                 User("", "", "", ""),
                 "",
-                selectedStore.value!!,
+                selectStore.value!!,
                 newDrink,
                 selectedIce.value!!,
                 selectedSugar.value!!,
@@ -350,7 +356,7 @@ class PostViewModel(private val repository: DrinkRepository) : ViewModel() {
     }
 
     fun cancelAddNewDrink(){
-        selectedDrinkPosition.value = 0
+        selectDrinkPosition.value = 0
     }
 
     fun postComment(){
