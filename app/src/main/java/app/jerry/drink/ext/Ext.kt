@@ -19,8 +19,6 @@ import java.lang.Exception
 import java.util.*
 
 
-
-
 fun Long.toDisplayFormat(): String {
     return SimpleDateFormat("yyyy/MM/dd HH:mm", Locale.TAIWAN).format(this)
 }
@@ -28,10 +26,10 @@ fun Long.toDisplayFormat(): String {
 fun Long.toDisplayTimePass(): String {
 
     val now = System.currentTimeMillis()
-    val diff = (now - this)/1000
+    val diff = (now - this) / 1000
 
     val years = diff / (60 * 60 * 24 * 30 * 12)
-    val  months = diff / (60 * 60 * 24 * 30)
+    val months = diff / (60 * 60 * 24 * 30)
     val days = diff / (60 * 60 * 24)
 //    val hours = (diff - days * (60 * 60 * 24)) / (60 * 60)
     val hours = diff / (60 * 60)
@@ -39,30 +37,31 @@ fun Long.toDisplayTimePass(): String {
     val minutes = diff / (60)
 
     return when {
-        years >=1 -> "${years}年前"
+        years >= 1 -> "${years}年前"
         months >= 1 -> "${months}個月前"
         days >= 1 -> "${days}天前"
         hours >= 1 -> "${hours}小時前"
         minutes >= 1 -> "${minutes}分鐘前"
         else -> "剛剛"
     }
-
-    }
+}
 
 fun Uri.getBitmap(width: Int, height: Int): Bitmap? {
     var rotatedDegree = 0
     var stream = DrinkApplication.context.contentResolver.openInputStream(this)
     /** GET IMAGE ORIENTATION */
-    if(stream != null) {
+    if (stream != null) {
         val exif = ExifInterface(stream)
-        rotatedDegree = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL).fromExifInterfaceOrientationToDegree()
+        rotatedDegree =
+            exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL)
+                .fromExifInterfaceOrientationToDegree()
         stream.close()
     }
     /** GET IMAGE SIZE */
     stream = DrinkApplication.context.contentResolver.openInputStream(this)
     val options = BitmapFactory.Options()
     options.inJustDecodeBounds = true
-    BitmapFactory.decodeStream(stream, null,options)
+    BitmapFactory.decodeStream(stream, null, options)
     try {
         stream?.close()
     } catch (e: NullPointerException) {
@@ -70,7 +69,7 @@ fun Uri.getBitmap(width: Int, height: Int): Bitmap? {
         return null
     }
     // The resulting width and height of the bitmap
-    if(options.outWidth == -1 || options.outHeight == -1) return null
+    if (options.outWidth == -1 || options.outHeight == -1) return null
     var bitmapWidth = options.outWidth.toFloat()
     var bitmapHeight = options.outHeight.toFloat()
     if (rotatedDegree == 90) {
@@ -80,8 +79,8 @@ fun Uri.getBitmap(width: Int, height: Int): Bitmap? {
         bitmapHeight = options.outWidth.toFloat()
     }
     var scale = 1
-    while(true) {
-        if(bitmapWidth / 2 < width || bitmapHeight / 2 < height)
+    while (true) {
+        if (bitmapWidth / 2 < width || bitmapHeight / 2 < height)
             break
         bitmapWidth /= 2
         bitmapHeight /= 2
@@ -112,13 +111,14 @@ fun Uri.getBitmap(width: Int, height: Int): Bitmap? {
     }
     var adjustedBitmap = bitmap
     if (bmpWidth > 0) {
-        adjustedBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, matrix, true)
+        adjustedBitmap =
+            Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, matrix, true)
     }
     return adjustedBitmap
 }
 
 fun Int.fromExifInterfaceOrientationToDegree(): Int {
-    return when(this) {
+    return when (this) {
         ExifInterface.ORIENTATION_ROTATE_90 -> 90
         ExifInterface.ORIENTATION_ROTATE_180 -> 180
         ExifInterface.ORIENTATION_ROTATE_270 -> 270
@@ -126,7 +126,7 @@ fun Int.fromExifInterfaceOrientationToDegree(): Int {
     }
 }
 
-fun setImage(imgView: ImageView, imgUrl: Uri){
+fun setImage(imgView: ImageView, imgUrl: Uri) {
     Glide.with(imgView.context)
         .load(imgUrl)
         .apply(RequestOptions().centerCrop())

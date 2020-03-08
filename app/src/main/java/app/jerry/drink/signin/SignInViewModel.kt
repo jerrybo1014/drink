@@ -114,7 +114,8 @@ class SignInViewModel(private val repository: DrinkRepository) : ViewModel() {
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     Toast.makeText(DrinkApplication.context, getString(R.string.sign_in_success), Toast.LENGTH_SHORT).show()
-                    Logger.d("signInWithCredential:success")
+                    val user = auth.currentUser
+                    Logger.d( "signInWithCredential:success ${user!!.email}")
                 } else {
                     // If sign in fails, display a message to the user.
                     Logger.d("signInWithCredential:failure ${task.exception}")

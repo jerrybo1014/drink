@@ -2,6 +2,7 @@ package app.jerry.drink.post
 
 import android.Manifest
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.icu.text.SimpleDateFormat
@@ -9,6 +10,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
+import android.provider.Settings
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -28,10 +30,7 @@ import app.jerry.drink.databinding.FragmentPostBinding
 import app.jerry.drink.ext.getBitmap
 import app.jerry.drink.ext.getVmFactory
 import app.jerry.drink.ext.setImage
-import app.jerry.drink.util.Logger
-import app.jerry.drink.util.PermissionCode
-import app.jerry.drink.util.RequestCode
-import app.jerry.drink.util.Util
+import app.jerry.drink.util.*
 import java.io.File
 import java.io.IOException
 import java.util.*
@@ -53,7 +52,6 @@ class PostFragment : Fragment() {
         )
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
-        viewModel.getAllStoreResult()
 
         val listIce = DrinkApplication.context.resources.getStringArray(R.array.list_ice).toList()
         val listSugar =
@@ -166,40 +164,19 @@ class PostFragment : Fragment() {
             != PackageManager.PERMISSION_GRANTED
         ) {
 
-            if (ActivityCompat.shouldShowRequestPermissionRationale(
-                    (activity as MainActivity),
+            requestPermissions(
+                arrayOf(
                     Manifest.permission.READ_EXTERNAL_STORAGE
-                )
-            ) {
-                AlertDialog.Builder(context!!)
-                    .setMessage("需要開啟內部存取權限!")
-                    .setPositiveButton("前往設定") { _, _ ->
-                        requestPermissions(
-                            arrayOf(
-                                Manifest.permission.READ_EXTERNAL_STORAGE
-                            ),
-                            PermissionCode.READ_EXTERNAL_STORAGE.requestCode
-                        )
-                    }
-                    .setNegativeButton("NO") { _, _ -> }
-                    .show()
+                ),
+                PermissionCode.READ_EXTERNAL_STORAGE.requestCode
+            )
 
-            } else {
-                requestPermissions(
-                    arrayOf(
-                        Manifest.permission.READ_EXTERNAL_STORAGE
-                    ),
-                    PermissionCode.READ_EXTERNAL_STORAGE.requestCode
-                )
-            }
         } else {
             launchGallery()
         }
     }
 
-
     private fun loadCamera() {
-
         if (ContextCompat.checkSelfPermission(
                 DrinkApplication.instance,
                 Manifest.permission.CAMERA
@@ -207,36 +184,21 @@ class PostFragment : Fragment() {
             != PackageManager.PERMISSION_GRANTED
         ) {
 
-            if (ActivityCompat.shouldShowRequestPermissionRationale(
-                    (activity as MainActivity),
+            requestPermissions(
+                arrayOf(
                     Manifest.permission.CAMERA
-                )
-            ) {
-                AlertDialog.Builder(context!!)
-                    .setMessage("需要開啟相機權限!")
-                    .setPositiveButton("前往設定") { _, _ ->
-                        requestPermissions(
-                            arrayOf(
-                                Manifest.permission.CAMERA
-                            ),
-                            PermissionCode.CAMERA.requestCode
-                        )
-                    }
-                    .setNegativeButton("NO") { _, _ -> }
-                    .show()
+                ),
+                PermissionCode.CAMERA.requestCode
+            )
 
-            } else {
-                requestPermissions(
-                    arrayOf(
-                        Manifest.permission.CAMERA
-                    ),
-                    PermissionCode.CAMERA.requestCode
-                )
-            }
         } else {
             dispatchTakePictureIntent()
         }
     }
+
+//    private fun openAppSettingsIntent() {
+//        startActivity(openAppSettingsIntent(context!!))
+//    }
 
     override fun onRequestPermissionsResult(
         requestCode: Int,
@@ -253,6 +215,17 @@ class PostFragment : Fragment() {
                     }
                     loadCamera()
                 } else {
+
+                    if (!ActivityCompat.shouldShowRequestPermissionRationale(activity as MainActivity, Manifest.permission.CAMERA)) {
+                        AlertDialog.Builder(context!!)
+                            .setMessage(Util.getString(R.string.need_camera_permission))
+                            .setPositiveButton(Util.getString(R.string.open_permission)) { _, _ ->
+                                PermissionRequest(context!!, activity as MainActivity).openAppSettingsIntent()
+                            }
+                            .setNegativeButton(Util.getString(R.string.permission_permanently_denied_negative_button)) { _, _ -> }
+                            .show()
+                    }
+
                     for (permissionsItem in permissions) {
                         Logger.d("permissions reject : $permissions")
                     }
@@ -267,8 +240,15 @@ class PostFragment : Fragment() {
                     }
                     launchGallery()
                 } else {
-                    for (permissionsItem in permissions) {
-                        Logger.d("permissions reject : $permissions")
+                    if (!ActivityCompat.shouldShowRequestPermissionRationale(activity as MainActivity,
+                            Manifest.permission.READ_EXTERNAL_STORAGE)) {
+                        AlertDialog.Builder(context!!)
+                            .setMessage(Util.getString(R.string.need_gallery_permission))
+                            .setPositiveButton(Util.getString(R.string.open_permission)) { _, _ ->
+                                PermissionRequest(context!!, activity as MainActivity).openAppSettingsIntent()
+                            }
+                            .setNegativeButton(Util.getString(R.string.permission_permanently_denied_negative_button)) { _, _ -> }
+                            .show()
                     }
                 }
                 return

@@ -40,7 +40,6 @@ class SignInFragment : Fragment() {
 
         viewModel.loginMode.observe(this, Observer {
             it?.let {
-                Logger.d("loginMode = $it")
                 when (it){
                     Util.getString(R.string.log_in__facebook) -> {
                         LoginManager.getInstance().logInWithReadPermissions(this,

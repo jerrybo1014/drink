@@ -4,6 +4,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
+import android.provider.Settings
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -31,6 +32,9 @@ import app.jerry.drink.home.NewCommentAdapter
 import app.jerry.drink.profile.ProfileViewModel
 import app.jerry.drink.profile.UserCommentAdapter
 import app.jerry.drink.profile.UserOrderAdapter
+import app.jerry.drink.util.Logger
+import app.jerry.drink.util.PermissionCode
+import app.jerry.drink.util.RequestCode
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
@@ -41,13 +45,9 @@ import java.io.IOException
 
 class ProfileFragment : Fragment() {
 
-
     lateinit var binding: FragmentProfileBinding
-    private val PICK_AVATAR_REQUEST = 5
     private val viewModel by viewModels<ProfileViewModel> { getVmFactory() }
     private var filePath: Uri? = null
-    private var TAG = "jerryTest"
-    private var MY_PERMISSIONS_READ_EXTERNAL_STORAGE = 15
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -57,7 +57,6 @@ class ProfileFragment : Fragment() {
             inflater, R.layout.fragment_profile, container, false
         )
 
-        (activity as MainActivity).binding.fab.hide()
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
 
@@ -75,10 +74,6 @@ class ProfileFragment : Fragment() {
         binding.profileAvatarChoose.setOnClickListener {
             loadGallery()
         }
-
-        viewModel.userCurrent.observe(this, Observer {
-            Log.d("userCurrent.observe", "userCurrent = $it")
-        })
 
         viewModel.navigationToDetail.observe(this, Observer {
             it?.let {
@@ -102,37 +97,6 @@ class ProfileFragment : Fragment() {
             binding.profileFoldOrderArrow.isSelected = it
         })
 
-        val mShowAction = TranslateAnimation(
-            Animation.RELATIVE_TO_SELF, 0.0f,
-            Animation.RELATIVE_TO_SELF, 0.0f, Animation.RELATIVE_TO_SELF,
-            -1.0f, Animation.RELATIVE_TO_SELF, 0.0f
-        )
-        mShowAction.duration = 500
-
-        val mHiddenAction = TranslateAnimation(
-            Animation.RELATIVE_TO_SELF,
-            0.0f, Animation.RELATIVE_TO_SELF, 0.0f,
-            Animation.RELATIVE_TO_SELF, 0.0f, Animation.RELATIVE_TO_SELF,
-            -1.0f
-        )
-        mHiddenAction.duration = 500
-
-//        viewModel.allCommentStatus.observe(this, Observer {
-//            if (it) {
-//                binding.recyclerProfileAllComments.startAnimation(mShowAction)
-//                binding.recyclerProfileAllComments.visibility = View.VISIBLE
-//            } else {
-//                binding.recyclerProfileAllComments.startAnimation(mHiddenAction)
-//                binding.recyclerProfileAllComments.visibility = View.GONE
-//            }
-//        })
-
-        viewModel.allOrderStatus.observe(this, Observer {
-
-        })
-
-
-
         return binding.root
     }
 
@@ -140,50 +104,34 @@ class ProfileFragment : Fragment() {
         val intent = Intent()
         intent.type = "image/*"
         intent.action = Intent.ACTION_GET_CONTENT
-        startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_AVATAR_REQUEST)
+        startActivityForResult(Intent.createChooser(intent, "Select Picture"), RequestCode.PICK_IMAGE.requestCode)
     }
 
-
     private fun loadGallery() {
-
         if (ContextCompat.checkSelfPermission(
                 DrinkApplication.instance,
                 Manifest.permission.READ_EXTERNAL_STORAGE
             )
             != PackageManager.PERMISSION_GRANTED
         ) {
-
-            if (ActivityCompat.shouldShowRequestPermissionRationale(
-                    (activity as MainActivity),
+            requestPermissions(
+                arrayOf(
                     Manifest.permission.READ_EXTERNAL_STORAGE
-                )
-            ) {
-                AlertDialog.Builder(context!!)
-                    .setMessage("需要開啟相機，再不給試試看")
-                    .setPositiveButton("前往設定") { _, _ ->
-                        requestPermissions(
-                            arrayOf(
-                                Manifest.permission.READ_EXTERNAL_STORAGE
-                            ),
-                            MY_PERMISSIONS_READ_EXTERNAL_STORAGE
-                        )
-                    }
-                    .setNegativeButton("NO") { _, _ -> }
-                    .show()
-
-            } else {
-                requestPermissions(
-                    arrayOf(
-                        Manifest.permission.READ_EXTERNAL_STORAGE
-                    ),
-                    MY_PERMISSIONS_READ_EXTERNAL_STORAGE
-                )
-            }
+                ),
+                PermissionCode.READ_EXTERNAL_STORAGE.requestCode
+            )
         } else {
             launchGallery()
         }
     }
 
+    private fun openAppSettingsIntent() {
+        val intent = Intent(
+            Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
+            Uri.fromParts("package", context!!.packageName, null))
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        startActivity(intent)
+    }
 
     override fun onRequestPermissionsResult(
         requestCode: Int,
@@ -193,29 +141,33 @@ class ProfileFragment : Fragment() {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
 
         when (requestCode) {
-            MY_PERMISSIONS_READ_EXTERNAL_STORAGE ->{
+            PermissionCode.READ_EXTERNAL_STORAGE.requestCode ->{
                 if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    for (permissionsItem in permissions) {
-                        Log.d(TAG, "permissions allow : $permissions")
-                    }
                     launchGallery()
                 } else {
+                    if (!ActivityCompat.shouldShowRequestPermissionRationale(activity as MainActivity, Manifest.permission.READ_EXTERNAL_STORAGE)) {
+
+                        AlertDialog.Builder(context!!)
+                            .setMessage("需要開啟相簿權限!")
+                            .setPositiveButton("前往設定") { _, _ ->
+                                openAppSettingsIntent()
+                            }
+                            .setNegativeButton("先不要") { _, _ -> }
+                            .show()
+                    }
                     for (permissionsItem in permissions) {
-                        Log.d(TAG, "permissions reject : $permissionsItem")
+                        Logger.d("permissions reject : $permissions")
                     }
                 }
                 return
             }
         }
-
     }
-
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-
-        if (requestCode == PICK_AVATAR_REQUEST && resultCode == Activity.RESULT_OK) {
+        if (requestCode == RequestCode.PICK_IMAGE.requestCode && resultCode == Activity.RESULT_OK) {
             if (data == null || data.data == null) {
                 return
             }

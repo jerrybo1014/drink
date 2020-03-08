@@ -9,6 +9,8 @@ import app.jerry.drink.dataclass.source.DrinkRepository
 import app.jerry.drink.network.LoadApiStatus
 import app.jerry.drink.signin.UserManager
 import app.jerry.drink.util.CurrentFragmentType
+import app.jerry.drink.util.Logger
+import com.google.firebase.auth.FirebaseUser
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -20,7 +22,9 @@ class MainActivityViewModel(private val repository: DrinkRepository) : ViewModel
 
 //    var checkUser = MutableLiveData<Boolean>()
 
-    private val _checkUser = MutableLiveData<Boolean>()
+    private val _checkUser = MutableLiveData<Boolean>().apply {
+        value = false
+    }
 
     val checkUser: LiveData<Boolean>
         get() = _checkUser
@@ -49,10 +53,10 @@ class MainActivityViewModel(private val repository: DrinkRepository) : ViewModel
     // the Coroutine runs using the Main (UI) dispatcher
     private val coroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
 
-    fun checkUserResult() {
+    fun checkUserResult(user: User) {
         coroutineScope.launch {
             _status.value = LoadApiStatus.LOADING
-            val result = repository.checkUser()
+            val result = repository.checkUser(user)
             _checkUser.value = when (result) {
                 is Result.Success -> {
                     _error.value = null
@@ -62,17 +66,17 @@ class MainActivityViewModel(private val repository: DrinkRepository) : ViewModel
                 is Result.Fail -> {
                     _error.value = result.error
                     _status.value = LoadApiStatus.ERROR
-                    null
+                    false
                 }
                 is Result.Error -> {
                     _error.value = result.exception.toString()
                     _status.value = LoadApiStatus.ERROR
-                    null
+                    false
                 }
                 else -> {
                     _error.value = DrinkApplication.instance.getString(R.string.you_know_nothing)
                     _status.value = LoadApiStatus.ERROR
-                    null
+                    false
                 }
             }
             _refreshStatus.value = false

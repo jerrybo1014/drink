@@ -1,6 +1,7 @@
 package app.jerry.drink.home
 
 import android.content.Context
+import android.location.LocationManager
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater

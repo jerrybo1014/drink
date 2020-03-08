@@ -1,8 +1,10 @@
 package app.jerry.drink.detail
 
 import android.Manifest
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.location.LocationManager
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -24,6 +26,9 @@ import app.jerry.drink.R
 import app.jerry.drink.databinding.FragmentDetailBinding
 import app.jerry.drink.dataclass.Store
 import app.jerry.drink.ext.getVmFactory
+import app.jerry.drink.util.PermissionCode
+import app.jerry.drink.util.PermissionRequest
+import app.jerry.drink.util.Util
 
 class DetailFragment : Fragment() {
 
@@ -34,9 +39,7 @@ class DetailFragment : Fragment() {
             ).drink
         )
     }
-
     lateinit var binding: FragmentDetailBinding
-    private val MY_PERMISSIONS_LOCATION = 300
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -53,72 +56,48 @@ class DetailFragment : Fragment() {
         (activity as MainActivity).binding.bottomNavigationView.visibility = View.GONE
 
         binding.detailLayoutNavigationToInternet.setOnClickListener {
-
-//            viewModel.drinkInformation.observe(this, Observer { drinkInformation ->
-                val uri = Uri.parse(viewModel.drink.store.uri)
-                val intent = Intent(Intent.ACTION_VIEW, uri)
-//            if (intent.resolveActivity(getPackageManager()) != null) {
-//                final ComponentName componentName = intent.resolveActivity(getPackageManager())
-                startActivity(Intent.createChooser(intent, "即將開啟官網，請選擇瀏覽器"))
-//            })
+            val uri = Uri.parse(viewModel.drink.store.uri)
+            val intent = Intent(Intent.ACTION_VIEW, uri)
+            startActivity(Intent.createChooser(intent, Util.getString(R.string.choose_browser)))
         }
 
         viewModel.navigationToRadar.observe(this, Observer {
             it?.let {
-
-                if (ContextCompat.checkSelfPermission(
-                        DrinkApplication.context,
-                        Manifest.permission.ACCESS_FINE_LOCATION
-                    )
-                    != PackageManager.PERMISSION_GRANTED
-                ) {
-
-                    // Permission is not granted
-                    if (ActivityCompat.shouldShowRequestPermissionRationale(
-                            activity as MainActivity,
+                val locationManager = (activity as MainActivity).getSystemService(Context.LOCATION_SERVICE) as LocationManager
+                val hasGps =
+                    locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
+                if (!hasGps){
+                    context?.let { context ->
+                        PermissionRequest(context, activity as MainActivity).showDialogIfLocationServiceOff()
+                    }
+                }else {
+                    if (ContextCompat.checkSelfPermission(
+                            DrinkApplication.context,
                             Manifest.permission.ACCESS_FINE_LOCATION
                         )
+                        != PackageManager.PERMISSION_GRANTED
                     ) {
-                        // Show an explanation to the user *asynchronously* -- don't block
-                        // this thread waiting for the user's response! After the user
-                        // sees the explanation, try again to request the permission.
-                        AlertDialog.Builder(context!!)
-                            .setMessage("需要開啟GPS權限，再不給試試看")
-                            .setPositiveButton("前往設定") { _, _ ->
-                                requestPermissions(
-                                    arrayOf(
-                                        Manifest.permission.ACCESS_FINE_LOCATION,
-                                        Manifest.permission.ACCESS_COARSE_LOCATION
-                                    ),
-                                    MY_PERMISSIONS_LOCATION
-                                )
-                            }
-                            .setNegativeButton("NO") { _, _ -> }
-                            .show()
-
-                    } else {
                         requestPermissions(
                             arrayOf(
                                 Manifest.permission.ACCESS_FINE_LOCATION,
                                 Manifest.permission.ACCESS_COARSE_LOCATION
                             ),
-                            MY_PERMISSIONS_LOCATION
+                            PermissionCode.LOCATION.requestCode
                         )
+                    } else {
+                        findNavController().navigate(
+                            NavigationDirections.actionGlobalRadarFragment(
+                                it
+                            )
+                        )
+                        viewModel.navigationToRadarfinished()
                     }
-                } else {
-                    // Permission has already been granted
-                    findNavController().navigate(NavigationDirections.actionGlobalRadarFragment(it))
-                    viewModel.navigationToRadarfinished()
                 }
-
             }
         })
 
         return binding.root
     }
-
-
-
 
     override fun onRequestPermissionsResult(
         requestCode: Int,
@@ -126,30 +105,22 @@ class DetailFragment : Fragment() {
         grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-
         when (requestCode) {
-            MY_PERMISSIONS_LOCATION -> {
+            PermissionCode.LOCATION.requestCode -> {
                 if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    for (permissionsItem in permissions) {
-                        Log.d("jerryTest", "permissions allow : $permissions")
-                    }
-                    findNavController().navigate(NavigationDirections.actionGlobalRadarFragment(viewModel.navigationToRadar.value!!))
+                    findNavController().navigate(
+                        NavigationDirections.actionGlobalRadarFragment(
+                            viewModel.navigationToRadar.value!!
+                        )
+                    )
                     viewModel.navigationToRadarfinished()
                 } else {
-                    for (permissionsItem in permissions) {
-                        Log.d("jerryTest", "permissions reject : $permissionsItem")
+                    context?.let {
+                        PermissionRequest(it, activity as MainActivity).fineLocationIfDenied()
                     }
                 }
                 return
             }
-
         }
-
     }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        (activity as MainActivity).binding.bottomNavigationView.visibility = View.VISIBLE
-    }
-
 }

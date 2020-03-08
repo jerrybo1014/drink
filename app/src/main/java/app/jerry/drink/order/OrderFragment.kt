@@ -1,8 +1,10 @@
 package app.jerry.drink.order
 
 import android.Manifest
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.location.LocationManager
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -25,6 +27,7 @@ import app.jerry.drink.databinding.FragmentOrderBinding
 import app.jerry.drink.ext.getVmFactory
 import app.jerry.drink.util.Logger
 import app.jerry.drink.util.PermissionCode
+import app.jerry.drink.util.PermissionRequest
 import app.jerry.drink.util.Util
 
 
@@ -81,9 +84,7 @@ class OrderFragment : Fragment() {
 
         viewModel.orderLive.observe(this, Observer {
             binding.order = it
-            Logger.d("orderLive = $it")
             viewModel.orderItemsLive.observe(this@OrderFragment, Observer { orderItemsLive ->
-                Logger.d("orderItemsLive = $orderItemsLive")
                 orderListAdapter.submitList(orderItemsLive)
             })
         })
@@ -104,33 +105,20 @@ class OrderFragment : Fragment() {
 
         viewModel.navigationToRadar.observe(this, Observer {
             it?.let {
-                if (ContextCompat.checkSelfPermission(
-                        DrinkApplication.context,
-                        Manifest.permission.ACCESS_FINE_LOCATION
-                    )
-                    != PackageManager.PERMISSION_GRANTED
-                ) {
-                    // Permission is not granted
-                    if (ActivityCompat.shouldShowRequestPermissionRationale(
-                            activity as MainActivity,
+                val locationManager = (activity as MainActivity).getSystemService(Context.LOCATION_SERVICE) as LocationManager
+                val hasGps =
+                    locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
+                if (!hasGps){
+                    context?.let { context ->
+                        PermissionRequest(context, activity as MainActivity).showDialogIfLocationServiceOff()
+                    }
+                }else {
+                    if (ContextCompat.checkSelfPermission(
+                            DrinkApplication.context,
                             Manifest.permission.ACCESS_FINE_LOCATION
                         )
+                        != PackageManager.PERMISSION_GRANTED
                     ) {
-                        AlertDialog.Builder(context!!)
-                            .setMessage("需要開啟GPS權限!")
-                            .setPositiveButton("前往設定") { _, _ ->
-                                requestPermissions(
-                                    arrayOf(
-                                        Manifest.permission.ACCESS_FINE_LOCATION,
-                                        Manifest.permission.ACCESS_COARSE_LOCATION
-                                    ),
-                                    PermissionCode.LOCATION.requestCode
-                                )
-                            }
-                            .setNegativeButton("NO") { _, _ -> }
-                            .show()
-
-                    } else {
                         requestPermissions(
                             arrayOf(
                                 Manifest.permission.ACCESS_FINE_LOCATION,
@@ -138,11 +126,15 @@ class OrderFragment : Fragment() {
                             ),
                             PermissionCode.LOCATION.requestCode
                         )
+                    } else {
+                        // Permission has already been granted
+                        findNavController().navigate(
+                            NavigationDirections.actionGlobalRadarFragment(
+                                it
+                            )
+                        )
+                        viewModel.navigationToRadarFinished()
                     }
-                } else {
-                    // Permission has already been granted
-                    findNavController().navigate(NavigationDirections.actionGlobalRadarFragment(it))
-                    viewModel.navigationToRadarFinished()
                 }
             }
         })
@@ -159,22 +151,20 @@ class OrderFragment : Fragment() {
         when (requestCode) {
             PermissionCode.LOCATION.requestCode -> {
                 if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    for (permissionsItem in permissions) {
-                        Log.d("jerryTest", "permissions allow : $permissions")
-                    }
                     findNavController().navigate(
                         NavigationDirections.actionGlobalRadarFragment(
                             viewModel.navigationToRadar.value!!
                         )
                     )
                     viewModel.navigationToRadarFinished()
-                } else {
-                    for (permissionsItem in permissions) {
-                        Log.d("jerryTest", "permissions reject : $permissionsItem")
+                }else{
+                    context?.let {
+                        PermissionRequest(it, activity as MainActivity).fineLocationIfDenied()
                     }
                 }
                 return
             }
         }
     }
+
 }

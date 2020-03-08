@@ -3,6 +3,7 @@ package app.jerry.drink.dataclass.source
 import android.graphics.Bitmap
 import androidx.lifecycle.LiveData
 import app.jerry.drink.dataclass.*
+import com.google.firebase.auth.FirebaseUser
 
 class DefaultDrinkRepository(private val remoteDataSource: DrinkDataSource,
                                  private val localDataSource: DrinkDataSource
@@ -12,8 +13,8 @@ class DefaultDrinkRepository(private val remoteDataSource: DrinkDataSource,
         return remoteDataSource.addStoreToDrink(store)
     }
 
-    override suspend fun checkUser(): Result<Boolean> {
-        return remoteDataSource.checkUser()
+    override suspend fun checkUser(user: User): Result<Boolean> {
+        return remoteDataSource.checkUser(user)
     }
 
     override suspend fun getNewComment(): Result<List<Comment>> {

@@ -3,12 +3,13 @@ package app.jerry.drink.dataclass.source
 import android.graphics.Bitmap
 import androidx.lifecycle.LiveData
 import app.jerry.drink.dataclass.*
+import com.google.firebase.auth.FirebaseUser
 
 interface DrinkRepository {
 
     suspend fun addStoreToDrink(store: Store): Result<Boolean>
 
-    suspend fun checkUser(): Result<Boolean>
+    suspend fun checkUser(user: User): Result<Boolean>
 
     suspend fun getNewComment(): Result<List<Comment>>
 

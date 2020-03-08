@@ -8,7 +8,6 @@ enum class PermissionCode(val requestCode:Int) {
 
 enum class RequestCode(val requestCode:Int) {
     GOOGLE_SIGN_IN(100),
-    FB_SIGN_IN(101),
     PICK_IMAGE(102),
     TAKE_PHOTO(103)
 }

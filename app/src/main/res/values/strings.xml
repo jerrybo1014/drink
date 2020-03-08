@@ -96,6 +96,12 @@
     <string name="post_success">成功送出</string>
     <string name="file_provider_path">app.jerry.drink.fileprovider</string>
     <string name="new_drink_exist">新增飲品已存在!</string>
+    <string name="need_gps_permission">需要開啟GPS權限!</string>
+    <string name="open_permission">前往設定</string>
+    <string name="need_camera_permission">需要開啟相機權限!</string>
+    <string name="permission_permanently_denied_negative_button">先不要</string>
+    <string name="need_gallery_permission">需要開啟相簿權限!</string>
+    <string name="choose_browser">即將開啟官網，請選擇瀏覽器</string>
 
     <string-array name="list_sugar">
         <item>正常糖</item>

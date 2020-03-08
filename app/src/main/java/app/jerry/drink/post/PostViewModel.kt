@@ -100,6 +100,7 @@ class PostViewModel(private val repository: DrinkRepository) : ViewModel() {
 
     init {
         postFinished.value = false
+        getAllStoreResult()
     }
 
     fun getAllStoreResult() {
@@ -113,9 +114,6 @@ class PostViewModel(private val repository: DrinkRepository) : ViewModel() {
                 is Result.Success -> {
                     _error.value = null
                     _status.value = LoadApiStatus.DONE
-//                    _comment.value?.let {
-//                        it.store = result.data[0]
-//                    }
                     selectStorePosition.value = 0
                     result.data
                 }
@@ -140,18 +138,15 @@ class PostViewModel(private val repository: DrinkRepository) : ViewModel() {
     }
 
     fun getStoreMenuResult(store: Store) {
+
         coroutineScope.launch {
 
             _status.value = LoadApiStatus.LOADING
-
             val result = repository.getStoreMenu(store)
             _allStoreMenu.value = when (result) {
                 is Result.Success -> {
                     _error.value = null
                     _status.value = LoadApiStatus.DONE
-//                    _comment.value?.let {
-//                        it.drink = result.data[0]
-//                    }
                     selectDrinkPosition.value = 0
                     result.data
                 }
@@ -229,9 +224,8 @@ class PostViewModel(private val repository: DrinkRepository) : ViewModel() {
                             is Result.Success -> {
                                 _error.value = null
                                 _postStatus.value = LoadApiStatus.DONE
-                                Log.d("postComentResult", "$result.data")
                                 postFinished.value = true
-                                Toast.makeText(DrinkApplication.context, "成功送出", Toast.LENGTH_SHORT)
+                                Toast.makeText(DrinkApplication.context, getString(R.string.post_success), Toast.LENGTH_SHORT)
                                     .show()
                                 result.data
                             }

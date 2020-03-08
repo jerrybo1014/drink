@@ -16,7 +16,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
-class OrderViewModel(private val repository: DrinkRepository, private val orderId: String) : ViewModel() {
+class OrderViewModel(private val repository: DrinkRepository, private val orderId: String) :
+    ViewModel() {
 
     val userStatus = MediatorLiveData<Boolean>()
 
@@ -70,13 +71,13 @@ class OrderViewModel(private val repository: DrinkRepository, private val orderI
         getInit()
     }
 
-    private fun getInit(){
-        if (orderId != "1"){
+    private fun getInit() {
+        if (orderId != "1") {
             getOrderResult(orderId.toLong())
         }
     }
 
-    private fun getUserCurrentResult(){
+    private fun getUserCurrentResult() {
         coroutineScope.launch {
 
             _status.value = LoadApiStatus.LOADING
@@ -110,10 +111,8 @@ class OrderViewModel(private val repository: DrinkRepository, private val orderI
 
     }
 
-
     fun getOrderResult(orderId: Long) {
         _orderLive = repository.getOrderLive(orderId) as MutableLiveData<Order>
-        /**/
         _orderItemsLive = repository.getOrderItemLive(orderId) as MutableLiveData<List<OrderItem>>
     }
 
@@ -139,7 +138,8 @@ class OrderViewModel(private val repository: DrinkRepository, private val orderI
                         _status.value = LoadApiStatus.ERROR
                     }
                     else -> {
-                        _error.value = DrinkApplication.instance.getString(R.string.you_know_nothing)
+                        _error.value =
+                            DrinkApplication.instance.getString(R.string.you_know_nothing)
                         _status.value = LoadApiStatus.ERROR
                     }
                 }
@@ -170,7 +170,8 @@ class OrderViewModel(private val repository: DrinkRepository, private val orderI
                         null
                     }
                     else -> {
-                        _error.value = DrinkApplication.instance.getString(R.string.you_know_nothing)
+                        _error.value =
+                            DrinkApplication.instance.getString(R.string.you_know_nothing)
                         _status.value = LoadApiStatus.ERROR
                         null
                     }
@@ -188,11 +189,11 @@ class OrderViewModel(private val repository: DrinkRepository, private val orderI
         }
     }
 
-    fun navigationToRadar(store: Store){
+    fun navigationToRadar(store: Store) {
         _navigationToRadar.value = store
     }
 
-    fun navigationToRadarFinished(){
+    fun navigationToRadarFinished() {
         _navigationToRadar.value = null
     }
 

@@ -25,7 +25,6 @@ class AddOrderFragment : DialogFragment() {
             arguments!!
         ).order) }
     lateinit var binding: FragmentAddOrderBinding
-    val TAG = "jerryTest"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

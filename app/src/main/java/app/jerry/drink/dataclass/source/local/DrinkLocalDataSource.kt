@@ -5,6 +5,7 @@ import android.graphics.Bitmap
 import androidx.lifecycle.LiveData
 import app.jerry.drink.dataclass.*
 import app.jerry.drink.dataclass.source.DrinkDataSource
+import com.google.firebase.auth.FirebaseUser
 
 class DrinkLocalDataSource(val context: Context) : DrinkDataSource {
 
@@ -12,7 +13,7 @@ class DrinkLocalDataSource(val context: Context) : DrinkDataSource {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override suspend fun checkUser(): Result<Boolean> {
+    override suspend fun checkUser(user: User): Result<Boolean> {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
