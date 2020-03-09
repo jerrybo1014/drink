@@ -13,6 +13,7 @@ import app.jerry.drink.R
 import app.jerry.drink.dataclass.*
 import app.jerry.drink.dataclass.source.DrinkRepository
 import app.jerry.drink.network.LoadApiStatus
+import app.jerry.drink.signin.UserManager
 import app.jerry.drink.util.Logger
 import app.jerry.drink.util.Util.getColor
 import kotlinx.coroutines.CoroutineScope
@@ -30,7 +31,11 @@ class AddOrderViewModel(private val repository: DrinkRepository, private val ord
         get() = _allStoreMenu
 
     // _selectedDrink
-    private val _orderItem = MutableLiveData<OrderItem>()
+    private val _orderItem = MutableLiveData<OrderItem>().apply {
+        UserManager.user?.let {
+            value = OrderItem("", it.id, it, null, null, null, 1, "")
+        }
+    }
 
     val orderItem: LiveData<OrderItem>
         get() = _orderItem
@@ -67,7 +72,6 @@ class AddOrderViewModel(private val repository: DrinkRepository, private val ord
     private val coroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
 
     init {
-        _orderItem.value = OrderItem("", null, null, null, null, 1, "")
         addOrderFinished.value = false
         getStoreMenuResult()
     }

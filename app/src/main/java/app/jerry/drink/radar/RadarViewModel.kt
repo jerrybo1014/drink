@@ -16,7 +16,8 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import java.text.NumberFormat
 
-class RadarViewModel(private val repository: DrinkRepository, private val store: Store) : ViewModel() {
+class RadarViewModel(private val repository: DrinkRepository, private val store: Store) :
+    ViewModel() {
 
     private val _storeLocation = MutableLiveData<List<StoreLocation>>()
 
@@ -72,11 +73,11 @@ class RadarViewModel(private val repository: DrinkRepository, private val store:
     // the Coroutine runs using the Main (UI) dispatcher
     private val coroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
 
-init {
-    getStoreLocationResult()
-}
+    init {
+        getStoreLocationResult()
+    }
 
-    fun getStoreLocationResult(){
+    fun getStoreLocationResult() {
         coroutineScope.launch {
             _status.value = LoadApiStatus.LOADING
             val result = repository.getStoreLocation()
@@ -86,9 +87,9 @@ init {
                     _error.value = null
                     _status.value = LoadApiStatus.DONE
 
-                    if (store.storeId == ""){
+                    if (store.storeId == "") {
                         result.data
-                    }else{
+                    } else {
                         result.data.filter { it.store.storeId == store.storeId }
                     }
                 }
@@ -113,7 +114,7 @@ init {
 
     }
 
-    fun getStoreCommentResult(store: Store){
+    fun getStoreCommentResult(store: Store) {
         coroutineScope.launch {
             _status.value = LoadApiStatus.LOADING
             val result = repository.getStoreComment(store)
@@ -122,8 +123,8 @@ init {
                 is Result.Success -> {
                     _error.value = null
                     _status.value = LoadApiStatus.DONE
-                    Log.d("jerryTest","getStoreCommentResult = ${result.data}")
-                    if (!result.data.isNullOrEmpty()){
+                    Log.d("jerryTest", "getStoreCommentResult = ${result.data}")
+                    if (!result.data.isNullOrEmpty()) {
                         getDrinkRank(result.data)
                     }
                     result.data
@@ -148,9 +149,9 @@ init {
         }
     }
 
-    private fun getDrinkRank(commnetList: List<Comment>) {
+    private fun getDrinkRank(commentList: List<Comment>) {
         val scoreRank = mutableListOf<DrinkRank>()
-        for (commentUnit in commnetList) {
+        for (commentUnit in commentList) {
             /*-------------------------------------------------------------*/
             var haveId = false
             var position = -1
@@ -189,15 +190,17 @@ init {
         _newDrinkRank.value = scoreRank
     }
 
-    val displayStoreLocation = Transformations.map(_selectStore){
+    val displayStoreLocation = Transformations.map(_selectStore) {
         return@map "${it.store.storeName} - ${it.branchName}"
     }
 
-    fun selectStore(storeLocation: StoreLocation){
-            _selectStore.value = storeLocation
+    fun selectStore(storeLocation: StoreLocation) {
+        _selectStore.value = storeLocation
+        _storeComment.value = null
+        _newDrinkRank.value = null
     }
 
-    fun storeCardClose(){
+    fun storeCardClose() {
         storeCardStatus.value?.let {
             storeCardStatus.value = false
         }
@@ -206,7 +209,7 @@ init {
         }
     }
 
-    fun storeCardOpen(){
+    fun storeCardOpen() {
         storeCardStatus.value?.let {
             storeCardStatus.value = true
         }
@@ -215,7 +218,7 @@ init {
         }
     }
 
-    fun storeDrinkStatus(){
+    fun storeDrinkStatus() {
         storeDrinkStatus.value?.let {
             storeDrinkStatus.value = !it
         }

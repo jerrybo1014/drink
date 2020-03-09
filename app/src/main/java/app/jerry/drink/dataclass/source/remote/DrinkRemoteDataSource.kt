@@ -323,10 +323,8 @@ object DrinkRemoteDataSource : DrinkDataSource {
         suspendCoroutine { continuation ->
             val orders = FirebaseFirestore.getInstance().collection(PATH_Orders)
             val document = orders.document(orderId.toString()).collection("lists").document()
-            val userCurrent = FirebaseAuth.getInstance().currentUser
 
             orderList.id = document.id
-            orderList.user = User(userCurrent!!.uid, userCurrent.displayName, userCurrent.email, "")
             document
                 .set(orderList)
                 .addOnCompleteListener { task ->
@@ -429,7 +427,6 @@ object DrinkRemoteDataSource : DrinkDataSource {
     override suspend fun uploadAvatar(bitmap: Bitmap): Result<Boolean> =
         suspendCoroutine { continuation ->
             val users = FirebaseFirestore.getInstance().collection(PATH_Users)
-            val userCurrent = UserManager.user
             val storageReference = FirebaseStorage.getInstance().reference
 
             val byteArrayOutput = ByteArrayOutputStream()
@@ -529,13 +526,12 @@ object DrinkRemoteDataSource : DrinkDataSource {
 
         }
 
-    override suspend fun getUserComment(): Result<List<Comment>> =
+    override suspend fun getUserComment(user: User): Result<List<Comment>> =
         suspendCoroutine { continuation ->
             val comments = FirebaseFirestore.getInstance().collection(PATH_Comments)
-            val userCurrent = FirebaseAuth.getInstance().currentUser
 
             comments
-                .whereEqualTo("userId", userCurrent?.uid)
+                .whereEqualTo("userId", user.id)
                 .get()
                 .addOnCompleteListener { task ->
                     val list = mutableListOf<Comment>()
@@ -561,17 +557,12 @@ object DrinkRemoteDataSource : DrinkDataSource {
 
         }
 
-    override suspend fun getUserOrder(): Result<List<Order>> =
+    override suspend fun getUserOrder(user: User): Result<List<Order>> =
         suspendCoroutine { continuation ->
             val orders = FirebaseFirestore.getInstance().collection(PATH_Orders)
-            val userCurrent = FirebaseAuth.getInstance().currentUser
-            var user = User("", "", "", "")
-            userCurrent?.let {
-                user = User(userCurrent.uid, userCurrent.displayName, userCurrent.email, "")
-            }
 
             orders
-                .whereEqualTo("user", user)
+                .whereEqualTo("userId", user.id)
                 .get()
                 .addOnCompleteListener { task ->
                     val list = mutableListOf<Order>()

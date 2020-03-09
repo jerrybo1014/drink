@@ -175,7 +175,6 @@
                                 android:id="@+id/radar_recycler_map_drink_rank"
                                 android:layout_width="0dp"
                                 android:layout_height="0dp"
-                                android:layout_marginTop="4dp"
                                 map:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                                 map:layout_constraintBottom_toBottomOf="parent"
                                 map:layout_constraintEnd_toEndOf="parent"

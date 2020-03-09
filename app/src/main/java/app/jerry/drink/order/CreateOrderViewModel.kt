@@ -24,7 +24,9 @@ class CreateOrderViewModel(private val repository: DrinkRepository) : ViewModel(
 
     // _Order
     private val _createOrder = MutableLiveData<Order>().apply {
-        value = Order("", UserManager.user, null, 0, 0, "", "", true)
+        UserManager.user?.let {
+            value = Order("", it.id, it, null, 0, 0, "", "", true)
+        }
     }
 
     val createOrder: LiveData<Order>

@@ -6,6 +6,7 @@ import kotlinx.android.parcel.Parcelize
 @Parcelize
 data class Order(
     var id: String ="",
+    var userId: String = "",
     var user: User? = null,
     var store: Store? = null,
     var createdTime: Long = 0,

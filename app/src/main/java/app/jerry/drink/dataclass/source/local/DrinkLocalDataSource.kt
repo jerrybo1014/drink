@@ -73,11 +73,11 @@ class DrinkLocalDataSource(val context: Context) : DrinkDataSource {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override suspend fun getUserComment(): Result<List<Comment>> {
+    override suspend fun getUserComment(user: User): Result<List<Comment>> {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override suspend fun getUserOrder(): Result<List<Order>> {
+    override suspend fun getUserOrder(user: User): Result<List<Order>> {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 

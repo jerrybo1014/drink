@@ -118,7 +118,7 @@ class ProfileViewModel(private val repository: DrinkRepository) : ViewModel() {
 
             _status.value = LoadApiStatus.LOADING
 
-            imageBitmap.value?.let {bitmap ->
+            imageBitmap.value?.let { bitmap ->
                 when (val result = repository.uploadAvatar(bitmap)) {
                     is Result.Success -> {
                         _error.value = null
@@ -156,28 +156,31 @@ class ProfileViewModel(private val repository: DrinkRepository) : ViewModel() {
 
             _status.value = LoadApiStatus.LOADING
 
-            val result = repository.getUserComment()
+            UserManager.user?.let {
+                val result = repository.getUserComment(it)
 
-            _userComment.value = when (result) {
-                is Result.Success -> {
-                    _error.value = null
-                    _status.value = LoadApiStatus.DONE
-                    result.data
-                }
-                is Result.Fail -> {
-                    _error.value = result.error
-                    _status.value = LoadApiStatus.ERROR
-                    null
-                }
-                is Result.Error -> {
-                    _error.value = result.exception.toString()
-                    _status.value = LoadApiStatus.ERROR
-                    null
-                }
-                else -> {
-                    _error.value = DrinkApplication.instance.getString(R.string.you_know_nothing)
-                    _status.value = LoadApiStatus.ERROR
-                    null
+                _userComment.value = when (result) {
+                    is Result.Success -> {
+                        _error.value = null
+                        _status.value = LoadApiStatus.DONE
+                        result.data
+                    }
+                    is Result.Fail -> {
+                        _error.value = result.error
+                        _status.value = LoadApiStatus.ERROR
+                        null
+                    }
+                    is Result.Error -> {
+                        _error.value = result.exception.toString()
+                        _status.value = LoadApiStatus.ERROR
+                        null
+                    }
+                    else -> {
+                        _error.value =
+                            DrinkApplication.instance.getString(R.string.you_know_nothing)
+                        _status.value = LoadApiStatus.ERROR
+                        null
+                    }
                 }
             }
             _refreshStatus.value = false
@@ -190,28 +193,31 @@ class ProfileViewModel(private val repository: DrinkRepository) : ViewModel() {
 
             _status.value = LoadApiStatus.LOADING
 
-            val result = repository.getUserOrder()
+            UserManager.user?.let {
+                val result = repository.getUserOrder(it)
 
-            _userOrder.value = when (result) {
-                is Result.Success -> {
-                    _error.value = null
-                    _status.value = LoadApiStatus.DONE
-                    result.data
-                }
-                is Result.Fail -> {
-                    _error.value = result.error
-                    _status.value = LoadApiStatus.ERROR
-                    null
-                }
-                is Result.Error -> {
-                    _error.value = result.exception.toString()
-                    _status.value = LoadApiStatus.ERROR
-                    null
-                }
-                else -> {
-                    _error.value = DrinkApplication.instance.getString(R.string.you_know_nothing)
-                    _status.value = LoadApiStatus.ERROR
-                    null
+                _userOrder.value = when (result) {
+                    is Result.Success -> {
+                        _error.value = null
+                        _status.value = LoadApiStatus.DONE
+                        result.data
+                    }
+                    is Result.Fail -> {
+                        _error.value = result.error
+                        _status.value = LoadApiStatus.ERROR
+                        null
+                    }
+                    is Result.Error -> {
+                        _error.value = result.exception.toString()
+                        _status.value = LoadApiStatus.ERROR
+                        null
+                    }
+                    else -> {
+                        _error.value =
+                            DrinkApplication.instance.getString(R.string.you_know_nothing)
+                        _status.value = LoadApiStatus.ERROR
+                        null
+                    }
                 }
             }
             _refreshStatus.value = false

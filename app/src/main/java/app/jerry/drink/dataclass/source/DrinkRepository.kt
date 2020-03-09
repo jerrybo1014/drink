@@ -39,9 +39,9 @@ interface DrinkRepository {
 
     suspend fun getDetailComment(drink: Drink): Result<List<Comment>>
 
-    suspend fun getUserComment(): Result<List<Comment>>
+    suspend fun getUserComment(user: User): Result<List<Comment>>
 
-    suspend fun getUserOrder(): Result<List<Order>>
+    suspend fun getUserOrder(user: User): Result<List<Order>>
 
     suspend fun getStoreLocation(): Result<List<StoreLocation>>
 

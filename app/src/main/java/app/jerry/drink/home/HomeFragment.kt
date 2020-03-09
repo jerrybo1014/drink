@@ -46,7 +46,8 @@ class HomeFragment : Fragment() {
 
         /*hideSoftInputFromWindow*/
         CoroutineScope(Dispatchers.Main).launch {
-            (activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager)?.hideSoftInputFromWindow(binding.root.windowToken,0)
+            (activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as?
+                    InputMethodManager)?.hideSoftInputFromWindow(binding.root.windowToken,0)
         }
 
         (activity as MainActivity).binding.layoutHomeSearch.setOnClickListener {

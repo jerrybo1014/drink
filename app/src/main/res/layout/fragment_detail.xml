@@ -20,26 +20,14 @@
         app:setupContentStatus="@{viewModel.status}"
         android:paddingTop="16dp">
 
-        <TextView
-            android:id="@+id/detail_text_drink_information"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:text="@string/text_drink_information"
-            android:textSize="16dp"
-            android:textColor="@color/text_color"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
 
         <ImageView
             android:id="@+id/detail_image_store"
+            style="@style/app_icon_max"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
             android:src="@drawable/store_icon"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/detail_text_drink_information"
-            style="@style/app_icon_max" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
             android:id="@+id/detail_image_drink"
