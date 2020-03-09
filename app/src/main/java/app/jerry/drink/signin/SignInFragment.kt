@@ -42,7 +42,8 @@ class SignInFragment : Fragment() {
             it?.let {
                 when (it){
                     Util.getString(R.string.log_in__facebook) -> {
-                        LoginManager.getInstance().logInWithReadPermissions(this,
+                        LoginManager.getInstance().
+                            logInWithReadPermissions(this,
                             Utility.arrayList(Util.getString(R.string.fb_request_profile), Util.getString(R.string.fb_request_email)))
                     }
                     Util.getString(R.string.log_in__google) -> {

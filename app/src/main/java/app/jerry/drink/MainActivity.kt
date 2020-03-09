@@ -20,6 +20,7 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
+import app.jerry.drink.dataclass.Drink
 import app.jerry.drink.dataclass.Store
 import app.jerry.drink.dataclass.User
 import app.jerry.drink.ext.getVmFactory
@@ -60,7 +61,7 @@ class MainActivity : AppCompatActivity() {
                     Logger.d("signInWithCredential:no")
                 } else {
                     user.let {
-                        val loginUser = User(it.uid, it.displayName, it.email,"")
+                        val loginUser = User(it.uid, it.displayName, it.email, "")
                         Logger.d("loginUser = $loginUser")
                         viewModel.checkUserResult(loginUser)
                     }
@@ -72,47 +73,29 @@ class MainActivity : AppCompatActivity() {
             it?.let { intentReceiver() }
         })
 
-        val locationManager = this.getSystemService(Context.LOCATION_SERVICE) as LocationManager
-
         binding.bottomNavigationView.setOnNavigationItemSelectedListener { menuItem ->
-            when (menuItem.itemId) {
-                R.id.homeFragment -> {
-                    navController.navigate(R.id.action_global_homeFragment)
-                }
-                R.id.radarFragment -> {
-                    val hasGps =
-                        locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
-                    if (!hasGps) {
-                        PermissionRequest(this, this).showDialogIfLocationServiceOff()
-                    } else {
-                        if (ContextCompat.checkSelfPermission(
-                                this,
-                                permission.ACCESS_FINE_LOCATION
-                            )
-                            != PackageManager.PERMISSION_GRANTED
-                        ) {
-                            ActivityCompat.requestPermissions(
-                                this,
-                                arrayOf(
-                                    permission.ACCESS_FINE_LOCATION,
-                                    permission.ACCESS_COARSE_LOCATION
-                                ),
-                                PermissionCode.LOCATION.requestCode
-                            )
-                        } else {
-                            navController.navigate(
-                                NavigationDirections.actionGlobalRadarFragment(
-                                    Store()
+            viewModel.checkUser.value?.let {
+                if (it) {
+                    when (menuItem.itemId) {
+                        R.id.homeFragment -> {
+                            navController.navigate(R.id.action_global_homeFragment)
+                        }
+                        R.id.radarFragment -> {
+                            Util.checkGpsPermission(this, Util.OnPermissionCheckedListener {
+                                navController.navigate(
+                                    NavigationDirections.actionGlobalRadarFragment(
+                                        Store()
+                                    )
                                 )
-                            )
+                            })
+                        }
+                        R.id.orderFragment -> {
+                            navController.navigate(NavigationDirections.actionGlobalOrderFragment("1"))
+                        }
+                        R.id.profileFragment -> {
+                            navController.navigate(R.id.action_global_profileFragment)
                         }
                     }
-                }
-                R.id.orderFragment -> {
-                    navController.navigate(NavigationDirections.actionGlobalOrderFragment("1"))
-                }
-                R.id.profileFragment -> {
-                    navController.navigate(R.id.action_global_profileFragment)
                 }
             }
             false
@@ -168,7 +151,7 @@ class MainActivity : AppCompatActivity() {
                         NavigationDirections.actionGlobalRadarFragment(Store())
                     )
                 } else {
-                    PermissionRequest(this, this).fineLocationIfDenied()
+                    Util.openLocationIfDenied(this)
                 }
                 return
             }
@@ -187,4 +170,5 @@ class MainActivity : AppCompatActivity() {
             else -> super.onOptionsItemSelected(item)
         }
     }
+
 }

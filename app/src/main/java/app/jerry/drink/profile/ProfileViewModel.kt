@@ -1,11 +1,8 @@
 package app.jerry.drink.profile
 
-import ProfileFragment
 import android.graphics.Bitmap
 import android.net.Uri
-import android.util.Log
 import android.widget.Toast
-import androidx.core.net.toUri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -14,16 +11,13 @@ import app.jerry.drink.R
 import app.jerry.drink.dataclass.*
 import app.jerry.drink.dataclass.source.DrinkRepository
 import app.jerry.drink.network.LoadApiStatus
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
-import kotlinx.android.synthetic.main.fragment_profile.*
+import app.jerry.drink.util.Util.getString
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
 class ProfileViewModel(private val repository: DrinkRepository) : ViewModel() {
-
 
     private val _userComment = MutableLiveData<List<Comment>>()
 
@@ -127,8 +121,7 @@ class ProfileViewModel(private val repository: DrinkRepository) : ViewModel() {
                 is Result.Success -> {
                     _error.value = null
                     _status.value = LoadApiStatus.DONE
-                    Log.d("postComentResult","$result.data")
-                    Toast.makeText(DrinkApplication.context, "成功送出", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(DrinkApplication.context, getString(R.string.post_success), Toast.LENGTH_SHORT).show()
                     uploadAvatarFinished()
                     result.data
                 }
@@ -150,7 +143,6 @@ class ProfileViewModel(private val repository: DrinkRepository) : ViewModel() {
             }
             _refreshStatus.value = false
         }
-
     }
 
     private fun getUserCommentResult(){

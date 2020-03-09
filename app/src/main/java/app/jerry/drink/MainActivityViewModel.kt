@@ -20,8 +20,6 @@ class MainActivityViewModel(private val repository: DrinkRepository) : ViewModel
 
     val currentFragmentType = MutableLiveData<CurrentFragmentType>()
 
-//    var checkUser = MutableLiveData<Boolean>()
-
     private val _checkUser = MutableLiveData<Boolean>().apply {
         value = false
     }

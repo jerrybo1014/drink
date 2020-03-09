@@ -1,5 +1,7 @@
 package app.jerry.drink
 
+import app.jerry.drink.dataclass.source.DrinkRepository
+import app.jerry.drink.home.HomeViewModel
 import org.junit.Test
 
 import org.junit.Assert.*
@@ -14,4 +16,9 @@ class ExampleUnitTest {
     fun addition_isCorrect() {
         assertEquals(4, 2 + 2)
     }
+
+    @Test
+    fun getDrinkRank_isCorrect(){
+    }
+
 }

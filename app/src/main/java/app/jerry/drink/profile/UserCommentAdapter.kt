@@ -25,9 +25,6 @@ class UserCommentAdapter(private val onClickListener: OnClickListener ) :
             val drink = comment.drink
             binding.comment = comment
             binding.root.setOnClickListener { onClickListener.onClick(drink) }
-//            binding.detailImage = string
-            // This is important, because it forces the data binding to execute immediately,
-            // which allows the RecyclerView to make the correct view size measurements
             binding.executePendingBindings()
         }
     }
@@ -48,10 +45,6 @@ class UserCommentAdapter(private val onClickListener: OnClickListener ) :
         }
     }
 
-    /**
-     * Create new [RecyclerView] item views (invoked by the layout manager)
-     */
-
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
@@ -60,10 +53,6 @@ class UserCommentAdapter(private val onClickListener: OnClickListener ) :
             ItemUserCommentBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         )
     }
-
-    /**
-     * Replaces the contents of a view (invoked by the layout manager)
-     */
 
     override fun onBindViewHolder(holder: UserCommentViewHolder, position: Int) {
         val comment = getItem(position)

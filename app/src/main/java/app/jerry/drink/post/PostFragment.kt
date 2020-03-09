@@ -2,7 +2,6 @@ package app.jerry.drink.post
 
 import android.Manifest
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.icu.text.SimpleDateFormat
@@ -10,7 +9,6 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
-import android.provider.Settings
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -30,7 +28,10 @@ import app.jerry.drink.databinding.FragmentPostBinding
 import app.jerry.drink.ext.getBitmap
 import app.jerry.drink.ext.getVmFactory
 import app.jerry.drink.ext.setImage
-import app.jerry.drink.util.*
+import app.jerry.drink.util.Logger
+import app.jerry.drink.util.PermissionCode
+import app.jerry.drink.util.RequestCode
+import app.jerry.drink.util.Util
 import java.io.File
 import java.io.IOException
 import java.util.*
@@ -196,10 +197,6 @@ class PostFragment : Fragment() {
         }
     }
 
-//    private fun openAppSettingsIntent() {
-//        startActivity(openAppSettingsIntent(context!!))
-//    }
-
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
@@ -210,9 +207,6 @@ class PostFragment : Fragment() {
         when (requestCode) {
             PermissionCode.CAMERA.requestCode -> {
                 if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    for (permissionsItem in permissions) {
-                        Logger.d("permissions allow : $permissions")
-                    }
                     loadCamera()
                 } else {
 
@@ -220,7 +214,9 @@ class PostFragment : Fragment() {
                         AlertDialog.Builder(context!!)
                             .setMessage(Util.getString(R.string.need_camera_permission))
                             .setPositiveButton(Util.getString(R.string.open_permission)) { _, _ ->
-                                PermissionRequest(context!!, activity as MainActivity).openAppSettingsIntent()
+                                context?.let {
+                                    Util.openAppSettingsIntent(it)
+                                }
                             }
                             .setNegativeButton(Util.getString(R.string.permission_permanently_denied_negative_button)) { _, _ -> }
                             .show()
@@ -235,9 +231,6 @@ class PostFragment : Fragment() {
 
             PermissionCode.READ_EXTERNAL_STORAGE.requestCode -> {
                 if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    for (permissionsItem in permissions) {
-                        Logger.d("permissions allow : $permissions")
-                    }
                     launchGallery()
                 } else {
                     if (!ActivityCompat.shouldShowRequestPermissionRationale(activity as MainActivity,
@@ -245,7 +238,9 @@ class PostFragment : Fragment() {
                         AlertDialog.Builder(context!!)
                             .setMessage(Util.getString(R.string.need_gallery_permission))
                             .setPositiveButton(Util.getString(R.string.open_permission)) { _, _ ->
-                                PermissionRequest(context!!, activity as MainActivity).openAppSettingsIntent()
+                                context?.let {
+                                    Util.openAppSettingsIntent(it)
+                                }
                             }
                             .setNegativeButton(Util.getString(R.string.permission_permanently_denied_negative_button)) { _, _ -> }
                             .show()
