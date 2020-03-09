@@ -75,7 +75,6 @@ object DrinkRemoteDataSource : DrinkDataSource {
         val users = FirebaseFirestore.getInstance().collection(PATH_Users)
 
         comments
-            .limit(30)
             .get()
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {

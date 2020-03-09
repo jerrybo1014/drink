@@ -70,7 +70,9 @@ class MainActivity : AppCompatActivity() {
         FirebaseAuth.getInstance().addAuthStateListener(authListener)
 
         viewModel.checkUser.observe(this, Observer {
-            it?.let { intentReceiver() }
+            it?.let {
+                if (it) intentReceiver()
+            }
         })
 
         binding.bottomNavigationView.setOnNavigationItemSelectedListener { menuItem ->

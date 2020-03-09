@@ -43,46 +43,48 @@
             android:id="@+id/order_layout_record"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:visibility="@{viewModel.orderRecord == null ? View.GONE:View.VISIBLE}"
             android:layout_marginTop="8dp"
+            android:padding="2dp"
+            android:visibility="@{viewModel.orderRecord == null || order != null ? View.GONE:View.VISIBLE}"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/order_search_view">
 
-        <TextView
-            android:id="@+id/order_textView_record"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="2dp"
-            android:textSize="@dimen/text_max"
-            android:textColor="@color/text_color_hint"
-            android:text="@string/order_record_text"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            <TextView
+                android:id="@+id/order_textView_record"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="2dp"
+                android:text="@string/order_record_text"
+                android:textColor="@color/text_color_hint"
+                android:textSize="@dimen/text_max"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/order_text_record"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:textColor="@color/text_color_hint"
-            android:textSize="16dp"
-            android:text="@{viewModel.orderRecord}"
-            app:layout_constraintBaseline_toBaselineOf="@+id/order_textView_record"
-            app:layout_constraintStart_toEndOf="@+id/order_textView_record" />
+            <TextView
+                android:id="@+id/order_text_record"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="@{viewModel.orderRecord}"
+                android:textColor="@color/text_color_hint"
+                android:textSize="16dp"
+                app:layout_constraintBaseline_toBaselineOf="@+id/order_textView_record"
+                app:layout_constraintStart_toEndOf="@+id/order_textView_record" />
 
-        <ImageView
-            android:id="@+id/order_text_record_button"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            app:layout_constraintDimensionRatio="1"
-            android:layout_marginStart="8dp"
-            android:background="@drawable/shape_circle_rank"
-            android:backgroundTint="@color/app_color_link"
-            android:tint="@color/White"
-            android:src="@drawable/ic_keyboard_arrow_right_black_24dp"
-            app:layout_constraintBottom_toBottomOf="@+id/order_text_record"
-            app:layout_constraintStart_toEndOf="@+id/order_text_record"
-            app:layout_constraintTop_toTopOf="@+id/order_text_record" />
+            <ImageView
+                android:id="@+id/order_text_record_button"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="4dp"
+                android:background="@drawable/shape_circle_rank"
+                android:backgroundTint="@color/app_color_link"
+                android:src="@drawable/ic_keyboard_arrow_right_black_24dp"
+                android:tint="@color/White"
+                app:layout_constraintBottom_toBottomOf="@+id/order_text_record"
+                app:layout_constraintDimensionRatio="1"
+                app:layout_constraintStart_toEndOf="@+id/order_text_record"
+                app:layout_constraintTop_toTopOf="@+id/order_text_record" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
