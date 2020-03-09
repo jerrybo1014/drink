@@ -268,7 +268,7 @@
                 android:layout_margin="16dp"
                 android:background="@drawable/background_post_button"
                 android:clickable="@{viewModel.postStatus == LoadApiStatus.LOADING ? false:true}"
-                android:enabled='@{viewModel.comment.sugar == "" || viewModel.comment.ice == "" || viewModel.imageBitmap == null || viewModel.newDrinkStatus == false ? false:true}'
+                android:enabled='@{viewModel.comment.sugar == "" || viewModel.comment.ice == "" || viewModel.newDrinkStatus == false ? false:true}'
                 android:letterSpacing="1.2"
                 android:onClick="@{() -> viewModel.postComment()}"
                 android:text='@{viewModel.postStatus == LoadApiStatus.LOADING ? "": @string/post_button}'

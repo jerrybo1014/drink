@@ -322,13 +322,21 @@ class PostViewModel(private val repository: DrinkRepository) : ViewModel() {
     }
 
     fun postComment() {
-        if (!addNewDrink.value!!) {
-            postCommentResult()
-        } else {
-            if (allStoreMenu.value!!.none { it.drinkName == newDrinkName.value!!.trim() }) {
-                addNewDrinkResult()
+        if (imageBitmap.value == null){
+            Toast.makeText(DrinkApplication.context,getString(R.string.please_add_pic), Toast.LENGTH_SHORT).show()
+        }else {
+            if (!addNewDrink.value!!) {
+                postCommentResult()
             } else {
-                Toast.makeText(DrinkApplication.context, getString(R.string.new_drink_exist), Toast.LENGTH_SHORT).show()
+                if (allStoreMenu.value!!.none { it.drinkName == newDrinkName.value!!.trim() }) {
+                    addNewDrinkResult()
+                } else {
+                    Toast.makeText(
+                        DrinkApplication.context,
+                        getString(R.string.new_drink_exist),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
             }
         }
     }

@@ -16,6 +16,8 @@ import app.jerry.drink.NavigationDirections
 import app.jerry.drink.R
 import app.jerry.drink.databinding.FragmentOrderBinding
 import app.jerry.drink.ext.getVmFactory
+import app.jerry.drink.order.createorder.CreateOrderFragment
+import app.jerry.drink.util.Logger
 import app.jerry.drink.util.PermissionCode
 import app.jerry.drink.util.Util
 
@@ -45,6 +47,8 @@ class OrderFragment : Fragment() {
                 CreateOrderFragment().show(it, Util.getString(R.string.create_order_dialog))
             }
         }
+
+        Logger.d("OrderRecord = ${OrderRecord.orderId}")
 
         val orderListAdapter = OrderItemAdapter(viewModel)
         binding.orderRecyclerOrderList.adapter = orderListAdapter
@@ -76,6 +80,12 @@ class OrderFragment : Fragment() {
                 orderListAdapter.submitList(orderItemsLive)
             })
         })
+
+        binding.orderLayoutRecord.setOnClickListener {
+            viewModel.orderRecord.value?.let {
+                findNavController().navigate(NavigationDirections.actionGlobalOrderFragment(it))
+            }
+        }
 
         binding.orderImageShare.setOnClickListener {
             val shareIntent = Intent()

@@ -6,7 +6,7 @@ import app.jerry.drink.homesearch.HomeSearchViewModel
 import app.jerry.drink.MainActivityViewModel
 import app.jerry.drink.dataclass.source.DrinkRepository
 import app.jerry.drink.home.HomeViewModel
-import app.jerry.drink.order.CreateOrderViewModel
+import app.jerry.drink.order.createorder.CreateOrderViewModel
 import app.jerry.drink.post.PostViewModel
 import app.jerry.drink.profile.ProfileViewModel
 import app.jerry.drink.signin.SignInViewModel

@@ -42,6 +42,7 @@ class OrderViewModel(private val repository: DrinkRepository, private val orderI
         get() = _navigationToRadar
 
     val userCurrent = MutableLiveData<User>()
+    val orderRecord = MutableLiveData<String>()
     // status: The internal MutableLiveData that stores the status of the most recent request
     private val _status = MutableLiveData<LoadApiStatus>()
 
@@ -73,7 +74,11 @@ class OrderViewModel(private val repository: DrinkRepository, private val orderI
 
     private fun getInit() {
         if (orderId != "1") {
+            OrderRecord.orderId = orderId
+            orderRecord()
             getOrderResult(orderId.toLong())
+        }else{
+            orderRecord()
         }
     }
 
@@ -195,6 +200,10 @@ class OrderViewModel(private val repository: DrinkRepository, private val orderI
 
     fun navigationToRadarFinished() {
         _navigationToRadar.value = null
+    }
+
+    fun orderRecord(){
+        orderRecord.value = OrderRecord.orderId
     }
 
 }

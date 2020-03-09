@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:tools="http://schemas.android.com/tools"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="viewModel"
             type="app.jerry.drink.order.OrderViewModel" />
@@ -12,21 +13,22 @@
             name="order"
             type="app.jerry.drink.dataclass.Order" />
 
-        <import type="android.view.View"/>
-        <import type="app.jerry.drink.network.LoadApiStatus"/>
+        <import type="android.view.View" />
+
+        <import type="app.jerry.drink.network.LoadApiStatus" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingHorizontal="16dp"
         android:background="@color/home_background"
-        >
+        android:paddingHorizontal="14dp">
 
         <androidx.appcompat.widget.SearchView
             android:id="@+id/order_search_view"
             android:layout_width="0dp"
             android:layout_height="30dp"
+            android:layout_marginHorizontal="2dp"
             android:layout_marginTop="16dp"
             android:background="@drawable/shape_corner_r"
             android:inputType="number"
@@ -37,6 +39,53 @@
             app:layout_constraintTop_toTopOf="parent"
             app:queryHint="@string/order_search_view_hint" />
 
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/order_layout_record"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="@{viewModel.orderRecord == null ? View.GONE:View.VISIBLE}"
+            android:layout_marginTop="8dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/order_search_view">
+
+        <TextView
+            android:id="@+id/order_textView_record"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="2dp"
+            android:textSize="@dimen/text_max"
+            android:textColor="@color/text_color_hint"
+            android:text="@string/order_record_text"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/order_text_record"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:textColor="@color/text_color_hint"
+            android:textSize="16dp"
+            android:text="@{viewModel.orderRecord}"
+            app:layout_constraintBaseline_toBaselineOf="@+id/order_textView_record"
+            app:layout_constraintStart_toEndOf="@+id/order_textView_record" />
+
+        <ImageView
+            android:id="@+id/order_text_record_button"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintDimensionRatio="1"
+            android:layout_marginStart="8dp"
+            android:background="@drawable/shape_circle_rank"
+            android:backgroundTint="@color/app_color_link"
+            android:tint="@color/White"
+            android:src="@drawable/ic_keyboard_arrow_right_black_24dp"
+            app:layout_constraintBottom_toBottomOf="@+id/order_text_record"
+            app:layout_constraintStart_toEndOf="@+id/order_text_record"
+            app:layout_constraintTop_toTopOf="@+id/order_text_record" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
         <ScrollView
             android:id="@+id/order_scrollView"
             android:layout_width="match_parent"
@@ -45,12 +94,13 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/order_search_view"
+            app:layout_constraintTop_toBottomOf="@+id/order_layout_record"
             app:layout_constraintVertical_bias="1.0">
 
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginHorizontal="2dp"
                 app:cardCornerRadius="10dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -68,10 +118,10 @@
                         android:id="@+id/order_text_status"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                       android:layout_marginEnd="2dp"
+                        android:layout_marginEnd="2dp"
                         android:layout_marginBottom="12dp"
-                        android:visibility="invisible"
                         android:text='@{order.status == true ? @string/order_status_active:@string/order_status_inactive}'
+                        android:visibility="invisible"
                         app:layout_constraintBottom_toTopOf="@+id/line_add_order"
                         app:layout_constraintEnd_toStartOf="@+id/switch1" />
 
@@ -79,12 +129,11 @@
                         android:id="@+id/order_text_id"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textColor="@color/text_color"
-                        android:text="@{order.id}"
                         android:layout_marginStart="16dp"
-                        app:layout_constraintStart_toEndOf="@+id/order_textView_id"
+                        android:text="@{order.id}"
+                        android:textColor="@color/text_color"
                         app:layout_constraintBaseline_toBaselineOf="@+id/order_textView_id"
-                />
+                        app:layout_constraintStart_toEndOf="@+id/order_textView_id" />
 
                     <TextView
                         android:id="@+id/order_button_add_order"
@@ -93,11 +142,11 @@
                         android:layout_marginVertical="8dp"
                         android:background="@drawable/background_post_button"
                         android:fontFamily="@font/noto_sans"
+                        android:letterSpacing="1.0"
                         android:padding="8dp"
                         android:text="@string/button_create_order"
-                        android:textColor="#FFFFFF"
-                        android:letterSpacing="1.0"
                         android:textAlignment="center"
+                        android:textColor="#FFFFFF"
                         android:textSize="@dimen/text_max"
                         android:visibility="@{order.status == true ? View.VISIBLE:View.GONE}"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -115,11 +164,11 @@
 
                     <TextView
                         android:id="@+id/order_textView_id"
+                        style="@style/order_text"
                         android:text="@string/order_id"
                         app:layout_constraintBottom_toBottomOf="@+id/order_image_id"
                         app:layout_constraintStart_toEndOf="@+id/order_image_id"
-                        app:layout_constraintTop_toTopOf="@+id/order_image_id"
-                        style="@style/order_text" />
+                        app:layout_constraintTop_toTopOf="@+id/order_image_id" />
 
                     <ImageView
                         android:id="@+id/order_image_host"
@@ -131,8 +180,8 @@
 
                     <TextView
                         android:id="@+id/order_textView_host"
-                        android:text="@string/order_host"
                         style="@style/order_text"
+                        android:text="@string/order_host"
                         app:layout_constraintBottom_toBottomOf="@+id/order_image_host"
                         app:layout_constraintStart_toEndOf="@+id/order_image_host"
                         app:layout_constraintTop_toTopOf="@+id/order_image_host" />
@@ -142,8 +191,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
-                        android:textColor="@color/text_color"
                         android:text="@{order.user.name}"
+                        android:textColor="@color/text_color"
                         app:layout_constraintBaseline_toBaselineOf="@+id/order_textView_host"
                         app:layout_constraintStart_toEndOf="@+id/order_textView_host" />
 
@@ -157,8 +206,8 @@
 
                     <TextView
                         android:id="@+id/order_text_store_create"
-                        android:text="@string/post_store"
                         style="@style/order_text"
+                        android:text="@string/post_store"
                         app:layout_constraintBottom_toBottomOf="@+id/order_image_store"
                         app:layout_constraintStart_toEndOf="@+id/order_image_store"
                         app:layout_constraintTop_toTopOf="@+id/order_image_store" />
@@ -168,8 +217,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
-                        android:textColor="@color/text_color"
                         android:text="@{order.store.storeName}"
+                        android:textColor="@color/text_color"
                         app:layout_constraintBaseline_toBaselineOf="@+id/order_text_store_create"
                         app:layout_constraintStart_toEndOf="@+id/order_textView_host" />
 
@@ -177,12 +226,12 @@
                         android:id="@+id/order_image_nav_to_radar"
                         android:layout_width="0dp"
                         android:layout_height="0dp"
-                        android:tint="@color/app_color_link"
-                        android:src="@drawable/bottom_navigation_radar"
-                        app:layout_constraintBottom_toBottomOf="@+id/order_host_store"
-                        android:onClick="@{() -> viewModel.navigationToRadar(order.store)}"
-                        app:layout_constraintDimensionRatio="1"
                         android:layout_marginStart="8dp"
+                        android:onClick="@{() -> viewModel.navigationToRadar(order.store)}"
+                        android:src="@drawable/bottom_navigation_radar"
+                        android:tint="@color/app_color_link"
+                        app:layout_constraintBottom_toBottomOf="@+id/order_host_store"
+                        app:layout_constraintDimensionRatio="1"
                         app:layout_constraintStart_toEndOf="@+id/order_host_store"
                         app:layout_constraintTop_toTopOf="@+id/order_host_store" />
 
@@ -196,8 +245,8 @@
 
                     <TextView
                         android:id="@+id/order_text_time"
-                        android:text="@string/post_time"
                         style="@style/order_text"
+                        android:text="@string/post_time"
                         app:layout_constraintBottom_toBottomOf="@+id/order_image_time"
                         app:layout_constraintStart_toEndOf="@+id/order_image_time"
                         app:layout_constraintTop_toTopOf="@+id/order_image_time" />
@@ -207,11 +256,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
-                        android:textColor="@color/text_color"
                         android:text="@{order.timeLimit}"
+                        android:textColor="@color/text_color"
                         app:layout_constraintBaseline_toBaselineOf="@+id/order_text_time"
                         app:layout_constraintStart_toEndOf="@+id/order_text_time" />
-
 
                     <ImageView
                         android:id="@+id/order_image_note_create_order"
@@ -223,8 +271,8 @@
 
                     <TextView
                         android:id="@+id/text_note"
-                        android:text="@string/order_note"
                         style="@style/order_text"
+                        android:text="@string/order_note"
                         app:layout_constraintBottom_toBottomOf="@+id/order_image_note_create_order"
                         app:layout_constraintStart_toEndOf="@+id/order_image_note_create_order"
                         app:layout_constraintTop_toTopOf="@+id/order_image_note_create_order" />
@@ -234,8 +282,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
-                        android:textColor="@color/text_color"
                         android:text="@{order.note}"
+                        android:textColor="@color/text_color"
                         app:layout_constraintBaseline_toBaselineOf="@+id/text_note"
                         app:layout_constraintStart_toEndOf="@+id/order_text_time" />
 
@@ -262,12 +310,12 @@
                         android:id="@+id/switch1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
                         android:backgroundTint="@color/myColorPrimaryDark"
                         android:checked="@{order.status==true ? true:false}"
                         android:onClick="@{() -> viewModel.editOrderStatusResult()}"
                         android:theme="@style/MySwitch"
                         android:visibility="@{viewModel.userStatus==true ? View.VISIBLE:View.INVISIBLE}"
-                        android:layout_marginTop="8dp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
@@ -275,18 +323,16 @@
                         android:id="@+id/order_image_share"
                         android:layout_width="0dp"
                         android:layout_height="0dp"
-                        app:layout_constraintDimensionRatio="1"
+                        android:layout_marginStart="8dp"
                         android:src="@drawable/ic_share_black_24dp"
                         android:tint="@color/app_color_link"
-                        android:layout_marginStart="8dp"
                         app:layout_constraintBottom_toBottomOf="@+id/order_text_id"
+                        app:layout_constraintDimensionRatio="1"
                         app:layout_constraintStart_toEndOf="@+id/order_text_id"
                         app:layout_constraintTop_toTopOf="@+id/order_text_id" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.cardview.widget.CardView>
-
-
         </ScrollView>
 
         <ImageView
@@ -294,8 +340,8 @@
             android:layout_width="200dp"
             android:layout_height="200dp"
             android:clickable="true"
-            android:tint="#B3FFFFFF"
             android:src="@drawable/add_order"
+            android:tint="#B3FFFFFF"
             android:visibility="@{order == null  &amp; viewModel.status != LoadApiStatus.LOADING ? View.VISIBLE:View.GONE}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -306,24 +352,24 @@
             android:id="@+id/order_text_create_order"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:fontFamily="@font/noto_sans"
             android:text="@string/order_create_order"
             android:textSize="16dp"
-            android:fontFamily="@font/noto_sans"
-            android:layout_marginTop="16dp"
             android:visibility="@{order == null &amp; viewModel.status != LoadApiStatus.LOADING  ? View.VISIBLE:View.GONE}"
             app:layout_constraintEnd_toEndOf="@+id/order_image_create_order"
             app:layout_constraintStart_toStartOf="@+id/order_image_create_order"
             app:layout_constraintTop_toBottomOf="@+id/order_image_create_order" />
 
         <ProgressBar
-            android:theme="@style/ProgressTheme"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:setupApiStatus="@{viewModel.status}"
-            app:layout_constraintStart_toStartOf="parent"
+            android:theme="@style/ProgressTheme"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            app:setupApiStatus="@{viewModel.status}" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

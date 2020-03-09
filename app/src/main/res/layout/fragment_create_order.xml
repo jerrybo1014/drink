@@ -7,7 +7,7 @@
 
         <variable
             name="viewModel"
-            type="app.jerry.drink.order.CreateOrderViewModel" />
+            type="app.jerry.drink.order.createorder.CreateOrderViewModel" />
 
         <import type="app.jerry.drink.network.LoadApiStatus"/>
         <import type="android.view.View"/>

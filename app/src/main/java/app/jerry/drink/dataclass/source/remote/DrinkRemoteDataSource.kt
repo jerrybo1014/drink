@@ -33,7 +33,6 @@ object DrinkRemoteDataSource : DrinkDataSource {
     private const val PATH_Menu = "menu"
     private const val PATH_Order_Lists = "lists"
     private const val Field_Order_Status = "status"
-    private const val TAG = "jerryTest"
 
     override suspend fun checkUser(user: User): Result<Boolean> = suspendCoroutine { continuation ->
         val users = FirebaseFirestore.getInstance().collection(PATH_Users)
@@ -501,11 +500,10 @@ object DrinkRemoteDataSource : DrinkDataSource {
                             users.document(document.get("userId").toString()).get()
                                 .addOnSuccessListener { userInsert ->
                                     user = userInsert.toObject(User::class.java)
-                                    Log.d(TAG, "users.addOnSuccessListener, user=$user")
                                     detailComment.user = user
                                     list.add(detailComment)
                                     if (list.size == task.result!!.size()) {
-                                        Log.w(TAG, "last complete = $list")
+                                        Logger.w("last complete = $list")
                                         list.sortByDescending { it.createdTime }
                                         continuation.resume(Result.Success(list))
                                     }
@@ -520,7 +518,7 @@ object DrinkRemoteDataSource : DrinkDataSource {
                             continuation.resume(Result.Error(it))
                             return@addOnCompleteListener
                         }
-                        Log.d(TAG, "getDetailComment else")
+                        Logger.d("getDetailComment else")
                         continuation.resume(Result.Fail(DrinkApplication.instance.getString(R.string.you_know_nothing)))
                     }
                 }
@@ -630,12 +628,10 @@ object DrinkRemoteDataSource : DrinkDataSource {
                     if (task.isSuccessful) {
                         val list = mutableListOf<Comment>()
                         for (document in task.result!!) {
-//                        Logger.d(document.id + " => " + document.data)
-                            Log.d(TAG, "${document.id} => ${document.data}")
+                            Logger.d("${document.id} => ${document.data}")
                             val comment = document.toObject(Comment::class.java)
                             list.add(comment)
                         }
-                        Log.d(TAG, "$list")
                         continuation.resume(Result.Success(list))
                     } else {
                         task.exception?.let {
@@ -664,7 +660,6 @@ object DrinkRemoteDataSource : DrinkDataSource {
                             val drink = document.toObject(Drink::class.java)
                             list.add(drink)
                         }
-                        Log.d(TAG, "$list")
                         continuation.resume(Result.Success(list))
                     } else {
                         task.exception?.let {
@@ -785,7 +780,7 @@ object DrinkRemoteDataSource : DrinkDataSource {
                                 .document(drink.id)
                                 .set(newDrink)
                                 .addOnSuccessListener {
-                                    Log.d(TAG, "addOnSuccessListener , newDrink = $newDrink")
+                                    Logger.d("addOnSuccessListener , newDrink = $newDrink")
                                 }
                         }
                         continuation.resume(Result.Success(true))

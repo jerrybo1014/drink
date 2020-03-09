@@ -104,6 +104,9 @@
     <string name="choose_browser">即將開啟官網，請選擇瀏覽器</string>
     <string name="open_devices_location">請開啟裝置定位功能</string>
     <string name="devices_location_close">未開啟定位服務</string>
+    <string name="please_add_pic">請新增照片唷~</string>
+    <string name="order_record_text">最近開啟過的訂單 :</string>
+    <string name="to_order">前往</string>
 
     <string-array name="list_sugar">
         <item>正常糖</item>
