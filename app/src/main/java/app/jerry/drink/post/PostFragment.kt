@@ -27,7 +27,7 @@ import app.jerry.drink.R
 import app.jerry.drink.databinding.FragmentPostBinding
 import app.jerry.drink.ext.getBitmap
 import app.jerry.drink.ext.getVmFactory
-import app.jerry.drink.ext.setImage
+import app.jerry.drink.ext.setImagePreView
 import app.jerry.drink.util.Logger
 import app.jerry.drink.util.PermissionCode
 import app.jerry.drink.util.RequestCode
@@ -259,7 +259,7 @@ class PostFragment : Fragment() {
             }
             data.data?.let {
                 filePath = it
-                setImage(binding.postImageUpdate, it)
+                it.setImagePreView(binding.postImageUpdate)
                 val bitmap = filePath?.getBitmap(
                     binding.postImageUpdate.width,
                     binding.postImageUpdate.height
@@ -273,7 +273,7 @@ class PostFragment : Fragment() {
                 return
             }
             photoURI?.let {
-                setImage(binding.postImageUpdate, it)
+                it.setImagePreView(binding.postImageUpdate)
                 val bitmap =
                     it.getBitmap(
                         binding.postImageUpdate.width,

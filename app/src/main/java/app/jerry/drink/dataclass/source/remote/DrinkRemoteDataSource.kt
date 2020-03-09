@@ -429,7 +429,7 @@ object DrinkRemoteDataSource : DrinkDataSource {
     override suspend fun uploadAvatar(bitmap: Bitmap): Result<Boolean> =
         suspendCoroutine { continuation ->
             val users = FirebaseFirestore.getInstance().collection(PATH_Users)
-            val userCurrent = FirebaseAuth.getInstance().currentUser
+            val userCurrent = UserManager.user
             val storageReference = FirebaseStorage.getInstance().reference
 
             val byteArrayOutput = ByteArrayOutputStream()
@@ -439,47 +439,47 @@ object DrinkRemoteDataSource : DrinkDataSource {
             val riversRef = storageReference.child("usersAvatar/" + UUID.randomUUID().toString())
             val uploadTask = riversRef.putBytes(bytes)
 
-            uploadTask.continueWithTask(Continuation<UploadTask.TaskSnapshot, Task<Uri>> { taskImage ->
-                if (!taskImage.isSuccessful) {
-                    taskImage.exception?.let {
-                        throw it
+            UserManager.user?.let {
+                uploadTask.continueWithTask(Continuation<UploadTask.TaskSnapshot, Task<Uri>> { taskImage ->
+                    if (!taskImage.isSuccessful) {
+                        taskImage.exception?.let {
+                            throw it
+                        }
                     }
-                }
-                return@Continuation riversRef.downloadUrl
-            }).addOnCompleteListener { taskImage ->
-                if (taskImage.isSuccessful) {
+                    return@Continuation riversRef.downloadUrl
+                }).addOnCompleteListener { taskImage ->
+                    if (taskImage.isSuccessful) {
+                        val imageUri = taskImage.result.toString()
 
-//                    addUploadRecordToDb(downloadUri.toString())
-                    val imageUri = taskImage.result.toString()
-
-                    users
-                        .document(userCurrent!!.uid)
-                        .update("image", imageUri)
-                        .addOnCompleteListener { task ->
-                            if (task.isSuccessful) {
-//                    continuation.resume(Result.Success(list))
-                                continuation.resume(Result.Success(true))
-                            } else {
-                                task.exception?.let {
-
-                                    Log.w(
-                                        "",
-                                        "[${this::class.simpleName}] Error getting documents. ${it.message}"
-                                    )
-                                    continuation.resume(Result.Error(it))
-                                    return@addOnCompleteListener
-                                }
-                                continuation.resume(
-                                    Result.Fail(
-                                        DrinkApplication.instance.getString(
-                                            R.string.you_know_nothing
+                        users
+                            .document(it.id)
+                            .update("image", imageUri)
+                            .addOnCompleteListener { task ->
+                                if (task.isSuccessful) {
+                                    it.image = imageUri
+                                    continuation.resume(Result.Success(true))
+                                } else {
+                                    task.exception?.let {
+                                        Log.w(
+                                            "",
+                                            "[${this::class.simpleName}] Error getting documents. ${it.message}"
+                                        )
+                                        continuation.resume(Result.Error(it))
+                                        return@addOnCompleteListener
+                                    }
+                                    continuation.resume(
+                                        Result.Fail(
+                                            DrinkApplication.instance.getString(
+                                                R.string.you_know_nothing
+                                            )
                                         )
                                     )
-                                )
+                                }
                             }
-                        }
+                    }
                 }
             }
+
         }
 
     override suspend fun getDetailComment(drink: Drink): Result<List<Comment>> =

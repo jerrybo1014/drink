@@ -2,15 +2,10 @@ import android.Manifest
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.net.Uri
 import android.os.Bundle
-import android.provider.Settings
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.Animation
-import android.view.animation.TranslateAnimation
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -23,31 +18,21 @@ import app.jerry.drink.DrinkApplication
 import app.jerry.drink.MainActivity
 import app.jerry.drink.NavigationDirections
 import app.jerry.drink.R
-import app.jerry.drink.databinding.FragmentOrderBinding
 import app.jerry.drink.databinding.FragmentProfileBinding
 import app.jerry.drink.ext.getBitmap
 import app.jerry.drink.ext.getVmFactory
-import app.jerry.drink.home.HomeViewModel
-import app.jerry.drink.home.NewCommentAdapter
+import app.jerry.drink.ext.setImageCirclePreView
 import app.jerry.drink.profile.ProfileViewModel
 import app.jerry.drink.profile.UserCommentAdapter
 import app.jerry.drink.profile.UserOrderAdapter
-import app.jerry.drink.util.Logger
 import app.jerry.drink.util.PermissionCode
 import app.jerry.drink.util.RequestCode
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.bitmap.CenterCrop
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners
-import com.bumptech.glide.request.RequestOptions
-import kotlinx.android.synthetic.main.fragment_post.*
-import kotlinx.android.synthetic.main.fragment_profile.*
-import java.io.IOException
+import app.jerry.drink.util.Util
 
 class ProfileFragment : Fragment() {
 
     lateinit var binding: FragmentProfileBinding
     private val viewModel by viewModels<ProfileViewModel> { getVmFactory() }
-    private var filePath: Uri? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -104,7 +89,10 @@ class ProfileFragment : Fragment() {
         val intent = Intent()
         intent.type = "image/*"
         intent.action = Intent.ACTION_GET_CONTENT
-        startActivityForResult(Intent.createChooser(intent, "Select Picture"), RequestCode.PICK_IMAGE.requestCode)
+        startActivityForResult(
+            Intent.createChooser(intent, "Select Picture"),
+            RequestCode.PICK_IMAGE.requestCode
+        )
     }
 
     private fun loadGallery() {
@@ -125,14 +113,6 @@ class ProfileFragment : Fragment() {
         }
     }
 
-    private fun openAppSettingsIntent() {
-        val intent = Intent(
-            Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
-            Uri.fromParts("package", context!!.packageName, null))
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-        startActivity(intent)
-    }
-
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
@@ -141,22 +121,24 @@ class ProfileFragment : Fragment() {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
 
         when (requestCode) {
-            PermissionCode.READ_EXTERNAL_STORAGE.requestCode ->{
+            PermissionCode.READ_EXTERNAL_STORAGE.requestCode -> {
                 if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     launchGallery()
                 } else {
-                    if (!ActivityCompat.shouldShowRequestPermissionRationale(activity as MainActivity, Manifest.permission.READ_EXTERNAL_STORAGE)) {
-
+                    if (!ActivityCompat.shouldShowRequestPermissionRationale(
+                            activity as MainActivity,
+                            Manifest.permission.READ_EXTERNAL_STORAGE
+                        )
+                    ) {
                         AlertDialog.Builder(context!!)
-                            .setMessage("需要開啟相簿權限!")
-                            .setPositiveButton("前往設定") { _, _ ->
-                                openAppSettingsIntent()
+                            .setMessage(Util.getString(R.string.need_gallery_permission))
+                            .setPositiveButton(Util.getString(R.string.open_permission)) { _, _ ->
+                                context?.let {
+                                    Util.openAppSettingsIntent(it)
+                                }
                             }
-                            .setNegativeButton("先不要") { _, _ -> }
+                            .setNegativeButton(Util.getString(R.string.permission_permanently_denied_negative_button)) { _, _ -> }
                             .show()
-                    }
-                    for (permissionsItem in permissions) {
-                        Logger.d("permissions reject : $permissions")
                     }
                 }
                 return
@@ -171,20 +153,12 @@ class ProfileFragment : Fragment() {
             if (data == null || data.data == null) {
                 return
             }
-
-            filePath = data.data
-            val bitmap = filePath?.getBitmap(binding.profileAvatar.width, binding.profileAvatar.height)
-            viewModel.imageBitmap.value = bitmap
-            try {
-                Glide.with(this).load(filePath).apply(
-                    RequestOptions().circleCrop()
-                ).into(profile_avatar)
-                viewModel.imageUri.value = filePath
-
-            } catch (e: IOException) {
-                e.printStackTrace()
+            data.data?.let {
+                val bitmap = it.getBitmap(binding.profileAvatar.width, binding.profileAvatar.height)
+                viewModel.imageBitmap.value = bitmap
+                viewModel.imageUri.value = it
+                it.setImageCirclePreView(binding.profileAvatar)
             }
         }
     }
-
 }

@@ -1,10 +1,7 @@
 package app.jerry.drink
 
-import app.jerry.drink.dataclass.source.DrinkRepository
-import app.jerry.drink.home.HomeViewModel
+import org.junit.Assert.assertEquals
 import org.junit.Test
-
-import org.junit.Assert.*
 
 /**
  * Example local unit test, which will execute on the development machine (host).
@@ -19,6 +16,7 @@ class ExampleUnitTest {
 
     @Test
     fun getDrinkRank_isCorrect(){
+
     }
 
 }

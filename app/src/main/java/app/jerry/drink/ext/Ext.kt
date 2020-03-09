@@ -126,9 +126,16 @@ fun Int.fromExifInterfaceOrientationToDegree(): Int {
     }
 }
 
-fun setImage(imgView: ImageView, imgUrl: Uri) {
+fun Uri.setImagePreView(imgView: ImageView) {
     Glide.with(imgView.context)
-        .load(imgUrl)
+        .load(this)
         .apply(RequestOptions().centerCrop())
+        .into(imgView)
+}
+
+fun Uri.setImageCirclePreView(imgView: ImageView) {
+    Glide.with(imgView.context)
+        .load(this)
+        .apply(RequestOptions.circleCropTransform())
         .into(imgView)
 }

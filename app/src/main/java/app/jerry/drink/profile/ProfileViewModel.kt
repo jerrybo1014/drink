@@ -11,6 +11,7 @@ import app.jerry.drink.R
 import app.jerry.drink.dataclass.*
 import app.jerry.drink.dataclass.source.DrinkRepository
 import app.jerry.drink.network.LoadApiStatus
+import app.jerry.drink.signin.UserManager
 import app.jerry.drink.util.Util.getString
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -40,7 +41,9 @@ class ProfileViewModel(private val repository: DrinkRepository) : ViewModel() {
         value = false
     }
 
-    val userCurrent = MutableLiveData<User>()
+    val userCurrent = MutableLiveData<User>().apply {
+        value = UserManager.user
+    }
     val navigationToDetail = MutableLiveData<Drink>()
     val navigationToOrder = MutableLiveData<String>()
 
@@ -70,12 +73,12 @@ class ProfileViewModel(private val repository: DrinkRepository) : ViewModel() {
 
     init {
         imageUri.value = null
-        getUserCurrentResult()
+//        getUserCurrentResult()
         getUserCommentResult()
         getUserOrderResult()
     }
 
-    private fun getUserCurrentResult(){
+    private fun getUserCurrentResult() {
         coroutineScope.launch {
 
             _status.value = LoadApiStatus.LOADING
@@ -115,37 +118,40 @@ class ProfileViewModel(private val repository: DrinkRepository) : ViewModel() {
 
             _status.value = LoadApiStatus.LOADING
 
-            val result = repository.uploadAvatar(imageBitmap.value!!)
-
-            when (result) {
-                is Result.Success -> {
-                    _error.value = null
-                    _status.value = LoadApiStatus.DONE
-                    Toast.makeText(DrinkApplication.context, getString(R.string.post_success), Toast.LENGTH_SHORT).show()
-                    uploadAvatarFinished()
-                    result.data
-                }
-                is Result.Fail -> {
-                    _error.value = result.error
-                    _status.value = LoadApiStatus.ERROR
-                    null
-                }
-                is Result.Error -> {
-                    _error.value = result.exception.toString()
-                    _status.value = LoadApiStatus.ERROR
-                    null
-                }
-                else -> {
-                    _error.value = DrinkApplication.instance.getString(R.string.you_know_nothing)
-                    _status.value = LoadApiStatus.ERROR
-                    null
+            imageBitmap.value?.let {bitmap ->
+                when (val result = repository.uploadAvatar(bitmap)) {
+                    is Result.Success -> {
+                        _error.value = null
+                        _status.value = LoadApiStatus.DONE
+                        Toast.makeText(
+                            DrinkApplication.context,
+                            getString(R.string.post_success),
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        userCurrent.value = UserManager.user
+                        uploadAvatarFinished()
+                        result.data
+                    }
+                    is Result.Fail -> {
+                        _error.value = result.error
+                        _status.value = LoadApiStatus.ERROR
+                    }
+                    is Result.Error -> {
+                        _error.value = result.exception.toString()
+                        _status.value = LoadApiStatus.ERROR
+                    }
+                    else -> {
+                        _error.value =
+                            DrinkApplication.instance.getString(R.string.you_know_nothing)
+                        _status.value = LoadApiStatus.ERROR
+                    }
                 }
             }
             _refreshStatus.value = false
         }
     }
 
-    private fun getUserCommentResult(){
+    private fun getUserCommentResult() {
         coroutineScope.launch {
 
             _status.value = LoadApiStatus.LOADING
@@ -179,7 +185,7 @@ class ProfileViewModel(private val repository: DrinkRepository) : ViewModel() {
 
     }
 
-    private fun getUserOrderResult(){
+    private fun getUserOrderResult() {
         coroutineScope.launch {
 
             _status.value = LoadApiStatus.LOADING
@@ -213,20 +219,20 @@ class ProfileViewModel(private val repository: DrinkRepository) : ViewModel() {
 
     }
 
-    fun uploadAvatarFinished(){
+    fun uploadAvatarFinished() {
         imageUri.value = null
     }
 
-    fun uploadAvatarCancel(){
+    fun uploadAvatarCancel() {
         imageUri.value = null
         userCurrent.value = userCurrent.value!!
     }
 
-    fun navigationToDetail(drink: Drink){
+    fun navigationToDetail(drink: Drink) {
         navigationToDetail.value = drink
     }
 
-    fun navigationToOrder(orderId: String){
+    fun navigationToOrder(orderId: String) {
         navigationToOrder.value = orderId
     }
 
@@ -238,13 +244,13 @@ class ProfileViewModel(private val repository: DrinkRepository) : ViewModel() {
         navigationToOrder.value = null
     }
 
-    fun allCommentStatus(){
+    fun allCommentStatus() {
         allCommentStatus.value?.let {
             allCommentStatus.value = !it
         }
     }
 
-    fun allOrderStatus(){
+    fun allOrderStatus() {
         allOrderStatus.value?.let {
             allOrderStatus.value = !it
         }
