@@ -113,6 +113,7 @@ class SignInViewModel(private val repository: DrinkRepository) : ViewModel() {
         auth.signInWithCredential(credential)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
+                    loginSuccess()
                     Toast.makeText(DrinkApplication.context, getString(R.string.sign_in_success), Toast.LENGTH_SHORT).show()
                 } else {
                     // If sign in fails, display a message to the user.
@@ -124,10 +125,12 @@ class SignInViewModel(private val repository: DrinkRepository) : ViewModel() {
     }
 
     fun firebaseAuthWithGoogle(acct: GoogleSignInAccount) {
+        _status.value = LoadApiStatus.LOADING
         val credential = GoogleAuthProvider.getCredential(acct.idToken, null)
         auth.signInWithCredential(credential)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
+                    loginSuccess()
                     Toast.makeText(
                         DrinkApplication.context,
                         getString(R.string.sign_in_success), Toast.LENGTH_SHORT).show()
@@ -140,5 +143,9 @@ class SignInViewModel(private val repository: DrinkRepository) : ViewModel() {
                     Logger.d("signInWithCredential:failure${task.exception}")
                 }
             }
+    }
+
+    fun loginSuccess(){
+        _status.value = LoadApiStatus.DONE
     }
 }
