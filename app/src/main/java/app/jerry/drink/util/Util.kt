@@ -18,7 +18,10 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import app.jerry.drink.DrinkApplication
 import app.jerry.drink.R
+import app.jerry.drink.dataclass.Comment
+import app.jerry.drink.dataclass.DrinkRank
 import app.jerry.drink.dataclass.Store
+import java.text.NumberFormat
 
 object Util {
 
@@ -150,5 +153,44 @@ object Util {
             }
             .create()
             .show()
+    }
+
+    fun getDrinkRank(commentList: List<Comment>): List<DrinkRank> {
+        val scoreRank = mutableListOf<DrinkRank>()
+        for (commentUnit in commentList) {
+            /*-------------------------------------------------------------*/
+            var haveId = false
+            var position = -1
+            for (checkId in scoreRank) {
+                if (commentUnit.drink.drinkId == checkId.drink.drinkId) {
+                    haveId = true
+                    position = scoreRank.indexOf(checkId)
+                }
+            }
+            if (haveId) {
+                var scoreSum = 0F
+                scoreRank[position].commentList.add(commentUnit)
+                for (score in scoreRank[position].commentList) {
+                    scoreSum += score.star
+                }
+                val avg: Float = scoreSum / scoreRank[position].commentList.size
+                val numberFormat = NumberFormat.getNumberInstance()
+                numberFormat.maximumFractionDigits = 1
+                numberFormat.minimumFractionDigits = 1
+                val avgStar = numberFormat.format(avg).toFloat()
+                scoreRank[position].score = avgStar
+            } else {
+                val newDrinkRank = DrinkRank(
+                    mutableListOf(commentUnit),
+                    commentUnit.drink,
+                    commentUnit.store,
+                    commentUnit.star.toFloat()
+                )
+                scoreRank.add(newDrinkRank)
+            }
+        }
+        /*---------------------------------------------------------------------*/
+        scoreRank.sortByDescending { it.score }
+        return scoreRank
     }
 }

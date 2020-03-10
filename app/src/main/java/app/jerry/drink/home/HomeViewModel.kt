@@ -89,7 +89,7 @@ class HomeViewModel(private val repository: DrinkRepository) : ViewModel() {
         }
     }
 
-    private fun getDrinkRank(commentList: List<Comment>) {
+    fun getDrinkRank(commentList: List<Comment>) {
         val scoreRank = mutableListOf<DrinkRank>()
         for (commentUnit in commentList) {
             /*-------------------------------------------------------------*/

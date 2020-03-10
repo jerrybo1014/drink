@@ -136,7 +136,6 @@
                         android:src="@drawable/close_1"
                         android:textSize="16dp"
                         android:visibility="@{viewModel.addNewDrink == true ? View.VISIBLE:View.GONE}"
-
                         app:layout_constraintBottom_toBottomOf="@+id/post_image_drink_icon"
                         app:layout_constraintStart_toEndOf="@+id/post_edit_new_drink"
                         app:layout_constraintTop_toTopOf="@+id/post_image_drink_icon" />

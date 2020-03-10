@@ -5,6 +5,7 @@ apply plugin: 'com.google.gms.google-services'
 apply plugin: 'kotlin-kapt'
 apply plugin: "androidx.navigation.safeargs.kotlin"
 apply plugin: 'io.fabric'
+apply plugin: "kotlin-allopen"
 
 android {
     compileSdkVersion 29
@@ -35,6 +36,11 @@ android {
 
     androidExtensions {
         experimental = true
+    }
+
+    allOpen {
+        annotation("com.my.Annotation")
+        // annotations("com.another.Annotation", "com.third.Annotation")
     }
 }
 
@@ -94,7 +100,12 @@ dependencies {
     implementation 'com.crashlytics.sdk.android:crashlytics:2.10.1'
 
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
+    androidTestImplementation 'com.android.support.test:rules:1.0.2'
+    androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-contrib:3.0.2'
+    testImplementation "io.mockk:mockk:1.9.kotlin12"
+    testImplementation 'org.mockito:mockito-core:2.8.9'
     implementation 'androidx.navigation:navigation-fragment-ktx:2.1.0'
     implementation 'androidx.navigation:navigation-ui-ktx:2.1.0'
 
