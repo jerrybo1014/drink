@@ -1,16 +1,15 @@
 package app.jerry.drink.dataclass.source
 
 import android.graphics.Bitmap
-import android.net.Uri
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import app.jerry.drink.dataclass.*
+import com.google.firebase.auth.FirebaseUser
 
 interface DrinkRepository {
 
     suspend fun addStoreToDrink(store: Store): Result<Boolean>
 
-    suspend fun checkUser(): Result<Boolean>
+    suspend fun checkUser(user: User): Result<Boolean>
 
     suspend fun getNewComment(): Result<List<Comment>>
 
@@ -20,13 +19,15 @@ interface DrinkRepository {
 
     suspend fun postComment(comment: Comment, bitmap: Bitmap): Result<Boolean>
 
-    suspend fun createOrder(order: Order): Result<Boolean>
+    suspend fun deleteComment(comment: Comment): Result<Boolean>
 
-    suspend fun getOrder(orderId: Long): Result<OrderLists>
+    suspend fun createOrder(order: Order): Result<String>
 
-    fun getOrderLive(orderId: Long): LiveData<List<OrderList>>
+    fun getOrderLive(orderId: Long): LiveData<Order>
 
-    suspend fun addOrder(orderList: OrderList, orderId: Long): Result<Boolean>
+    fun getOrderItemLive(orderId: Long): LiveData<List<OrderItem>>
+
+    suspend fun addOrder(orderList: OrderItem, orderId: Long): Result<Boolean>
 
     suspend fun removeOrder(orderId: Long ,id: String): Result<Boolean>
 
@@ -36,15 +37,17 @@ interface DrinkRepository {
 
     suspend fun uploadAvatar(bitmap: Bitmap): Result<Boolean>
 
-    suspend fun getDetailComment(drinkDetail: DrinkDetail): Result<List<Comment>>
+    suspend fun getDetailComment(drink: Drink): Result<List<Comment>>
 
-    suspend fun getUserComment(): Result<List<Comment>>
+    suspend fun getUserComment(user: User): Result<List<Comment>>
 
-    suspend fun getUserOrder(): Result<List<Order>>
+    suspend fun getUserOrder(user: User): Result<List<Order>>
 
     suspend fun getStoreLocation(): Result<List<StoreLocation>>
 
     suspend fun getStoreComment(store: Store): Result<List<Comment>>
 
     suspend fun getSearchDrink(): Result<List<Drink>>
+
+    suspend fun addNewDrink(comment: Comment, bitmap: Bitmap): Result<Boolean>
 }

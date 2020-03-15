@@ -22,9 +22,20 @@
     <style name="post_text_title">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/text_color_hint</item>
         <item name="android:layout_marginTop">20dp</item>
         <item name="android:layout_marginStart">8dp</item>
         <item name="android:textSize">16dp</item>
+        <item name="android:fontFamily">@font/noto_sans</item>
+    </style>
+
+    <style name="add_order_text">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">20dp</item>
+        <item name="android:layout_marginStart">8dp</item>
+        <item name="android:textSize">16dp</item>
+        <item name="android:textColor">@color/text_color_hint</item>
         <item name="android:fontFamily">@font/noto_sans</item>
     </style>
 
@@ -92,6 +103,50 @@
         <item name="fontFamily">@font/noto_sans</item>
         <item name="android:textSize">16dp</item>
         <item name="android:background">#00FFFFFF</item>
+    </style>
+
+    <style name="toolbar_title">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">20dp</item>
+        <item name="android:fontFamily">@font/noto_sans_bold</item>
+        <item name="android:textColor">@color/White</item>
+        <item name="android:layout_marginStart">16dp</item>
+    </style>
+
+    <style name="home_page_search_bar">
+        <item name="android:layout_marginStart">16dp</item>
+        <item name="android:layout_marginEnd">16dp</item>
+        <item name="android:background">@drawable/shape_corner_r</item>
+        <item name="android:backgroundTint">@color/White</item>
+    </style>
+
+    <style name="app_icon_mid">
+        <item name="android:layout_width">18dp</item>
+        <item name="android:layout_height">18dp</item>
+        <item name="android:tint">@color/myColorPrimaryDark</item>
+    </style>
+
+    <style name="add_order_drink_spinner">
+        <item name="android:prompt">@string/spinner_store</item>
+        <item name="android:textSize">16dp</item>
+        <item name="android:fontFamily">@font/noto_sans</item>
+        <item name="android:spinnerMode">dropdown</item>
+    </style>
+
+    <style name="app_icon_max">
+        <item name="android:layout_width">26dp</item>
+        <item name="android:layout_height">26dp</item>
+        <item name="android:tint">@color/myColorPrimaryDark</item>
+    </style>
+
+    <style name="order_text">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">@dimen/text_max</item>
+        <item name="android:textColor">@color/text_color_hint</item>
+        <item name="android:fontFamily">@font/noto_sans</item>
+        <item name="android:layout_marginStart">10dp</item>
     </style>
 
 </resources>

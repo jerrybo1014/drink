@@ -6,10 +6,7 @@ import androidx.lifecycle.ViewModel
 import app.jerry.drink.DrinkApplication
 import app.jerry.drink.network.LoadApiStatus
 import app.jerry.drink.R
-import app.jerry.drink.dataclass.Comment
-import app.jerry.drink.dataclass.DrinkDetail
-import app.jerry.drink.dataclass.DrinkRank
-import app.jerry.drink.dataclass.Result
+import app.jerry.drink.dataclass.*
 import app.jerry.drink.dataclass.source.DrinkRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -29,8 +26,7 @@ class HomeViewModel(private val repository: DrinkRepository) : ViewModel() {
     val newDrinkRank: LiveData<List<DrinkRank>>
         get() = _newDrinkRank
 
-
-    val navigationToDetail = MutableLiveData<DrinkDetail>()
+    val navigationToDetail = MutableLiveData<Drink>()
 
     // status: The internal MutableLiveData that stores the status of the most recent request
     private val _status = MutableLiveData<LoadApiStatus>()
@@ -57,61 +53,54 @@ class HomeViewModel(private val repository: DrinkRepository) : ViewModel() {
     private val coroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
 
     init {
-        getNewCommentResult()
+        getNewCommentResult(true)
     }
 
-    fun getNewCommentResult() {
-
+    private fun getNewCommentResult(isInitial: Boolean = false) {
         coroutineScope.launch {
 
-            _status.value = LoadApiStatus.LOADING
-
+            if (isInitial) _status.value = LoadApiStatus.LOADING
             val result = repository.getNewComment()
 
             _newComment.value = when (result) {
                 is Result.Success -> {
                     _error.value = null
-                    _status.value = LoadApiStatus.DONE
+                    if (isInitial) _status.value = LoadApiStatus.DONE
                     getDrinkRank(result.data)
                     result.data
                 }
                 is Result.Fail -> {
                     _error.value = result.error
-                    _status.value = LoadApiStatus.ERROR
+                    if (isInitial) _status.value = LoadApiStatus.ERROR
                     null
                 }
                 is Result.Error -> {
                     _error.value = result.exception.toString()
-                    _status.value = LoadApiStatus.ERROR
+                    if (isInitial) _status.value = LoadApiStatus.ERROR
                     null
                 }
                 else -> {
                     _error.value = DrinkApplication.instance.getString(R.string.you_know_nothing)
-                    _status.value = LoadApiStatus.ERROR
+                    if (isInitial) _status.value = LoadApiStatus.ERROR
                     null
                 }
             }
             _refreshStatus.value = false
         }
-
     }
 
-
-    fun getDrinkRank(commnetList: List<Comment>) {
-
+    fun getDrinkRank(commentList: List<Comment>) {
         val scoreRank = mutableListOf<DrinkRank>()
-        for (commentUnit in commnetList) {
+        for (commentUnit in commentList) {
             /*-------------------------------------------------------------*/
             var haveId = false
             var position = -1
-
             for (checkId in scoreRank) {
                 if (commentUnit.drink.drinkId == checkId.drink.drinkId) {
                     haveId = true
                     position = scoreRank.indexOf(checkId)
                 }
             }
-
             if (haveId) {
                 var scoreSum = 0F
                 scoreRank[position].commentList.add(commentUnit)
@@ -145,15 +134,12 @@ class HomeViewModel(private val repository: DrinkRepository) : ViewModel() {
         }
     }
 
-
-    fun navigationToDetail(drinkDetail: DrinkDetail) {
-        navigationToDetail.value = drinkDetail
+    fun navigationToDetail(drink: Drink) {
+        navigationToDetail.value = drink
     }
 
     fun onDetailNavigated() {
         navigationToDetail.value = null
     }
-
-
 }
 

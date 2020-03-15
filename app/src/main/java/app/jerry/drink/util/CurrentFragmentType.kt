@@ -10,5 +10,6 @@ enum class CurrentFragmentType(val value: String) {
     PROFILE(getString(R.string.label_profile)),
     DETAIL(getString(R.string.label_detail)),
     SEARCH(getString(R.string.label_home_search)),
-    POST(getString(R.string.label_post))
+    POST(getString(R.string.label_post)),
+    SIGNIN(getString(R.string.label_sign_in))
 }

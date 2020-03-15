@@ -4,44 +4,49 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
+        <variable
+            name="viewModel"
+            type="app.jerry.drink.signin.SignInViewModel" />
 
+        <import type="app.jerry.drink.network.LoadApiStatus" />
+        <import type="android.view.View"/>
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingVertical="32dp"
-        android:background="#96DEE9">
+        android:background="@color/app_color_theme">
 
         <ImageView
-            android:id="@+id/drink_icon"
+            android:id="@+id/sign_in_drink_icon"
             android:layout_width="0dp"
             android:layout_height="350dp"
             android:layout_marginStart="32dp"
             android:src="@drawable/app_icon"
-            android:layout_marginTop="60dp"
+            android:layout_marginTop="80dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/button_signin_fb"
+            android:id="@+id/button_sign_in_fb"
             android:layout_width="0dp"
             android:layout_height="48dp"
-            android:background="@drawable/shape_corner_r_big"
+            android:background="@drawable/button_sign_in_ripple"
             android:backgroundTint="@color/White"
             android:layout_marginHorizontal="60dp"
             android:layout_marginBottom="16dp"
-            app:layout_constraintBottom_toTopOf="@+id/button_signin_google"
+            android:onClick="@{() -> viewModel.loginFacebook()}"
+            app:layout_constraintBottom_toTopOf="@+id/button_sign_in_google"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="FACEBOOK 登入"
-                android:textColor="#603913"
-                android:textSize="16dp"
+                android:text="@string/sign_in_fb"
+                android:textColor="@color/app_color_icon_theme"
+                android:textSize="@dimen/text_max"
                 android:letterSpacing="0.1"
                 android:fontFamily="@font/noto_sans_bold"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -50,7 +55,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
-                android:id="@+id/imageView2"
+                android:id="@+id/image_fb"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_margin="10dp"
@@ -64,13 +69,14 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/button_signin_google"
+            android:id="@+id/button_sign_in_google"
             android:layout_width="0dp"
             android:layout_height="48dp"
             android:layout_marginHorizontal="60dp"
-            android:background="@drawable/shape_corner_r_big"
+            android:background="@drawable/button_sign_in_ripple"
             android:backgroundTint="@color/White"
-            android:layout_marginBottom="32dp"
+            android:layout_marginBottom="60dp"
+            android:onClick="@{() -> viewModel.loginGoogle()}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent">
@@ -79,9 +85,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/noto_sans_bold"
-                android:text="GOOGLE 登入"
-                android:textColor="#603913"
-                android:textSize="16dp"
+                android:text="@string/sign_in_google"
+                android:textColor="@color/app_color_icon_theme"
+                android:textSize="@dimen/text_max"
                 android:letterSpacing="0.1"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -89,7 +95,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
-                android:id="@+id/imageView3"
+                android:id="@+id/image_google"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_margin="10dp"
@@ -104,6 +110,25 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:background="@color/transparent"
+            android:visibility="@{viewModel.status == LoadApiStatus.LOADING ? View.VISIBLE:View.GONE}"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ProgressBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:theme="@style/ProgressTheme"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

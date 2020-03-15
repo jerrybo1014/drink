@@ -8,26 +8,22 @@ import androidx.recyclerview.widget.RecyclerView
 import app.jerry.drink.databinding.ItemNewCommentBinding
 import app.jerry.drink.dataclass.Comment
 import app.jerry.drink.dataclass.Drink
-import app.jerry.drink.dataclass.DrinkDetail
-import app.jerry.drink.dataclass.Store
 
 class NewCommentAdapter(private val onClickListener: OnClickListener ) :
     ListAdapter<Comment, NewCommentAdapter.NewCommentViewHolder>(
         DiffCallback
     ) {
 
-    class OnClickListener(val clickListener: (drinkDetail: DrinkDetail) -> Unit) {
-        fun onClick(drinkDetail: DrinkDetail) = clickListener(drinkDetail)
+    class OnClickListener(val clickListener: (drink: Drink) -> Unit) {
+        fun onClick(drink: Drink) = clickListener(drink)
     }
 
     class NewCommentViewHolder(private var binding: ItemNewCommentBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(comment: Comment, onClickListener: OnClickListener) {
-
-            val drinkDetail = DrinkDetail(comment.drink
-                ,comment.store)
+            val drink = comment.drink
             binding.comment = comment
-            binding.layoutNavigationToDetail.setOnClickListener { onClickListener.onClick(drinkDetail) }
+            binding.root.setOnClickListener { onClickListener.onClick(drink) }
             binding.executePendingBindings()
         }
     }
@@ -48,10 +44,6 @@ class NewCommentAdapter(private val onClickListener: OnClickListener ) :
         }
     }
 
-    /**
-     * Create new [RecyclerView] item views (invoked by the layout manager)
-     */
-
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
@@ -60,10 +52,6 @@ class NewCommentAdapter(private val onClickListener: OnClickListener ) :
             ItemNewCommentBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         )
     }
-
-    /**
-     * Replaces the contents of a view (invoked by the layout manager)
-     */
 
     override fun onBindViewHolder(holder: NewCommentViewHolder, position: Int) {
         val comment = getItem(position)

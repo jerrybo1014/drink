@@ -20,9 +20,10 @@
         android:layout_height="match_parent">
 
         <ScrollView
+            android:id="@+id/scrollView2"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            app:layout_constraintBottom_toTopOf="@+id/constraintLayout"
+            app:layout_constraintBottom_toTopOf="@+id/post_layout_bottom"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -33,220 +34,203 @@
                 android:layout_height="wrap_content">
 
                 <ImageView
-                    android:id="@+id/image_update"
-                    android:layout_width="wrap_content"
-                    android:layout_height="200dp"
-                    android:background="#99DDDDDD"
-                    android:src="@drawable/drink_gray"
+                    android:id="@+id/post_image_update"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    app:layout_constraintDimensionRatio="1"
+                    android:background="@color/color_post_image_background"
+                    android:onClick="@{() -> viewModel.openCameraGallery()}"
+                    android:src="@drawable/image_add_icon_min"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageView
-                    android:id="@+id/button_image_update"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginBottom="8dp"
-                    android:src="@drawable/photo"
-                    android:tint="#BEBEBE"
-                    app:layout_constraintBottom_toBottomOf="@+id/image_update"
-                    app:layout_constraintEnd_toEndOf="parent" />
-
-                <ImageView
-                    android:id="@+id/button_take_photo"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_marginEnd="16dp"
-                    android:layout_marginBottom="8dp"
-                    android:src="@drawable/ic_camera_alt_black_24dp"
-                    android:tint="#BEBEBE"
-                    app:layout_constraintBottom_toBottomOf="@+id/image_update"
-                    app:layout_constraintEnd_toStartOf="@+id/button_image_update" />
-
-                <ImageView
-                    android:id="@+id/image_store_post_icon"
-                    android:layout_width="18dp"
-                    android:layout_height="18dp"
+                    android:id="@+id/post_image_store_icon"
+                    style="@style/app_icon_mid"
                     android:layout_marginStart="16dp"
                     android:src="@drawable/store_icon"
-                    android:tint="@color/myColorPrimaryDark"
-                    app:layout_constraintBottom_toBottomOf="@+id/text_store"
+                    app:layout_constraintBottom_toBottomOf="@+id/post_text_store"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/text_store" />
+                    app:layout_constraintTop_toTopOf="@+id/post_text_store" />
 
                 <TextView
-                    android:id="@+id/text_store"
+                    android:id="@+id/post_text_store"
                     style="@style/post_text_title"
                     android:fontFamily="@font/noto_sans"
                     android:text="@string/post_store"
-                    android:textSize="16dp"
-                    app:layout_constraintStart_toEndOf="@id/image_store_post_icon"
-                    app:layout_constraintTop_toBottomOf="@id/image_update" />
+                    app:layout_constraintStart_toEndOf="@id/post_image_store_icon"
+                    app:layout_constraintTop_toBottomOf="@id/post_image_update" />
 
                 <Spinner
-                    android:id="@+id/spinner_store"
+                    android:id="@+id/post_spinner_store"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="16dp"
-                    android:paddingTop="16dp"
-                    android:paddingEnd="12dp"
-                    android:paddingBottom="16dp"
                     android:prompt="@string/spinner_store"
+                    android:selectedItemPosition="@={viewModel.selectStorePosition}"
                     android:spinnerMode="dialog"
-                    android:textSize="16dp"
-                    android:selectedItemPosition = "@={viewModel.selectedStorePosition}"
-                    app:layout_constraintBottom_toBottomOf="@+id/text_store"
+                    app:layout_constraintBottom_toBottomOf="@+id/post_text_store"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/text_store"
-                    app:layout_constraintTop_toTopOf="@+id/text_store" />
+                    app:layout_constraintStart_toEndOf="@+id/post_text_store"
+                    app:layout_constraintTop_toTopOf="@+id/post_text_store" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/layout_item"
+                    android:id="@+id/post_layout_item"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingStart="16dp"
                     android:paddingEnd="16dp"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/text_store">
+                    app:layout_constraintTop_toBottomOf="@+id/post_text_store">
 
                     <ImageView
-                        android:id="@+id/image_drink_post_icon"
-                        android:layout_width="18dp"
-                        android:layout_height="18dp"
+                        android:id="@+id/post_image_drink_icon"
+                        style="@style/app_icon_mid"
                         android:src="@drawable/cocktail"
-                        android:tint="@color/myColorPrimaryDark"
-                        app:layout_constraintBottom_toBottomOf="@+id/text_drink"
+                        app:layout_constraintBottom_toBottomOf="@+id/post_text_drink"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="@+id/text_drink" />
+                        app:layout_constraintTop_toTopOf="@+id/post_text_drink" />
 
                     <TextView
-                        android:id="@+id/text_drink"
+                        android:id="@+id/post_text_drink"
                         style="@style/post_text_title"
-                        android:fontFamily="@font/noto_sans"
                         android:text="@string/post_drink"
-                        android:textSize="16dp"
-                        app:layout_constraintStart_toEndOf="@+id/image_drink_post_icon"
+                        app:layout_constraintStart_toEndOf="@+id/post_image_drink_icon"
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <Spinner
-                        android:id="@+id/spinner_drink"
+                        android:id="@+id/post_spinner_drink"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:paddingTop="16dp"
-                        android:paddingEnd="12dp"
-                        android:paddingBottom="16dp"
                         android:prompt="@string/spinner_drink"
+                        android:selectedItemPosition="@={viewModel.selectDrinkPosition}"
                         android:spinnerMode="dialog"
-                        android:textSize="16dp"
-                        android:selectedItemPosition = "@={viewModel.selectedDrinkPosition}"
-                        app:layout_constraintBottom_toBottomOf="@+id/text_drink"
+                        android:visibility="@{viewModel.addNewDrink == true ? View.GONE:View.VISIBLE}"
+                        app:layout_constraintBottom_toBottomOf="@+id/post_text_drink"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/text_drink"
-                        app:layout_constraintTop_toTopOf="@+id/text_drink" />
+                        app:layout_constraintStart_toEndOf="@+id/post_text_drink"
+                        app:layout_constraintTop_toTopOf="@+id/post_text_drink" />
+
+                    <EditText
+                        android:id="@+id/post_edit_new_drink"
+                        android:layout_width="150dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:hint="@string/post_edit_new_drink_hint"
+                        android:maxLength="10"
+                        android:text="@={viewModel.newDrinkName}"
+                        android:textSize="@dimen/text_max"
+                        android:visibility="@{viewModel.addNewDrink == true ? View.VISIBLE:View.GONE}"
+                        app:layout_constraintBaseline_toBaselineOf="@+id/post_text_drink"
+                        app:layout_constraintStart_toEndOf="@+id/post_text_drink" />
 
                     <ImageView
-                        android:id="@+id/image_ice_post_icon"
-                        android:layout_width="18dp"
-                        android:layout_height="18dp"
+                        android:id="@+id/text_cancel_new_drink"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_marginStart="8dp"
+                        android:fontFamily="@font/noto_sans"
+                        android:onClick="@{() -> viewModel.cancelAddNewDrink()}"
+                        android:padding="4dp"
+                        android:src="@drawable/close_1"
+                        android:textSize="16dp"
+                        android:tint="#CC0000"
+                        android:visibility="@{viewModel.addNewDrink == true ? View.VISIBLE:View.GONE}"
+                        app:layout_constraintBottom_toBottomOf="@+id/post_image_drink_icon"
+                        app:layout_constraintDimensionRatio="1"
+                        app:layout_constraintStart_toEndOf="@+id/post_edit_new_drink"
+                        app:layout_constraintTop_toTopOf="@+id/post_image_drink_icon" />
+
+                    <ImageView
+                        android:id="@+id/post_image_ice_icon"
+                        style="@style/app_icon_mid"
                         android:src="@drawable/ice_cube"
-                        android:tint="@color/myColorPrimaryDark"
-                        app:layout_constraintBottom_toBottomOf="@+id/text_ice"
+                        app:layout_constraintBottom_toBottomOf="@+id/post_text_ice"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="@+id/text_ice" />
+                        app:layout_constraintTop_toTopOf="@+id/post_text_ice" />
 
                     <TextView
-                        android:id="@+id/text_ice"
+                        android:id="@+id/post_text_ice"
                         style="@style/post_text_title"
-                        android:fontFamily="@font/noto_sans"
                         android:text="@string/post_ice"
-                        android:textSize="16dp"
-                        app:layout_constraintStart_toEndOf="@id/image_ice_post_icon"
-                        app:layout_constraintTop_toBottomOf="@+id/text_drink" />
+                        app:layout_constraintStart_toEndOf="@id/post_image_ice_icon"
+                        app:layout_constraintTop_toBottomOf="@+id/post_text_drink" />
 
                     <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/recycler_ice"
+                        android:id="@+id/post_recycler_ice"
                         android:layout_width="wrap_content"
                         android:layout_height="30dp"
                         android:layout_marginStart="6dp"
                         android:fontFamily="@font/noto_sans"
                         android:orientation="horizontal"
-                        android:textSize="14dp"
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                        app:layout_constraintBottom_toBottomOf="@+id/text_ice"
-                        app:layout_constraintStart_toEndOf="@+id/text_ice"
-                        app:layout_constraintTop_toTopOf="@+id/text_ice" />
+                        app:layout_constraintBottom_toBottomOf="@+id/post_text_ice"
+                        app:layout_constraintStart_toEndOf="@+id/post_text_ice"
+                        app:layout_constraintTop_toTopOf="@+id/post_text_ice" />
 
                     <ImageView
-                        android:id="@+id/image_sugar_post_icon"
-                        android:layout_width="18dp"
-                        android:layout_height="18dp"
+                        android:id="@+id/post_image_sugar_icon"
+                        style="@style/app_icon_mid"
                         android:src="@drawable/sugar"
-                        android:tint="@color/myColorPrimaryDark"
-                        app:layout_constraintBottom_toBottomOf="@+id/text_sugar"
+                        app:layout_constraintBottom_toBottomOf="@+id/post_text_sugar"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="@+id/text_sugar" />
+                        app:layout_constraintTop_toTopOf="@+id/post_text_sugar" />
 
                     <TextView
-                        android:id="@+id/text_sugar"
+                        android:id="@+id/post_text_sugar"
                         style="@style/post_text_title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/noto_sans"
                         android:text="@string/post_sugar"
-                        android:textSize="16dp"
-                        app:layout_constraintStart_toEndOf="@id/image_ice_post_icon"
-                        app:layout_constraintTop_toBottomOf="@+id/text_ice" />
+                        app:layout_constraintStart_toEndOf="@id/post_image_ice_icon"
+                        app:layout_constraintTop_toBottomOf="@+id/post_text_ice" />
 
                     <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/recycler_sugar"
+                        android:id="@+id/post_recycler_sugar"
                         android:layout_width="wrap_content"
                         android:layout_height="30dp"
                         android:layout_marginStart="6dp"
                         android:orientation="horizontal"
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                        app:layout_constraintBottom_toBottomOf="@+id/text_sugar"
-                        app:layout_constraintStart_toEndOf="@+id/text_sugar"
-                        app:layout_constraintTop_toTopOf="@+id/text_sugar" />
+                        app:layout_constraintBottom_toBottomOf="@+id/post_text_sugar"
+                        app:layout_constraintStart_toEndOf="@+id/post_text_sugar"
+                        app:layout_constraintTop_toTopOf="@+id/post_text_sugar" />
 
                     <ImageView
-                        android:id="@+id/image_comment_post_icon"
-                        android:layout_width="18dp"
-                        android:layout_height="18dp"
+                        android:id="@+id/post_image_comment_icon"
+                        style="@style/app_icon_mid"
                         android:src="@drawable/comment_icon"
-                        android:tint="@color/myColorPrimaryDark"
-                        app:layout_constraintBottom_toBottomOf="@+id/text_comment"
+                        app:layout_constraintBottom_toBottomOf="@+id/post_text_comment"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="@+id/text_comment" />
+                        app:layout_constraintTop_toTopOf="@+id/post_text_comment" />
 
                     <TextView
-                        android:id="@+id/text_comment"
+                        android:id="@+id/post_text_comment"
                         style="@style/post_text_title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/noto_sans"
                         android:text="@string/post_comment"
-                        android:textSize="16dp"
-                        app:layout_constraintStart_toEndOf="@id/image_comment_post_icon"
-                        app:layout_constraintTop_toBottomOf="@+id/text_sugar" />
+                        app:layout_constraintStart_toEndOf="@id/post_image_comment_icon"
+                        app:layout_constraintTop_toBottomOf="@+id/post_text_sugar" />
 
                     <RatingBar
-                        android:id="@+id/rating_bar_comment"
+                        android:id="@+id/post_rating_bar_comment"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="6dp"
-                        android:progressTint="#FFD700"
+                        android:progressTint="@color/star"
                         android:rating="1"
                         android:scaleX=".5"
                         android:scaleY=".5"
                         android:stepSize="1"
                         android:transformPivotX="0dp"
                         android:transformPivotY="0dp"
-                        app:layout_constraintStart_toEndOf="@+id/text_comment"
-                        app:layout_constraintTop_toTopOf="@+id/text_comment" />
+                        app:layout_constraintStart_toEndOf="@+id/post_text_comment"
+                        app:layout_constraintTop_toTopOf="@+id/post_text_comment" />
 
                     <EditText
-                        android:id="@+id/response_comment_edit_text"
+                        android:id="@+id/post_response_comment_edit_text"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
@@ -255,49 +239,46 @@
                         android:hint="@string/post_enter_comment"
                         android:lines="5"
                         android:padding="6dp"
-                        android:text="@={viewModel.editComment}"
+                        android:text="@={viewModel.comment.comment}"
                         android:textSize="14sp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/text_comment" />
+                        app:layout_constraintTop_toBottomOf="@+id/post_text_comment" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
-
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </ScrollView>
 
-
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/constraintLayout"
+            android:id="@+id/post_layout_bottom"
             android:layout_width="match_parent"
             android:layout_height="80dp"
-            android:background="#ffffff"
+            android:background="@color/White"
             android:elevation="15dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent">
 
             <Button
-                android:id="@+id/cart_button"
+                android:id="@+id/post_button"
                 style="@style/Button_post_comment"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_margin="16dp"
                 android:background="@drawable/background_post_button"
                 android:clickable="@{viewModel.postStatus == LoadApiStatus.LOADING ? false:true}"
-                android:enabled="@{viewModel.editComment.trim() == null || viewModel.commentStar==0 || viewModel.selectedIce==null || viewModel.selectedSugar==null || viewModel.imageBitmap==null ? false:true}"
+                android:enabled='@{viewModel.comment.sugar == "" || viewModel.comment.ice == "" || viewModel.newDrinkStatus == false ? false:true}'
                 android:letterSpacing="1.2"
-                android:onClick="@{() -> viewModel.postCommentResult()}"
+                android:onClick="@{() -> viewModel.postComment()}"
                 android:text='@{viewModel.postStatus == LoadApiStatus.LOADING ? "": @string/post_button}'
-                android:textColor="#ffffff"
-                android:textSize="16dp"
+                android:textColor="@color/White"
+                android:textSize="@dimen/text_max"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
-
 
             <ProgressBar
                 android:layout_width="26dp"
@@ -311,6 +292,108 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/post_layout_choose_camera_gallery"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/transparent"
+            android:visibility="@{viewModel.chooseCameraGallery == true ? View.VISIBLE:View.GONE}"
+            android:elevation="20dp"
+            android:onClick="@{() -> viewModel.closeCameraGallery()}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="20dp"
+                android:clickable="true"
+                android:background="@drawable/shape_corner_r"
+                android:backgroundTint="#FFFFFF"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:id="@+id/post_choose_camera_gallery_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/noto_sans"
+                    android:text="請選擇上傳方式"
+                    android:textColor="@color/text_color"
+                    android:textSize="16dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/layout_camera"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/post_choose_camera_gallery_title">
+
+                    <ImageView
+                        android:id="@+id/post_image_camera"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:src="@drawable/ic_camera_alt_black_24dp"
+                        android:tint="@color/myColorPrimaryDark"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/camera"
+                        android:textSize="@dimen/text_mid"
+                        android:fontFamily="@font/noto_sans"
+                        android:textColor="@color/text_color"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/post_image_camera" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/layout_gallery"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginTop="16dp"
+                    app:layout_constraintStart_toEndOf="@+id/layout_camera"
+                    app:layout_constraintTop_toBottomOf="@+id/post_choose_camera_gallery_title">
+
+                    <ImageView
+                        android:id="@+id/post_image_gallery"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:src="@drawable/ic_image_black_24dp"
+                        android:tint="@color/myColorPrimaryDark"
+
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/noto_sans"
+                        android:text="@string/gallery"
+                        android:textSize="@dimen/text_mid"
+                        android:textColor="@color/text_color"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/post_image_gallery" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

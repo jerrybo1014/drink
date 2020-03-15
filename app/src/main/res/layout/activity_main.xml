@@ -23,8 +23,8 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="56dp"
-            android:background="#96DEE9"
-            android:visibility="@{viewModel.currentFragmentType == CurrentFragmentType.SEARCH ? View.GONE:View.VISIBLE}"
+            android:background="@color/app_color_theme"
+            android:visibility="@{viewModel.currentFragmentType == CurrentFragmentType.SEARCH || viewModel.currentFragmentType == CurrentFragmentType.SIGNIN ? View.GONE:View.VISIBLE}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -38,7 +38,7 @@
             android:layout_margin="@dimen/fab_margin"
             app:backgroundTint="#53B8CF"
             app:borderWidth="0dp"
-            app:fabHideStauts="@{viewModel.currentFragmentType == CurrentFragmentType.SEARCH || viewModel.currentFragmentType == CurrentFragmentType.POST || viewModel.currentFragmentType == CurrentFragmentType.DETAIL || viewModel.currentFragmentType == CurrentFragmentType.PROFILE || viewModel.currentFragmentType == CurrentFragmentType.RADAR || viewModel.currentFragmentType == CurrentFragmentType.ORDER ? false:true}"
+            app:fabHideStatus="@{viewModel.currentFragmentType == CurrentFragmentType.SEARCH || viewModel.currentFragmentType == CurrentFragmentType.POST || viewModel.currentFragmentType == CurrentFragmentType.DETAIL || viewModel.currentFragmentType == CurrentFragmentType.PROFILE || viewModel.currentFragmentType == CurrentFragmentType.RADAR || viewModel.currentFragmentType == CurrentFragmentType.ORDER || viewModel.currentFragmentType == CurrentFragmentType.SIGNIN || viewModel.checkUser == false  ? false:true}"
             android:tint="@color/White"
             app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView"
             app:layout_constraintEnd_toEndOf="parent"
@@ -58,17 +58,13 @@
 
         <TextView
             android:id="@+id/text_toolbar_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:text="@{viewModel.currentFragmentType.value}"
-            android:textSize="22dp"
-            android:visibility="@{viewModel.currentFragmentType == CurrentFragmentType.SEARCH ? View.GONE:View.VISIBLE}"
-            android:fontFamily="@font/noto_sans_bold"
-            android:textColor="#FFFFFF"
-            android:layout_marginStart="16dp"
+            android:visibility="@{viewModel.currentFragmentType == CurrentFragmentType.SEARCH || viewModel.currentFragmentType == CurrentFragmentType.SIGNIN ? View.GONE:View.VISIBLE}"
             app:layout_constraintBottom_toBottomOf="@+id/toolbar"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            style="@style/toolbar_title" />
+
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bottomNavigationView"
             android:layout_width="match_parent"
@@ -81,7 +77,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:menu="@menu/bottom_navigation_menu"
             android:theme="@style/Widget.BottomNavigationView"
-            android:visibility="@{viewModel.currentFragmentType == CurrentFragmentType.SEARCH || viewModel.currentFragmentType == CurrentFragmentType.DETAIL || viewModel.currentFragmentType == CurrentFragmentType.POST  ? View.GONE:View.VISIBLE}"
+            android:visibility="@{viewModel.currentFragmentType == CurrentFragmentType.SEARCH || viewModel.currentFragmentType == CurrentFragmentType.DETAIL || viewModel.currentFragmentType == CurrentFragmentType.POST || viewModel.currentFragmentType == CurrentFragmentType.SIGNIN  ? View.GONE:View.VISIBLE}"
             android:elevation="10dp"
             android:background="@color/White" />
 
@@ -89,21 +85,18 @@
             android:id="@+id/layout_home_search"
             android:layout_width="0dp"
             android:layout_height="36dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:background="@drawable/shape_corner_r"
-            android:visibility="@{viewModel.currentFragmentType == CurrentFragmentType.SEARCH || viewModel.currentFragmentType == CurrentFragmentType.ORDER || viewModel.currentFragmentType == CurrentFragmentType.POST || viewModel.currentFragmentType == CurrentFragmentType.PROFILE || viewModel.currentFragmentType == CurrentFragmentType.DETAIL ? View.GONE:View.VISIBLE}"
-            android:backgroundTint="#FFFFFF"
+            android:visibility="@{viewModel.currentFragmentType == CurrentFragmentType.SEARCH || viewModel.currentFragmentType == CurrentFragmentType.ORDER || viewModel.currentFragmentType == CurrentFragmentType.POST || viewModel.currentFragmentType == CurrentFragmentType.PROFILE || viewModel.currentFragmentType == CurrentFragmentType.DETAIL || viewModel.currentFragmentType == CurrentFragmentType.SIGNIN ? View.GONE:View.VISIBLE}"
             app:layout_constraintBottom_toBottomOf="@+id/toolbar"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent"
+            style="@style/home_page_search_bar">
 
             <ImageView
                 android:id="@+id/image_search"
                 android:layout_width="30dp"
                 android:layout_height="match_parent"
-                android:layout_margin="10dp"
+                android:layout_margin="8dp"
                 android:src="@drawable/ic_search_black_24dp"
                 app:layout_constraintBottom_toBottomOf="@+id/text_home_search"
                 app:layout_constraintStart_toStartOf="parent"
@@ -114,8 +107,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="6dp"
-                android:text="搜尋關鍵字"
-                android:textSize="18dp"
+                android:text="@string/home_page_search_bar_hint"
+                android:textSize="@dimen/text_max"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@id/image_search"
                 app:layout_constraintTop_toTopOf="parent" />

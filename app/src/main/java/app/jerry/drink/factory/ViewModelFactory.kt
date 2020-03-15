@@ -6,9 +6,10 @@ import app.jerry.drink.homesearch.HomeSearchViewModel
 import app.jerry.drink.MainActivityViewModel
 import app.jerry.drink.dataclass.source.DrinkRepository
 import app.jerry.drink.home.HomeViewModel
-import app.jerry.drink.order.CreateOrderViewModel
+import app.jerry.drink.order.createorder.CreateOrderViewModel
 import app.jerry.drink.post.PostViewModel
 import app.jerry.drink.profile.ProfileViewModel
+import app.jerry.drink.signin.SignInViewModel
 
 @Suppress("UNCHECKED_CAST")
 class ViewModelFactory constructor(
@@ -36,6 +37,9 @@ class ViewModelFactory constructor(
 
                 isAssignableFrom(HomeSearchViewModel::class.java) ->
                     HomeSearchViewModel(drinkRepository)
+
+                isAssignableFrom(SignInViewModel::class.java) ->
+                    SignInViewModel(drinkRepository)
 
                 else ->
                     throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")

@@ -1,5 +1,6 @@
 package app.jerry.drink.homesearch
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.hardware.input.InputManager
 import android.os.Bundle
@@ -26,17 +27,18 @@ import com.google.android.gms.maps.model.Marker
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.util.*
 
 class HomeSearchFragment : Fragment() {
 
     lateinit var binding: FragmentHomeSearchBinding
-
     private val viewModel by viewModels<HomeSearchViewModel> { getVmFactory() }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
         binding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_home_search, container, false
         )
@@ -44,22 +46,19 @@ class HomeSearchFragment : Fragment() {
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
 
-//        binding.editTextSearch.requestFocus()
+        /*CallSoftInputFromWindow*/
         binding.editTextSearch.showSoftInputOnFocus= true
-//        binding.editTextSearch.hasWindowFocus()
-//        binding.editTextSearch.requestFocusFromTouch()
-//        (activity as MainActivity).window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE)
-
         CoroutineScope(Dispatchers.Main).launch {
             binding.editTextSearch.requestFocus()
-            (activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager)?.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY)
+            (activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager)
+                .toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_NOT_ALWAYS)
         }
 
         val searchDrinkAdapter = HomeSearchDrinkAdapter(HomeSearchDrinkAdapter.OnClickListener {
             viewModel.navigationToDetail(it)
         })
 
-        binding.recyclerSearchDrink.adapter = searchDrinkAdapter
+        binding.homeSearchRecyclerSearchDrink.adapter = searchDrinkAdapter
 
         viewModel.navigationToDetail.observe(this, Observer {
             it?.let {
@@ -68,41 +67,13 @@ class HomeSearchFragment : Fragment() {
             }
         })
 
-        viewModel.drinkList.observe(this, Observer {
-            Log.d("jerryTest", "drinkList = $it")
-
-        })
-
-//        binding.searchBar.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-//            override fun onQueryTextSubmit(query: String?): Boolean {
-//                return false
-//            }
-//
-//            override fun onQueryTextChange(newText: String?): Boolean {
-//                val resultList = mutableListOf<Drink>()
-//
-//                viewModel.drinkList.value?.let {
-//                    for (drink in it) {
-//                        if (!newText.isNullOrEmpty()) {
-//                            if (drink.drinkName.contains(newText.toString())) {
-//                                resultList.add(drink)
-//                            }
-//                        }
-//                    }
-//                    searchDrinkAdapter.submitList(resultList)
-//                }
-//                return true
-//            }
-//        }
-//        )
-
         viewModel.searchEditText.observe(this, Observer {searchEditText->
-            Log.d("jerryTest","searchEditText = $searchEditText")
             val resultList = mutableListOf<Drink>()
             viewModel.drinkList.value?.let {
                 for (drink in it) {
                     if (!searchEditText.isNullOrEmpty()) {
-                        if (drink.drinkName.contains(searchEditText.toString())) {
+                        if (drink.drinkName.toLowerCase(Locale.getDefault()).contains(searchEditText.toString())
+                            || drink.store.storeName.toLowerCase(Locale.getDefault()).contains(searchEditText.toString())) {
                             resultList.add(drink)
                         }
                     }
@@ -111,25 +82,10 @@ class HomeSearchFragment : Fragment() {
             }
         })
 
-        binding.imageBack.setOnClickListener {
+        binding.homeSearchImageBack.setOnClickListener {
             findNavController().navigateUp()
         }
 
-
-
         return binding.root
     }
-
-//    private fun search(keyword: String?){
-//        val resultList = mutableListOf<Drink>()
-//        for(song in songsList){
-//            if(song.songTitle.toLowerCase().contains(keyword.toString())){
-//                resultList.add(song)
-//            }
-//            val adapter = SearchMusicAdapter(viewModel)
-//            binding.recyclerViewSearchMusicPage.adapter = adapter
-//            adapter.submitList(resultList)
-//        }
-//    }
-
 }

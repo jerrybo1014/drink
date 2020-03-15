@@ -1,6 +1,5 @@
-package app.jerry.drink.order
+package app.jerry.drink.order.createorder
 
-import android.icu.util.Calendar
 import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -13,6 +12,8 @@ import app.jerry.drink.dataclass.Result
 import app.jerry.drink.dataclass.Store
 import app.jerry.drink.dataclass.source.DrinkRepository
 import app.jerry.drink.network.LoadApiStatus
+import app.jerry.drink.signin.UserManager
+import app.jerry.drink.util.Util.getString
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -20,28 +21,34 @@ import kotlinx.coroutines.launch
 
 class CreateOrderViewModel(private val repository: DrinkRepository) : ViewModel() {
 
+    // _Order
+    private val _createOrder = MutableLiveData<Order>().apply {
+        UserManager.user?.let {
+            value = Order("", it.id, it, null, 0, 0, "", "", true)
+        }
+    }
+
+    val createOrder: LiveData<Order>
+        get() = _createOrder
+
     // _allStore
     private val _allStore = MutableLiveData<List<Store>>()
 
     val allStore: LiveData<List<Store>>
         get() = _allStore
 
-    // _selectedStore
-    private val _selectedStore = MutableLiveData<Store>()
+    private val _leave = MutableLiveData<Boolean>()
 
-    val selectedStore: LiveData<Store>
-        get() = _selectedStore
+    val leave: LiveData<Boolean>
+        get() = _leave
 
-    val selectTime = MutableLiveData<String>()
-    val enterNote = MutableLiveData<String>()
-    val createOrderFinished = MutableLiveData<Boolean?>()
+    val createOrderFinished = MutableLiveData<String?>()
 
     // status: The internal MutableLiveData that stores the status of the most recent request
     private val _status = MutableLiveData<LoadApiStatus>()
 
     val status: LiveData<LoadApiStatus>
         get() = _status
-
 
     // postStatus: The internal MutableLiveData that stores the status of the most recent request
     private val _postStatus = MutableLiveData<LoadApiStatus>()
@@ -68,12 +75,11 @@ class CreateOrderViewModel(private val repository: DrinkRepository) : ViewModel(
     private val coroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
 
     init {
-        selectTime.value = ""
-        enterNote.value = ""
-        createOrderFinished.value =false
+        createOrderFinished.value =null
+        getAllStoreResult()
     }
 
-    fun getAllStoreResult() {
+    private fun getAllStoreResult() {
 
         coroutineScope.launch {
 
@@ -85,6 +91,9 @@ class CreateOrderViewModel(private val repository: DrinkRepository) : ViewModel(
                 is Result.Success -> {
                     _error.value = null
                     _status.value = LoadApiStatus.DONE
+                    _createOrder.value?.let {
+                        it.store = result.data[0]
+                    }
                     result.data
                 }
                 is Result.Fail -> {
@@ -112,53 +121,49 @@ class CreateOrderViewModel(private val repository: DrinkRepository) : ViewModel(
 
         coroutineScope.launch {
 
-            val order = Order(
-                "",
-                null,
-                selectedStore.value,
-                0,
-                Calendar.getInstance().timeInMillis,
-                selectTime.value,
-                enterNote.value!!.trim(),
-                true
-            )
+            createOrder.value?.let {
+                _postStatus.value = LoadApiStatus.LOADING
+                val result = repository.createOrder(it)
 
-            _postStatus.value = LoadApiStatus.LOADING
-
-            val result = repository.createOrder(order)
-
-            createOrderFinished.value = when (result) {
-                is Result.Success -> {
-                    _error.value = null
-                    _postStatus.value = LoadApiStatus.DONE
-                    Toast.makeText(DrinkApplication.context, "成功送出", Toast.LENGTH_SHORT).show()
-                    result.data
+                createOrderFinished.value = when (result) {
+                    is Result.Success -> {
+                        _error.value = null
+                        _postStatus.value = LoadApiStatus.DONE
+                        Toast.makeText(DrinkApplication.context, getString(R.string.post_success), Toast.LENGTH_SHORT).show()
+                        result.data
+                    }
+                    is Result.Fail -> {
+                        _error.value = result.error
+                        _postStatus.value = LoadApiStatus.ERROR
+                        null
+                    }
+                    is Result.Error -> {
+                        _error.value = result.exception.toString()
+                        _postStatus.value = LoadApiStatus.ERROR
+                        null
+                    }
+                    else -> {
+                        _error.value = DrinkApplication.instance.getString(R.string.you_know_nothing)
+                        _postStatus.value = LoadApiStatus.ERROR
+                        null
+                    }
                 }
-                is Result.Fail -> {
-                    _error.value = result.error
-                    _postStatus.value = LoadApiStatus.ERROR
-                    null
-                }
-                is Result.Error -> {
-                    _error.value = result.exception.toString()
-                    _postStatus.value = LoadApiStatus.ERROR
-                    null
-                }
-                else -> {
-                    _error.value = DrinkApplication.instance.getString(R.string.you_know_nothing)
-                    _postStatus.value = LoadApiStatus.ERROR
-                    null
-                }
+                _refreshStatus.value = false
             }
-            _refreshStatus.value = false
         }
-
     }
 
     fun selectedStore(position: Int) {
         _allStore.value?.let {
-            _selectedStore.value = it[position]
+            _createOrder.value?.let {order->
+                order.store = it[position]
+                _createOrder.value = order
+            }
         }
+    }
+
+    fun leave(needRefresh: Boolean = false) {
+        _leave.value = needRefresh
     }
 
     val displayAllStore = Transformations.map(allStore) {
@@ -169,4 +174,7 @@ class CreateOrderViewModel(private val repository: DrinkRepository) : ViewModel(
         storeList
     }
 
+    fun selectOrderTime() {
+        _createOrder.value = _createOrder.value
+    }
 }

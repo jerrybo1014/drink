@@ -51,13 +51,15 @@
         app:destination="@id/radarFragment"
         app:popUpTo="@id/navigation"
         app:popUpToInclusive="true"/>
+
+
     <fragment
         android:id="@+id/detailFragment"
         android:name="app.jerry.drink.detail.DetailFragment"
         android:label="DetailFragment" >
         <argument
-            android:name="drinkDetail"
-            app:argType="app.jerry.drink.dataclass.DrinkDetail" />
+            android:name="drink"
+            app:argType="app.jerry.drink.dataclass.Drink" />
     </fragment>
 
     <fragment
@@ -82,11 +84,21 @@
         android:name="app.jerry.drink.order.addorder.AddOrderFragment"
         android:label="AddOrderFragement" >
         <argument
-            android:name="orderLists"
-            app:argType="app.jerry.drink.dataclass.OrderLists" />
+            android:name="order"
+            app:argType="app.jerry.drink.dataclass.Order" />
     </dialog>
 
     <action
         android:id="@+id/action_global_addOrderFragement"
         app:destination="@id/addOrderFragement" />
+    <fragment
+        android:id="@+id/signInFragment"
+        android:name="app.jerry.drink.signin.SignInFragment"
+        android:label="SignInFragment" />
+    <action
+        android:id="@+id/action_global_signInFragment"
+        app:destination="@id/signInFragment"
+        app:popUpTo="@id/navigation"
+        app:popUpToInclusive="true"/>
+
 </navigation>

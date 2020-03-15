@@ -1,11 +1,8 @@
 package app.jerry.drink.profile
 
-import ProfileFragment
 import android.graphics.Bitmap
 import android.net.Uri
-import android.util.Log
 import android.widget.Toast
-import androidx.core.net.toUri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -14,16 +11,14 @@ import app.jerry.drink.R
 import app.jerry.drink.dataclass.*
 import app.jerry.drink.dataclass.source.DrinkRepository
 import app.jerry.drink.network.LoadApiStatus
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
-import kotlinx.android.synthetic.main.fragment_profile.*
+import app.jerry.drink.signin.UserManager
+import app.jerry.drink.util.Util.getString
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
 class ProfileViewModel(private val repository: DrinkRepository) : ViewModel() {
-
 
     private val _userComment = MutableLiveData<List<Comment>>()
 
@@ -46,8 +41,10 @@ class ProfileViewModel(private val repository: DrinkRepository) : ViewModel() {
         value = false
     }
 
-    val userCurrent = MutableLiveData<User>()
-    val navigationToDetail = MutableLiveData<DrinkDetail>()
+    val userCurrent = MutableLiveData<User>().apply {
+        value = UserManager.user
+    }
+    val navigationToDetail = MutableLiveData<Drink>()
     val navigationToOrder = MutableLiveData<String>()
 
     // status: The internal MutableLiveData that stores the status of the most recent request
@@ -76,110 +73,78 @@ class ProfileViewModel(private val repository: DrinkRepository) : ViewModel() {
 
     init {
         imageUri.value = null
-        getUserCurrentResult()
         getUserCommentResult()
         getUserOrderResult()
     }
-
-    private fun getUserCurrentResult(){
-        coroutineScope.launch {
-
-            _status.value = LoadApiStatus.LOADING
-
-            val result = repository.getUserCurrent()
-
-            userCurrent.value = when (result) {
-                is Result.Success -> {
-                    _error.value = null
-                    _status.value = LoadApiStatus.DONE
-                    result.data
-                }
-                is Result.Fail -> {
-                    _error.value = result.error
-                    _status.value = LoadApiStatus.ERROR
-                    null
-                }
-                is Result.Error -> {
-                    _error.value = result.exception.toString()
-                    _status.value = LoadApiStatus.ERROR
-                    null
-                }
-                else -> {
-                    _error.value = DrinkApplication.instance.getString(R.string.you_know_nothing)
-                    _status.value = LoadApiStatus.ERROR
-                    null
-                }
-            }
-            _refreshStatus.value = false
-        }
-
-    }
-
 
     fun uploadAvatarResult() {
         coroutineScope.launch {
 
             _status.value = LoadApiStatus.LOADING
 
-            val result = repository.uploadAvatar(imageBitmap.value!!)
-
-            when (result) {
-                is Result.Success -> {
-                    _error.value = null
-                    _status.value = LoadApiStatus.DONE
-                    Log.d("postComentResult","$result.data")
-                    Toast.makeText(DrinkApplication.context, "成功送出", Toast.LENGTH_SHORT).show()
-                    uploadAvatarFinished()
-                    result.data
-                }
-                is Result.Fail -> {
-                    _error.value = result.error
-                    _status.value = LoadApiStatus.ERROR
-                    null
-                }
-                is Result.Error -> {
-                    _error.value = result.exception.toString()
-                    _status.value = LoadApiStatus.ERROR
-                    null
-                }
-                else -> {
-                    _error.value = DrinkApplication.instance.getString(R.string.you_know_nothing)
-                    _status.value = LoadApiStatus.ERROR
-                    null
+            imageBitmap.value?.let { bitmap ->
+                when (val result = repository.uploadAvatar(bitmap)) {
+                    is Result.Success -> {
+                        _error.value = null
+                        _status.value = LoadApiStatus.DONE
+                        Toast.makeText(
+                            DrinkApplication.context,
+                            getString(R.string.post_success),
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        userCurrent.value = UserManager.user
+                        uploadAvatarFinished()
+                        result.data
+                    }
+                    is Result.Fail -> {
+                        _error.value = result.error
+                        _status.value = LoadApiStatus.ERROR
+                    }
+                    is Result.Error -> {
+                        _error.value = result.exception.toString()
+                        _status.value = LoadApiStatus.ERROR
+                    }
+                    else -> {
+                        _error.value =
+                            DrinkApplication.instance.getString(R.string.you_know_nothing)
+                        _status.value = LoadApiStatus.ERROR
+                    }
                 }
             }
             _refreshStatus.value = false
         }
-
     }
 
-    private fun getUserCommentResult(){
+    private fun getUserCommentResult() {
         coroutineScope.launch {
 
             _status.value = LoadApiStatus.LOADING
 
-            val result = repository.getUserComment()
+            UserManager.user?.let {
+                val result = repository.getUserComment(it)
 
-            _userComment.value = when (result) {
-                is Result.Success -> {
-                    _error.value = null
-                    _status.value = LoadApiStatus.DONE
-                    result.data
-                }
-                is Result.Fail -> {
-                    _error.value = result.error
-                    _status.value = LoadApiStatus.ERROR
-                    null
-                }
-                is Result.Error -> {
-                    _error.value = result.exception.toString()
-                    _status.value = LoadApiStatus.ERROR
-                    null
-                }
-                else -> {
-                    _error.value = DrinkApplication.instance.getString(R.string.you_know_nothing)
-                    _status.value = LoadApiStatus.ERROR
-                    null
+                _userComment.value = when (result) {
+                    is Result.Success -> {
+                        _error.value = null
+                        _status.value = LoadApiStatus.DONE
+                        result.data
+                    }
+                    is Result.Fail -> {
+                        _error.value = result.error
+                        _status.value = LoadApiStatus.ERROR
+                        null
+                    }
+                    is Result.Error -> {
+                        _error.value = result.exception.toString()
+                        _status.value = LoadApiStatus.ERROR
+                        null
+                    }
+                    else -> {
+                        _error.value =
+                            DrinkApplication.instance.getString(R.string.you_know_nothing)
+                        _status.value = LoadApiStatus.ERROR
+                        null
+                    }
                 }
             }
             _refreshStatus.value = false
@@ -187,33 +152,36 @@ class ProfileViewModel(private val repository: DrinkRepository) : ViewModel() {
 
     }
 
-    private fun getUserOrderResult(){
+    private fun getUserOrderResult() {
         coroutineScope.launch {
 
             _status.value = LoadApiStatus.LOADING
 
-            val result = repository.getUserOrder()
+            UserManager.user?.let {
+                val result = repository.getUserOrder(it)
 
-            _userOrder.value = when (result) {
-                is Result.Success -> {
-                    _error.value = null
-                    _status.value = LoadApiStatus.DONE
-                    result.data
-                }
-                is Result.Fail -> {
-                    _error.value = result.error
-                    _status.value = LoadApiStatus.ERROR
-                    null
-                }
-                is Result.Error -> {
-                    _error.value = result.exception.toString()
-                    _status.value = LoadApiStatus.ERROR
-                    null
-                }
-                else -> {
-                    _error.value = DrinkApplication.instance.getString(R.string.you_know_nothing)
-                    _status.value = LoadApiStatus.ERROR
-                    null
+                _userOrder.value = when (result) {
+                    is Result.Success -> {
+                        _error.value = null
+                        _status.value = LoadApiStatus.DONE
+                        result.data
+                    }
+                    is Result.Fail -> {
+                        _error.value = result.error
+                        _status.value = LoadApiStatus.ERROR
+                        null
+                    }
+                    is Result.Error -> {
+                        _error.value = result.exception.toString()
+                        _status.value = LoadApiStatus.ERROR
+                        null
+                    }
+                    else -> {
+                        _error.value =
+                            DrinkApplication.instance.getString(R.string.you_know_nothing)
+                        _status.value = LoadApiStatus.ERROR
+                        null
+                    }
                 }
             }
             _refreshStatus.value = false
@@ -221,20 +189,20 @@ class ProfileViewModel(private val repository: DrinkRepository) : ViewModel() {
 
     }
 
-    fun uploadAvatarFinished(){
+    fun uploadAvatarFinished() {
         imageUri.value = null
     }
 
-    fun uploadAvatarCancel(){
+    fun uploadAvatarCancel() {
         imageUri.value = null
         userCurrent.value = userCurrent.value!!
     }
 
-    fun navigationToDetail(drinkDetail: DrinkDetail){
-        navigationToDetail.value = drinkDetail
+    fun navigationToDetail(drink: Drink) {
+        navigationToDetail.value = drink
     }
 
-    fun navigationToOrder(orderId: String){
+    fun navigationToOrder(orderId: String) {
         navigationToOrder.value = orderId
     }
 
@@ -246,13 +214,13 @@ class ProfileViewModel(private val repository: DrinkRepository) : ViewModel() {
         navigationToOrder.value = null
     }
 
-    fun allCommentStatus(){
+    fun allCommentStatus() {
         allCommentStatus.value?.let {
             allCommentStatus.value = !it
         }
     }
 
-    fun allOrderStatus(){
+    fun allOrderStatus() {
         allOrderStatus.value?.let {
             allOrderStatus.value = !it
         }

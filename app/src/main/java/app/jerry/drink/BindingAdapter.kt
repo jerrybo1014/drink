@@ -1,10 +1,8 @@
 package app.jerry.drink
 
-import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.ProgressBar
-import android.widget.Spinner
 import android.widget.TextView
 import androidx.core.net.toUri
 import androidx.databinding.BindingAdapter
@@ -17,9 +15,8 @@ import app.jerry.drink.home.HighScoreAdapter
 import app.jerry.drink.home.NewCommentAdapter
 import app.jerry.drink.homesearch.HomeSearchDrinkAdapter
 import app.jerry.drink.network.LoadApiStatus
-import app.jerry.drink.order.OrderListsAdapter
+import app.jerry.drink.order.OrderItemAdapter
 import app.jerry.drink.post.IceAdapter
-import app.jerry.drink.post.PostStoreSpinnerAdapter
 import app.jerry.drink.post.SugarAdapter
 import app.jerry.drink.profile.UserCommentAdapter
 import app.jerry.drink.profile.UserOrderAdapter
@@ -39,8 +36,8 @@ fun bindImage(imgView: ImageView, imgUrl: String?) {
             .load(imgUri)
             .apply(
                 RequestOptions()
-                    .placeholder(R.drawable.placeholder)
-                    .error(R.drawable.placeholder)
+                    .placeholder(R.drawable.draw_holder)
+                    .error(R.drawable.draw_holder)
             )
             .into(imgView)
     }
@@ -69,8 +66,8 @@ fun bindImageCorner(imgView: ImageView, imgUrl: String?) {
             .load(imgUri)
             .apply(
                 RequestOptions().transform(CenterCrop(),RoundedCorners(15))
-                    .placeholder(R.drawable.placeholder)
-                    .error(R.drawable.placeholder)
+                    .placeholder(R.drawable.draw_holder)
+                    .error(R.drawable.draw_holder)
             )
             .into(imgView)
     }
@@ -145,8 +142,8 @@ fun bindUserOrder(recyclerView: RecyclerView, data: List<Order>?){
 }
 
 @BindingAdapter("listOrder")
-fun bindOrderLists(recyclerView: RecyclerView, data: List<OrderList>?){
-    val adapter = recyclerView.adapter as OrderListsAdapter
+fun bindOrderLists(recyclerView: RecyclerView, data: List<OrderItem>?){
+    val adapter = recyclerView.adapter as OrderItemAdapter
     adapter.submitList(data)
 }
 
@@ -168,8 +165,8 @@ fun bindSearchDrink(recyclerView: RecyclerView, data: List<Drink>?){
     adapter.submitList(data)
 }
 
-@BindingAdapter("fabHideStauts")
-fun bindFabHideStauts(floatingActionButton: FloatingActionButton, data: Boolean){
+@BindingAdapter("fabHideStatus")
+fun bindFabHideStatus(floatingActionButton: FloatingActionButton, data: Boolean){
 
     if (data){
         floatingActionButton.show()
@@ -178,10 +175,3 @@ fun bindFabHideStauts(floatingActionButton: FloatingActionButton, data: Boolean)
     }
 
 }
-
-//@BindingAdapter("listPostStore")
-//fun bindPostStore(spinner: Spinner, data: A<String>?){
-////    val adapter = spinner.adapter as PostStoreSpinnerAdapter
-//    spinner.adapter = PostStoreSpinnerAdapter(data)
-//
-//}

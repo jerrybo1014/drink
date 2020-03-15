@@ -8,18 +8,21 @@ import androidx.recyclerview.widget.RecyclerView
 import app.jerry.drink.databinding.ItemDetailCommentBinding
 import app.jerry.drink.dataclass.Comment
 
-class DetailAdapter :
+class DetailAdapter(val viewModel: DetailViewModel) :
     ListAdapter<Comment, DetailAdapter.DetailViewHolder>(
         DiffCallback
     ) {
 
-    class DetailViewHolder(private var binding: ItemDetailCommentBinding) :
+    class DetailViewHolder(private val binding: ItemDetailCommentBinding,
+                           private val viewModel: DetailViewModel) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(comment: Comment) {
             binding.comment = comment
-//            binding.detailImage = string
-            // This is important, because it forces the data binding to execute immediately,
-            // which allows the RecyclerView to make the correct view size measurements
+            binding.viewModel = viewModel
+            binding.root.setOnLongClickListener {
+                viewModel.deleteComment(comment)
+                true
+            }
             binding.executePendingBindings()
         }
     }
@@ -40,22 +43,14 @@ class DetailAdapter :
         }
     }
 
-    /**
-     * Create new [RecyclerView] item views (invoked by the layout manager)
-     */
-
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
     ): DetailViewHolder {
         return DetailViewHolder(
             ItemDetailCommentBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        )
+        , viewModel)
     }
-
-    /**
-     * Replaces the contents of a view (invoked by the layout manager)
-     */
 
     override fun onBindViewHolder(holder: DetailViewHolder, position: Int) {
         val comment = getItem(position)

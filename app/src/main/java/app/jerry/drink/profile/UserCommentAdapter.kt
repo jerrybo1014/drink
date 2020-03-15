@@ -8,31 +8,23 @@ import androidx.recyclerview.widget.RecyclerView
 import app.jerry.drink.databinding.ItemUserCommentBinding
 import app.jerry.drink.dataclass.Comment
 import app.jerry.drink.dataclass.Drink
-import app.jerry.drink.dataclass.DrinkDetail
-import app.jerry.drink.dataclass.Store
 
 class UserCommentAdapter(private val onClickListener: OnClickListener ) :
     ListAdapter<Comment, UserCommentAdapter.UserCommentViewHolder>(
         DiffCallback
     ) {
 
-    class OnClickListener(val clickListener: (drinkDetail: DrinkDetail) -> Unit) {
-        fun onClick(drinkDetail: DrinkDetail) = clickListener(drinkDetail)
+    class OnClickListener(val clickListener: (drink: Drink) -> Unit) {
+        fun onClick(drink: Drink) = clickListener(drink)
     }
 
     class UserCommentViewHolder(private var binding: ItemUserCommentBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(comment: Comment, onClickListener: OnClickListener) {
 
-            val drinkDetail = DrinkDetail(
-                comment.drink
-                , comment.store
-            )
+            val drink = comment.drink
             binding.comment = comment
-            binding.root.setOnClickListener { onClickListener.onClick(drinkDetail) }
-//            binding.detailImage = string
-            // This is important, because it forces the data binding to execute immediately,
-            // which allows the RecyclerView to make the correct view size measurements
+            binding.root.setOnClickListener { onClickListener.onClick(drink) }
             binding.executePendingBindings()
         }
     }
@@ -53,10 +45,6 @@ class UserCommentAdapter(private val onClickListener: OnClickListener ) :
         }
     }
 
-    /**
-     * Create new [RecyclerView] item views (invoked by the layout manager)
-     */
-
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
@@ -65,10 +53,6 @@ class UserCommentAdapter(private val onClickListener: OnClickListener ) :
             ItemUserCommentBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         )
     }
-
-    /**
-     * Replaces the contents of a view (invoked by the layout manager)
-     */
 
     override fun onBindViewHolder(holder: UserCommentViewHolder, position: Int) {
         val comment = getItem(position)

@@ -1,12 +1,12 @@
 package app.jerry.drink.dataclass
 
 import android.os.Parcelable
-import com.google.firebase.firestore.GeoPoint
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 data class Order(
     var id: String ="",
+    var userId: String = "",
     var user: User? = null,
     var store: Store? = null,
     var createdTime: Long = 0,
@@ -14,43 +14,6 @@ data class Order(
     var timeLimit: String? ="",
     var note: String = "",
     var status: Boolean = true
-): Parcelable{
-    fun displayUserId(): String{
-        return user!!.id
-    }
-}
-
-@Parcelize
-data class OrderList(
-    var id: String ="",
-    var user: User? = null,
-    var drink: Drink? = null,
-    var ice: String? = "",
-    var sugar: String? = "",
-    var qty: Long? = 1,
-    var note: String = ""
-): Parcelable{
-    fun displayQty(): String{
-        return "X$qty"
-    }
-
-    fun displayIceSugar(): String{
-        return "$sugar$ice"
-    }
-
-    fun displayUserId(): String{
-        return user!!.id
-    }
-}
-
-@Parcelize
-data class OrderLists(
-    var order: Order? = null,
-    var orderLists: List<OrderList>? = listOf()
 ): Parcelable
 
-//@Parcelize
-//data class OrderUser(
-//    var order: GeoPoint? = null,
-//    var orderLists: List<OrderList>? = listOf()
-//): Parcelable
+

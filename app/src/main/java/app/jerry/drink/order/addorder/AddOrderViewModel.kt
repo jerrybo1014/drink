@@ -13,13 +13,16 @@ import app.jerry.drink.R
 import app.jerry.drink.dataclass.*
 import app.jerry.drink.dataclass.source.DrinkRepository
 import app.jerry.drink.network.LoadApiStatus
+import app.jerry.drink.signin.UserManager
+import app.jerry.drink.util.Logger
+import app.jerry.drink.util.Util.getColor
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
-class AddOrderViewModel(private val repository: DrinkRepository, private val orderLists: OrderLists) : ViewModel() {
-
+class AddOrderViewModel(private val repository: DrinkRepository, private val order: Order) :
+    ViewModel() {
 
     // _allStoreMenu
     private val _allStoreMenu = MutableLiveData<List<Drink>>()
@@ -28,29 +31,21 @@ class AddOrderViewModel(private val repository: DrinkRepository, private val ord
         get() = _allStoreMenu
 
     // _selectedDrink
-    private val _selectedDrink = MutableLiveData<Drink>()
+    private val _orderItem = MutableLiveData<OrderItem>().apply {
+        UserManager.user?.let {
+            value = OrderItem("", it.id, it, null, null, null, 1, "")
+        }
+    }
 
-    val selectedDrink: LiveData<Drink>
-        get() = _selectedDrink
-
-    // _selectedDrink
-    private val _orderList = MutableLiveData<OrderList>()
-
-    val orderList: LiveData<OrderList>
-        get() = _orderList
+    val orderItem: LiveData<OrderItem>
+        get() = _orderItem
 
     private val _leave = MutableLiveData<Boolean>()
 
     val leave: LiveData<Boolean>
         get() = _leave
 
-
-    var selectedIce = MutableLiveData<String>()
-    var selectedSugar = MutableLiveData<String>()
-    var selectedQty = MutableLiveData<Long>()
-    var enterNote = MutableLiveData<String>()
-
-    var addOrderfinished = MutableLiveData<Boolean>()
+    var addOrderFinished = MutableLiveData<Boolean>()
 
     // status: The internal MutableLiveData that stores the status of the most recent request
     private val _status = MutableLiveData<LoadApiStatus>()
@@ -76,20 +71,17 @@ class AddOrderViewModel(private val repository: DrinkRepository, private val ord
     // the Coroutine runs using the Main (UI) dispatcher
     private val coroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
 
-init {
-    selectedQty.value = 1
-    enterNote.value = ""
-    _orderList.value = OrderList("",null,null,null, null,1,"")
-    addOrderfinished.value = false
-}
+    init {
+        addOrderFinished.value = false
+        getStoreMenuResult()
+    }
 
-    fun getStoreMenuResult() {
+    private fun getStoreMenuResult() {
 
         coroutineScope.launch {
 
             _status.value = LoadApiStatus.LOADING
-
-            val result = repository.getStoreMenu(orderLists.order!!.store!!)
+            val result = repository.getStoreMenu(order.store!!)
 
             _allStoreMenu.value = when (result) {
                 is Result.Success -> {
@@ -124,9 +116,9 @@ init {
 
             _status.value = LoadApiStatus.LOADING
 
-            val result = repository.addOrder(orderList.value!!, orderLists.order!!.id.toLong())
+            val result = repository.addOrder(_orderItem.value!!, order.id.toLong())
 
-            addOrderfinished.value = when (result) {
+            addOrderFinished.value = when (result) {
                 is Result.Success -> {
                     _error.value = null
                     _status.value = LoadApiStatus.DONE
@@ -150,13 +142,11 @@ init {
             }
             _refreshStatus.value = false
         }
-
     }
 
     fun selectedDrink(position: Int) {
         _allStoreMenu.value?.let {
-            _orderList.value!!.drink= it[position]
-            Log.d("_orderList","${orderList.value!!.drink}")
+            _orderItem.value!!.drink = it[position]
         }
     }
 
@@ -165,43 +155,35 @@ init {
 
     fun selectIceStatus(view: View, string: String) {
         selectedIceView?.isSelected = false
-        (selectedIceView as? TextView)?.setTextColor(DrinkApplication.context.resources.getColor(R.color.bottom_navigation_light))
+        (selectedIceView as? TextView)?.setTextColor(getColor(R.color.bottom_navigation_light))
         selectedIceView = view
         selectedIceView?.isSelected = true
-        (selectedIceView as? TextView)?.setTextColor(DrinkApplication.context.resources.getColor(R.color.White))
-        _orderList.value?.ice = string
-        selectedIce.value = string
-        Log.d("selectIceStatus","${_orderList.value}")
+        (selectedIceView as? TextView)?.setTextColor(getColor(R.color.White))
+        _orderItem.value?.ice = string
+        _orderItem.value = _orderItem.value
     }
 
     fun selectSugarStatus(view: View, string: String) {
         selectedSugarView?.isSelected = false
-        (selectedSugarView as? TextView)?.setTextColor(DrinkApplication.context.resources.getColor(R.color.bottom_navigation_light))
+        (selectedSugarView as? TextView)?.setTextColor(getColor(R.color.bottom_navigation_light))
         selectedSugarView = view
         selectedSugarView?.isSelected = true
-        (selectedSugarView as? TextView)?.setTextColor(DrinkApplication.context.resources.getColor(R.color.White))
-        _orderList.value?.sugar = string
-        selectedSugar.value = string
-        Log.d("selectIceStatus","${_orderList.value}")
+        (selectedSugarView as? TextView)?.setTextColor(getColor(R.color.White))
+        _orderItem.value?.sugar = string
+        _orderItem.value = _orderItem.value
     }
 
     val displayStoreDrink = Transformations.map(allStoreMenu) {
         val drinkList = mutableListOf<String>()
-        for (drink in it){
+        for (drink in it) {
             drinkList.add(drink.drinkName)
         }
         drinkList
     }
 
-
     fun leave(needRefresh: Boolean = false) {
         _leave.value = needRefresh
     }
-
-    fun onLeft() {
-        _leave.value = null
-    }
-
 
     @InverseMethod("convertLongToString")
     fun convertStringToLong(value: String): Long {
@@ -211,16 +193,8 @@ init {
             1L
         }
     }
+
     fun convertLongToString(value: Long): String {
         return value.toString()
     }
-
-    fun increase(){
-        selectedQty.value = selectedQty.value?.plus(1)
-    }
-    fun decrease(){
-        selectedQty.value = selectedQty.value?.minus(1)
-    }
-
-
 }

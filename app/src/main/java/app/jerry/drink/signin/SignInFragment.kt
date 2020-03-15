@@ -1,173 +1,79 @@
 package app.jerry.drink.signin
 
-import android.content.DialogInterface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.DialogFragment
 import app.jerry.drink.databinding.FragmentSignInBinding
 import android.content.Intent
-import android.util.Log
-import android.view.KeyEvent
-import android.widget.Toast
-import app.jerry.drink.MainActivity
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import app.jerry.drink.R
-import com.facebook.AccessToken
-import com.facebook.CallbackManager
-import com.facebook.FacebookCallback
-import com.facebook.FacebookException
+import app.jerry.drink.ext.getVmFactory
+import app.jerry.drink.util.RequestCode
+import app.jerry.drink.util.Logger
+import app.jerry.drink.util.Util
 import com.facebook.internal.Utility
 import com.facebook.login.LoginManager
-import com.facebook.login.LoginResult
 import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
-import com.google.firebase.auth.FacebookAuthProvider
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.GoogleAuthProvider
 
-
-class SignInFragment : DialogFragment() {
+class SignInFragment : Fragment() {
 
     lateinit var binding: FragmentSignInBinding
-    val TAG = "jerryTest"
-    private val auth = FirebaseAuth.getInstance()
-    lateinit var callbackManager: CallbackManager
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setStyle(STYLE_NO_FRAME, R.style.SignInDialog)
-    }
+    private val viewModel by viewModels<SignInViewModel> { getVmFactory() }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
         binding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_sign_in, container, false
         )
 
-        this.dialog?.setOnKeyListener(DialogInterface.OnKeyListener { _, keyCode, _ ->
-            if (keyCode == KeyEvent.KEYCODE_BACK){
-                (activity as MainActivity).finish()
+        binding.viewModel = viewModel
+        binding.lifecycleOwner = this
+
+        viewModel.loginMode.observe(this, Observer {
+            it?.let {
+                when (it){
+                    Util.getString(R.string.log_in__facebook) -> {
+                        LoginManager.getInstance().
+                            logInWithReadPermissions(this,
+                            Utility.arrayList(Util.getString(R.string.fb_request_profile), Util.getString(R.string.fb_request_email)))
+                    }
+                    Util.getString(R.string.log_in__google) -> {
+                        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                            .requestIdToken(Util.getString(R.string.default_web_client_id))
+                            .requestEmail()
+                            .build()
+                        val mGoogleSignInClient = GoogleSignIn.getClient(context!!, gso)
+                        val signInIntent = mGoogleSignInClient.signInIntent
+                        startActivityForResult(signInIntent, RequestCode.GOOGLE_SIGN_IN.requestCode)
+                    }
+                }
             }
-            true
         })
-
-        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestIdToken(getString(R.string.default_web_client_id))
-            .requestEmail()
-            .build()
-
-        val mGoogleSignInClient = GoogleSignIn.getClient(context!!, gso)
-
-        fun signInGoogle() {
-            val signInIntent = mGoogleSignInClient.signInIntent
-            startActivityForResult(signInIntent, 102)
-        }
-
-        fun signInFb() {
-            LoginManager.getInstance().logInWithReadPermissions(this,
-                Utility.arrayList("public_profile", "email"))
-        }
-
-        binding.buttonSigninGoogle.setOnClickListener {
-            signInGoogle()
-        }
-
-        binding.buttonSigninFb.setOnClickListener {
-            signInFb()
-        }
-
-        /*FB*/
-        callbackManager = CallbackManager.Factory.create()
-        LoginManager.getInstance()
-            .registerCallback(callbackManager, object : FacebookCallback<LoginResult> {
-                override fun onSuccess(result: LoginResult) {
-                    //val accessToken = result?.accessToken
-                    Log.d("FbStatus","handleFacebookAccessToken : onSuccess  ${result.accessToken}")
-                    handleFacebookAccessToken(result.accessToken)
-                }
-                override fun onCancel() {
-                    Log.d("FbStatus", "onCancel")
-                }
-                override fun onError(error: FacebookException?) {
-                    Log.d("FbStatus", "onError")
-                }
-            })
 
         return binding.root
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        // Pass the activity result back to the Facebook SDK
-        callbackManager.onActivityResult(requestCode, resultCode, data)
+        viewModel.fbCallbackManager.onActivityResult(requestCode, resultCode, data)
 
-        if (requestCode == 102){
+        if (requestCode == RequestCode.GOOGLE_SIGN_IN.requestCode){
             val task = GoogleSignIn.getSignedInAccountFromIntent(data)
             try {
-                // Google Sign In was successful, authenticate with Firebase
                 val account = task.getResult(ApiException::class.java)
-                firebaseAuthWithGoogle(account!!)
+                viewModel.firebaseAuthWithGoogle(account!!)
             } catch (e: ApiException) {
-                // Google Sign In failed, update UI appropriately
-                Log.w(TAG, "Google sign in failed", e)
-                // ...
+                Logger.w("Google sign in failed $e")
             }
         }
-
     }
-
-    private fun handleFacebookAccessToken(token: AccessToken) {
-        Log.d(TAG, "handleFacebookAccessToken:$token")
-
-        val credential = FacebookAuthProvider.getCredential(token.token)
-        auth.signInWithCredential(credential)
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    this.dismiss()
-                    // Sign in success, update UI with the signed-in user's information
-                    Log.d(TAG, "signInWithCredential:success")
-                    val user = auth.currentUser
-                } else {
-                    // If sign in fails, display a message to the user.
-                    Log.w(TAG, "signInWithCredential:failure", task.exception)
-                    Toast.makeText(context, "Authentication failed.",
-                        Toast.LENGTH_SHORT).show()
-                }
-
-                // ...
-            }
-    }
-
-    private fun firebaseAuthWithGoogle(acct: GoogleSignInAccount) {
-        Log.d(TAG, "firebaseAuthWithGoogle:" + acct.id!!)
-
-        val credential = GoogleAuthProvider.getCredential(acct.idToken, null)
-        auth.signInWithCredential(credential)
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    this.dismiss()
-                    // Sign in success, update UI with the signed-in user's information
-                    Log.d(TAG, "signInWithCredential:success")
-                    val user = auth.currentUser
-                    Toast.makeText(context, "成功登入", Toast.LENGTH_SHORT).show()
-                    Log.d(TAG, "signInWithCredential:success ${user!!.email}")
-                    Log.d(TAG, "signInWithCredential:success ${user.displayName}")
-                    Log.d(TAG, "signInWithCredential:success ${user.uid}")
-//                    updateUI(user)
-                } else {
-                    // If sign in fails, display a message to the user.
-                    Log.w(TAG, "signInWithCredential:failure", task.exception)
-//                    Snackbar.make(main_layout, "Authentication Failed.", Snackbar.LENGTH_SHORT).show()
-//                    updateUI(null)
-                }
-                // ...
-            }
-    }
-
 }

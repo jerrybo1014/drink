@@ -8,6 +8,10 @@
             name="comment"
             type="app.jerry.drink.dataclass.Comment" />
 
+        <variable
+            name="viewModel"
+            type="app.jerry.drink.detail.DetailViewModel" />
+
         <import type="android.view.View"/>
 
     </data>

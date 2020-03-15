@@ -6,8 +6,6 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import app.jerry.drink.databinding.ItemMapDrinkRankBinding
-import app.jerry.drink.databinding.ItemStoreHighScoreBinding
-import app.jerry.drink.dataclass.DrinkDetail
 import app.jerry.drink.dataclass.DrinkRank
 
 class RadarStoreDrinkAdapter:
@@ -50,10 +48,6 @@ class RadarStoreDrinkAdapter:
         }
     }
 
-    /**
-     * Create new [RecyclerView] item views (invoked by the layout manager)
-     */
-
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
@@ -62,10 +56,6 @@ class RadarStoreDrinkAdapter:
             ItemMapDrinkRankBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         )
     }
-
-    /**
-     * Replaces the contents of a view (invoked by the layout manager)
-     */
 
     override fun onBindViewHolder(holder: RadarStoreDrinkViewHolder, position: Int) {
         val drinkRank = getItem(position)

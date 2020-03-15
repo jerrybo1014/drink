@@ -5,12 +5,12 @@
 
     <data>
         <variable
-            name="orderList"
-            type="app.jerry.drink.dataclass.OrderList" />
+            name="orderItem"
+            type="app.jerry.drink.dataclass.OrderItem" />
 
         <variable
             name="viewModel"
-            type="app.jerry.drink.order.OrderVIewModel" />
+            type="app.jerry.drink.order.OrderViewModel" />
 
         <variable
             name="userCurrent"
@@ -54,7 +54,7 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginStart="8dp"
                 android:fontFamily="@font/noto_sans"
-                android:text="@{orderList.drink.drinkName}"
+                android:text="@{orderItem.drink.drinkName}"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -65,7 +65,7 @@
                 android:textSize="14dp"
                 android:layout_marginTop="8dp"
                 android:fontFamily="@font/noto_sans"
-                android:text="@{orderList.displayQty()}"
+                android:text="@{orderItem.displayQty()}"
                 app:layout_constraintStart_toStartOf="@+id/guide_2"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -75,7 +75,7 @@
                 android:layout_height="wrap_content"
                 android:textSize="14dp"
                 android:fontFamily="@font/noto_sans"
-                android:text="@{orderList.displayIceSugar() }"
+                android:text="@{orderItem.displayIceSugar() }"
                 app:layout_constraintBaseline_toBaselineOf="@+id/text_order_list_drink"
                 app:layout_constraintStart_toStartOf="@id/guide_1" />
 
@@ -87,7 +87,7 @@
                 android:layout_marginBottom="8dp"
                 android:layout_marginStart="8dp"
                 android:fontFamily="@font/noto_sans"
-                android:text="@{orderList.user.name}"
+                android:text="@{orderItem.user.name}"
                 android:textSize="14dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -99,7 +99,7 @@
                 android:layout_height="wrap_content"
                 android:textSize="14dp"
                 android:fontFamily="@font/noto_sans"
-                android:text="@{orderList.note}"
+                android:text="@{orderItem.note}"
                 app:layout_constraintStart_toStartOf="@+id/guide_1"
                 app:layout_constraintTop_toTopOf="@+id/text_add_order_name" />
 
@@ -111,7 +111,7 @@
                 android:layout_marginEnd="8dp"
                 android:tint="#939598"
                 android:src="@drawable/trash"
-                android:onClick="@{() -> viewModel.removeOrderResult(orderList.id)}"
+                android:onClick="@{() -> viewModel.removeOrderResult(orderItem.id)}"
                 android:visibility="@{userCurrent == true ? View.VISIBLE:View.GONE}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -124,7 +124,6 @@
                 android:background="#99AAAAAA"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:layout_editor_absoluteX="8dp" />
-
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -16,13 +16,13 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import java.text.NumberFormat
 
-class RadarViewModel(private val repository: DrinkRepository, private val store: Store) : ViewModel() {
+class RadarViewModel(private val repository: DrinkRepository, private val store: Store) :
+    ViewModel() {
 
     private val _storeLocation = MutableLiveData<List<StoreLocation>>()
 
     val storeLocation: LiveData<List<StoreLocation>>
         get() = _storeLocation
-
 
     private val _storeComment = MutableLiveData<List<Comment>>()
 
@@ -33,7 +33,6 @@ class RadarViewModel(private val repository: DrinkRepository, private val store:
 
     val selectStore: LiveData<StoreLocation>
         get() = _selectStore
-
 
     private val _newDrinkRank = MutableLiveData<List<DrinkRank>>()
 
@@ -48,7 +47,7 @@ class RadarViewModel(private val repository: DrinkRepository, private val store:
         value = false
     }
 
-    val navigationToDetail = MutableLiveData<DrinkDetail>()
+    val navigationToDetail = MutableLiveData<Drink>()
 
     // status: The internal MutableLiveData that stores the status of the most recent request
     private val _status = MutableLiveData<LoadApiStatus>()
@@ -74,32 +73,25 @@ class RadarViewModel(private val repository: DrinkRepository, private val store:
     // the Coroutine runs using the Main (UI) dispatcher
     private val coroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
 
-init {
-    locationInit()
-}
-
-    private fun locationInit() {
-        if (store.storeId == ""){
-            getStoreLocationResult()
-        }
-
-
-
+    init {
+        getStoreLocationResult()
     }
 
-
-    fun getStoreLocationResult(){
+    fun getStoreLocationResult() {
         coroutineScope.launch {
-
             _status.value = LoadApiStatus.LOADING
-
             val result = repository.getStoreLocation()
 
             _storeLocation.value = when (result) {
                 is Result.Success -> {
                     _error.value = null
                     _status.value = LoadApiStatus.DONE
-                    result.data
+
+                    if (store.storeId == "") {
+                        result.data
+                    } else {
+                        result.data.filter { it.store.storeId == store.storeId }
+                    }
                 }
                 is Result.Fail -> {
                     _error.value = result.error
@@ -122,19 +114,17 @@ init {
 
     }
 
-    fun getStoreCommentResult(store: Store){
+    fun getStoreCommentResult(store: Store) {
         coroutineScope.launch {
-
             _status.value = LoadApiStatus.LOADING
-
             val result = repository.getStoreComment(store)
 
             _storeComment.value = when (result) {
                 is Result.Success -> {
                     _error.value = null
                     _status.value = LoadApiStatus.DONE
-                    Log.d("jerryTest","getStoreCommentResult = ${result.data}")
-                    if (!result.data.isNullOrEmpty()){
+                    Log.d("jerryTest", "getStoreCommentResult = ${result.data}")
+                    if (!result.data.isNullOrEmpty()) {
                         getDrinkRank(result.data)
                     }
                     result.data
@@ -157,16 +147,11 @@ init {
             }
             _refreshStatus.value = false
         }
-
     }
 
-
-
-
-    fun getDrinkRank(commnetList: List<Comment>) {
-
+    private fun getDrinkRank(commentList: List<Comment>) {
         val scoreRank = mutableListOf<DrinkRank>()
-        for (commentUnit in commnetList) {
+        for (commentUnit in commentList) {
             /*-------------------------------------------------------------*/
             var haveId = false
             var position = -1
@@ -205,17 +190,17 @@ init {
         _newDrinkRank.value = scoreRank
     }
 
-
-    val displayStoreLocation = Transformations.map(_selectStore){
-
+    val displayStoreLocation = Transformations.map(_selectStore) {
         return@map "${it.store.storeName} - ${it.branchName}"
     }
 
-    fun selectStore(storeLocation: StoreLocation){
-            _selectStore.value = storeLocation
+    fun selectStore(storeLocation: StoreLocation) {
+        _selectStore.value = storeLocation
+        _storeComment.value = null
+        _newDrinkRank.value = null
     }
 
-    fun storeCardClose(){
+    fun storeCardClose() {
         storeCardStatus.value?.let {
             storeCardStatus.value = false
         }
@@ -224,7 +209,7 @@ init {
         }
     }
 
-    fun storeCardOpen(){
+    fun storeCardOpen() {
         storeCardStatus.value?.let {
             storeCardStatus.value = true
         }
@@ -233,14 +218,14 @@ init {
         }
     }
 
-    fun storeDrinkStatus(){
+    fun storeDrinkStatus() {
         storeDrinkStatus.value?.let {
             storeDrinkStatus.value = !it
         }
     }
 
-    fun navigationToDetail(drinkDetail: DrinkDetail) {
-        navigationToDetail.value = drinkDetail
+    fun navigationToDetail(drink: Drink) {
+        navigationToDetail.value = drink
     }
 
     fun onDetailNavigated() {

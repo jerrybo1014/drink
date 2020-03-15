@@ -15,7 +15,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import java.text.NumberFormat
 
-class DetailViewModel(private val repository: DrinkRepository, val drinkDetail: DrinkDetail) : ViewModel() {
+class DetailViewModel(private val repository: DrinkRepository, val drink: Drink) : ViewModel() {
 
     private val _detailComment = MutableLiveData<List<Comment>>()
 
@@ -27,8 +27,8 @@ class DetailViewModel(private val repository: DrinkRepository, val drinkDetail: 
     val navigationToRadar: LiveData<Store>
         get() = _navigationToRadar
 
-    val drinkInformation = MutableLiveData<DrinkDetail>().apply {
-        value = drinkDetail
+    val drinkInformation = MutableLiveData<Drink>().apply {
+        value = drink
     }
 
     val avgStar = MutableLiveData<String>()
@@ -69,7 +69,7 @@ class DetailViewModel(private val repository: DrinkRepository, val drinkDetail: 
 
             _status.value = LoadApiStatus.LOADING
 
-            val result = repository.getDetailComment(drinkDetail)
+            val result = repository.getDetailComment(drink)
 
             _detailComment.value = when (result) {
                 is Result.Success -> {
@@ -134,6 +134,39 @@ class DetailViewModel(private val repository: DrinkRepository, val drinkDetail: 
             detailComment.size)
 
         Log.d("jerryTest","displayAvgStar = ${numberFormat.format(avg)}")
+    }
+
+    fun deleteComment(comment: Comment){
+        coroutineScope.launch {
+
+            _status.value = LoadApiStatus.LOADING
+
+            val result = repository.deleteComment(comment)
+
+            when (result) {
+                is Result.Success -> {
+                    _error.value = null
+                    _status.value = LoadApiStatus.DONE
+                    result.data
+                }
+                is Result.Fail -> {
+                    _error.value = result.error
+                    _status.value = LoadApiStatus.ERROR
+                    null
+                }
+                is Result.Error -> {
+                    _error.value = result.exception.toString()
+                    _status.value = LoadApiStatus.ERROR
+                    null
+                }
+                else -> {
+                    _error.value = DrinkApplication.instance.getString(R.string.you_know_nothing)
+                    _status.value = LoadApiStatus.ERROR
+                    null
+                }
+            }
+            _refreshStatus.value = false
+        }
     }
 
     fun navigationToRadar(store: Store){

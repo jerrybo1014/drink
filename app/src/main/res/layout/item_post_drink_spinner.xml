@@ -14,7 +14,7 @@
             android:id="@+id/text_spinner_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="16sp"
+            android:textSize="16dp"
             android:textColor="@color/black_3f3a3a"
             android:lineSpacingExtra="8sp"
             android:layout_marginStart="24dp"

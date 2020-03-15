@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModel
 import app.jerry.drink.DrinkApplication
 import app.jerry.drink.R
 import app.jerry.drink.dataclass.Drink
-import app.jerry.drink.dataclass.DrinkDetail
 import app.jerry.drink.dataclass.Result
 import app.jerry.drink.dataclass.source.DrinkRepository
 import app.jerry.drink.network.LoadApiStatus
@@ -22,7 +21,7 @@ class HomeSearchViewModel(private val repository: DrinkRepository) : ViewModel()
     val drinkList: LiveData<List<Drink>>
         get() = _drinkList
 
-    val navigationToDetail = MutableLiveData<DrinkDetail>()
+    val navigationToDetail = MutableLiveData<Drink>()
     val searchEditText = MutableLiveData<String>()
 
     // status: The internal MutableLiveData that stores the status of the most recent request
@@ -49,7 +48,6 @@ class HomeSearchViewModel(private val repository: DrinkRepository) : ViewModel()
     // the Coroutine runs using the Main (UI) dispatcher
     private val coroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
 
-
     init {
         getSearchDrinkResult()
     }
@@ -58,7 +56,6 @@ class HomeSearchViewModel(private val repository: DrinkRepository) : ViewModel()
         coroutineScope.launch {
 
             _status.value = LoadApiStatus.LOADING
-
             val result = repository.getSearchDrink()
 
             _drinkList.value = when (result) {
@@ -88,14 +85,11 @@ class HomeSearchViewModel(private val repository: DrinkRepository) : ViewModel()
 
     }
 
-
-
-    fun navigationToDetail(drinkDetail: DrinkDetail) {
-        navigationToDetail.value = drinkDetail
+    fun navigationToDetail(drink: Drink) {
+        navigationToDetail.value = drink
     }
 
     fun onDetailNavigated() {
         navigationToDetail.value = null
     }
-
 }

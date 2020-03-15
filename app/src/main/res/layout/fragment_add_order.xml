@@ -24,7 +24,7 @@
             android:padding="16dp"
             android:clickable="true"
             android:background="@drawable/shape_corner_r"
-            android:backgroundTint="#FFFFFF"
+            android:backgroundTint="@color/White"
             android:layout_marginHorizontal="16dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -35,199 +35,181 @@
                 android:id="@+id/add_order_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="新增品項"
-                android:textSize="20dp"
+                android:text="@string/add_order_dialog_title"
+                android:textSize="@dimen/text_title"
+                android:textColor="@color/text_color"
                 android:fontFamily="@font/noto_sans"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
-                android:id="@+id/image_drink"
-                android:layout_width="18dp"
-                android:layout_height="18dp"
-                android:src="@drawable/drink_icon"
-                android:tint="@color/myColorPrimaryDark"
-                app:layout_constraintBottom_toBottomOf="@+id/text_drink"
+                android:id="@+id/add_order_image_drink"
+                android:src="@drawable/cocktail"
+                app:layout_constraintBottom_toBottomOf="@+id/add_order_text_drink"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/text_drink" />
+                app:layout_constraintTop_toTopOf="@+id/add_order_text_drink"
+                style="@style/app_icon_mid" />
 
             <TextView
-                android:id="@+id/text_drink"
-                style="@style/post_text_title"
+                android:id="@+id/add_order_text_drink"
+                style="@style/add_order_text"
                 android:text="@string/post_drink"
-                android:textSize="16dp"
+                android:textSize="@dimen/text_max"
                 android:fontFamily="@font/noto_sans"
-                app:layout_constraintStart_toEndOf="@+id/image_drink"
+                app:layout_constraintStart_toEndOf="@+id/add_order_image_drink"
                 app:layout_constraintTop_toBottomOf="@+id/add_order_title" />
 
             <Spinner
-                android:id="@+id/spinner_drink"
+                android:id="@+id/add_order_spinner_drink"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:entries="@{viewModel.displayStoreDrink}"
-                android:paddingStart="12dp"
-                android:paddingTop="16dp"
-                android:paddingEnd="12dp"
-                android:paddingBottom="16dp"
-                android:prompt="@string/spinner_store"
-                android:textSize="16dp"
-                android:fontFamily="@font/noto_sans"
-                android:spinnerMode="dropdown"
-
-                app:layout_constraintBottom_toBottomOf="@+id/text_drink"
+                app:layout_constraintBottom_toBottomOf="@+id/add_order_text_drink"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/text_drink"
-                app:layout_constraintTop_toTopOf="@+id/text_drink" />
+                app:layout_constraintStart_toEndOf="@+id/add_order_text_drink"
+                app:layout_constraintTop_toTopOf="@+id/add_order_text_drink"
+                android:theme="@style/add_order_drink_spinner" />
 
             <ImageView
-                android:id="@+id/image_ice"
-                android:layout_width="18dp"
-                android:layout_height="18dp"
+                android:id="@+id/add_order_image_ice"
+                style="@style/app_icon_mid"
                 android:src="@drawable/ice_cube"
-                android:tint="@color/myColorPrimaryDark"
-                app:layout_constraintBottom_toBottomOf="@+id/text_ice"
+                app:layout_constraintBottom_toBottomOf="@+id/add_order_text_ice"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/text_ice" />
+                app:layout_constraintTop_toTopOf="@+id/add_order_text_ice" />
 
             <TextView
-                android:id="@+id/text_ice"
-                style="@style/post_text_title"
+                android:id="@+id/add_order_text_ice"
+                style="@style/add_order_text"
                 android:text="@string/post_ice"
                 android:textSize="16dp"
                 android:fontFamily="@font/noto_sans"
-                app:layout_constraintStart_toEndOf="@id/image_ice"
-                app:layout_constraintTop_toBottomOf="@+id/text_drink" />
+                app:layout_constraintStart_toEndOf="@id/add_order_image_ice"
+                app:layout_constraintTop_toBottomOf="@+id/add_order_text_drink" />
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recycler_ice"
+                android:id="@+id/add_order_recycler_ice"
                 android:layout_width="0dp"
                 android:layout_height="30dp"
                 android:layout_marginStart="6dp"
                 android:orientation="horizontal"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                app:layout_constraintBottom_toBottomOf="@+id/text_ice"
+                app:layout_constraintBottom_toBottomOf="@+id/add_order_text_ice"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/text_ice"
-                app:layout_constraintTop_toTopOf="@+id/text_ice" />
+                app:layout_constraintStart_toEndOf="@+id/add_order_text_ice"
+                app:layout_constraintTop_toTopOf="@+id/add_order_text_ice" />
 
             <ImageView
-                android:id="@+id/image_sugar"
-                android:layout_width="18dp"
-                android:layout_height="18dp"
+                android:id="@+id/add_order_image_sugar"
+                style="@style/app_icon_mid"
                 android:src="@drawable/sugar"
-                android:tint="@color/myColorPrimaryDark"
-                app:layout_constraintBottom_toBottomOf="@+id/text_sugar"
+                app:layout_constraintBottom_toBottomOf="@+id/add_order_text_sugar"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/text_sugar" />
+                app:layout_constraintTop_toTopOf="@+id/add_order_text_sugar" />
 
             <TextView
-                android:id="@+id/text_sugar"
-                style="@style/post_text_title"
+                android:id="@+id/add_order_text_sugar"
+                style="@style/add_order_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/post_sugar"
                 android:textSize="16dp"
                 android:fontFamily="@font/noto_sans"
-                app:layout_constraintStart_toEndOf="@id/image_ice"
-                app:layout_constraintTop_toBottomOf="@+id/text_ice" />
+                app:layout_constraintStart_toEndOf="@id/add_order_image_ice"
+                app:layout_constraintTop_toBottomOf="@+id/add_order_text_ice" />
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recycler_sugar"
+                android:id="@+id/add_order_recycler_sugar"
                 android:layout_width="0dp"
                 android:layout_height="30dp"
                 android:layout_marginStart="6dp"
                 android:orientation="horizontal"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                app:layout_constraintBottom_toBottomOf="@+id/text_sugar"
+                app:layout_constraintBottom_toBottomOf="@+id/add_order_text_sugar"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/text_sugar"
-                app:layout_constraintTop_toTopOf="@+id/text_sugar" />
+                app:layout_constraintStart_toEndOf="@+id/add_order_text_sugar"
+                app:layout_constraintTop_toTopOf="@+id/add_order_text_sugar" />
 
             <ImageView
-                android:id="@+id/image_qyt_add_order"
-                android:layout_width="18dp"
-                android:layout_height="18dp"
+                android:id="@+id/_add_order_image_qyt"
+                style="@style/app_icon_mid"
                 android:src="@drawable/calculator"
-                android:tint="@color/myColorPrimaryDark"
-                app:layout_constraintBottom_toBottomOf="@+id/text_qyt"
+                app:layout_constraintBottom_toBottomOf="@+id/add_order_text_qyt"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/text_qyt" />
+                app:layout_constraintTop_toTopOf="@+id/add_order_text_qyt" />
 
             <TextView
-                android:id="@+id/text_qyt"
-                style="@style/post_text_title"
+                android:id="@+id/add_order_text_qyt"
+                style="@style/add_order_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="數量"
-                app:layout_constraintStart_toEndOf="@+id/image_qyt_add_order"
-                app:layout_constraintTop_toBottomOf="@+id/text_sugar" />
+                android:text="@string/add_order_qty"
+                app:layout_constraintStart_toEndOf="@+id/_add_order_image_qyt"
+                app:layout_constraintTop_toBottomOf="@+id/add_order_text_sugar" />
 
             <ImageView
-                android:id="@+id/image_note_add_order"
-                android:layout_width="18dp"
-                android:layout_height="18dp"
+                android:id="@+id/add_order_image_note"
                 android:src="@drawable/notes"
-                android:tint="@color/myColorPrimaryDark"
-                app:layout_constraintBottom_toBottomOf="@+id/text_note"
+                style="@style/app_icon_mid"
+                app:layout_constraintBottom_toBottomOf="@+id/add_order_text_note"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/text_note" />
+                app:layout_constraintTop_toTopOf="@+id/add_order_text_note" />
 
             <TextView
-                android:id="@+id/text_note"
-                style="@style/post_text_title"
+                android:id="@+id/add_order_text_note"
+                style="@style/add_order_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="備註"
-                app:layout_constraintStart_toEndOf="@+id/image_qyt_add_order"
-                app:layout_constraintTop_toBottomOf="@+id/text_qyt" />
+                android:text="@string/add_order_note"
+                app:layout_constraintStart_toEndOf="@+id/_add_order_image_qyt"
+                app:layout_constraintTop_toBottomOf="@+id/add_order_text_qyt" />
 
             <EditText
-                android:id="@+id/edit_text_qty"
+                android:id="@+id/add_order_edit_text_qty"
                 android:layout_width="60dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="6dp"
                 android:inputType="number"
                 android:paddingBottom="4dp"
-                android:textSize="16dp"
+                android:textSize="@dimen/text_max"
                 android:fontFamily="@font/noto_sans"
-                android:text="@={viewModel.convertLongToString(viewModel.orderList.qty)}"
+                android:text="@={viewModel.convertLongToString(viewModel.orderItem.qty)}"
                 android:textAlignment="center"
-                app:layout_constraintBaseline_toBaselineOf="@+id/text_qyt"
-                app:layout_constraintStart_toEndOf="@+id/text_qyt" />
+                app:layout_constraintBaseline_toBaselineOf="@+id/add_order_text_qyt"
+                app:layout_constraintStart_toEndOf="@+id/add_order_text_qyt" />
 
             <EditText
-                android:id="@+id/edit_text_note"
+                android:id="@+id/add_order_edit_text_note"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="6dp"
                 android:gravity="start"
-                android:textSize="16dp"
+                android:textSize="@dimen/text_max"
+                android:maxLength="20"
                 android:fontFamily="@font/noto_sans"
-                android:text="@={viewModel.orderList.note}"
-                app:layout_constraintBaseline_toBaselineOf="@+id/text_note"
+                android:text="@={viewModel.orderItem.note}"
+                app:layout_constraintBaseline_toBaselineOf="@+id/add_order_text_note"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/text_note" />
+                app:layout_constraintStart_toEndOf="@+id/add_order_text_note" />
 
             <TextView
-                android:id="@+id/button_create_order"
+                android:id="@+id/button_add_order"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="送出品項"
+                android:text="@string/add_order_button_text"
                 android:letterSpacing="1.0"
                 android:clickable="@{viewModel.status == LoadApiStatus.LOADING ? false:true}"
-                android:textColor='@{viewModel.selectedIce == null || viewModel.selectedSugar == null ? Color.parseColor("#FFFFFF"):Color.parseColor("#FFFFFF")}'
+                android:textColor='@{viewModel.orderItem.sugar == null || viewModel.orderItem.ice == null ? Color.parseColor("#FFFFFF"):Color.parseColor("#FFFFFF")}'
                 android:background="@drawable/background_post_button"
                 android:textAlignment="center"
-                android:paddingTop="10dp"
-                android:paddingBottom="10dp"
+                android:paddingVertical="10dp"
                 android:onClick="@{() -> viewModel.addOrderResult()}"
-                android:enabled="@{viewModel.selectedIce == null || viewModel.selectedSugar == null ? false:true}"
+                android:enabled="@{viewModel.orderItem.ice == null || viewModel.orderItem.sugar == null ? false:true}"
                 android:layout_marginTop="16dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/edit_text_note" />
-
+                app:layout_constraintTop_toBottomOf="@+id/add_order_edit_text_note" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>

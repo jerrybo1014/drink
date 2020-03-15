@@ -2,11 +2,10 @@ package app.jerry.drink.dataclass.source.local
 
 import android.content.Context
 import android.graphics.Bitmap
-import android.net.Uri
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import app.jerry.drink.dataclass.*
 import app.jerry.drink.dataclass.source.DrinkDataSource
+import com.google.firebase.auth.FirebaseUser
 
 class DrinkLocalDataSource(val context: Context) : DrinkDataSource {
 
@@ -14,7 +13,7 @@ class DrinkLocalDataSource(val context: Context) : DrinkDataSource {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override suspend fun checkUser(): Result<Boolean> {
+    override suspend fun checkUser(user: User): Result<Boolean> {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
@@ -34,19 +33,23 @@ class DrinkLocalDataSource(val context: Context) : DrinkDataSource {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override suspend fun createOrder(order: Order): Result<Boolean> {
+    override suspend fun deleteComment(comment: Comment): Result<Boolean> {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override suspend fun getOrder(orderId: Long): Result<OrderLists> {
+    override suspend fun createOrder(order: Order): Result<String> {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override fun getOrderLive(orderId: Long): LiveData<List<OrderList>> {
+    override fun getOrderLive(orderId: Long): LiveData<Order> {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override suspend fun addOrder(orderList: OrderList, orderId: Long): Result<Boolean> {
+    override fun getOrderItemLive(orderId: Long): LiveData<List<OrderItem>> {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override suspend fun addOrder(orderList: OrderItem, orderId: Long): Result<Boolean> {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
@@ -66,15 +69,15 @@ class DrinkLocalDataSource(val context: Context) : DrinkDataSource {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override suspend fun getDetailComment(drinkDetail: DrinkDetail): Result<List<Comment>> {
+    override suspend fun getDetailComment(drink: Drink): Result<List<Comment>> {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override suspend fun getUserComment(): Result<List<Comment>> {
+    override suspend fun getUserComment(user: User): Result<List<Comment>> {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override suspend fun getUserOrder(): Result<List<Order>> {
+    override suspend fun getUserOrder(user: User): Result<List<Order>> {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
@@ -87,6 +90,10 @@ class DrinkLocalDataSource(val context: Context) : DrinkDataSource {
     }
 
     override suspend fun getSearchDrink(): Result<List<Drink>> {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override suspend fun addNewDrink(comment: Comment, bitmap: Bitmap): Result<Boolean> {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 }
