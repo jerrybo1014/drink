@@ -2,8 +2,12 @@ package app.jerry.drink.post
 
 import android.Manifest
 import android.app.Activity
+import android.app.Activity.RESULT_OK
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.content.res.Resources
+import android.graphics.Rect
+import android.graphics.RectF
 import android.icu.text.SimpleDateFormat
 import android.net.Uri
 import android.os.Bundle
@@ -32,6 +36,9 @@ import app.jerry.drink.util.Logger
 import app.jerry.drink.util.PermissionCode
 import app.jerry.drink.util.RequestCode
 import app.jerry.drink.util.Util
+import com.theartofdev.edmodo.cropper.CropImage
+import com.theartofdev.edmodo.cropper.CropImageView
+import kotlinx.android.synthetic.main.fragment_post.*
 import java.io.File
 import java.io.IOException
 import java.util.*
@@ -210,7 +217,11 @@ class PostFragment : Fragment() {
                     loadCamera()
                 } else {
 
-                    if (!ActivityCompat.shouldShowRequestPermissionRationale(activity as MainActivity, Manifest.permission.CAMERA)) {
+                    if (!ActivityCompat.shouldShowRequestPermissionRationale(
+                            activity as MainActivity,
+                            Manifest.permission.CAMERA
+                        )
+                    ) {
                         AlertDialog.Builder(context!!)
                             .setMessage(Util.getString(R.string.need_camera_permission))
                             .setPositiveButton(Util.getString(R.string.open_permission)) { _, _ ->
@@ -233,8 +244,11 @@ class PostFragment : Fragment() {
                 if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     launchGallery()
                 } else {
-                    if (!ActivityCompat.shouldShowRequestPermissionRationale(activity as MainActivity,
-                            Manifest.permission.READ_EXTERNAL_STORAGE)) {
+                    if (!ActivityCompat.shouldShowRequestPermissionRationale(
+                            activity as MainActivity,
+                            Manifest.permission.READ_EXTERNAL_STORAGE
+                        )
+                    ) {
                         AlertDialog.Builder(context!!)
                             .setMessage(Util.getString(R.string.need_gallery_permission))
                             .setPositiveButton(Util.getString(R.string.open_permission)) { _, _ ->
@@ -259,12 +273,16 @@ class PostFragment : Fragment() {
             }
             data.data?.let {
                 filePath = it
-                it.setImagePreView(binding.postImageUpdate)
-                val bitmap = filePath?.getBitmap(
-                    binding.postImageUpdate.width,
-                    binding.postImageUpdate.height
-                )
-                viewModel.imageBitmap.value = bitmap
+//                cropImageView.setImageUriAsync(filePath)
+                CropImage.activity(filePath)
+                    .setAspectRatio(1, 1)
+                    .start(context!!, this)
+//                it.setImagePreView(binding.postImageUpdate)
+//                val bitmap = filePath?.getBitmap(
+//                    binding.postImageUpdate.width,
+//                    binding.postImageUpdate.height
+//                )
+//                viewModel.imageBitmap.value = bitmap
             }
         }
 
@@ -273,13 +291,34 @@ class PostFragment : Fragment() {
                 return
             }
             photoURI?.let {
-                it.setImagePreView(binding.postImageUpdate)
+                CropImage.activity(photoURI)
+                    .setAspectRatio(1, 1)
+                    .start(context!!, this)
+//                cropImageView.setImageUriAsync(photoURI)
+//                it.setImagePreView(binding.postImageUpdate)
+//                val bitmap =
+//                    it.getBitmap(
+//                        binding.postImageUpdate.width,
+//                        binding.postImageUpdate.height
+//                    )
+//                viewModel.imageBitmap.value = bitmap
+            }
+        }
+
+        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+            val result = CropImage.getActivityResult(data)
+            if (resultCode == RESULT_OK) {
+                val resultUri = result.uri
                 val bitmap =
-                    it.getBitmap(
+                    resultUri.getBitmap(
                         binding.postImageUpdate.width,
                         binding.postImageUpdate.height
                     )
                 viewModel.imageBitmap.value = bitmap
+                resultUri.setImagePreView(binding.postImageUpdate)
+            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+                val error = result.error
+                Logger.d("error = $error")
             }
         }
     }

@@ -20,6 +20,7 @@
         android:layout_height="match_parent">
 
         <ScrollView
+            android:id="@+id/scrollView2"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             app:layout_constraintBottom_toTopOf="@+id/post_layout_bottom"
@@ -34,11 +35,12 @@
 
                 <ImageView
                     android:id="@+id/post_image_update"
-                    android:layout_width="wrap_content"
-                    android:layout_height="200dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    app:layout_constraintDimensionRatio="1"
                     android:background="@color/color_post_image_background"
                     android:onClick="@{() -> viewModel.openCameraGallery()}"
-                    android:src="@drawable/drink_gray"
+                    android:src="@drawable/image_add_icon_min"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -66,8 +68,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="16dp"
                     android:prompt="@string/spinner_store"
-                    android:spinnerMode="dialog"
                     android:selectedItemPosition="@={viewModel.selectStorePosition}"
+                    android:spinnerMode="dialog"
                     app:layout_constraintBottom_toBottomOf="@+id/post_text_store"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/post_text_store"
@@ -102,9 +104,9 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:prompt="@string/spinner_drink"
+                        android:selectedItemPosition="@={viewModel.selectDrinkPosition}"
                         android:spinnerMode="dialog"
                         android:visibility="@{viewModel.addNewDrink == true ? View.GONE:View.VISIBLE}"
-                        android:selectedItemPosition = "@={viewModel.selectDrinkPosition}"
                         app:layout_constraintBottom_toBottomOf="@+id/post_text_drink"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/post_text_drink"
@@ -114,12 +116,12 @@
                         android:id="@+id/post_edit_new_drink"
                         android:layout_width="150dp"
                         android:layout_height="wrap_content"
-                        android:maxLength="10"
-                        android:textSize="@dimen/text_max"
-                        android:hint="@string/post_edit_new_drink_hint"
-                        android:text="@={viewModel.newDrinkName}"
-                        android:visibility="@{viewModel.addNewDrink == true ? View.VISIBLE:View.GONE}"
                         android:layout_marginStart="8dp"
+                        android:hint="@string/post_edit_new_drink_hint"
+                        android:maxLength="10"
+                        android:text="@={viewModel.newDrinkName}"
+                        android:textSize="@dimen/text_max"
+                        android:visibility="@{viewModel.addNewDrink == true ? View.VISIBLE:View.GONE}"
                         app:layout_constraintBaseline_toBaselineOf="@+id/post_text_drink"
                         app:layout_constraintStart_toEndOf="@+id/post_text_drink" />
 
@@ -127,16 +129,16 @@
                         android:id="@+id/text_cancel_new_drink"
                         android:layout_width="0dp"
                         android:layout_height="0dp"
-                        app:layout_constraintDimensionRatio="1"
                         android:layout_marginStart="8dp"
                         android:fontFamily="@font/noto_sans"
-                        android:tint="#CC0000"
                         android:onClick="@{() -> viewModel.cancelAddNewDrink()}"
                         android:padding="4dp"
                         android:src="@drawable/close_1"
                         android:textSize="16dp"
+                        android:tint="#CC0000"
                         android:visibility="@{viewModel.addNewDrink == true ? View.VISIBLE:View.GONE}"
                         app:layout_constraintBottom_toBottomOf="@+id/post_image_drink_icon"
+                        app:layout_constraintDimensionRatio="1"
                         app:layout_constraintStart_toEndOf="@+id/post_edit_new_drink"
                         app:layout_constraintTop_toTopOf="@+id/post_image_drink_icon" />
 
@@ -387,19 +389,11 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/post_image_gallery" />
 
-
                 </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-
-
         </androidx.constraintlayout.widget.ConstraintLayout>
-
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

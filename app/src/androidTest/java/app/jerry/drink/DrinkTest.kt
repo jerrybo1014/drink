@@ -12,20 +12,20 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 
-@RunWith(AndroidJUnit4::class)
-@LargeTest
-class DrinkTest {
-
-    @get:Rule
-    var activityRule: ActivityTestRule<MainActivity>
-            = ActivityTestRule(MainActivity::class.java)
-
-    @Test
-    fun test(){
-        Thread.sleep(5000)
-        onView(withId(R.id.home_recycler_high_score)).perform(
-            RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(0, click()))
-        Thread.sleep(5000)
-    }
-
-}
+//@RunWith(AndroidJUnit4::class)
+//@LargeTest
+//class DrinkTest {
+//
+//    @get:Rule
+//    var activityRule: ActivityTestRule<MainActivity>
+//            = ActivityTestRule(MainActivity::class.java)
+//
+//    @Test
+//    fun test(){
+//        Thread.sleep(5000)
+//        onView(withId(R.id.home_recycler_high_score)).perform(
+//            RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(0, click()))
+//        Thread.sleep(5000)
+//    }
+//
+//}

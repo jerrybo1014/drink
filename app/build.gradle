@@ -14,8 +14,8 @@ android {
         applicationId "app.jerry.drink"
         minSdkVersion 26
         targetSdkVersion 29
-        versionCode 6
-        versionName "1.0.5"
+        versionCode 7
+        versionName "1.0.6"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -98,6 +98,8 @@ dependencies {
 
     // Add the Firebase Crashlytics dependency.
     implementation 'com.crashlytics.sdk.android:crashlytics:2.10.1'
+
+    implementation 'com.theartofdev.edmodo:android-image-cropper:2.8.+'
 
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'com.android.support.test:rules:1.0.2'
