@@ -51,6 +51,11 @@ class MainActivityViewModel(private val repository: DrinkRepository) : ViewModel
     // the Coroutine runs using the Main (UI) dispatcher
     private val coroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
 
+    override fun onCleared() {
+        super.onCleared()
+        viewModelJob.cancel()
+    }
+
     fun checkUserResult(user: User) {
         coroutineScope.launch {
             _status.value = LoadApiStatus.LOADING

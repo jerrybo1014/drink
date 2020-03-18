@@ -71,6 +71,11 @@ class SignInViewModel(private val repository: DrinkRepository) : ViewModel() {
     // the Coroutine runs using the Main (UI) dispatcher
     private val coroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
 
+    override fun onCleared() {
+        super.onCleared()
+        viewModelJob.cancel()
+    }
+
     fun loginFacebook() {
         _status.value = LoadApiStatus.LOADING
 

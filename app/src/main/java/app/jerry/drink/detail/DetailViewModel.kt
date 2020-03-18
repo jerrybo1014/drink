@@ -63,6 +63,11 @@ class DetailViewModel(private val repository: DrinkRepository, val drink: Drink)
         getDetailCommentResult()
     }
 
+    override fun onCleared() {
+        super.onCleared()
+        viewModelJob.cancel()
+    }
+
     fun getDetailCommentResult() {
 
         coroutineScope.launch {

@@ -77,6 +77,11 @@ class RadarViewModel(private val repository: DrinkRepository, private val store:
         getStoreLocationResult()
     }
 
+    override fun onCleared() {
+        super.onCleared()
+        viewModelJob.cancel()
+    }
+
     fun getStoreLocationResult() {
         coroutineScope.launch {
             _status.value = LoadApiStatus.LOADING

@@ -52,6 +52,11 @@ class HomeSearchViewModel(private val repository: DrinkRepository) : ViewModel()
         getSearchDrinkResult()
     }
 
+    override fun onCleared() {
+        super.onCleared()
+        viewModelJob.cancel()
+    }
+
     private fun getSearchDrinkResult(){
         coroutineScope.launch {
 

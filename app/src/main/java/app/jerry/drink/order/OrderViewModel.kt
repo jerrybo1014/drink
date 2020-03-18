@@ -72,6 +72,11 @@ class OrderViewModel(private val repository: DrinkRepository, private val orderI
         getInit()
     }
 
+    override fun onCleared() {
+        super.onCleared()
+        viewModelJob.cancel()
+    }
+
     private fun getInit() {
         if (orderId != "1") {
             OrderRecord.orderId = orderId

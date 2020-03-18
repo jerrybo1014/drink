@@ -103,6 +103,11 @@ class PostViewModel(private val repository: DrinkRepository) : ViewModel() {
         getAllStoreResult()
     }
 
+    override fun onCleared() {
+        super.onCleared()
+        viewModelJob.cancel()
+    }
+
     fun getAllStoreResult() {
 
         coroutineScope.launch {

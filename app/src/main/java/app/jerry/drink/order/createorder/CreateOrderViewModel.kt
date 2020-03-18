@@ -79,6 +79,11 @@ class CreateOrderViewModel(private val repository: DrinkRepository) : ViewModel(
         getAllStoreResult()
     }
 
+    override fun onCleared() {
+        super.onCleared()
+        viewModelJob.cancel()
+    }
+
     private fun getAllStoreResult() {
 
         coroutineScope.launch {

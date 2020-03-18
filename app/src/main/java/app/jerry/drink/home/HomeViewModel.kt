@@ -56,6 +56,11 @@ class HomeViewModel(private val repository: DrinkRepository) : ViewModel() {
         getNewCommentResult(true)
     }
 
+    override fun onCleared() {
+        super.onCleared()
+        viewModelJob.cancel()
+    }
+
     private fun getNewCommentResult(isInitial: Boolean = false) {
         coroutineScope.launch {
 

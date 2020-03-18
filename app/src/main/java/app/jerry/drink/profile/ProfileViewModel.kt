@@ -77,6 +77,11 @@ class ProfileViewModel(private val repository: DrinkRepository) : ViewModel() {
         getUserOrderResult()
     }
 
+    override fun onCleared() {
+        super.onCleared()
+        viewModelJob.cancel()
+    }
+
     fun uploadAvatarResult() {
         coroutineScope.launch {
 
