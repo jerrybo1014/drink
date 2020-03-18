@@ -10,6 +10,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -26,6 +27,9 @@ import app.jerry.drink.ext.getVmFactory
 import app.jerry.drink.util.Logger
 import app.jerry.drink.util.PermissionCode
 import app.jerry.drink.util.Util
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class DetailFragment : Fragment() {
 
@@ -48,6 +52,12 @@ class DetailFragment : Fragment() {
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
 
+        /*hideSoftInputFromWindow*/
+        CoroutineScope(Dispatchers.Main).launch {
+            (activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as?
+                    InputMethodManager)?.hideSoftInputFromWindow(binding.root.windowToken,0)
+        }
+        
         binding.detailRecyclerAllComments.adapter = DetailAdapter(viewModel)
 
         (activity as MainActivity).binding.bottomNavigationView.visibility = View.GONE
