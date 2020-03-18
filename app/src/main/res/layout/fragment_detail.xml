@@ -67,7 +67,7 @@
             android:id="@+id/detail_layout_navigation_to_map"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="42dp"
+            android:layout_marginEnd="16dp"
             android:onClick="@{() -> viewModel.navigationToRadar(viewModel.drink.store)}"
             app:layout_constraintBottom_toBottomOf="@+id/detail_image_drink"
             app:layout_constraintEnd_toStartOf="@+id/detail_layout_navigation_to_internet"
