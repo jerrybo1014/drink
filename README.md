@@ -37,7 +37,7 @@ src='https://firebasestorage.googleapis.com/v0/b/drink-41990.appspot.com/o/drink
 * **Design Patterns** - MVVM, Observer, Factory
 * **Android Jetpack** - ViewModel, Navigation, LiveData, Data Binding, Permissions
 * **Networking** - RESTful APIs, Retrofit2, Moshi
-* **3rd Parties** - Google Maps SDK, Glide, image cropper
+* **3rd Parties** - Google Maps SDK, Glide, Image cropper
 * **Data Management** - Firestore, Firesbase Storage, Firebase Authentication, Crashlytics
 * **Integration test** - JUit, Mockito, Espresso
 
@@ -46,7 +46,7 @@ src='https://firebasestorage.googleapis.com/v0/b/drink-41990.appspot.com/o/drink
 * Android SDK 26+
 
 ### Release 版本更新  
-* 1.06 - 2020/03/13
+* 1.0.6 - 2020/03/13
 
 ### Contact 聯絡資訊
 drinkcommentator@gmail.com  
